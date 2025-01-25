@@ -30,7 +30,50 @@ would pay non refactoring dividends down the road.
 Also, we aimed at making it scalable in case we'd have enough time left to 
 tackle bonuses.
 
-Regarding the parsing, we chose to 
+Regarding the parsing, we chose to implement a tree structure. We build the tree
+using the following method:
+
+	1.	We get an user input that we read from STDIN and store it as is.
+
+	2.	We perform a space trim || addition outside closed "" && ''.
+	3.	We identify grammar elements within the string.
+
+	4.	We create a node for each grammar element && append it within a linked
+		list that get passed to the execution part.
+
+	5.	Each grammar node contains a pointer to the first command that gets
+		executed within the grammar block. This pointer leads to a linked list
+		containing all the commands to be executed within the block.
+
+Examples:
+
+	User input		-> 		<< yay grep    'pommes ' | wc -l > test.txt < cat 
+	Parsed input	-> 		<< yay grep 'pommes' | wc -l > test.txt < cat
+
+	Grammar			->		<< yay	
+					->		|
+					->		> test.txt
+					->		< test.txt
+	
+	Commands		->		grep 'pommes'
+					->		wc -l
+					->		cat
+
+Note that this example contains valid input. Let's now see how we assessed the
+validity of the user's input.
+
+	1.	Redirewctions:
+
+		In bash posix, redirections have a priority over the rest of the input.
+
+
+		->	< redirections
+
+			We check 
+
+		->	> redirections
+
+		-> << && >> redirections
 
 Regarding the execution, we chose to
 
