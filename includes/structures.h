@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structures.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/01/28 12:51:59 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
@@ -21,6 +33,18 @@ enum token_type
 	TOKEN_PAREN_OPEN,   // (
 	TOKEN_PAREN_CLOSE,  // )
 	TOKEN_WILDCARD      // *
+};
+
+//We use this enum to track the parser's state
+enum parser_state
+{
+    STATE_NORMAL,       // Standard parsing mode
+    STATE_SINGLE_QUOTE, // Inside single quotes
+    STATE_DOUBLE_QUOTE, // Inside double quotes
+    STATE_REDIR,        // After a redirection operator
+    STATE_HEREDOC,      // Handling heredoc input
+    STATE_SUBSHELL,     // Inside subshell parentheses
+    STATE_ERROR         // Error state
 };
 
 #endif

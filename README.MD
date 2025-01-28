@@ -30,6 +30,11 @@ would pay non refactoring dividends down the road.
 Also, we aimed at making it scalable in case we'd have enough time left to 
 tackle bonuses.
 
+Usefull content:
+
+	https://www.youtube.com/watch?v=SToUyjAsaFk&t=806s
+
+
 Regarding the parsing, we chose to implement a tree structure. We build the tree
 using the following method:
 
