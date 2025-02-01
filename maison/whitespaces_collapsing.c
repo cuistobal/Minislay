@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:57:13 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/01 11:42:48 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/01 13:39:02 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@ void    append_char(char *dest, char c, int *pos)
     }
 }
 
+//Not tested    ->  To implement
+/*
+void    process_collapsed_and_stack(char *collapsed, char bool *space, int *j)
+{
+    if (space && (*j) > 0)
+        append_char(collapsed, ' ', j); //remplacer ' ' par SPACE
+    append_char(collapsed, input[i], j);
+    space = false;
+    if (is_syntax(element))
+        stack();
+}*/
+
 //We use this function to trim the execessive whitespaces && remove leading &
 //ending ones. 
 //The idea is to set collapssed as equal to input in the calling function so we
@@ -48,20 +60,24 @@ bool    whitespaces_collapsing(char *input, char *collapsed)
         {
             if (is_space(input[i]))
                 space = true;
+//          else
+//              process_collapsed_and_stack();
+//create a sub_function
             else
             {
+//stack
                 if (space && j > 0)
-                    append_char(collapsed, ' ', &j);
+                    append_char(collapsed, ' ', &j); //remplacer ' ' par SPACE
                 append_char(collapsed, input[i], &j);
                 space = false;
             }
+//end of sub_function
             i++;
         }
-        collapsed[j] = '\0';
-        return (true);
+        return (collapsed[j] = '\0', true);
     }
     return (false);
-}/*
+}
 
 #include <stdio.h>
 #include <string.h>
@@ -82,4 +98,4 @@ int main(int argc, char **argv)
     }
     printf("Usage: ./a.out argv\n");
     return 0;
-}*/
+}
