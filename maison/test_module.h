@@ -22,7 +22,7 @@ bool    whitespaces_collapsing(char *input, char *collapsed);
 
 //tokenize_user_input.c:
 bool    tokenize_user_input(t_tokn **list, char *input, char *separator);
-bool    create_token_node_and_append_list(t_tokn **list, char *token);
+bool    create_token_node_and_append_list(t_tokn **list, t_tokn **tail, char *token);
 t_tokn  *create_token_node(char *content, char type);
 
 #endif
