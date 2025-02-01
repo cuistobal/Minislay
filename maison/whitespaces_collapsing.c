@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:57:13 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/01/31 11:57:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/01 11:42:48 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,22 @@ bool    whitespaces_collapsing(char *input, char *collapsed)
 }/*
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 int main(int argc, char **argv)
 {
     char *trimmed;
 
     if (argc == 2)
     {
-        trimmed = argv[1];
-        (whitespaces_collapsing(argv[1], trimmed)) ? printf("%s\n%s\n", trimmed, argv[1]) : printf("Trimming error\n");
+        trimmed = strdup(argv[1]);
+        printf("%ld\n", strlen(trimmed));
+        (whitespaces_collapsing(argv[1], trimmed)) ? printf("Original    ->  %s\nProcessed   ->  %s\n", argv[1], trimmed) : printf("Trimming error\n");
+        printf("%ld\n", strlen(trimmed));
+        free (trimmed);
+        return 0;
     }
+    printf("Usage: ./a.out argv\n");
     return 0;
 }*/
