@@ -6,18 +6,13 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:34:40 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/01/31 12:08:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/01 17:37:36 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-typedef struct  token
-{
-    char            type;
-    char            *content;
-    struct  token   *next;
-}   t_tokn;
+#include "test_module.h"
 
-t_tokn  create_token_node(char *content, char type)
+t_tokn  *create_token_node(char *content, char type)
 {
     t_tokn  *new;
 
@@ -26,16 +21,16 @@ t_tokn  create_token_node(char *content, char type)
     {
         new->type = type;
         new->content = content;
-        next = NULL;
+        new->next = NULL;
     }
     return (new);
 }
 
-bool    create_token_node_and_append_list()
+bool    create_token_node_and_append_list(t_tokn **list, char *token)
 {
     t_tokn  *new;
 
-    new = create_token_node();
+    new = create_token_node(token, 0);
     if (new)
     {
         if (*list)
@@ -50,18 +45,19 @@ bool    create_token_node_and_append_list()
     return (false);
 }
 
-bool    tokenize_user_input(t_tokn **list, char *input)
+bool    tokenize_user_input(t_tokn **list, char *input, char *separator)
 {
-    int index;
+    char    *token;
 
     if (input)
     {
-        index = 0;
-        while (input[index] != '\0')
+        token = strtok(input, separator);
+        while (token)
         {
-            if (is_space(input[index]))
-            {
-            }
+            if (create_token_node_and_append_list(list, token))
+                token = strtok(NULL, separator);
+            else
+                return (false);
         }
         return (true);
     }

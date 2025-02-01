@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:57:13 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/01 13:39:02 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/01 17:03:49 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool    whitespaces_collapsing(char *input, char *collapsed)
         return (collapsed[j] = '\0', true);
     }
     return (false);
-}
+}/*
 
 #include <stdio.h>
 #include <string.h>
@@ -98,4 +98,4 @@ int main(int argc, char **argv)
     }
     printf("Usage: ./a.out argv\n");
     return 0;
-}
+}*/
