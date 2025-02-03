@@ -44,13 +44,15 @@ void push(t_parser *parser, char c)
     parser->stack[parser->top++] = c;
 }
 
-char pop(t_parser *parser) {
+char pop(t_parser *parser) 
+{
     if (parser->top > 0)
         return parser->stack[--parser->top];
     return '\0';
 }
 
-char peek(t_parser *parser) {
+char peek(t_parser *parser) 
+{
     if (parser->top > 0)
         return parser->stack[parser->top - 1];
     return '\0';
@@ -114,20 +116,43 @@ bool handle_char(t_parser *parser, char c)
 // ---- PARSE FUNCTION ----
 bool parse_input(const char *input)
 {
+    int         i;
     t_parser	parser;
 
     parser.state = STATE_NORMAL;
     parser.top = 0;
     parser.capacity = 1;
 	parser.stack = malloc(parser.capacity);
-    if (!parser.stack)
+    if (parser.stack)
+    {
+        i = 0;
+		parser.stack[parser.top] = '\0';
+        while (input[i])
+        {
+            if (!handle_char(&parser, input[i]))
+                return (free(parser.stack), false);
+            i++;
+        }
+        if (is_state_active(&parser, STATE_SINGLE_QUOTE))
+            return (free(parser.stack), false);
+        else if (is_state_active(&parser, STATE_DOUBLE_QUOTE))
+            return (free(parser.stack), false);
+        else if (is_state_active(&parser, STATE_DOUBLE_QUOTE))
+            return (free(parser.stack), false);
+        else if (is_state_active(&parser, STATE_SUBSHELL))
+            return (free(parser.stack), false);
+        return (free(parser.stack), true);
+    }
+    return (false);
+}
+
+/*    if (!parser.stack)
 	{
         printf("Memory allocation failed\n");
         return false;
     }
 	else
 		parser.stack[parser.top] = '\0';
-
     for (int i = 0; input[i]; i++)
 	{
         if (!handle_char(&parser, input[i]))
@@ -158,7 +183,7 @@ bool parse_input(const char *input)
     printf("✅ Valid Input\n");
     free(parser.stack);
     return true;
-}
+}*/
 
 // ---- TEST CASES ----
 int main()
@@ -175,9 +200,10 @@ int main()
         NULL
     };
 
-    for (int i = 0; test_cases[i]; i++) {
+    for (int i = 0; test_cases[i]; i++) 
+    {
         printf("\nTesting: %s\n", test_cases[i]);
-        parse_input(test_cases[i]);
+        parse_input(test_cases[i]) ? printf("true\n") : printf("false\n");
     }
 
     return 0;
