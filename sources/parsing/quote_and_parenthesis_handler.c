@@ -7,7 +7,11 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 07:35:05 by chrleroy          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2025/02/03 08:04:38 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/03 09:27:18 by chrleroy         ###   ########.fr       */
+>>>>>>> main
 =======
 /*   Updated: 2025/02/03 09:27:18 by chrleroy         ###   ########.fr       */
 >>>>>>> main
@@ -17,7 +21,11 @@
 #include "minislay.h"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 static bool	stack_handler(char *stack, char input)
+=======
+static bool	pop()
+>>>>>>> main
 =======
 static bool	pop()
 >>>>>>> main
@@ -26,7 +34,10 @@ static bool	pop()
 	{
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> main
 	}
 	return false;
 }
@@ -42,6 +53,9 @@ static bool	stack_handler(char *stack, char input)
 	if (stack)
 	{
 		
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
 		return ();
 	}
@@ -66,6 +80,7 @@ static bool	is_syntax(char *syntax, char input)
 
 //
 <<<<<<< HEAD
+<<<<<<< HEAD
 bool	matching_syntax(char *input, char *syntax)
 {
 	int		i;
@@ -73,11 +88,16 @@ bool	matching_syntax(char *input, char *syntax)
 	
 	if (input && syntax)
 =======
+=======
+>>>>>>> main
 bool	matching_syntax(t_pars	*parser)
 {
 	int		i;
 	
 	if (parser->input && parser->syntax)
+<<<<<<< HEAD
+>>>>>>> main
+=======
 >>>>>>> main
 	{
 		i = 0;
