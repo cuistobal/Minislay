@@ -6,12 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/03 09:48:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:17:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//We use this function to allocate & intialise the memory of the parsing
+//structure
 static t_pars	*initialiase_parsing_structure(char *input)
 {
 	t_pars	*new;
@@ -30,6 +32,7 @@ static t_pars	*initialiase_parsing_structure(char *input)
 	return (new);
 }
 
+//This is the main parsing function
 bool	parsing(char *input)
 {
 	t_pars	*parser;

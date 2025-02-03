@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 07:35:05 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/03 12:10:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:03:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ static bool	stack_operation()
 
 }
 
-static bool	check_state()
-{
-	
-}
-
 static int	check_syntax(char input)
 {
 	if (input == OPAR)
@@ -52,23 +47,26 @@ static int	check_syntax(char input)
 
 bool	check_quotes_and_parenthesis(t_pars *parser)
 {
-	size_t	i;
+	size_t	type;
+	size_t	index;
 
 	if (parser)
 	{
-		i = 0;
+		type = 0;
+		index = 0;
 		if (parser->input)
 		{
-			while (parser->input[i])
+			while (parser->input[index]) // && parser->state != ERROR
 			{
-				if (check_syntax(parser->input[i]) < 4)
+				type = check_syntax(parser->input[index]);
+				if (type < 4) // Remplacer 4
 				{
-					if (is_state_active(parser->state, ))
+					if (is_state_active(parser, type))
 						stack_operation();
 				}
 				i++;
 			}
-			return (true);
+			return (true); // (parser->state != ERROR);
 		}
 	}
 	return (false);

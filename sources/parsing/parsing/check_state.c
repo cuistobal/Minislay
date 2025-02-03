@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 11:27:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/03 12:10:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:08:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,46 @@ static bool	is_state_active(char state, size_t check_state)
 
 //This function is designed to handle the parser's state. The state allows us 
 //to maintain the syntx priority.
-bool	check_state(char *state, int index)
+bool	check_state(t_pars *parser, int index)
 {
-	if (is_state_active(*state, index))
-		unset_state(*state, index);
+	if (index == 0)
+	{
+		if (!is_state_active(parser->state, STATE_SSHEL))
+			return (false);
+		set_state(parser->state, STATE_SSHEL);
+	}
 	else
 	{
+		if (!is_state_active(state, index))
+		{
+			if (index < 3)
+			{
 
+			}
+			else
+				set_state(parser, STATE_SSHEL)
+		}
+		else
+			unset_state(state, index);
 	}
 }
-
-
+	if (index > 0 && is_state_active(state, index))
+		unset_state(state, index);
+	else
+	{
+		if (index == 0)
+		{
+			set_state(state, STATE_SSHEL);
+			append_stack();
+		}
+		else
+		{
+			if (is_state_active(state, index))
+				unset_state(state, index);
+			else
+			{
+				if (is_state_active(state, ))
+			}
+		}
+	}
+}
