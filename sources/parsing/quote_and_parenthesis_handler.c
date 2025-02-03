@@ -6,17 +6,43 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 07:35:05 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/03 08:04:38 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/03 09:27:18 by chrleroy         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+<<<<<<< HEAD
 static bool	stack_handler(char *stack, char input)
+=======
+static bool	pop()
+>>>>>>> main
 {
 	if (stack)
 	{
 
+<<<<<<< HEAD
+=======
+	}
+	return false;
+}
+
+static bool	top()
+{
+	stack = ft_realloc();
+	stack[] = ;
+}
+
+static bool	stack_handler(char *stack, char input)
+{
+	if (stack)
+	{
+		
+>>>>>>> main
 		return ();
 	}
 	return ();
@@ -39,12 +65,20 @@ static bool	is_syntax(char *syntax, char input)
 }
 
 //
+<<<<<<< HEAD
 bool	matching_syntax(char *input, char *syntax)
 {
 	int		i;
 	char	*stack;
 	
 	if (input && syntax)
+=======
+bool	matching_syntax(t_pars	*parser)
+{
+	int		i;
+	
+	if (parser->input && parser->syntax)
+>>>>>>> main
 	{
 		i = 0;
 		stack = NULL;

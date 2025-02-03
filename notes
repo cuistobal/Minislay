@@ -1,6 +1,0 @@
-1 Commande par bloc d'execution.
-
-''  ->  L'interieur n'est pas interprete
-""  ->  L'interieur est interprete
-
-" / ' non fermees -> Continuation prompt.
