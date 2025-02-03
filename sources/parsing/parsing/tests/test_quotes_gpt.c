@@ -16,7 +16,7 @@
 typedef struct s_parser 
 {
     int state;   // Bitwise tracking of the current state
-    char stack[256]; // Stack for parenthesis matching
+    char *stack; // Stack for parenthesis matching
     int top;
 }	t_parser;
 
@@ -38,7 +38,7 @@ char peek(t_parser *parser)
 {
     if (parser->top > 0)
         return parser->stack[parser->top - 1];
-    return '\0';
+	return '\0';
 }
 
 // ---- STATE MANAGEMENT ----
@@ -52,24 +52,24 @@ bool handle_char(t_parser *parser, char c)
     if (c == SQTE) 
 	{
         if (is_state_active(parser, STATE_SINGLE_QUOTE))
-            unset_state(parser, STATE_SINGLE_QUOTE); // Closing '
-        else if (!is_state_active(parser, STATE_DOUBLE_QUOTE))
-            set_state(parser, STATE_SINGLE_QUOTE); // Opening '
-    }
+            unset_state(parser, STATE_SINGLE_QUOTE);
+		else if (!is_state_active(parser, STATE_DOUBLE_QUOTE))
+            set_state(parser, STATE_SINGLE_QUOTE);
+	}
     else if (c == DQTE) 
 	{
         if (is_state_active(parser, STATE_DOUBLE_QUOTE))
-            unset_state(parser, STATE_DOUBLE_QUOTE); // Closing "
-        else if (!is_state_active(parser, STATE_SINGLE_QUOTE))
-            set_state(parser, STATE_DOUBLE_QUOTE); // Opening "
-    }
+            unset_state(parser, STATE_DOUBLE_QUOTE);
+		else if (!is_state_active(parser, STATE_SINGLE_QUOTE))
+            set_state(parser, STATE_DOUBLE_QUOTE);
+	}
     else if (c == OPAR) 
 	{
         if (!is_state_active(parser, STATE_SINGLE_QUOTE | STATE_DOUBLE_QUOTE))
 		{
             set_state(parser, STATE_SUBSHELL);
             push(parser, '(');
-        }
+		}
     }
     else if (c == CPAR) 
 	{
@@ -78,12 +78,14 @@ bool handle_char(t_parser *parser, char c)
             if (peek(parser) == '(') 
 			{
                 pop(parser);
-                if (parser->top == 0) unset_state(parser, STATE_SUBSHELL);
+                if (parser->top == 0)
+					unset_state(parser, STATE_SUBSHELL);
             } 
 			else 
                 return (set_state(parser, STATE_ERROR), false);
         }
     }
+	printf("state %d for %c\n", parser->state ,c);
     return true;
 }
 
@@ -92,8 +94,10 @@ bool parse_input(const char *input)
 {
     t_parser parser = {STATE_NORMAL, "", 0};
 
-    for (int i = 0; input[i]; i++) {
-        if (!handle_char(&parser, input[i])) {
+    for (int i = 0; input[i]; i++) 
+	{
+        if (!handle_char(&parser, input[i]))
+		{
             printf("❌ Syntax Error: Unmatched parentheses\n");
             return false;
         }
