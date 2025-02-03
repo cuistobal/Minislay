@@ -68,6 +68,15 @@ enum token_type
     TOKEN_WILDCARD      // *
 };
 
+typedef enum s_type 
+{
+	OPAR,
+	SQTE,
+	DQTE,
+	CPAR,
+	MISC,
+}	t_type;
+
 //We use this enum to track the parser's state
 enum parser_state
 {
