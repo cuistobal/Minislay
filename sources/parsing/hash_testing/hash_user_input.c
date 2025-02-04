@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   hash_user_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:59:43 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 14:11:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:56:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 static int get_group(bool (*group_functions[])(char), char c)
 {
     int 	index;
-	bool	group_function[9];
 
     index = 0;
     while (index < GROUP_OTHER)
@@ -44,10 +43,10 @@ static void	initialise_check_type(bool (*group_functions[])(char))
 //Hashing function that turns the user's input into a chain of digits rannging
 //from 0 to 9 included.
 //We use this array to identify tokens and construct our execution tree. 
-int *hash_input(char *user_prompt, int len)
+uint8_t	*hash_input(char *user_prompt, int len)
 {
     int 	index;
-    int 	*input;
+    uint8_t	*input;
 	bool	(*check_type[9])(char);
 
     input = NULL;
