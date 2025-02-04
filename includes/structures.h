@@ -6,41 +6,12 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 09:41:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:07:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
-
-//Those status need to be reworked
-# define TOKEN_WORD          0
-# define TOKEN_ASSIGNMENT    1
-# define TOKEN_REDIR_IN      2
-# define TOKEN_REDIR_OUT     3
-# define TOKEN_APPEND        4
-# define TOKEN_HEREDOC       5
-# define TOKEN_PIPE          6
-# define TOKEN_SINGLE_QUOTE  7
-# define TOKEN_DOUBLE_QUOTE  8
-# define TOKEN_DOLLAR        9
-# define TOKEN_NEWLINE       10
-# define TOKEN_EOF           11
-# define TOKEN_AND_IF        12
-# define TOKEN_OR_IF         13
-# define TOKEN_PAREN_OPEN    14
-# define TOKEN_PAREN_CLOSE   15
-# define TOKEN_WILDCARD      16
-
-//Those one are fine
-# define STATE_NORML 0b00000000
-# define STATE_SQUOT 0b00000001
-# define STATE_DQUOT 0b00000010
-# define STATE_SSHEL 0b00000100
-# define STATE_SREDI 0b00001000
-# define STATE_HREDI 0b00010000
-# define STATE_SSHEL 0b00100000
-# define STATE_ERROR 0b01000000
 
 //We use this enum to append the right token type
 enum token_type
@@ -73,6 +44,11 @@ typedef enum s_type
 	MISC,
 }	t_type;
 
+///////////////////////////////////////////////////////////////////////////////
+//																			 //
+//									PARSER									 //
+//																			 //
+
 //We use this enum to track the parser's state
 enum parser_state
 {
@@ -97,6 +73,21 @@ bool	set_state(t_parser *parser, int flag);
 bool	unset_state(t_parser *parser, int flag);
 bool	is_state_active(t_parser *parser, int flag);
 
+// Enum for different character groups
+typedef enum e_char_group
+{
+    GROUP_PAREN,
+	GROUP_AMP_PIPE,
+	GROUP_IREDIR,
+	GROUP_OREDIR,
+	GROUP_SQUOTES,
+	GROUP_DQUOTES,
+	GROUP_VAR_WILD,
+	GROUP_WHITESPACE,
+	GROUP_OTHER
+}	t_char_group;
+
+//Pas besoin
 typedef enum
 {
     SSTATE,
