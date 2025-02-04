@@ -6,11 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/03 11:20:20 by chrleroy         ###   ########.fr       */
-=======
-/*   Updated: 2025/02/03 09:20:02 by chrleroy         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2025/02/04 09:41:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +92,17 @@ typedef struct parser
 	char	syntax[4];
     char	state;
 }   t_pars;
+
+bool	set_state(t_parser *parser, int flag);
+bool	unset_state(t_parser *parser, int flag);
+bool	is_state_active(t_parser *parser, int flag);
+
+typedef enum
+{
+    SSTATE,
+    USTATE,
+    GSTATE,
+    CMD_COUNT
+}	state_manager;
 
 #endif
