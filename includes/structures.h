@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 09:31:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 09:14:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,12 @@ typedef struct parser
 	char	syntax[4];
     char	state;
 }   t_pars;
+
+typedef struct tokens
+{
+	char			type;	// Modifier pour utiliser un enum type (?)	
+	char			*token;
+	struct token	*next;
+}	t_tokn;
 
 #endif
