@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 13:04:51 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/05 16:21:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:39:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool handle_non_whitespace()
 	parser->user[write_index++] = input[index];
 }
 
-static bool	handle_whitespaces()
+static bool	valid_whitespaces()
 {
 	if (!is_state_active(parser, STATE_SINGLE_QUOTE | STATE_DOUBLE_QUOTE))
 	{
@@ -27,8 +27,6 @@ static bool	handle_whitespaces()
 			return (true);
 		in_whitespace = true;
 	}
-	else
-		parser->user[write_index++] = input[index];
 }
 
 bool	handle_input(t_pars *parser, char *input, int index)
@@ -41,17 +39,17 @@ bool	handle_input(t_pars *parser, char *input, int index)
 		in_whitespace = true;
 		write_index = 0;
 	}
-	if (input[index])
+	if (is_whitespace(input[index]))
 	{
-		if (is_whitespace(input[index]))
-		{
-			if ()
-		}
-		else
-		{
-			handle_non_whitespace();
-		}
+		if (valid_whitespace(parser, &in_whitespace, input[index + 1])
+			return (true);
+		parser->user[write_index++] = input[index];
 	}
+	else
+	{
+		handle_non_whitespace();
+	}
+	return (true);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/05 16:15:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:34:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static bool	free_parser(t_pars *parser)
 }
 
 //This is the main parsing function
-bool	parsing(char *input)
+bool	parsing(t_tokn **tokens, char *input)
 {
 	int		write;
 	int		index;
@@ -103,6 +103,7 @@ bool	parsing(char *input)
 				handle_input(parser, input, index);	// Whitespace collapsing (?) && copy string char by char
 				index++;
 			}
+			create_tokens(tokens, parser);
 		}
 	}
 	return (free_parser(parser));
