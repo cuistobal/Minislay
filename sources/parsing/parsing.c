@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/05 11:57:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 14:04:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,11 @@ bool	parsing(char *input)
 			index = 0;
 			while (index < len)
 			{
-				parser->user[index] = input[index]; // Whitespace collapsing (?)
-				parser->hash[index] = parser->user[index]
+				parser->user[index] = handle_input(parser, input, index);	// Whitespace collapsing (?) && copy string char by char
+				parser->hash[index] = handle_hashing(parser, input, index)	// Turning each valid char into the uint8_t representation.
+				if (!get_lexed()) // Checks if the syntax is good.
+					break ;	
+				index++;
 			}
 		}
 	}
