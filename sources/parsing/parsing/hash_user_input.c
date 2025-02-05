@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:59:43 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 14:56:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 11:17:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ static int get_group(bool (*group_functions[])(char), char c)
     while (index < GROUP_OTHER)
     {
         if (group_functions[index](c))
-            return (index);
-        index++;
+		{
+			if (!check_status()); // Transforme index en fonction du statut du parser
+            	return (GROUP_OTHER);
+			return (index);
+		}
+		index++;
     }
     return (GROUP_OTHER);
 }

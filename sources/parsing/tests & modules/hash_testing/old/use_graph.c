@@ -90,7 +90,7 @@ static void	initialise_check_type(bool (*group_functions[])(char))
 //Hashing function that turns the user's input into a chain of digits rannging
 //from 0 to 9 included.
 //We use this array to identify tokens and construct our execution tree.
-int is_valid_transition(int from, int to)
+int is_valid_precedence(int from, int to)
 {
     static const int precedence[10][10] = 
 	{
@@ -107,6 +107,25 @@ int is_valid_transition(int from, int to)
         { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }  //	9	OTHER
     };
     return precedence[from][to];
+}
+
+int is_valid_subsequence(int from, int to)
+{
+    static const int subsequence[10][10] = 
+	{
+	//	{ () |  &  <  >  '  " $=*' ' M }
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, //	0	PAREN
+        { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 }, //	1	PIPE
+        { 1, 0, 1, 0, 0, 0, 0, 0, 1, 1 }, //	2	AMP
+        { 0, 0, 0, 2, 0, 0, 0, 1, 1, 1 }, //	3	IREDIR
+        { 0, 0, 0, 0, 2, 0, 0, 1, 1, 1 }, //	4	OREDIR
+        { 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 }, //	5	SQUOTES
+        { 1, 1, 1, 1, 1, 2, 1, 1, 1, 1 }, //	6	DQUOTES
+        { 0, 0, 0, 0, 0, 0, 0, 2, 1, 1 }, //	7	VAR_WILD
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, //	8	WHITESPACE
+        { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }  //	9	OTHER
+    };
+    return subsequence[from][to];
 }
 
 uint8_t	*hash_input(char *user_prompt, int len)
@@ -126,11 +145,22 @@ uint8_t	*hash_input(char *user_prompt, int len)
         	while (index < len)
         	{
         	    input[index] = get_group(check_type, user_prompt[index]);
-				int test = is_valid_transition(input[index - 1], input[index]);
-				if (test == 0)
-					printf("error:	\n%d	&&	%d\n%c	&&	%c\n", input[index -1], input[index], user_prompt[index - 1], user_prompt[index]);
-				else if (test == 2)
-					printf("warning:\n%d	&&	%d\n%c	&&	%c\n", input[index -1], input[index], user_prompt[index - 1], user_prompt[index]);
+				if (index > 1)
+				{
+					int precedence = is_valid_precedence(input[index - 1], input[index]);
+					if (precedence == 0)
+						printf("p error   %d && %d:	\n%d	&&	%d\n%c	&&	%c\n", index -1, index, input[index -1], input[index], user_prompt[index - 1], user_prompt[index]);
+					else if (precedence == 2)
+						printf("p warning %d && %d:	\n%d	&&	%d\n%c	&&	%c\n", index -1, index, input[index -1], input[index], user_prompt[index - 1], user_prompt[index]);
+				}
+				if (index + 1 < len)
+				{
+					int subsequence = is_valid_subsequence(input[index], input[index + 1]);
+					if (subsequence == 0)
+						printf("s error	  %d && %d:	\n%d	&&	%d\n%c	&&	%c\n", index , index + 1, input[index], input[index + 1], user_prompt[index], user_prompt[index + 1]);
+					else if (subsequence == 2)
+						printf("s warning %d && %d:	\n%d	&&	%d\n%c	&&	%c\n", index , index + 1, input[index], input[index + 1], user_prompt[index], user_prompt[index + 1]);
+				}
 				index++;
         	}
 			return (input);

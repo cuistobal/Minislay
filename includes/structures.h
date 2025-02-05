@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 14:13:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/05 10:44:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,27 @@ typedef enum
     CMD_COUNT
 }	state_manager;
 
+typedef struct tokens
+{
+	char			type;	// Modifier pour utiliser un enum type (?)
+	char			*token;
+	struct token	*next;
+}	t_tokn;
+
 #endif
+
+/*
+
+# define META 9
+# define COPS 4
+# define REDI 2
+# define WSPC 3
+# define
+
+extern char	metacharacter[META] = { ‘|’, ‘&’, ‘(’, ‘)’, ‘<’, ‘>’, '\n', '\t', ' '}
+extern char control_operators[COPS] = {‘&’, ‘|’, ‘(’, ‘)’}
+extern char redir_operators[REDI] = {'<','>'}
+extern char white_spaces[WSPC] = {'\t', '\n', ' '}
+
+extern char quotes[QTES] = {'\'', '"'}
+ * */
