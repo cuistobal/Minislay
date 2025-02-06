@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/05 10:44:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/06 10:58:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ enum parser_state
 
 typedef struct parser
 {
-	char	*input;
+	char	*user;
+	uint8_t	*hashed;
 	char	*stack;
+	bool	(*check_type[9])(char);
 	char	syntax[4];
     char	state;
+	int		top;
+	int		capacity;
 }   t_pars;
-
-bool	set_state(t_parser *parser, int flag);
-bool	unset_state(t_parser *parser, int flag);
-bool	is_state_active(t_parser *parser, int flag);
 
 // Enum for different character groups
 typedef enum e_char_group
@@ -78,7 +78,7 @@ typedef struct tokens
 {
 	char			type;	// Modifier pour utiliser un enum type (?)
 	char			*token;
-	struct token	*next;
+	struct tokens	*next;
 }	t_tokn;
 
 #endif

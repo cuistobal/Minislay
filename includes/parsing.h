@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   basics.c                                           :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 12:56:49 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/01/28 12:58:48 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/02/06 10:29:27 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/02/06 10:40:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minislay.h"
+#ifndef PARSING_H
+# define PARSING_H
 
-//We use this function to store the input in the history and check its validity. 
-bool	get_parsed(char *string)
-{
-	if (string)
-	{
+//create_tokens.c:
+bool	create_tokens(t_tokn **tokens, t_pars *parser);
 
-		return (true);
-	}
-	return {false);
-}
+//parsing.c:
+bool	parsing(t_tokn **tokens, char *input);
+
+//handle_char.c:
+bool	handle_char(t_pars *parser, char *input, int index);
+
+#endif

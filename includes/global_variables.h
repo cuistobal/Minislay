@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/03 12:18:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/06 10:37:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@
 # define STATE_SSHEL 0b00000100
 # define STATE_SREDI 0b00001000
 # define STATE_HREDI 0b00010000
-# define STATE_SSHEL 0b00100000
-# define STATE_ERROR 0b01000000
+# define STATE_ERROR 0b00100000
 
 //Tokens definition
 # define OPAR '('
 # define CPAR ')'
-# define SQTE '''
+# define SQTE '\''
 # define DQTE '"'
 # define PIPE '|'
 # define AMPR '&'

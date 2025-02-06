@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 09:46:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/06 13:46:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static void	initialise_check_type(bool (*check_type[9])(char))
+static void	initialise_check_type(bool (*check[9])(char))
 {
    	check[0] = is_paren;
 	check[1] = is_amp_pipe;
@@ -40,13 +40,13 @@ static t_pars	*initialise_parsing_structure(int len)
 {
 	t_pars	*new;
 
-	new = (t_parse *)malloc(sizeof(t_pars));
+	new = (t_pars *)malloc(sizeof(t_pars));
 	if (new)
 	{
 		new->user = (char *)calloc(len, sizeof(char));
 		if (new->user)
 		{
-			new->hashed = (uint8_t)calloc(len, sizeof(uint8_t));
+			new->hashed = (uint8_t *)calloc(len, sizeof(uint8_t));
 			if (new->hashed)
 			{
 				new->stack = NULL;
@@ -71,7 +71,7 @@ static bool	free_parser(t_pars *parser)
 	success = false;
 	if (parser)
 	{
-		success = parser->state == STATE_NRML;
+		success = parser->state == STATE_NORML;
 		if (parser->user)
 		{
 			free(parser->user);
@@ -86,24 +86,26 @@ static bool	free_parser(t_pars *parser)
 //This is the main parsing function
 bool	parsing(t_tokn **tokens, char *input)
 {
-	int		write;
+	int		len;
 	int		index;
 	t_pars	*parser;
 	
 	parser = NULL;
 	if (input)
 	{
-		len = strlen(input)
+		len = strlen(input);
 		parser = initialise_parsing_structure(len);
 		if (parser)
 		{
 			index = 0;
 			while (index < len)
 			{
-				handle_char(parser, input, index);
+				if (!handle_char(parser, input, index))
+					break ;
 				index++;
 			}
-			create_tokens(tokens, parser);
+			if (index == len)
+				create_tokens(tokens, parser);
 		}
 	}
 	return (free_parser(parser));
