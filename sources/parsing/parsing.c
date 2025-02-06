@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/05 16:34:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/06 09:16:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ bool	parsing(t_tokn **tokens, char *input)
 			index = 0;
 			while (index < len)
 			{
-				handle_input(parser, input, index);	// Whitespace collapsing (?) && copy string char by char
+				handle_input(parser, input, index);
 				index++;
 			}
 			create_tokens(tokens, parser);
