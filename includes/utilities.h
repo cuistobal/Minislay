@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 10:39:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:12:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ bool	is_state_active(t_pars *parser, int flag);
 bool	is_amp_pipe(char c);
 bool	is_whitespace(char c);
 bool	is_var_wild(char c);
+bool	is_redir(char c);
 
 //stack_operations.c:
 void	push(t_pars *parser, char c);

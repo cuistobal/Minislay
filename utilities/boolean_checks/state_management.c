@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 09:42:17 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 10:40:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:43:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //We use this function to append the flagged state to the parser's state.
 bool	set_state(t_pars *parser, int flag)
 {
-	return (parser->state |= flag, true);
+	return (parser->state |= flag, flag != STATE_ERROR);
 }
 
 //We use this function to remove the flagged state from the parser's state.

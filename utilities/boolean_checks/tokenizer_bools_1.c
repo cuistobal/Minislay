@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:55:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 10:19:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:12:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,10 @@ bool	is_whitespace(char c)
 bool	is_var_wild(char c)
 {
 	return (c == '$' || c == '*' || c == '=');
+}
+
+//Checking if we have a redirection token
+bool	is_redir(char c)
+{
+	return (is_iredir(c) || is_oredir(c));
 }

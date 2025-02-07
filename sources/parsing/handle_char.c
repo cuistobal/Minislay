@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:55:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 14:05:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 13:43:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,59 @@ static bool handle_parentheses(t_pars *parser, char c)
     return (true);
 }
 
+static bool handle_redirections(t_pars *parser, char c)
+{
+	if (c == IRDR || c == ORDR)
+	{
+    	if (c == IRDR)
+		{
+    	    if (is_state_active(parser, STATE_IREDI))
+       			return (unset_state(parser, STATE_IREDI));
+			else if (is_state_active(parser, STATE_OREDI))
+    	        return (set_state(parser, STATE_ERROR));
+    	    return (set_state(parser, STATE_IREDI));
+		}
+	    else if (c == ORDR)
+		{
+	        if (is_state_active(parser, STATE_OREDI))
+	            return (unset_state(parser, STATE_OREDI));
+			else if (is_state_active(parser, STATE_IREDI))
+	            return (set_state(parser, STATE_ERROR));
+	        return (set_state(parser, STATE_OREDI));
+		}
+	}
+	return (unset_state(parser, STATE_OREDI | STATE_IREDI));
+}
+
+/*
+static bool handle_redirections(t_pars *parser, char *input, int index)
+{
+	char	assess[3];
+
+    if (index > 1)
+	{
+		assess[0] = input[index - 1];
+		assess[1] = input[index];
+		assess[2] = input[index + 1];
+        if (is_redir(assess[0]) || is_redir(assess[1]) || is_redir(assess[0]))
+		{
+        	if (is_redir(assess[0]) && is_redir(assess[1]))
+			{
+				if (assess[0] == assess[1])
+				{
+					if (assess[1] == IRDR)
+            			return (unset_state(parser, STATE_IREDI));
+					return (unset_state(parser, STATE_OREDI));
+				}
+				return (set_state(parser, STATE_ERROR));
+			}
+			else if (is_redir(assess[0]) && is_redir(assess[2]))
+				return (set_state(parser, STATE_ERROR));
+		}
+	}
+    return (true);
+}*/
+
 static int get_group(bool (*group_functions[])(char), char c)
 {
     int 	index;
@@ -89,9 +142,12 @@ bool handle_char(t_pars *parser, char *input, int index)
         else
             parser->hashed[index] = get_group(parser->check_type, c);
         if (c == OPAR || c == CPAR)
-            return (handle_parentheses(parser, c));
-        return (true);
+//            return (handle_parentheses(parser, c));
+			(handle_parentheses(parser, c));
+//		if (c == IRDR || c == ORDR)
+//			return (handle_redirections(parser, c));
+//		return (true);
+		return (handle_redirections(parser, c));
     }
     return (false);
 }
-

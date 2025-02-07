@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:16:17 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 10:46:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:15:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ bool	build_token_list(t_tokn **tokens, t_pars *parser, int len)
     	{
 			if (whitespace_collapsing(parser->user, parser->hashed, &index))
 			{
+				//Fonctionne mais a modifier
 				if (create_token(parser, &token, &index, index))
 				{
 					current = create_node(token);
@@ -111,6 +112,7 @@ bool	build_token_list(t_tokn **tokens, t_pars *parser, int len)
     	    			append_list(tokens, &tempor, current);
 					//Malloc protection
 				}
+				//
 			}
 		}
 	}
