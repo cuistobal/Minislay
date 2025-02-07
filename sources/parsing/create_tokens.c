@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:16:17 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 09:43:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 10:46:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,38 @@ static void	append_list(t_tokn **list, t_tokn **tail, t_tokn *new)
 	}
 }
 
+
 //This function splits the user prompt into tokens bashed on the hash code
 //attributed eralier.
 static bool	create_token(t_pars *parser, char **token, int *index, int start)
 {
-	if (parser->user[*index] && parser->hashed[*index] == parser->hashed[start])
+	if (parser->user[*index])
 	{
-		(*index)++;
-		return (create_token(parser, token, index, start));
+		if (parser->hashed[*index] == parser->hashed[start])
+		{
+			(*index)++;
+			return (create_token(parser, token, index, start));
+		}
 	}
- 	*token = strndup(&parser->user[start], *index - start);
+	*token = strndup(&parser->user[start], *index - start);
 	return (*token != NULL);
 }
+/*
+//This function splits the user prompt into tokens bashed on the hash code
+//attributed eralier.
+static bool	create_token(t_pars *parser, char **token, int *index, int start)
+{
+	if (parser->user[*index])
+	{
+		if (parser->hashed[*index] == parser->hashed[start])
+		{
+			(*index)++;
+			return (create_token(parser, token, index, start));
+		}
+	}
+	*token = strndup(&parser->user[start], (*index - 1) - start);
+	return (*token != NULL);
+}*/
 
 //This function performs recursive calls to skip whitespaces between tokens. Whitespaces within
 //parenthesis don't get skipped.
@@ -89,7 +109,7 @@ bool	build_token_list(t_tokn **tokens, t_pars *parser, int len)
 					current = create_node(token);
 	        		if (current)
     	    			append_list(tokens, &tempor, current);
-					//Malloc protection.
+					//Malloc protection
 				}
 			}
 		}

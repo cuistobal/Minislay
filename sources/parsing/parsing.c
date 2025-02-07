@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 09:42:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 10:39:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static t_pars	*initialise_parsing_structure(int len)
 				initialise_syntax(new->syntax);
 				initialise_check_type(new->check_type);
 				new->state = STATE_NORML;
+				new->top = 0;
+				new->capacity = 0;
 				return (new);
 			}
 			free (new->user);
@@ -73,11 +75,11 @@ static bool	free_parser(t_pars *parser)
 	{
 		success = parser->state == STATE_NORML;
 		if (parser->user)
-		{
 			free(parser->user);
-			if (parser->hashed)
-				free(parser->hashed);
-		}
+		if (parser->hashed)
+			free(parser->hashed);
+		if (parser->stack)
+			free(parser->stack);
 		free (parser);
 	}
 	return (success);
@@ -98,7 +100,7 @@ bool	parsing(t_tokn **tokens, char *input)
 		if (parser)
 		{
 			index = 0;
-			while (index < len)
+			while (index != len)
 			{
 				if (!handle_char(parser, input, index))
 					break ;
