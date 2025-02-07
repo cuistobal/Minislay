@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:16:17 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 11:15:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:57:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static t_tokn	*create_node(char *content)
 	{
 		new->type = '\0';
 		new->token = content;
-		// Do we actually need to strdup() here ?
 		new->next = NULL;
 	}
 	return (new);
@@ -58,22 +57,6 @@ static bool	create_token(t_pars *parser, char **token, int *index, int start)
 	*token = strndup(&parser->user[start], *index - start);
 	return (*token != NULL);
 }
-/*
-//This function splits the user prompt into tokens bashed on the hash code
-//attributed eralier.
-static bool	create_token(t_pars *parser, char **token, int *index, int start)
-{
-	if (parser->user[*index])
-	{
-		if (parser->hashed[*index] == parser->hashed[start])
-		{
-			(*index)++;
-			return (create_token(parser, token, index, start));
-		}
-	}
-	*token = strndup(&parser->user[start], (*index - 1) - start);
-	return (*token != NULL);
-}*/
 
 //This function performs recursive calls to skip whitespaces between tokens. Whitespaces within
 //parenthesis don't get skipped.
