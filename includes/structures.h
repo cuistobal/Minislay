@@ -13,6 +13,28 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
+//We use this enum to append the right token type
+enum token_type
+{
+    TOKEN_WORD,         // General word or argument
+    TOKEN_ASSIGNMENT,   // VAR=value
+    TOKEN_REDIR_IN,     // <
+    TOKEN_REDIR_OUT,    // >
+    TOKEN_APPEND,       // >>
+    TOKEN_HEREDOC,      // <<
+    TOKEN_PIPE,         // |
+    TOKEN_SINGLE_QUOTE, // '
+    TOKEN_DOUBLE_QUOTE, // "
+    TOKEN_DOLLAR,       // $ or $?
+    TOKEN_NEWLINE,      // \n
+    TOKEN_EOF,          // End of input
+    TOKEN_AND_IF,       // &&
+    TOKEN_OR_IF,        // ||
+    TOKEN_PAREN_OPEN,   // (
+    TOKEN_PAREN_CLOSE,  // )
+    TOKEN_WILDCARD      // *
+};
+
 typedef enum s_type 
 {
 	OPAR,
@@ -38,6 +60,23 @@ enum parser_state
 	STATE_SSHEL,
 	STATE_ERROR,
 };
+//We don't actually use it atm
+
+typedef void (*operate)(int *, int);
+
+void increment(int *, int);
+void decrement(int *, int);
+
+enum 
+{
+  INCR,
+  DECR
+};
+
+struct action
+{
+	operate act[2];
+};
 
 typedef struct parser
 {
@@ -50,6 +89,7 @@ typedef struct parser
 	int		top;
 	int		capacity;
 }   t_pars;
+
 
 // Enum for different character groups
 typedef enum e_char_group
@@ -82,19 +122,3 @@ typedef struct tokens
 }	t_tokn;
 
 #endif
-
-/*
-
-# define META 9
-# define COPS 4
-# define REDI 2
-# define WSPC 3
-# define
-
-extern char	metacharacter[META] = { ‘|’, ‘&’, ‘(’, ‘)’, ‘<’, ‘>’, '\n', '\t', ' '}
-extern char control_operators[COPS] = {‘&’, ‘|’, ‘(’, ‘)’}
-extern char redir_operators[REDI] = {'<','>'}
-extern char white_spaces[WSPC] = {'\t', '\n', ' '}
-
-extern char quotes[QTES] = {'\'', '"'}
- * */

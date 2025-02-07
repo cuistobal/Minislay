@@ -22,6 +22,26 @@
 # define STATE_OREDI 0b00010000
 # define STATE_ERROR 0b00100000
 
+//Those status need to be reworked
+# define TOKEN_WORD          0
+# define TOKEN_ASSIGNMENT    1
+# define TOKEN_REDIR_IN      2
+# define TOKEN_REDIR_OUT     3
+# define TOKEN_APPEND        4
+# define TOKEN_HEREDOC       5
+# define TOKEN_PIPE          6
+# define TOKEN_SINGLE_QUOTE  7
+# define TOKEN_DOUBLE_QUOTE  8
+# define TOKEN_DOLLAR        9
+# define TOKEN_NEWLINE       10
+# define TOKEN_EOF           11
+# define TOKEN_AND_IF        12
+# define TOKEN_OR_IF         13
+# define TOKEN_PAREN_OPEN    14
+# define TOKEN_PAREN_CLOSE   15
+# define TOKEN_WILDCARD      16
+
+
 //Tokens definition
 # define OPAR '('
 # define CPAR ')'
