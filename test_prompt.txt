@@ -1,0 +1,1 @@
+((echo 'jaime els pommes' && echo 'les bananes') && echo 'les harricots') >> outfile.txt && cat outfile.txt | grep 'pommes' | wc -l > outfile.txt
