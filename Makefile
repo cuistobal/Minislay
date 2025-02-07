@@ -19,18 +19,19 @@ SOURCES = \
 OBJ = $(SOURCES:.c=.o)
 
 all: $(NAME)
+	@ echo "G3t r34dy t0 5l4y (:"
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJ)
+	@ $(CC) $(FLAGS) -o $(NAME) $(OBJ)
 
 %.o: %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	@ $(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	@ rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	@ rm -f $(NAME)
 
 re: fclean all
 

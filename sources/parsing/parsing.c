@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:39:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 14:11:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 09:42:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,8 @@ bool	parsing(t_tokn **tokens, char *input)
 					break ;
 				index++;
 			}
-			//test loop
-			for (int i = 0; i < len; i++)
-				printf("%d", parser->hashed[i]);
-			printf("\n%s\n", parser->user);
-			//
 			if (index == len)
-				create_tokens(tokens, parser);
+				build_token_list(tokens, parser, len);
 		}
 	}
 	return (free_parser(parser));

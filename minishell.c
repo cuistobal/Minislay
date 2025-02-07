@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 13:45:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 09:39:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,22 @@ int main(int argc, char **argv. char **envp)
 	printf("Usage\n");
 }*/
 
-void	print_tokens(t_tokn *tokens)
+static void	free_tokens(t_tokn *tokens)
+{
+	t_tokn *temp;
+
+	temp = tokens;
+	while (tokens)
+	{
+		temp = tokens;
+		tokens = tokens->next;
+		if (temp->token)
+			free (temp->token);
+		free (temp);
+	}
+}
+
+static void	print_tokens(t_tokn *tokens)
 {
 	int	index;
 
@@ -40,6 +55,7 @@ void	print_tokens(t_tokn *tokens)
 	}
 }
 
+//Will become minishell for subshells recursive calls.
 int main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -52,7 +68,10 @@ int main(int argc, char **argv, char **envp)
 	{
 		input = argv[1];
 		if (parsing(&tokens, input))
+		{
 			print_tokens(tokens);
+			free_tokens(tokens);
+		}
 	}
 	else
 		printf("Usage\n");
