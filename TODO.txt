@@ -1,0 +1,29 @@
+0802:
+
+	->	Modify the (char *)type element of the token structure.
+	
+		Can stay as a char*	->	define the different options and integrate them
+								into the lexer's new version.
+		Can become a char	->	implement bit masks from the previous version
+								and modify the code's logic accordingly.
+		Can become smt else	->	implement a bit mask logic
+
+	->	Read, Test & Modify the lexer's new version.
+
+		Enforce norminette.
+		Modify the tester to ensure syntax rules are correctly handled
+
+	->	Modify the **token_list's structure.
+
+		We need 1 sublist per () block to prepare the execution_tree() && subshell()
+		modules.
+		
+		Example:
+
+		((echo "bonjour" || echo "au revoir") && (echo "toi" || echo "iot")) && echo "gg wp"	
+		
+		S0S1:																	S0S2:
+		((echo "bonjour" || echo "au revoir") && (echo "toi" || echo "iot"))	echo "gg wp"
+
+		S1S1:								S1S2:								
+		echo "bonjour" || echo "au revoir"	echo "toi" || echo "iot"
