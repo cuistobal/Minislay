@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 09:39:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/08 11:15:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	free_tokens(t_tokn *tokens)
 	{
 		temp = tokens;
 		tokens = tokens->next;
-		if (temp->token)
-			free (temp->token);
+		if (temp->value)
+			free (temp->value);
 		free (temp);
 	}
 }
@@ -49,12 +49,12 @@ static void	print_tokens(t_tokn *tokens)
 	index = 0;
 	while (tokens)	
 	{
-		printf("%d	->	%s\n", index, tokens->token);
+		printf("%d	->	%s\n", index, tokens->value);
 		tokens = tokens->next;
 		index++;
 	}
 }
-
+/*
 //Will become minishell for subshells recursive calls.
 int main(int argc, char **argv, char **envp)
 {
@@ -75,4 +75,30 @@ int main(int argc, char **argv, char **envp)
 	}
 	else
 		printf("Usage\n");
+}*/
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_tokn	*temp;
+	t_tokn	*tokens;
+
+	(void)envp;
+	temp = NULL;
+	tokens = NULL;
+    if (argc == 2)
+	{
+		tokens = tokenize(argv[1], strlen(argv[1]));
+    	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+    	while (tokens)
+		{
+        	temp = tokens;
+        	tokens = tokens->next;
+        	free(temp->value);
+        	free(temp);
+    	}
+		free_tokens(tokens);
+		return (0);
+	}
+    fprintf(stderr, "Usage: %s \"<command_string>\"\n", argv[0]);
+    return (127);
 }

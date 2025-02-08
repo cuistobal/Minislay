@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 12:12:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:00:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ bool	is_whitespace(char c);
 bool	is_var_wild(char c);
 bool	is_redir(char c);
 
+/*
 //stack_operations.c:
 void	push(t_pars *parser, char c);
 char	pop(t_pars *parser);
 char	peek(t_pars *parser);
+*/
 
 #endif

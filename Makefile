@@ -11,10 +11,9 @@ SOURCES = \
     utilities/boolean_checks/state_management.c \
     utilities/boolean_checks/tokenizer_bools_1.c \
     utilities/stack_operations.c \
-    sources/parsing/parsing.c \
-    sources/parsing/handle_char.c \
-    sources/parsing/create_tokens.c \
-    minishell.c
+	sources/parsing/parser.c \
+	sources/parsing/lexer.c \
+	minishell.c
 
 OBJ = $(SOURCES:.c=.o)
 

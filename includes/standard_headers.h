@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:22:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 10:44:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/08 11:02:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <ctype.h>
 
 #endif
