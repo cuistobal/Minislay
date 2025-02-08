@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 13:54:06 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/02/08 14:17:31 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/02/08 14:20:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef STRUCTURES_H
+# define STRUCTURES_H
 
-t_tokn	*tokenize(const char *input, int len);
-bool	lexer(t_tokn *head);
-bool	create_new_token(t_tokn **head, t_tokn **current, char *token);
+typedef struct file
+{
+	char	*filename;
+	int		fd;
+}	t_file;
+
+typedef struct tester
+{
+	struct file	*infile;
+	struct file	*outfile;
+	int			options;
+}	t_test;
 
 #endif

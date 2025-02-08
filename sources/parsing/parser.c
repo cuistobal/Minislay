@@ -6,30 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 11:02:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/08 13:50:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-t_tokn	*create_node(char *type, char *value)
-{
-    t_tokn *node;
-
-	node = (t_tokn *)malloc(sizeof(t_tokn));
-	if (node)
-	{
-    	node->type = type;
-		//node->value = value ? strdup(value) : NULL;
-		node->value = strdup(value);
-    	node->next = NULL;
-    	return (node);
-	}
-	return (NULL);
-}
-
 //Handles quote less explicitly than the previous stack/state approach
-char	*handle_quotes(const char *input, int *pos)
+static char	*handle_quotes(const char *input, int *pos)
 {
 	int		start;
 	char	quote;
@@ -48,8 +32,8 @@ char	*handle_quotes(const char *input, int *pos)
     return (token);
 }
 
-
-char *handle_special_chars(const char *input, int *pos)
+//Handles special grammar char	->	Needs some improvments on token type
+static char	*handle_special_chars(const char *input, int *pos)
 {
 	char	*token;
 
@@ -71,7 +55,8 @@ char *handle_special_chars(const char *input, int *pos)
     return (token);
 }
 
-char *handle_words(const char *input, int *pos)
+//We use this fucntion to handle non special characters, hence building words.
+static char	*handle_words(const char *input, int *pos)
 {
     int start;
 
@@ -81,22 +66,8 @@ char *handle_words(const char *input, int *pos)
     return (strndup(input + start, *pos - start));
 }
 
-void	create_new_token(t_tokn **head, t_tokn **current, char *token)
-{
-	t_tokn *new_node;
-
-	new_node = create_node("Token", token);
-	if (new_node)
-	{
-        if (!(*head))
-			*head = new_node;
-        else
-			(*current)->next = new_node;
-        *current = new_node;
-	}
-}
-
-//
+//We use this function to build a token list based on the user's input. If this
+//list is valid, its send to the lexer module.
 t_tokn	*tokenize(const char *input, int len)
 {
     int 	pos;
@@ -125,7 +96,7 @@ t_tokn	*tokenize(const char *input, int len)
     }
     return (head);
 }
-
+/*	UTILS && TESTS
 void print_tokens(t_tokn *node)
 {
     while (node)
@@ -135,7 +106,6 @@ void print_tokens(t_tokn *node)
     }
 }
 
-/*
 int main(int argc, char **argv)
 {
 	t_tokn	*temp;

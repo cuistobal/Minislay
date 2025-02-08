@@ -7,10 +7,7 @@ INCLUDES = includes
 
 SOURCES = \
     utilities/my_strtok_r.c \
-    utilities/boolean_checks/tokenizer_bools_2.c \
-    utilities/boolean_checks/state_management.c \
-    utilities/boolean_checks/tokenizer_bools_1.c \
-    utilities/stack_operations.c \
+	sources/parsing/create_tokens.c \
 	sources/parsing/parser.c \
 	sources/parsing/lexer.c \
 	minishell.c

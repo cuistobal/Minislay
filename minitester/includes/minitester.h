@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   minitester.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 13:54:06 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/02/08 14:15:50 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/02/08 14:17:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef MINITESTER_H
+# define MINITESTER_H
 
-t_tokn	*tokenize(const char *input, int len);
-bool	lexer(t_tokn *head);
-bool	create_new_token(t_tokn **head, t_tokn **current, char *token);
+# include "standard_headers.h"
+# include "structures.h"
+# include "utils.h"
 
 #endif
