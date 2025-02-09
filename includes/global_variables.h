@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 11:31:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:30:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,10 @@
 # define IRDR '<'
 # define ORDR '>'
 # define DOLL '$'
+# define EQLS '='
+# define STAR '*'
+
+# define GRAMMAR "()|&><$=*\""
+# define IAE "$=*"
 
 #endif

@@ -1,31 +1,30 @@
-0802:
-	
-OK	->	Modify the (char *)type element of the token structure.
-	
-		->	Can stay as a char*	->	define the different options and integrate 
-									them into the lexer's new version.
-
-	OK	->	Can become a char	->	implement bit masks from the previous 
-									version	and modify the code's logic 
-									accordingly.
-
-		->	Can become smt else	->	implement a bit mask logic.
+MAN:
+	->	TD	->	Still needs to be done	
+	->	OK	->	Done and implemented
+	->	OG	->	Ongoing implementation
+	->	OGT	->	Ongoing test phase
+	->	TDB	->	To be discussed
 
 OK	->	t_tokn	*tokenize(const char *input, int len) has to return a boolean.
 		
 		This way, we can handle memory easily if an allocation fails/the parser
 		encounters an invalid token.
 
-	->	Read, Test & Modify the lexer's new version.
+OG	->	Read, Test & Modify the lexer's new version.
 
 	OK	->	Enforce norminette.
 		
-		->	Modify the tester to ensure syntax rules are correctly handled
+	TD	->	Modify the tester to ensure syntax rules are correctly handled
 
-	OG	->	Implement assignation and expension in the tokenization logic, for
+	OGT	->	Implement assignation and expension in the tokenization logic, for
 			basic input and input inside double quotes
 
-	->	Modify the **token_list's structure.
+			Ongoing version is spliting the token once it finds one of the IAE
+			identifiers. Yet, the fact more than 1 IAE can be found within the
+			token's value || the fact that some words might still be present
+			after the IAE is not handled yet.
+
+TD	->	Modify the **token_list's structure.
 
 		We need 1 sublist per () block to prepare the execution_tree() && subshell()
 		modules.
@@ -40,5 +39,5 @@ OK	->	t_tokn	*tokenize(const char *input, int len) has to return a boolean.
 		S1S1:								S1S2:								
 		echo "bonjour" || echo "au revoir"	echo "toi" || echo "iot"
 
-	->	Also, how does execution knows where the fds are without traversing the
+TBD	->	Also, how does execution knows where the fds are without traversing the
 		whole tree ?
