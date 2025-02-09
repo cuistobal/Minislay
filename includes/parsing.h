@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:25:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 14:06:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define REDI 0b00000100
 
 
-t_tokn	*tokenize(const char *input, int len);
+bool	tokenize(t_tokn **head, const char *input, int len);
 bool	lexer(t_tokn *head);
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token);
 

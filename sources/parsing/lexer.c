@@ -6,21 +6,33 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:12:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 13:44:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 14:18:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static bool	init_stack(t_stck **stack, int size)
+static bool	init_stack(t_stck **stack, size_t size)
 {
-	*stack = (t_stck *)malloc(sizeof(t_stck));
-	if (*stack)
+	if (size > 0)
 	{
-    	(*stack)->infos[0] = -1;
-		(*stack)->infos[1] = size;
-		(*stack)->stack = (char *)calloc(size, sizeof(char));
-		return ((*stack)->stack != NULL);
+		*stack = (t_stck *)malloc(sizeof(t_stck));
+		if (*stack)
+		{
+    		(*stack)->infos[0] = -1;
+			(*stack)->infos[1] = size;
+			(*stack)->stack = (char *)calloc(size, sizeof(char));
+		}
+	}
+	else
+	{
+		if (*stack)
+		{
+			if ((*stack)->stack)
+				free((*stack)->stack);
+			free(*stack);
+			*stack = NULL;
+		}
 	}
 	return (*stack != NULL);
 }
@@ -63,7 +75,7 @@ static bool handle_parentheses(t_stck **stack, char *string)
 //reworked
 bool	lexer(t_tokn *head)
 {
-	bool	ans;
+	//bool	ans;
 	t_stck	*stack;
     t_tokn	*current;
 
@@ -76,22 +88,26 @@ bool	lexer(t_tokn *head)
 		if (is_paren(current->type))
 		{
 			if (!handle_parentheses(&stack, current->value))
-				return (free(stack->stack), false);
+			//	return (free(stack->stack), free(stack), false);
+				return (init_stack(&stack, 0));
 		}
 		else if (is_amp_pipe(current->type))
 		{
             if (!current->next || is_amp_pipe(current->next->type))
-				return (false);
-        } 
+				//return (free(stack->stack), free(stack), false);
+				return (init_stack(&stack, 0));
+		}
 		else if (is_redir(current->type))
 		{
             if (!current->next || strchr("&|()<>", current->next->value[0]))
-				return (false);
+				//return (free(stack->stack), free(stack), false);
+				return (init_stack(&stack, 0));
         }
         current = current->next;
     }
-	ans = (stack->infos[0] == -1);
-	return (free(stack->stack), ans);
+	//ans = (stack->infos[0] == -1);
+	//return (free(stack->stack), free(stack), ans);
+	return (!init_stack(&stack, 0));
 }
 
 /*OLD
