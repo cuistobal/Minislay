@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:51:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:03:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:28:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@ bool parse_redirection(t_tokn **current);
 bool parse_compound_command(t_tokn **current);
 bool parse_expression(t_tokn **current);
 
-bool	match(t_tokn **current, const char *type, const char *value)
+bool	match(t_tokn **current, const char type, const char *value)
 {
-    if (*current && strcmp((*current)->type, type) == 0 && 
-        (!value || strcmp((*current)->value, value) == 0))
+	if (*current && (*current)->type == type)
 	{
-        *current = (*current)->next;
-        return true;
+		if (!value || strcmp((*current)->value, value) == 0)
+		{
+			*current = (*current)->next;
+        	return true;
+		}
     }
     return false;
 }
@@ -42,11 +44,10 @@ bool	parse_script(t_tokn **current)
 bool	parse_command_list(t_tokn **current)
 {
     if (!parse_command(current))
-        return false;
-    while (*current && (match(current, "OPERATOR", "&&") || 
-                        match(current, "OPERATOR", "||")))
+        return (false);
+    while (*current && (match(current, '&', "&&") || match(current, '|', "||")))
        return (parse_command(current));
-    return true;
+    return (true);
 }
 
 bool	parse_command(t_tokn **current)
@@ -61,19 +62,20 @@ bool	parse_command(t_tokn **current)
     return (false);
 }
 
+//Je comprend pas
 bool parse_simple_command(t_tokn **current)
 {
     while (parse_assignment(current))
 	{
 	}
-    if (!match(current, "WORD", NULL))
+    if (!match(current, ' ', NULL))
         return (false);
     while (parse_argument(current) || parse_redirection(current))
 	{
 	}
     return (true);
 }
-
+/*
 bool parse_assignment(t_tokn **current)
 {
     t_tokn *save;
@@ -86,18 +88,18 @@ bool parse_assignment(t_tokn **current)
     }
     *current = save;
     return false;
-}
+}*/
 
 bool parse_argument(t_tokn **current)
 {
-    return match(current, "WORD", NULL);
+    return (match(current, ' ', NULL));
 }
 
 bool parse_pipeline(t_tokn **current)
 {
     if (!parse_command(current))
-        return false;
-    while (match(current, "OPERATOR", "|"))
+        return (false);
+    while (match(current, '|', "|"))
 	{
         if (!parse_command(current))
             return false;
@@ -107,32 +109,32 @@ bool parse_pipeline(t_tokn **current)
 
 bool parse_redirection(t_tokn **current)
 {
-    if (match(current, "OPERATOR", ">") || match(current, "OPERATOR", ">>") ||
-        match(current, "OPERATOR", "<") || match(current, "OPERATOR", "<<"))
+    if (match(current, '>', ">") || match(current, '>', ">>") ||
+        match(current, '<', "<") || match(current, '<', "<<"))
 	{
-        return match(current, "WORD", NULL);
+        return match(current, (*current)->value[0], NULL);
     }
     return false;
 }
 
 bool parse_compound_command(t_tokn **current)
 {
-    if (match(current, "OPERATOR", "(") && 
+    if (match(current, '(', "(") && 
         parse_command_list(current) && 
-        match(current, "OPERATOR", ")"))
+        match(current, ')', ")"))
 	{
-        return true;
+        return (true);
     }
-    return false;
+    return (false);
 }
 
 bool parse_expression(t_tokn **current)
 {
-    if (match(current, "OPERATOR", "$"))
+    if (match(current, '$', "$"))
 	{
-        return (match(current, "WORD", NULL));
+        return (match(current, ' ', NULL));
     }
-    return (match(current, "WORD", NULL));
+    return (match(current, ' ', NULL));
 }
 
 bool validate_syntax(t_tokn *head)

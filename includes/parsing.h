@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 14:06:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 15:28:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define SUBS 0b00000001
 # define PUNC 0b00000010
 # define REDI 0b00000100
-
+# define DQOT 0b00001000
 
 bool	tokenize(t_tokn **head, const char *input, int len);
 bool	lexer(t_tokn *head);

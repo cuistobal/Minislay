@@ -2,16 +2,28 @@
 	
 OK	->	Modify the (char *)type element of the token structure.
 	
-		Can stay as a char*	->	define the different options and integrate them
-								into the lexer's new version.
-		Can become a char	->	implement bit masks from the previous version
-								and modify the code's logic accordingly.
-		Can become smt else	->	implement a bit mask logic
+		->	Can stay as a char*	->	define the different options and integrate 
+									them into the lexer's new version.
+
+	OK	->	Can become a char	->	implement bit masks from the previous 
+									version	and modify the code's logic 
+									accordingly.
+
+		->	Can become smt else	->	implement a bit mask logic.
+
+OK	->	t_tokn	*tokenize(const char *input, int len) has to return a boolean.
+		
+		This way, we can handle memory easily if an allocation fails/the parser
+		encounters an invalid token.
 
 	->	Read, Test & Modify the lexer's new version.
 
-		Enforce norminette.
-		Modify the tester to ensure syntax rules are correctly handled
+	OK	->	Enforce norminette.
+		
+		->	Modify the tester to ensure syntax rules are correctly handled
+
+	OG	->	Implement assignation and expension in the tokenization logic, for
+			basic input and input inside double quotes
 
 	->	Modify the **token_list's structure.
 
@@ -28,10 +40,5 @@ OK	->	Modify the (char *)type element of the token structure.
 		S1S1:								S1S2:								
 		echo "bonjour" || echo "au revoir"	echo "toi" || echo "iot"
 
-		Also, how does execution knows where the fds are without traversing the
+	->	Also, how does execution knows where the fds are without traversing the
 		whole tree ?
-
-	->	t_tokn	*tokenize(const char *input, int len) has to return a boolean.
-		
-		This way, we can handle memory easily if an allocation fails/the parser
-		encounters an invalid token.
