@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 11:15:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 12:33:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	print_tokens(t_tokn *tokens)
 	index = 0;
 	while (tokens)	
 	{
-		printf("%d	->	%s\n", index, tokens->value);
+		printf("%d	->	%c	%s\n", index, tokens->type, tokens->value);
 		tokens = tokens->next;
 		index++;
 	}

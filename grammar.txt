@@ -6,7 +6,7 @@ Operators:
 
   Redirections: >, >>, <, <<
 
-  (?): &&, ||, |
+  Punctuation (?): &&, ||, |
 
   Subshells (?): (, )
 

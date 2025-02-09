@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:12:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 13:43:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 12:41:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ bool	lexer(t_tokn *head)
 		}
 		else if (strcmp(current->value, "&&") == 0 || strcmp(current->value, "||") == 0)
 		{
-            if (!current->next || strcmp(current->next->type, "Token") != 0)
+//            if (!current->next || strcmp(current->next->type, "Token") != 0)
+//            if (!current->next || current->next->type != '\0') // Probleme avec cette logique
+            if (!current->next || (current->next->type == '&' || current->next->type == '|')) // Probleme avec cette logique
 				return (false);
         } 
 		else if (strcmp(current->value, ">") == 0 || strcmp(current->value, ">>") == 0 || strcmp(current->value, "<") == 0  || strcmp(current->value, "<<") == 0)
