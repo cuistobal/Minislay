@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:30:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:49:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,19 @@ static t_tokn	*create_node(char type, char *value)
 {
     t_tokn *node;
 
-	node = (t_tokn *)malloc(sizeof(t_tokn));
-	if (node)
+	if (value)
 	{
-    	node->type = type;
-		//node->value = value ? strdup(value) : NULL;
-		node->value = strdup(value);	//node->value = value ? strdup(value) : NULL;
-										//Needs to be tested with NULL value
-										//(Case shouldn't occur though)
-    	node->next = NULL;
-    	return (node);
+		node = (t_tokn *)malloc(sizeof(t_tokn));
+		if (node)
+		{
+    		node->type = type;
+			//node->value = value ? strdup(value) : NULL;
+			node->value = strdup(value);	//node->value = value ? strdup(value) : NULL;
+											//Needs to be tested with NULL value
+											//(Case shouldn't occur though)
+    		node->next = NULL;
+    		return (node);
+		}
 	}
 	return (NULL);
 }

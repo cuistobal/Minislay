@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:21:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:52:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,17 @@ static char	*handle_quotes(const char *input, int *pos)
     start = *pos;
     while (input[*pos] && input[*pos] != quote)
 		(*pos)++;
-    token = (char *)malloc(sizeof(char) * (*pos - start + 3));
-    token[0] = quote;
-    strncpy(token + 1, input + start, *pos - start);
-    token[*pos - start + 1] = quote;
-    token[*pos - start + 2] = '\0';
-    (*pos)++;
-    return (token);
+	if (input[*pos])
+	{
+    	token = (char *)malloc(sizeof(char) * (*pos - start + 3));
+    	token[0] = quote;
+    	strncpy(token + 1, input + start, *pos - start);
+    	token[*pos - start + 1] = quote;
+    	token[*pos - start + 2] = '\0';
+    	(*pos)++;
+    	return (token);
+	}
+	return (NULL);
 }
 
 //Handles special grammar char	->	Needs some improvments on token type
@@ -101,7 +105,7 @@ t_tokn	*tokenize(const char *input, int len)
             token = handle_special_chars(input, &pos);
 		else
             token = handle_words(input, &pos);
-		create_new_token(&head, &current, token); 
+		create_new_token(&head, &current, token);
         free(token);
     }
     return (head);

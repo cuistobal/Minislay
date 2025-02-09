@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:12:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:41:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:44:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,41 @@ static bool handle_parentheses(t_stck **stack, char *string)
     return (true);
 }
 
+//reworked
+bool	lexer(t_tokn *head)
+{
+	bool	ans;
+	t_stck	*stack;
+    t_tokn	*current;
+
+	current = head;
+    init_stack(&stack, 200);	// 200 is hardcoded -> realloc is generating a
+								// stack overflow that I don't understand yet.
+//    printf("%d	%d	%s\n", stack.infos[0], stack.infos[1], stack.stack);
+	while (current)
+	{
+		if (is_paren(current->type))
+		{
+			if (!handle_parentheses(&stack, current->value))
+				return (free(stack->stack), false);
+		}
+		else if (is_amp_pipe(current->type))
+		{
+            if (!current->next || is_amp_pipe(current->next->type))
+				return (false);
+        } 
+		else if (is_redir(current->type))
+		{
+            if (!current->next || strchr("&|()<>", current->next->value[0]))
+				return (false);
+        }
+        current = current->next;
+    }
+	ans = (stack->infos[0] == -1);
+	return (free(stack->stack), ans);
+}
+
+/*OLD
 bool	lexer(t_tokn *head)
 {
 	bool	ans;
@@ -94,4 +129,4 @@ bool	lexer(t_tokn *head)
 	ans = (stack->infos[0] == -1);
 //    printf("%d	%d	%s\n", stack.infos[0], stack.infos[1], stack.stack);
 	return (free(stack->stack), ans);
-}
+}*/

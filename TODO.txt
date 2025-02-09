@@ -1,6 +1,6 @@
 0802:
-
-	->	Modify the (char *)type element of the token structure.
+	
+OK	->	Modify the (char *)type element of the token structure.
 	
 		Can stay as a char*	->	define the different options and integrate them
 								into the lexer's new version.
@@ -27,3 +27,11 @@
 
 		S1S1:								S1S2:								
 		echo "bonjour" || echo "au revoir"	echo "toi" || echo "iot"
+
+		Also, how does execution knows where the fds are without traversing the
+		whole tree ?
+
+	->	t_tokn	*tokenize(const char *input, int len) has to return a boolean.
+		
+		This way, we can handle memory easily if an allocation fails/the parser
+		encounters an invalid token.
