@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 16:32:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:59:33 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,9 @@
 bool	tokenize(t_tokn **head, const char *input, int len);
 bool	lexer(t_tokn *head);
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token);
+
+//tests
+
+bool    validate_syntax(t_tokn *head);
 
 #endif

@@ -12,6 +12,7 @@ SOURCES = \
 	sources/parsing/create_tokens.c \
 	sources/parsing/parser.c \
 	sources/parsing/lexer.c \
+	sources/parsing/lexer_3.0.c \
 	minishell.c
 
 OBJ = $(SOURCES:.c=.o)
