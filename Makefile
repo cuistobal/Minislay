@@ -9,11 +9,10 @@ SOURCES = \
     utilities/my_strtok_r.c \
 	utilities/boolean_checks/tokenizer_bools_1.c \
 	utilities/boolean_checks/tokenizer_bools_2.c \
-	sources/parsing/handle_special_chars.c \
-	sources/parsing/create_tokens.c \
+	sources/parsing/tokenization/handle_special_chars.c \
+	sources/parsing/tokenization/create_tokens.c \
+	sources/parsing/tokenization/tokenizer.c \
 	sources/parsing/lexibebi.c \
-	sources/parsing/parser.c \
-	sources/parsing/lexer.c \
 	minishell.c
 
 OBJ = $(SOURCES:.c=.o)

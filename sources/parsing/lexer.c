@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:12:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 09:59:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:14:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool free_stack(t_stck **stack)
         free(*stack);
         *stack = NULL;
     }
-    return status;
+    return (status);
 }
 
 // Function to initialize the stack
@@ -42,10 +42,11 @@ static bool init_stack(t_stck **stack, size_t size)
         *stack = (t_stck *)malloc(sizeof(t_stck));
         if (*stack)
 		{
-            (*stack)->top = -1;  // Initialize the top index to -1
-            (*stack)->capacity = size;  // Set the capacity of the stack
-            (*stack)->stack = (char *)calloc(size, sizeof(char));
-        }
+            (*stack)->top = -1;
+			(*stack)->capacity = size;
+			(*stack)->stack = (char *)calloc(size, sizeof(char));
+        	return (*stack->stack != NULL);
+		}
     }
     return (*stack != NULL);
 }
@@ -63,9 +64,9 @@ static bool push(t_stck *stack, char c)
         stack->capacity += 2;  // Increase the capacity
         stack->stack = realloc(stack->stack, stack->capacity);
         if (stack->stack)
-            return push(stack, c);
+            return (push(stack, c));
     }
-    return false;
+    return (false);
 }
 
 // Function to pop a character from the stack
@@ -74,37 +75,33 @@ static bool pop(t_stck *stack)
     if (stack->top >= 0)
 	{
         stack->stack[stack->top--] = '\0';  // Clear the popped element
-        return true;
+        return (true);
     }
-    return false;
+    return (false);
 }
 
 // Function to handle parentheses
 static bool handle_parentheses(t_stck *stack, char type)
 {
     if (type == '(')
-        return push(stack, '(');
+        return (push(stack, '('));
     else
 	{
         if (stack->top >= 0 && stack->stack[stack->top] == '(')
-            return pop(stack);
+            return (pop(stack));
         else
 		{
             printf("Syntax error: Unmatched closing parenthesis\n");
-            return false;
+            return (false);
         }
     }
 }
 
-
-
 // Lexer function
-bool lexer(t_tokn *head)
+bool lexer(t_tokn current*)
 {
     t_stck *stack;
-    t_tokn *current;
 
-    current = head;
     if (init_stack(&stack, STACK_SIZE))
 	{
 	    while (current)
@@ -127,5 +124,5 @@ bool lexer(t_tokn *head)
    	    current = current->next;
    		}
 	}
-	return free_stack(&stack);
+	return (free_stack(&stack));
 }

@@ -5,167 +5,190 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 12:43:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 12:52:31 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/02/11 17:17:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-// Function prototypes
-bool parse_script(t_tokn *tokens, int *index);
-bool parse_command_list(t_tokn *tokens, int *index);
-bool parse_command(t_tokn *tokens, int *index);
-void parse_simple_command(t_tokn *tokens, int *index);
-void parse_pipeline(t_tokn *tokens, int *index);
-void parse_compound_command(t_tokn *tokens, int *index);
-void parse_assignment(t_tokn *tokens, int *index);
-void parse_argument(t_tokn *tokens, int *index);
-void parse_redirection(t_tokn *tokens, int *index);
-void parse_expression(t_tokn *tokens, int *index);
-
 // Main parsing function with backtracking
-bool parse_script(t_tokn *tokens, int *index)
+bool parse_script(t_tokn *tokens)
 {
-    //int initial_index = *index;
-    
-	if (parse_command_list(tokens, index))
-        return true;
-   // *index = initial_index; // Restore state on failure
-    return false; // Failure
-}
+    t_tokn *current;
+    t_tokn *initial_node;
 
-// CommandList → Command ('&&' | '||') CommandList | Command
-bool parse_command_list(t_tokn *tokens, int *index)
-{
-	int op_index;
-    int initial_index;
-
-	initial_index = *index;
-    if (parse_command(tokens, index))
-	{
-        while (tokens[*index].type == LAND || tokens[*index].type == LORR)
-		{
-            op_index = *index;
-            (*index)++;
-            if (!parse_command_list(tokens, index))
-			{
-                *index = op_index;
-				return (false);
-            }
-        }
+    current = tokens;
+    initial_node = current;
+    printf("%s	@	%s\n", current->value, __func__);
+    if (parse_command_list(&current))
         return (true);
-    }
-    *index = initial_index;
-	return (false);
-}
-
-// Command → SimpleCommand | Pipeline | CompoundCommand
-bool parse_command(t_tokn *tokens, int *index)
-{
-    int initial_index;
-    
-	initial_index = *index;
-    if (tokens[*index].type == WORD)
-	{
-        parse_simple_command(tokens, index);
-        return (true);
-    }
-	else if (tokens[*index].type == PIPE)
-	{
-        parse_pipeline(tokens, index);
-        return (true);
-    }
-	else if (tokens[*index].type == OPAR)
-	{
-        parse_compound_command(tokens, index);
-        return (true);
-    }
-    *index = initial_index; // Restore state on failure
+    current = initial_node;
     return (false);
 }
 
-// SimpleCommand → Assignment* WORD (Argument | Redirection)*
-void parse_simple_command(t_tokn *tokens, int *index)
+// CommandList → Command ('&&' | '||') CommandList | Command
+bool parse_command_list(t_tokn **current)
 {
-    while (tokens[*index].type == WORD && tokens[*index + 1].type == EQUL)
-        parse_assignment(tokens, index);
-    if (tokens[*index].type == WORD)
-        (*index)++;
-    while (tokens[*index].type == WORD || tokens[*index].type == IRED ||
-           tokens[*index].type == ORED || tokens[*index].type == HDOC ||
-           tokens[*index].type == ARED)
+    t_tokn *initial_node;
+
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    initial_node = *current;
+    if (*current)
 	{
-        if (tokens[*index].type == WORD)
-            parse_argument(tokens, index);
-		else
-			parse_redirection(tokens, index);
+		printf("%d	&&	%s\n", (*current)->type, (*current)->value);
+        if (parse_command(current))
+		{
+			printf("%d	&&	%s\n", (*current)->type, (*current)->value);
+            if ((*current)->type == LAND || (*current)->type == LORR)
+			{
+                *current = (*current)->next;
+				return (parse_command_list(current));
+            //    if (!parse_command_list(current))
+			//	{
+            //        *current = op_node;
+            //        return (false);
+            //    }
+            }
+            return (true);
+        }
+        *current = initial_node;
     }
+    return (false);
+}
+
+bool	parse_command(t_tokn **current)
+{
+    t_tokn	*initial_node;
+    bool	command_parsed;
+
+    command_parsed = false;
+    initial_node = *current;
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type == OPAR)
+        command_parsed = parse_compound_command(current);
+    else
+        command_parsed = parse_simple_command(current);
+    printf("command_parsed -> %d\n", command_parsed);
+    if (command_parsed && (*current)->type == PIPE)
+        return (parse_pipeline(current));
+	else if ((*current)->type == LAND || (*current)->type == LORR)
+		return (true);
+    if (!command_parsed)
+        *current = initial_node;
+    return (command_parsed);
+}
+
+// SimpleCommand → Assignment* WORD (Argument | Redirection)*
+bool	parse_simple_command(t_tokn **current)
+{
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type >= WORD && (*current)->type <= ARED)
+	{
+        parse_assignment(current);
+        while ((*current)->type >= WORD && (*current)->type <= ARED)
+		{
+            if ((*current)->type == WORD)
+			{
+                parse_argument(current);
+                return (parse_simple_command(current));
+			}
+			else
+			{
+				printf("redirection\n");
+				parse_redirection(current);
+            	return (parse_simple_command(current));
+			}
+        }
+        return (true);
+    }
+    return (false);
 }
 
 // Pipeline → Command ('|' Command)*
-void parse_pipeline(t_tokn *tokens, int *index)
+bool parse_pipeline(t_tokn **current)
 {
-    parse_command(tokens, index);
-    while (tokens[*index].type == PIPE)
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if (parse_command(current))
 	{
-        (*index)++;
-        parse_command(tokens, index);
+        while ((*current)->type == PIPE)
+		{
+            *current = (*current)->next;
+            parse_command(current);
+        }
+        return (true);
     }
+    return (false);
 }
 
-// CompoundCommand → '(' CommandList ')'
-void parse_compound_command(t_tokn *tokens, int *index)
+bool parse_compound_command(t_tokn **current)
 {
-    if (tokens[*index].type == OPAR)
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type == OPAR)
 	{
-        (*index)++;
-        parse_command_list(tokens, index);
-        if (tokens[*index].type == CPAR)
-            (*index)++;
+        *current = (*current)->next;
+        parse_command_list(current);
+        if ((*current)->type == CPAR)
+		{
+            *current = (*current)->next;
+            return (true);
+        }
     }
+    return (false);
 }
 
 // Assignment → WORD '=' Expression
-void parse_assignment(t_tokn *tokens, int *index)
+bool parse_assignment(t_tokn **current)
 {
-    if (tokens[*index].type == WORD && tokens[*index + 1].type == EQUL)
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if (*current && (*current)->next)
 	{
-        (*index)++;
-		(*index)++;
-		parse_expression(tokens, index);
+        if ((*current)->type == WORD && (*current)->next->type == EQUL)
+		{
+            *current = (*current)->next->next;
+            parse_expression(current);
+        }
     }
+    return (false);
 }
 
 // Argument → WORD
-void parse_argument(t_tokn *tokens, int *index)
+bool	parse_argument(t_tokn **current)
 {
-    if (tokens[*index].type == WORD)
-		(*index)++;
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type == WORD)
+	{
+        *current = (*current)->next;
+        return (true);
+    }
+    return (false);
 }
 
 // Redirection → ('>' | '>>' | '<' | '<<') WORD
-void parse_redirection(t_tokn *tokens, int *index)
+bool	parse_redirection(t_tokn **current)
 {
-    if (tokens[*index].type == IRED || tokens[*index].type == ORED ||
-        tokens[*index].type == HDOC || tokens[*index].type == ARED)
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type >= IRED && (*current)->type <= ARED)
 	{
-        (*index)++;
-        if (tokens[*index].type == WORD)
-			(*index)++;
+        *current = (*current)->next;
+        if ((*current)->type == WORD)
+		{
+            *current = (*current)->next;
+            return (true);
+        }
     }
+    return (false);
 }
 
+// Edge case $ seul
 // Expression → '$' WORD | WORD
-void parse_expression(t_tokn *tokens, int *index)
+bool	parse_expression(t_tokn **current)
 {
-    if (tokens[*index].type == DOLL)
+    printf("%s	@	%s\n", (*current)->value, __func__);
+    if ((*current)->type == DOLL)
 	{
-        (*index)++;
-        if (tokens[*index].type == WORD)
-            (*index)++;
+        *current = (*current)->next;
+        return (parse_argument(current));
     }
-	else if (tokens[*index].type == WORD)
-        (*index)++;
+    return (parse_argument(current));
 }
-
