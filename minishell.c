@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 08:36:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:18:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	print_tokens(t_tokn *tokens)
 	index = 0;
 	while (tokens)	
 	{
-		printf("%d	->	%c	%s\n", index, tokens->type, tokens->value);
+		printf("%d	->	%d	%s\n", index, tokens->type, tokens->value);
 		tokens = tokens->next;
 		index++;
 	}
@@ -85,9 +85,10 @@ int	main(int argc, char **argv, char **envp)
 	tokens = NULL;
     if (argc == 2)
 	{
+		int	index = 0;
 		if (tokenize(&tokens, argv[1], strlen(argv[1])))
-    		lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-    //		validate_syntax(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+    	//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+    		parse_script(tokens, &index) ? print_tokens(tokens) : printf("Syntax error @ %d.\n", index);
 		else
 			printf("Parsing error.\n");
 		free_tokens(tokens);

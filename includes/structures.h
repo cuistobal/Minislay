@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 09:10:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:27:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef enum
 //Used
 typedef struct tokens
 {
-	char			type;	// Modifier pour utiliser un enum type (?)
+	int				type;	// Modifier pour utiliser un enum type (?)
 	char			*value;
 	struct tokens	*next;
 }	t_tokn;

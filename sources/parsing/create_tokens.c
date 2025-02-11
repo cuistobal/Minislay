@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 17:50:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:17:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Node creation util
-static t_tokn	*create_node(char type, char *value)
+static t_tokn	*create_node(char *value, int type)
 {
     t_tokn *node;
 
@@ -87,11 +87,15 @@ static bool	assess_dquote_token(t_tokn **token)
 	return (false);
 }*/
 
-static char	get_token_type(char *token)
+/*
+//Modifier pour bosser avec un int a la place
+static int	get_token_type(char *token)
 {
+	int		code;
 	char	type;
 	char	*grammar;
 
+	code = 0;
 	type = '\0';
 	grammar = NULL;
 	if (token)
@@ -99,22 +103,24 @@ static char	get_token_type(char *token)
 		type = token[0];
 		grammar = strchr(GRAMMAR, type);
 		if (grammar)
-			return (*grammar);
-		return ('w');
+		{
+			code =
+			return (code);
+		}
+		return (WORD);
 	}
-	return (type);
-}
+	return (code);
+}*/
 //We use this function to construct our initial token_list
 //
 //Modifs -> include char *type in the function parameter to get a real type
 //instead of "token".
-bool	create_new_token(t_tokn **head, t_tokn **current, char *token)
+bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
-	char	type;
 	t_tokn	*new_node;
 
-	type = get_token_type(token);
-	new_node = create_node(type, token);
+	//type = get_token_type(token);
+	new_node = create_node(token, type);
 	if (new_node)
 	{
         if (!(*head))

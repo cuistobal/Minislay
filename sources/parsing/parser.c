@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 14:04:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:29:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Handles quote less explicitly than the previous stack/state approach
-static char	*handle_quotes(const char *input, int *pos)
+static char	*handle_quotes(const char *input, int *pos, int *type)
 {
 	int		start;
 	char	quote;
@@ -26,18 +26,25 @@ static char	*handle_quotes(const char *input, int *pos)
 	if (input[*pos])
 	{
     	token = (char *)malloc(sizeof(char) * (*pos - start + 3));
-    	token[0] = quote;
-    	strncpy(token + 1, input + start, *pos - start);
-    	token[*pos - start + 1] = quote;
-    	token[*pos - start + 2] = '\0';
-    	(*pos)++;
+		if (token)
+		{
+    		*token = quote;
+    		strncpy(token + 1, input + start, *pos - start);
+    		token[*pos - start + 1] = quote;
+    		token[*pos - start + 2] = '\0';
+    		if (quote == '"')
+				*type = DQTE;
+			else
+				*type = SQTE;
+			(*pos)++;
+		}
     	return (token);
 	}
 	return (NULL);
 }
 
 //Handles special grammar char	->	Needs some improvments on token type
-static char	*handle_special_chars(const char *input, int *pos)
+static char	*handle_special_chars(const char *input, int *pos, int *type)
 {
 	char	*token;
 
@@ -45,6 +52,10 @@ static char	*handle_special_chars(const char *input, int *pos)
     if ((input[*pos] == '&' || input[*pos] == '|') && input[*pos + 1] == input[*pos])
 	{
         token = strndup(input + *pos, 2);
+		if (input[*pos] == '&')
+			*type = LAND;
+		else
+			*type = LORR;
         (*pos) += 2;
         return (token);
     } 
@@ -52,6 +63,10 @@ static char	*handle_special_chars(const char *input, int *pos)
 	{
         token = strndup(input + *pos, 2);
         (*pos) += 2;
+		if (input[*pos] == '>')
+			*type = ARED;
+		else
+			*type = HDOC;
         return (token);
     }
     token = strndup(input + *pos, 1);
@@ -60,13 +75,14 @@ static char	*handle_special_chars(const char *input, int *pos)
 }
 
 //We use this fucntion to handle non special characters, hence building words.
-static char	*handle_words(const char *input, int *pos)
+static char	*handle_words(const char *input, int *pos, int *type)
 {
     int start;
 
 	start = *pos;
     while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
 		(*pos)++;
+	*type = WORD;
     return (strndup(input + start, *pos - start));
 }
 
@@ -85,6 +101,7 @@ static char	*handle_expansions(const char *input, int *pos)
 bool	tokenize(t_tokn **head, const char *input, int len)
 {
     int 	pos;
+	int		type;
 	char	*token;
 	t_tokn	*current;
 
@@ -98,14 +115,16 @@ bool	tokenize(t_tokn **head, const char *input, int len)
         if (input[pos] == '\0')
 			break;
         if (input[pos] == '\'' || input[pos] == '"')
-            token = handle_quotes(input, &pos);
+            token = handle_quotes(input, &pos, &type);
 		else if (strchr("&|()<>", input[pos]))
-            token = handle_special_chars(input, &pos);
+            token = handle_special_chars(input, &pos, &type);
+		//SPlit en 1 fichier contenant les differents cas.
 		else
-            token = handle_words(input, &pos);
-		if (!create_new_token(head, &current, token))
+            token = handle_words(input, &pos, &type);
+		//printf("%d	&	%s\n", type, token);
+		if (!create_new_token(head, &current, token, type))
 			return (false);
-        free(token);
+		free(token);
     }
     return (true);
 }

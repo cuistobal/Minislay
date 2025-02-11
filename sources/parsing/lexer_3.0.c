@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:51:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/10 14:01:50 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/11 12:28:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool parse_argument(t_tokn **current);
 bool parse_pipeline(t_tokn **current);
 bool parse_redirection(t_tokn **current);
 bool parse_compound_command(t_tokn **current);
-bool parse_expression(t_tokn **current);
+//bool parse_expression(t_tokn **current);
 
 bool	match(t_tokn **current, const char type, const char *value)
 {
@@ -127,7 +127,7 @@ bool parse_compound_command(t_tokn **current)
     }
     return (false);
 }
-
+/*
 bool parse_expression(t_tokn **current)
 {
     if (match(current, '$', NULL))
@@ -135,7 +135,7 @@ bool parse_expression(t_tokn **current)
         return (match(current, '$', NULL));
     }
     return (match(current, '$', NULL));
-}
+}*/
 
 bool validate_syntax(t_tokn *head)
 {
