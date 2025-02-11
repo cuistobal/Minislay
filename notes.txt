@@ -1,5 +1,9 @@
 		Misc notes:
 
+		Pipes following redirections are not working because of poor design
+		->	Fix the recursive calls	parse_command() && parse_simple_command()
+		->	Draw a make of all possibilities based on the current grammar.
+
 		pstree
 
 		-> Expansions test:
