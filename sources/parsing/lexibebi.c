@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 17:17:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:34:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ bool parse_script(t_tokn *tokens)
 
     current = tokens;
     initial_node = current;
-    printf("%s	@	%s\n", current->value, __func__);
-    if (parse_command_list(&current))
-        return (true);
-    current = initial_node;
-    return (false);
+    (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
+    if (tokens)
+	{
+		if (parse_command_list(&current))
+    	    return (true);
+    	current = initial_node;
+	}
+	return (false);
 }
 
 // CommandList → Command ('&&' | '||') CommandList | Command
@@ -32,18 +35,18 @@ bool parse_command_list(t_tokn **current)
 {
     t_tokn *initial_node;
 
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     initial_node = *current;
     if (*current)
 	{
-		printf("%d	&&	%s\n", (*current)->type, (*current)->value);
         if (parse_command(current))
 		{
-			printf("%d	&&	%s\n", (*current)->type, (*current)->value);
-            if ((*current)->type == LAND || (*current)->type == LORR)
+            if (*current && ((*current)->type == LAND || (*current)->type == LORR))
 			{
                 *current = (*current)->next;
-				return (parse_command_list(current));
+				if (*current)
+					return (parse_command_list(current));
+    			return (*current == NULL);
             //    if (!parse_command_list(current))
 			//	{
             //        *current = op_node;
@@ -54,7 +57,7 @@ bool parse_command_list(t_tokn **current)
         }
         *current = initial_node;
     }
-    return (false);
+    return (*current == NULL);
 }
 
 bool	parse_command(t_tokn **current)
@@ -64,51 +67,62 @@ bool	parse_command(t_tokn **current)
 
     command_parsed = false;
     initial_node = *current;
-    printf("%s	@	%s\n", (*current)->value, __func__);
-    if ((*current)->type == OPAR)
-        command_parsed = parse_compound_command(current);
-    else
-        command_parsed = parse_simple_command(current);
-    printf("command_parsed -> %d\n", command_parsed);
-    if (command_parsed && (*current)->type == PIPE)
-        return (parse_pipeline(current));
-	else if ((*current)->type == LAND || (*current)->type == LORR)
-		return (true);
-    if (!command_parsed)
-        *current = initial_node;
-    return (command_parsed);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    if (*current)
+	{
+		if ((*current)->type == OPAR)
+    	    command_parsed = parse_compound_command(current);
+    	else
+    	    command_parsed = parse_simple_command(current);
+    	printf("command_parsed -> %d\n", command_parsed);
+    	if (!*current)
+			return (true);
+		else
+		{
+			if (command_parsed && (*current)->type == PIPE)
+    	    	return (parse_pipeline(current));
+			else if ((*current)->type == LAND || (*current)->type == LORR)
+				return (true);
+		}
+		if (!command_parsed)
+    	    *current = initial_node;
+	}
+	return (command_parsed);
 }
 
 // SimpleCommand → Assignment* WORD (Argument | Redirection)*
 bool	parse_simple_command(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
-    if ((*current)->type >= WORD && (*current)->type <= ARED)
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+	if (*current)
 	{
-        parse_assignment(current);
-        while ((*current)->type >= WORD && (*current)->type <= ARED)
+    	if ((*current)->type >= WORD && (*current)->type <= ARED)
 		{
-            if ((*current)->type == WORD)
+    	    parse_assignment(current);
+    	    while ((*current)->type >= WORD && (*current)->type <= ARED)
 			{
-                parse_argument(current);
-                return (parse_simple_command(current));
-			}
-			else
-			{
-				printf("redirection\n");
-				parse_redirection(current);
-            	return (parse_simple_command(current));
-			}
-        }
-        return (true);
-    }
-    return (false);
+    	        if ((*current)->type == WORD)
+				{
+    	            parse_argument(current);
+    	            return (parse_simple_command(current));
+				}
+				else
+				{
+					printf("redirection\n");
+					parse_redirection(current);
+    	        	return (parse_simple_command(current));
+				}
+    	    }
+    	    return (true);
+    	}
+	}
+    return (*current == NULL);
 }
 
 // Pipeline → Command ('|' Command)*
 bool parse_pipeline(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if (parse_command(current))
 	{
         while ((*current)->type == PIPE)
@@ -123,7 +137,8 @@ bool parse_pipeline(t_tokn **current)
 
 bool parse_compound_command(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+
     if ((*current)->type == OPAR)
 	{
         *current = (*current)->next;
@@ -140,7 +155,8 @@ bool parse_compound_command(t_tokn **current)
 // Assignment → WORD '=' Expression
 bool parse_assignment(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+
     if (*current && (*current)->next)
 	{
         if ((*current)->type == WORD && (*current)->next->type == EQUL)
@@ -155,7 +171,7 @@ bool parse_assignment(t_tokn **current)
 // Argument → WORD
 bool	parse_argument(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type == WORD)
 	{
         *current = (*current)->next;
@@ -167,7 +183,7 @@ bool	parse_argument(t_tokn **current)
 // Redirection → ('>' | '>>' | '<' | '<<') WORD
 bool	parse_redirection(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type >= IRED && (*current)->type <= ARED)
 	{
         *current = (*current)->next;
@@ -184,7 +200,7 @@ bool	parse_redirection(t_tokn **current)
 // Expression → '$' WORD | WORD
 bool	parse_expression(t_tokn **current)
 {
-    printf("%s	@	%s\n", (*current)->value, __func__);
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type == DOLL)
 	{
         *current = (*current)->next;
