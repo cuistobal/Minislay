@@ -6,143 +6,126 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:12:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 14:18:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:59:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static bool	init_stack(t_stck **stack, size_t size)
+// Function to free the stack and handle errors
+static bool free_stack(t_stck **stack)
 {
-	if (size > 0)
+    bool status;
+
+    status = false;
+    if (*stack)
 	{
-		*stack = (t_stck *)malloc(sizeof(t_stck));
-		if (*stack)
+        if ((*stack)->stack)
 		{
-    		(*stack)->infos[0] = -1;
-			(*stack)->infos[1] = size;
-			(*stack)->stack = (char *)calloc(size, sizeof(char));
-		}
-	}
+            if ((*stack)->top >= 0)
+                printf("Syntax error: Unclosed %c\n", (*stack)->stack[(*stack)->top]);
+            else
+                status = true;
+            free((*stack)->stack);
+        }
+        free(*stack);
+        *stack = NULL;
+    }
+    return status;
+}
+
+// Function to initialize the stack
+static bool init_stack(t_stck **stack, size_t size)
+{
+    if (size > 0)
+	{
+        *stack = (t_stck *)malloc(sizeof(t_stck));
+        if (*stack)
+		{
+            (*stack)->top = -1;  // Initialize the top index to -1
+            (*stack)->capacity = size;  // Set the capacity of the stack
+            (*stack)->stack = (char *)calloc(size, sizeof(char));
+        }
+    }
+    return (*stack != NULL);
+}
+
+// Function to push a character onto the stack
+static bool push(t_stck *stack, char c)
+{
+    if (stack->top < stack->capacity - 1)
+	{
+        stack->stack[++(stack->top)] = c;
+        return true;
+    }
 	else
 	{
-		if (*stack)
-		{
-			if ((*stack)->stack)
-				free((*stack)->stack);
-			free(*stack);
-			*stack = NULL;
-		}
-	}
-	return (*stack != NULL);
-}
-
-static bool push(t_stck **stack, char c)
-{
-    if ((*stack)->infos[0] < (*stack)->infos[1] - 1)
-	{
-        (*stack)->stack[++((*stack)->infos[0])] = c;
-        return (true);
+        stack->capacity += 2;  // Increase the capacity
+        stack->stack = realloc(stack->stack, stack->capacity);
+        if (stack->stack)
+            return push(stack, c);
     }
-	else
-	{
-		(*stack)->stack = realloc((*stack)->stack, (*stack)->infos[1] + 2);
-		if ((*stack)->stack)
-			return (push(stack, c));
-	}
-    return (false);
+    return false;
 }
 
-static bool pop(t_stck **stack)
+// Function to pop a character from the stack
+static bool pop(t_stck *stack)
 {
-    if ((*stack)->infos[0] >= 0)
+    if (stack->top >= 0)
 	{
-        ((*stack)->infos[0])--;
-        return (true);
+        stack->stack[stack->top--] = '\0';  // Clear the popped element
+        return true;
     }
-    return (false);
+    return false;
 }
 
-static bool handle_parentheses(t_stck **stack, char *string)
+// Function to handle parentheses
+static bool handle_parentheses(t_stck *stack, char type)
 {
-    if (strcmp(string, "(") == 0)
-        return (push(stack, '('));
-    else if (strcmp(string, ")") == 0)
-        return (pop(stack));
-    return (true);
-}
-
-//reworked
-bool	lexer(t_tokn *head)
-{
-	//bool	ans;
-	t_stck	*stack;
-    t_tokn	*current;
-
-	current = head;
-    init_stack(&stack, 200);	// 200 is hardcoded -> realloc is generating a
-								// stack overflow that I don't understand yet.
-//    printf("%d	%d	%s\n", stack.infos[0], stack.infos[1], stack.stack);
-	while (current)
+    if (type == '(')
+        return push(stack, '(');
+    else
 	{
-		if (is_paren(current->type))
+        if (stack->top >= 0 && stack->stack[stack->top] == '(')
+            return pop(stack);
+        else
 		{
-			if (!handle_parentheses(&stack, current->value))
-			//	return (free(stack->stack), free(stack), false);
-				return (init_stack(&stack, 0));
-		}
-		else if (is_amp_pipe(current->type))
-		{
-            if (!current->next || is_amp_pipe(current->next->type))
-				//return (free(stack->stack), free(stack), false);
-				return (init_stack(&stack, 0));
-		}
-		else if (is_redir(current->type))
-		{
-            if (!current->next || strchr("&|()<>", current->next->value[0]))
-				//return (free(stack->stack), free(stack), false);
-				return (init_stack(&stack, 0));
+            printf("Syntax error: Unmatched closing parenthesis\n");
+            return false;
         }
-        current = current->next;
     }
-	//ans = (stack->infos[0] == -1);
-	//return (free(stack->stack), free(stack), ans);
-	return (!init_stack(&stack, 0));
 }
 
-/*OLD
-bool	lexer(t_tokn *head)
-{
-	bool	ans;
-	t_stck	*stack;
-    t_tokn	*current;
 
-	current = head;
-    init_stack(&stack, 200);	// 200 is hardcoded -> realloc is generating a
-								// stack overflow that I don't understand yet.
-//    printf("%d	%d	%s\n", stack.infos[0], stack.infos[1], stack.stack);
-	while (current)
+
+// Lexer function
+bool lexer(t_tokn *head)
+{
+    t_stck *stack;
+    t_tokn *current;
+
+    current = head;
+    if (init_stack(&stack, STACK_SIZE))
 	{
-		if (strncmp(current->value, "(", 1) == 0 || strncmp(current->value, ")", 1) == 0)
+	    while (current)
 		{
-			if (!handle_parentheses(&stack, current->value))
-				return (free(stack->stack), false);
-		}
-		else if (strcmp(current->value, "&&") == 0 || strcmp(current->value, "||") == 0)
-		{
-//            if (!current->next || strcmp(current->next->type, "Token") != 0)
-//            if (!current->next || current->next->type != '\0') // Probleme avec cette logique
-            if (!current->next || (current->next->type == '&' || current->next->type == '|')) // Probleme avec cette logique
-				return (false);
-        } 
-		else if (strcmp(current->value, ">") == 0 || strcmp(current->value, ">>") == 0 || strcmp(current->value, "<") == 0  || strcmp(current->value, "<<") == 0)
-		{
-            if (!current->next || strchr("&|()<>", current->next->value[0]))
-				return (false);
-        }
-        current = current->next;
-    }
-	ans = (stack->infos[0] == -1);
-//    printf("%d	%d	%s\n", stack.infos[0], stack.infos[1], stack.stack);
-	return (free(stack->stack), ans);
-}*/
+	        if (is_paren(current->value[0]))
+			{
+	            if (!handle_parentheses(stack, current->value[0]))
+					return (free_stack(&stack));
+	        }
+			else if (is_amp_pipe(current->value[0]))
+			{
+	            if (!current->next || is_amp_pipe(current->next->value[0]))
+					return (free_stack(&stack));
+	        }
+			else if (is_redir(current->value[0]))
+			{
+				if (!current->next || strchr("&|()<>", current->next->value[0]))
+					return (free_stack(&stack));
+	        }
+   	    current = current->next;
+   		}
+	}
+	return free_stack(&stack);
+}

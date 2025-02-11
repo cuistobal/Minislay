@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 16:30:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:23:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,8 @@
 
 # define GRAMMAR "()|&><$=*\""
 # define IAE "$=*"
+
+//Others
+ # define STACK_SIZE 1
 
 #endif

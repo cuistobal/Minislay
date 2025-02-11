@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/09 12:30:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 09:10:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ typedef struct tokens
 //Used
 typedef struct stack
 {
-	int		infos[2]; //top && size
+	int		top;
+	int		capacity;
 	char 	*stack;
 }	t_stck;
 

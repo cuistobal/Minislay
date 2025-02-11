@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/10 13:58:53 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/11 08:36:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	main(int argc, char **argv, char **envp)
     if (argc == 2)
 	{
 		if (tokenize(&tokens, argv[1], strlen(argv[1])))
-    	//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-    		validate_syntax(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+    		lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+    //		validate_syntax(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 		else
 			printf("Parsing error.\n");
 		free_tokens(tokens);
