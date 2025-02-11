@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 13:29:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:01:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,6 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     	return (token);
 	}
 	return (NULL);
-}
-
-//Handles special grammar char	->	Needs some improvments on token type
-static char	*handle_special_chars(const char *input, int *pos, int *type)
-{
-	char	*token;
-
-	token = NULL;
-    if ((input[*pos] == '&' || input[*pos] == '|') && input[*pos + 1] == input[*pos])
-	{
-        token = strndup(input + *pos, 2);
-		if (input[*pos] == '&')
-			*type = LAND;
-		else
-			*type = LORR;
-        (*pos) += 2;
-        return (token);
-    } 
-    if ((input[*pos] == '>' || input[*pos] == '<') && input[*pos + 1] == input[*pos])
-	{
-        token = strndup(input + *pos, 2);
-        (*pos) += 2;
-		if (input[*pos] == '>')
-			*type = ARED;
-		else
-			*type = HDOC;
-        return (token);
-    }
-    token = strndup(input + *pos, 1);
-    (*pos)++;
-    return (token);
 }
 
 //We use this fucntion to handle non special characters, hence building words.

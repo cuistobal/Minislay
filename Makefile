@@ -9,6 +9,7 @@ SOURCES = \
     utilities/my_strtok_r.c \
 	utilities/boolean_checks/tokenizer_bools_1.c \
 	utilities/boolean_checks/tokenizer_bools_2.c \
+	sources/parsing/handle_special_chars.c \
 	sources/parsing/create_tokens.c \
 	sources/parsing/lexibebi.c \
 	sources/parsing/parser.c \
