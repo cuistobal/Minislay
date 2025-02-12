@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 14:42:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:46:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,23 @@ static t_tokn	*create_node(char *value, int type)
 {
     t_tokn *node;
 
+	node = NULL;
 	if (value)
 	{
 		node = (t_tokn *)malloc(sizeof(t_tokn));
 		if (node)
 		{
     		node->type = type;
-			//node->value = value ? strdup(value) : NULL;
-			node->value = strdup(value);	//node->value = value ? strdup(value) : NULL;
-											//Needs to be tested with NULL value
-											//(Case shouldn't occur though)
-    		node->next = NULL;
-    		return (node);
+			node->value = strdup(value);
+			node->next = NULL;
 		}
 	}
-	return (NULL);
+	return (node);
 }
 
 //Ongoing development on this bad boi
 
-
+/*
 //We use this function in case we get a variable expansion within our 
 static bool	split_token(t_tokn **token, char *sub_token, int sub_type)
 {
@@ -85,7 +82,7 @@ static bool	assess_dquote_token(t_tokn **token)
 		}
 	}
 	return (false);
-}
+}*/
 
 /*
 //Modifier pour bosser avec un int a la place

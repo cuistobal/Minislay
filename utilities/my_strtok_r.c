@@ -6,11 +6,14 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/06 13:55:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:47:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//#include <unistd.h>
+//#include <string.h>
 
 // Réimplémentation de strtok_r
 char	*my_strtok_r(char *str, const char *delim, char **saveptr)
@@ -22,7 +25,7 @@ char	*my_strtok_r(char *str, const char *delim, char **saveptr)
     while (*str && strchr(delim, *str)) 
         str++;
     if (*str == '\0') 
-        return NULL;
+        return (NULL);
     token_start = str;
     while (*str && !strchr(delim, *str))
         str++;
@@ -33,8 +36,8 @@ char	*my_strtok_r(char *str, const char *delim, char **saveptr)
     }
     *saveptr = str;
     return (token_start);
-}
-/*
+}/*
+
 
 #include <stdio.h>
 #include <string.h>

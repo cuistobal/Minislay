@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 12:47:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:57:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,13 @@ static char	*handle_words(const char *input, int *pos, int *type)
     int start;
 
 	start = *pos;
-    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
-		(*pos)++;
 	*type = WORD;
+    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
+	{
+		if (input[*pos] == '=')
+			*type = EQUL;
+		(*pos)++;
+	}
     return (strndup(input + start, *pos - start));
 }
 
