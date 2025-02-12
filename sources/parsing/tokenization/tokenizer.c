@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 17:23:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:47:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,9 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     		strncpy(token + 1, input + start, *pos - start);
     		token[*pos - start + 1] = quote;
     		token[*pos - start + 2] = '\0';
-    		//new
 			*type = WORD;
-			//old
-			//if (quote == '"')
-			//	*type = DQTE;
-			//else
-			//	*type = SQTE;
+			if (quote == '"')
+				*type = DQTE;
 			(*pos)++;
 		}
     	return (token);
@@ -90,10 +86,8 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_quotes(input, &pos, &type);
 		else if (strchr("&|()<>", input[pos]))
             token = handle_special_chars(input, &pos, &type);
-		//SPlit en 1 fichier contenant les differents cas.
 		else
             token = handle_words(input, &pos, &type);
-		//printf("%d	&	%s\n", type, token);
 		if (!create_new_token(head, &current, token, type))
 			return (false);
 		free(token);

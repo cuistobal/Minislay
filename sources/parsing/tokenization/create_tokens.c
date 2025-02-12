@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 13:17:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:42:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static t_tokn	*create_node(char *value, int type)
 
 //Ongoing development on this bad boi
 
-/*
+
 //We use this function in case we get a variable expansion within our 
-static bool	split_token(t_tokn **token, char *sub_token, char sub_type)
+static bool	split_token(t_tokn **token, char *sub_token, int sub_type)
 {
 	t_tokn	*new;
 	t_tokn	*next;
 
-	new = create_node(sub_type, sub_token);
+	new = create_node(sub_token, sub_type);
 	if (new)
 	{
 		next = (*token)->next;
@@ -85,7 +85,7 @@ static bool	assess_dquote_token(t_tokn **token)
 		}
 	}
 	return (false);
-}*/
+}
 
 /*
 //Modifier pour bosser avec un int a la place
@@ -119,7 +119,6 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
 	t_tokn	*new_node;
 
-	//type = get_token_type(token);
 	new_node = create_node(token, type);
 	if (new_node)
 	{
@@ -128,9 +127,6 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
         else
 			(*current)->next = new_node;
         *current = new_node;
-//		if (new_node->type == '"')
-//			return (assess_dquote_token(&new_node));
-		return (true);
 	}
-	return (false);
+	return (new_node != NULL);
 }
