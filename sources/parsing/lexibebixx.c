@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 08:57:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/12 08:41:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ bool parse_command_list(t_tokn **current)
 	{
         if (parse_command(current))
 		{
-            while (*current && ((*current)->type == LAND || (*current)->type == LORR))
+            if (*current && ((*current)->type == LAND || (*current)->type == LORR))
 			{
                 *current = (*current)->next;
-				if (!parse_command(current))
-					return (false);
+				if (*current)
+					return (parse_command_list(current));
+				return (false); // Si on a uin trailing && ou || -> c est faux
             }
-            return (true);
+            return (true); // On a une parsed command et c'est tout.
         }
         *current = initial_node;
     }
@@ -84,32 +85,31 @@ bool	parse_simple_command(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (*current)
 	{
-    	while ((*current)->type == WORD && (*current)->next && (*current)->next->type == EQUL)
+    	if ((*current)->type >= WORD && (*current)->type <= ARED)
 		{
-			if (!parse_assignment(current))
-				return (false);
-		}
-		if ((*current)->type == WORD)
-		{
-			*current = (*current)->next;
-			while ((*current) && ((*current)->type == WORD || ((*current)->type >= IRED && (*current)->type <= ARED)))
+			if (parse_assignment(current))
+			//	return (parse_simple_command(current));
+			//	Since Assignement*	->	We should be calling parse_simple_command();
+				return (parse_command(current));
+			if ((*current)->type >= WORD && (*current)->type <= ARED)
 			{
-				if ((*current)->type == WORD)
-				{
-					if (!parse_argument(current))
-						return (false);
-				}
+    	        //if ((*current)->type == WORD)
+				//{
+    	            //parse_argument(current);
+				if (parse_argument(current))
+    	            return (parse_simple_command(current));
+//					return (parse_argument(current)); 
+				return (parse_redirection(current));
+//    	            return (parse_simple_command(current));
+			}
+				/*
 				else
 				{
-					if (!parse_redirection(current))
-						return (false);
-				}
-				if (!*current)
-					break;
-			}
-			return (true);
+					parse_redirection(current);
+    	        	return (parse_simple_command(current));
+				}*/
 		}
-		return (false);
+		return ((*current)->type != PIPE);
     }
     return (false);
 }
@@ -120,11 +120,10 @@ bool parse_pipeline(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if (parse_command(current))
 	{
-        while ((*current) && (*current)->type == PIPE)
+        if ((*current) && (*current)->type == PIPE)
 		{
             *current = (*current)->next;
-            if (!parse_command(current))
-                return (false);
+            return (parse_pipeline(current));
         }
         return (true);
     }
