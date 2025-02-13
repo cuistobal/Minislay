@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:49:32 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 18:08:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:58:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ static void	sub_type_initialisation(t_tokn **token, int *sub_type)
     *sub_type = 0;
     if (is_state_active((*token)->type, DQTE))
         set_state(sub_type, DQTE);
-    else if (is_state_active((*token)->type, SQTE))
+    if (is_state_active((*token)->type, SQTE))
         set_state(sub_type, SQTE);
+    if (is_state_active((*token)->type, WORD))
+        set_state(sub_type, WORD);
 }
 
 // Check for initial special characters and set the state
