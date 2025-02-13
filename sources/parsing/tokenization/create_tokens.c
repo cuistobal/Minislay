@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 11:14:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:48:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,32 +124,49 @@ static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
     	*current = *new_node;
 	}
 }
-/*
-static bool	check_token(t_tokn **assessed)
+
+static void	check_word_content(t_tokn **assessed)
 {
-	t_tokn	*new;
-	int		type;
-	int		index;
-	char	*token;
+	int	index;
 
 	if (*assessed)
 	{
-		token = strpbrk((*assessed)->value, IAE);
-
 		index = 0;
-		while ((*assessed)->value[index])
+		if ((*assessed)->type & DQTE)
 		{
-			if (isdelim((*assessed)->value[index])
-			token = ;
-			type = 
-			new = create_node(token, type);
-			(*assessed)->next = new;
-			*assessed = new;
-			check_token(assessed);
+			
+		}
+		else
+		{
+
 		}
 	}
-	return (*assessed == NULL);
-}*/
+}
+
+static void	check_equality_content(t_tokn **assessed)
+{
+	if (*assessed)
+	{
+	}
+
+{
+
+static void	check_token(t_tokn **assessed)
+{
+	int		end;
+	int		start;
+	char	*token;
+	t_tokn	*splited;
+
+	splited = NULL;
+	if (*assessed)
+	{
+		if ((*assessed)->type & WORD)
+			check_word_content(assessed);
+		if ((*assessed)->type & EQUL)
+			check_equality_content(assessed);
+	}
+}
 
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
@@ -158,9 +175,8 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 	new_node = create_node(token, type);
 	if (new_node)
 	{
-//		if (type == WORD || type == DQTE || type == EQUL)
-//			new_node = check_token(new_node);
 		insert_token(head, current, &new_node);
+		check_token(&new_node);
     }
     return (new_node != NULL);
 }
