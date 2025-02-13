@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 14:34:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:41:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,6 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	{
 		if (input[*pos] == '=')
 			*type = EQUL;
-		/*
-		else if (input[*pos] == '$')
-			*type |= DOLL;
-		else if (input[*pos] == '*')
-			*type |= STAR;
-		*/
 		(*pos)++;
 	}
     return (strndup(input + start, *pos - start));

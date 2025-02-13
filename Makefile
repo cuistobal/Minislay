@@ -15,6 +15,7 @@ SOURCES = \
 	sources/parsing/tokenization/handle_special_chars.c \
 	sources/parsing/tokenization/create_tokens.c \
 	sources/parsing/tokenization/tokenizer.c \
+	sources/parsing/tokenization/check_sub_tokens.c \
 	sources/parsing/lexibebi.c \
 	minishell.c
 

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 16:45:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:10:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 //New stuff
 bool	check_word_content(t_tokn **token);
 bool	split_assignation_token(t_tokn **token);
+bool	check_sub_tokens(t_tokn **current);
 
+//
 t_tokn	*create_node(char *value, int type);
 bool	tokenize(t_tokn **head, const char *input, int len);
 bool	lexer(t_tokn *head);
