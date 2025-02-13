@@ -6,42 +6,45 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:32:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 15:19:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:30:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//We use this function in case we get a variable expansion within our 
-static bool	split_token(t_tokn **token, char *sub_token, int sub_type)
+//Needs to bew splited in 2 functions
+
+//Here, we split the assignation token around the '=' that defines it.
+//The original *token node now represents the portion before the '=', and we
+//create 2 new nodes. The first one holds the assignation '=' signe, while the
+//second holds the second part of the assignation.
+bool	split_assignation_token(t_tokn **token)
 {
-	t_tokn	*new;
-	t_tokn	*next;
+	char	*end;
+	int		index;
 
-	new = create_node(sub_token, sub_type);
-	if (new)
+	if (*token)
 	{
-		new = (*token)->next;
-		(*token)->next = new;
-		new->next = next;
-	}
-	return (new != NULL);
-}
-
-//Used to asses if a " token needs further spliting for interpretation, 
-//assignement and expenasion during the execution phase.
-bool	assess_word_token(t_tokn **token)
-{
-	int		sub_type;
-	char	*sub_token;
-
-	if ((*token))
-	{
-		if (strchr((*token)->value, '$'))
+		index = 0;
+		if ((*token)->value)
 		{
-			sub_type = DOLL;
-			sub_token = strpbrk((*token)->value, IAE);
-			return (split_token(token, sub_token, sub_type));
+			while ((*token)->value[index])
+			{
+				if ((*token)->value[index] == '=')
+					break ;
+				index++;
+			}
+			end = (*token)->value + (index + 1);
+			(*token)->value[index] = '\0';
+			(*token)->type = WORD;
+		}
+		(*token)->next = create_node("=", EQUL);
+		if ((*token)->next)
+		{
+			*token = (*token)->next;
+			(*token)->next = create_node(end, WORD);
+			if ((*token)->next)
+				return (*token = (*token)->next, true);
 		}
 	}
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 11:14:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:34:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
 			// checked by the assignation/expansion function.
 			if (quote == '"')
 				*type |= DQTE;
+			else
+				*type |= SQTE;
 		//	(*pos)++;
     		return ((*pos)++, token);
 		}
@@ -55,11 +57,13 @@ static char	*handle_words(const char *input, int *pos, int *type)
     while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
 	{
 		if (input[*pos] == '=')
-			*type |= EQUL;
+			*type = EQUL;
+		/*
 		else if (input[*pos] == '$')
 			*type |= DOLL;
 		else if (input[*pos] == '*')
 			*type |= STAR;
+		*/
 		(*pos)++;
 	}
     return (strndup(input + start, *pos - start));

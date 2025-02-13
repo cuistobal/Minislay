@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 11:48:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:44:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Node creation util
-static t_tokn	*create_node(char *value, int type)
+t_tokn	*create_node(char *value, int type)
 {
     t_tokn *node;
 
@@ -124,7 +124,7 @@ static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
     	*current = *new_node;
 	}
 }
-
+/*
 static void	check_word_content(t_tokn **assessed)
 {
 	int	index;
@@ -167,7 +167,7 @@ static void	check_token(t_tokn **assessed)
 			check_equality_content(assessed);
 	}
 }
-
+*/
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
 	t_tokn	*new_node;
@@ -176,7 +176,10 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 	if (new_node)
 	{
 		insert_token(head, current, &new_node);
-		check_token(&new_node);
+		if (new_node->type == EQUL)
+			split_assignation_token(&new_node);
+		if (new_node->type & WORD)
+				check_word_content(&new_node);
     }
     return (new_node != NULL);
 }
