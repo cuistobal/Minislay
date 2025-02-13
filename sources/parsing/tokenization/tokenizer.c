@@ -6,13 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 14:57:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:14:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Handles quote less explicitly than the previous stack/state approach
+//The magic number corresponds to the 2 quotes + the '\0' terminating byte.
 static char	*handle_quotes(const char *input, int *pos, int *type)
 {
 	int		start;
@@ -33,11 +34,13 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     		token[*pos - start + 1] = quote;
     		token[*pos - start + 2] = '\0';
 			*type = WORD;
+			// Or WORD. But with SQTE, we know that the word doesn't have to be
+			// checked by the assignation/expansion function.
 			if (quote == '"')
-				*type = DQTE;
-			(*pos)++;
+				*type |= DQTE;
+		//	(*pos)++;
+    		return ((*pos)++, token);
 		}
-    	return (token);
 	}
 	return (NULL);
 }
@@ -52,7 +55,11 @@ static char	*handle_words(const char *input, int *pos, int *type)
     while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
 	{
 		if (input[*pos] == '=')
-			*type = EQUL;
+			*type |= EQUL;
+		else if (input[*pos] == '$')
+			*type |= DOLL;
+		else if (input[*pos] == '*')
+			*type |= STAR;
 		(*pos)++;
 	}
     return (strndup(input + start, *pos - start));
@@ -84,7 +91,7 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	{
         while (isspace(input[pos]))
 			pos++;
-        if (input[pos] == '\0')
+        if (input[pos] == '\0')	//Move to mnain while loop condition.
 			break;
         if (input[pos] == '\'' || input[pos] == '"')
             token = handle_quotes(input, &pos, &type);

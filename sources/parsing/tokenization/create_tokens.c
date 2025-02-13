@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/12 15:46:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:14:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,45 @@ static int	get_token_type(char *token)
 //
 //Modifs -> include char *type in the function parameter to get a real type
 //instead of "token".
+
+static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
+{
+	if (*new_node)
+	{
+		if (!(*head))
+			*head = *new_node;
+    	else if (*current)
+			(*current)->next = *new_node;
+    	*current = *new_node;
+	}
+}
+/*
+static bool	check_token(t_tokn **assessed)
+{
+	t_tokn	*new;
+	int		type;
+	int		index;
+	char	*token;
+
+	if (*assessed)
+	{
+		token = strpbrk((*assessed)->value, IAE);
+
+		index = 0;
+		while ((*assessed)->value[index])
+		{
+			if (isdelim((*assessed)->value[index])
+			token = ;
+			type = 
+			new = create_node(token, type);
+			(*assessed)->next = new;
+			*assessed = new;
+			check_token(assessed);
+		}
+	}
+	return (*assessed == NULL);
+}*/
+
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
 	t_tokn	*new_node;
@@ -119,11 +158,9 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 	new_node = create_node(token, type);
 	if (new_node)
 	{
-        if (!(*head))
-			*head = new_node;
-        else
-			(*current)->next = new_node;
-        *current = new_node;
-	}
-	return (new_node != NULL);
+//		if (type == WORD || type == DQTE || type == EQUL)
+//			new_node = check_token(new_node);
+		insert_token(head, current, &new_node);
+    }
+    return (new_node != NULL);
 }
