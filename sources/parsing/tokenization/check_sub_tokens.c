@@ -6,12 +6,12 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:47:38 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 19:10:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 08:42:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
+/*
 static bool	assess_dollar_sub_tokens(t_tokn **current)
 {
 	int		edgy_type;
@@ -56,10 +56,10 @@ bool	check_sub_tokens(t_tokn **current)
 		}
 	}
 	return ((*current)->next == NULL);
-}
+}*/
 
 
-/*
+
 static bool	assess_dollar_sub_tokens(t_tokn **current)
 {
 	int		edgy_type;
@@ -104,4 +104,4 @@ bool	check_sub_tokens(t_tokn **current)
 		}
 	}
 	return ((*current)->next == NULL);
-}*/
+}

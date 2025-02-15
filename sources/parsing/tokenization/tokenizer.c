@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 18:41:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 09:03:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	{
         while (isspace(input[pos]))
 			pos++;
-        if (input[pos] == '\0')	//Move to mnain while loop condition.
+        if (input[pos] == '\0')
 			break;
         if (input[pos] == '\'' || input[pos] == '"')
             token = handle_quotes(input, &pos, &type);

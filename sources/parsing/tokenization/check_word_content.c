@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:49:32 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 18:58:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 09:07:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,18 @@ bool	check_word_content(t_tokn **token)
         check_initial_special_content(token, &index);
         while ((*token)->value[index])
 		{
-            if ((*token)->value[index] == '$')
+			if ((*token)->value[index] == '$')
 			{
-                if (!create_sub_token(token, index, sub_type, DOLL))
-                    return (false);
-                return (check_word_content(token));
-            }
+           	    if (!create_sub_token(token, index, sub_type, DOLL))
+           	        return (false);
+           	    return (check_word_content(token));
+           	}
 			else if ((*token)->value[index] == '*')
 			{
-                if (!create_sub_token(token, index, sub_type, STAR))
-                    return (false);
-                return (check_word_content(token));
-            }
+           	    if (!create_sub_token(token, index, sub_type, STAR))
+           	        return (false);
+				return (check_word_content(token));
+			}
 			else if (isspace((*token)->value[index])) 
 			{
 				if (is_state_active((*token)->type, DOLL | STAR)) 
