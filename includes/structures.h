@@ -94,7 +94,7 @@ typedef struct parser
 // Enum for different character groups
 typedef enum e_char_group
 {
-    GROUP_PAREN,
+  GROUP_PAREN,
 	GROUP_AMP_PIPE,
 	GROUP_IREDIR,
 	GROUP_OREDIR,
