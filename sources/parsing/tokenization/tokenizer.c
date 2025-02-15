@@ -1,12 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/15 09:03:36 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/11 14:01:40 by chrleroy         ###   ########.fr       */
+>>>>>>> parent of db66c36 (Ca marche dans 1 cas xd)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,7 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     		strncpy(token + 1, input + start, *pos - start);
     		token[*pos - start + 1] = quote;
     		token[*pos - start + 2] = '\0';
+<<<<<<< HEAD
 			*type = WORD;
 			// Or WORD. But with SQTE, we know that the word doesn't have to be
 			// checked by the assignation/expansion function.
@@ -42,6 +47,13 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
 				*type |= SQTE;
 		//	(*pos)++;
     		return ((*pos)++, token);
+=======
+    		if (quote == '"')
+				*type = DQTE;
+			else
+				*type = SQTE;
+			(*pos)++;
+>>>>>>> parent of db66c36 (Ca marche dans 1 cas xd)
 		}
 	}
 	return (NULL);
