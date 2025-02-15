@@ -1,0 +1,20 @@
+		Misc notes:
+
+		pstree
+
+		-> Expansions test:
+
+			->	bash-5.1$ echo VAR="coucou" && echo $VAR
+			->	$VAR=coucou
+			->	
+		
+		-> Fds management when && or ||:
+
+			->	bash-5.1$ (echo "bonjour" && cat >> test.txt) && cat test.txt
+			->	bonjour
+			->	yes
+			->	yes
+
+			->	bash-5.1$ (echo "bonjour" || cat >> test.txt) && cat test.txt
+			->	bonjour
+			->	cat: test.txt: No such file or directory

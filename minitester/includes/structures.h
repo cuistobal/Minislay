@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   basics.c                                           :+:      :+:    :+:   */
+/*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 12:56:49 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/01/28 12:58:48 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/02/08 14:17:31 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/02/08 14:20:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minislay.h"
+#ifndef STRUCTURES_H
+# define STRUCTURES_H
 
-//We use this function to store the input in the history and check its validity. 
-bool	get_parsed(char *string)
+typedef struct file
 {
-	if (string)
-	{
+	char	*filename;
+	int		fd;
+}	t_file;
 
-		return (true);
-	}
-	return {false);
-}
+typedef struct tester
+{
+	struct file	*infile;
+	struct file	*outfile;
+	int			options;
+}	t_test;
+
+#endif

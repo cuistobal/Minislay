@@ -6,13 +6,29 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:59:00 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 09:04:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/07 09:53:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-void push(t_parser *parser, char c)
+//TEST
+void	push(t_pars *parser, char c)
+{
+    if (parser->top >= parser->capacity)
+	{
+        parser->capacity++;
+		parser->stack = realloc(parser->stack, parser->capacity); //Remplacer par ft_realloc
+    	if (!parser->stack)
+			return ;
+		//error_code -> mem alloc failed.
+		//exit() || return() (?)
+	}
+	parser->stack[parser->top++] = c;
+}
+/*
+//
+void	push(t_pars *parser, char c)
 {
     char	*new_stack;
     int		new_capacity;
@@ -32,16 +48,18 @@ void push(t_parser *parser, char c)
 		//exit() || return() (?)
 	}
 	parser->stack[parser->top++] = c;
-}
+}*/
 
-char pop(t_parser *parser)
+//
+char	pop(t_pars *parser)
 {
     if (parser->top > 0)
         return parser->stack[--parser->top];
     return '\0';
 }
 
-char peek(t_parser *parser)
+//
+char	peek(t_pars *parser)
 {
     if (parser->top > 0)
         return parser->stack[parser->top - 1];

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 14:07:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:44:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,16 @@ struct action
 
 typedef struct parser
 {
-	char	*input;
+	char	*user;
+	uint8_t	*hashed;
 	char	*stack;
+	bool	(*check_type[9])(char);
 	char	syntax[4];
     char	state;
+	int		top;
+	int		capacity;
 }   t_pars;
 
-bool	set_state(t_parser *parser, int flag);
-bool	unset_state(t_parser *parser, int flag);
-bool	is_state_active(t_parser *parser, int flag);
 
 // Enum for different character groups
 typedef enum e_char_group
@@ -113,12 +114,27 @@ typedef enum
     CMD_COUNT
 }	state_manager;
 
+//Used
 typedef struct tokens
 {
-	char			type;	// Modifier pour utiliser un enum type (?)	
-	char			*token;
-	struct token	*next;
+	int				type;	// Modifier pour utiliser un enum type (?)
+	char			*value;
+	struct tokens	*next;
 }	t_tokn;
 
+//Used
+typedef struct stack
+{
+	int		top;
+	int		capacity;
+	char 	*stack;
+}	t_stck;
 
+//Used
+typedef	struct	tree
+{
+	struct tokens	*tokens;
+	struct tree		*left;
+	struct tree		*right;
+}	t_tree;
 #endif
