@@ -60,6 +60,23 @@ enum parser_state
 	STATE_SSHEL,
 	STATE_ERROR,
 };
+//We don't actually use it atm
+
+typedef void (*operate)(int *, int);
+
+void increment(int *, int);
+void decrement(int *, int);
+
+enum 
+{
+  INCR,
+  DECR
+};
+
+struct action
+{
+	operate act[2];
+};
 
 typedef struct parser
 {
@@ -76,7 +93,7 @@ bool	is_state_active(t_parser *parser, int flag);
 // Enum for different character groups
 typedef enum e_char_group
 {
-    GROUP_PAREN,
+  GROUP_PAREN,
 	GROUP_AMP_PIPE,
 	GROUP_IREDIR,
 	GROUP_OREDIR,
@@ -95,5 +112,13 @@ typedef enum
     GSTATE,
     CMD_COUNT
 }	state_manager;
+
+typedef struct tokens
+{
+	char			type;	// Modifier pour utiliser un enum type (?)	
+	char			*token;
+	struct token	*next;
+}	t_tokn;
+
 
 #endif
