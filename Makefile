@@ -16,7 +16,6 @@ SOURCES = \
 	sources/parsing/tokenization/create_tokens.c \
 	sources/parsing/tokenization/tokenizer.c \
 	sources/parsing/tokenization/check_sub_tokens.c \
-	sources/parsing/lexibebi.c \
 	minishell.c
 
 OBJ = $(SOURCES:.c=.o)
