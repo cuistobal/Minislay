@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 07:35:05 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/03 11:11:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/03 13:03:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,49 +32,41 @@ static bool	stack_operation()
 
 }
 
-static bool	check_state()
+static int	check_syntax(char input)
 {
-	
-}
-
-static bool	check_syntax(int *index, char syntax[], char input)
-{
-	if (input)
-	{
-		if (syntax)
-		{
-			while (syntax[*index])
-			{
-				if (syntax[*index] == input)
-					return (true);
-				(*index)++;
-			}
-		}
-	}
-	return (false);
+	if (input == OPAR)
+		return (0);
+	else if (input == SQTE)
+		return (1);
+	else if (input == DQTE)
+		return (2);
+	else if (input == CPAR)
+		return (3);
+	return (4);
 }
 
 bool	check_quotes_and_parenthesis(t_pars *parser)
 {
-	size_t	i;
-	size_t	hash_i;
+	size_t	type;
+	size_t	index;
 
 	if (parser)
 	{
-		i = 0;
+		type = 0;
+		index = 0;
 		if (parser->input)
 		{
-			while (parser->input[i])
+			while (parser->input[index]) // && parser->state != ERROR
 			{
-				hash_i = 0;
-				if (check_syntax(&hash_i, parser->syntax, parser->input[i]))
+				type = check_syntax(parser->input[index]);
+				if (type < 4) // Remplacer 4
 				{
-					if (is_state_active(parser->state, hash_i))
-						append_stack();
+					if (is_state_active(parser, type))
+						stack_operation();
 				}
 				i++;
 			}
-			return (true);
+			return (true); // (parser->state != ERROR);
 		}
 	}
 	return (false);

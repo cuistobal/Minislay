@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/04 09:09:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/03 12:18:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,5 @@
 # define IRDR '<'
 # define ORDR '>'
 # define DOLL '$'
-
-extern char	g_hash[4] = {OPAR, SQTE, DQTE, CPAR};
 
 #endif
