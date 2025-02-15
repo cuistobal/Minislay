@@ -85,6 +85,8 @@ int	minishell(char *input)
 	if (tokenize(&tokens, input, strlen(input)))
     	//print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+
+   // 		lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
     		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	else
 		printf("Tokenization error.\n");
