@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 13:43:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:45:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,7 @@ char	*handle_special_chars(const char *input, int *pos, int *type)
 	token = handle_single_char(input, pos, type);
 	if (token != NULL)
 		return (token);
-	return (NULL);
+	token = strndup(input + *pos, 1);
+    (*pos)++;
+    return (token);
 }

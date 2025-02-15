@@ -6,11 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 12:39:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 14:25:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//static const char	*g_hash[] = {};
 
 //Handles quote less explicitly than the previous stack/state approach
 //The magic number corresponds to the 2 quotes + the '\0' terminating byte.
@@ -34,13 +36,10 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     		token[*pos - start + 1] = quote;
     		token[*pos - start + 2] = '\0';
 			*type = WORD;
-			// Or WORD. But with SQTE, we know that the word doesn't have to be
-			// checked by the assignation/expansion function.
 			if (quote == '"')
 				*type |= DQTE;
 			else
 				*type |= SQTE;
-		//	(*pos)++;
     		return ((*pos)++, token);
 		}
 	}
@@ -50,16 +49,12 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
 //We use this fucntion to handle non special characters, hence building words.
 static char	*handle_words(const char *input, int *pos, int *type)
 {
-    int start;
+    int		start;
 
 	start = *pos;
 	*type = WORD;
     while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
-	{
-		if (input[*pos] == '=')
-			*type = EQUL;
 		(*pos)++;
-	}
     return (strndup(input + start, *pos - start));
 }
 

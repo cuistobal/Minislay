@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 15:32:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 13:30:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 14:11:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,33 @@ bool	split_assignation_token(t_tokn **token)
 {
 	char	*end;
 	int		index;
+	t_tokn	*current;
 
 	if (*token)
 	{
 		index = 0;
-		if ((*token)->value)
+		current = *token;
+		if (current->value)
 		{
-			while ((*token)->value[index])
-			{
-				if ((*token)->value[index] == '=')
-					break ;
+			while (current->value[index] && current->value[index] != '=')
 				index++;
+			if (index > 0)
+			{
+				end = current->value + (index + 1);
+				current->value[index] = '\0';
+				current->type = WORD;
+				current->next = create_node("=", EQUL);		
+				if (current->next)
+				{
+					current = current->next;
+					current ? printf("%s\n", current->value) : printf("NULL\n");
+					current->next = create_node(end, WORD);
+					if (current->next)
+						return (true);
+				}
 			}
-			end = (*token)->value + (index + 1);
-			(*token)->value[index] = '\0';
-			(*token)->type = WORD;
-		}
-		(*token)->next = create_node("=", EQUL);
-		if ((*token)->next)
-		{
-			*token = (*token)->next;
-			(*token)->next = create_node(end, WORD);
-			if ((*token)->next)
-				return (*token = (*token)->next, true);
+			else
+				(*token)->type = WORD;
 		}
 	}
 	return (false);
