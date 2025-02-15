@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 17:23:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:03:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
     		strncpy(token + 1, input + start, *pos - start);
     		token[*pos - start + 1] = quote;
     		token[*pos - start + 2] = '\0';
-    		//new
 			*type = WORD;
-			//old
-			//if (quote == '"')
-			//	*type = DQTE;
-			//else
-			//	*type = SQTE;
+			if (quote == '"')
+				*type |= DQTE;
+			else
+				*type |= SQTE;
 			(*pos)++;
 		}
     	return (token);
