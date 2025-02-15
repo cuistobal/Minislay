@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/11 14:44:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 13:01:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct parser
 // Enum for different character groups
 typedef enum e_char_group
 {
-  GROUP_PAREN,
+    GROUP_PAREN,
 	GROUP_AMP_PIPE,
 	GROUP_IREDIR,
 	GROUP_OREDIR,
@@ -137,4 +137,5 @@ typedef	struct	tree
 	struct tree		*left;
 	struct tree		*right;
 }	t_tree;
+
 #endif
