@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 14:25:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:45:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,24 @@ static char	*handle_words(const char *input, int *pos, int *type)
     return (strndup(input + start, *pos - start));
 }
 
-/*
-//For now, we don't parse expansions and assignations because they're performed
-//dureing the execution phase -source: bash's man-.
-//Since we don't collapse quotes while parsing, they can be interpreted whenever
-//a WORD token is encountered while executiong -source: bash's man-.
-static char	*handle_expansions(const char *input, int *pos)
+static char	*handle_expansions(const char *input, int *pos, int *type)
 {
+    int		start;
 
-}*/
+	start = *pos;
+	*type = DOLL;
+    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
+	{
+		(*pos)++;
+		if (input[*pos] == '$')
+		{
+			if (*pos == start + 1)
+				(*pos)++;
+			break;
+		}	
+	}
+    return (strndup(input + start, *pos - start));
+}
 
 //We use this function to build a token list based on the user's input. If this
 //list is valid, its send to the lexer module.
@@ -90,6 +99,8 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_quotes(input, &pos, &type);
 		else if (strchr("&|()<>", input[pos]))
             token = handle_special_chars(input, &pos, &type);
+		else if (input[pos] == '$')
+			token = handle_expansions(input, &pos, &type);
 		else
             token = handle_words(input, &pos, &type);
 		if (!create_new_token(head, &current, token, type))
