@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:49:32 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 09:07:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 15:56:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static bool create_sub_token(t_tokn **token, int index, int sub_type, int mask)
 {
     t_tokn *new_token;
 
-	new_token = create_node((*token)->value + index, sub_type | mask);
+	new_token = create_node(strdup((*token)->value + index), sub_type | mask);
     if (new_token)
 	{
         (*token)->value[index] = '\0';

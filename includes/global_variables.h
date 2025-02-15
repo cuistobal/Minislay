@@ -6,12 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 09:04:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 15:23:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GLOBAL_VARIABLES_H
 # define GLOBAL_VARIABLES_H
+
+# define MINISLAY "minislay > "
 
 //Not used anymore
 //Various states of the parser

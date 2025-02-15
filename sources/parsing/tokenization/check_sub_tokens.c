@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:47:38 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 08:42:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:32:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,11 @@ bool	check_sub_tokens(t_tokn **current)
 	return ((*current)->next == NULL);
 }*/
 
-
-
 static bool	assess_dollar_sub_tokens(t_tokn **current)
 {
 	int		edgy_type;
 	t_tokn	*edgy_boi;
 
-	printf("inini\n");
 	edgy_boi = NULL;
 	edgy_type = (*current)->type;
 	unset_state(&edgy_type, DOLL);
@@ -75,7 +72,6 @@ static bool	assess_dollar_sub_tokens(t_tokn **current)
 		if (edgy_boi)
 		{
 			edgy_boi->next = (*current)->next;
-			printf("%s	%s	%s	%s\n", (*current)->value, (*current)->next->value, edgy_boi->value, edgy_boi->next->value);
 			(*current)->value[1] = '\0';
 			(*current)->next = edgy_boi;
 			*current = edgy_boi;
