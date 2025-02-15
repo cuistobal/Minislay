@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/08 12:00:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:49:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ bool	is_iredir(char c);
 bool	is_oredir(char c);
 
 //state_management.c:
-bool	set_state(t_pars *parser, int flag);
-bool	unset_state(t_pars *parser, int flag);
-bool	is_state_active(t_pars *parser, int flag);
+bool	set_state(int *state, int flag);
+bool	unset_state(int *state, int flag);
+bool	is_state_active(int state, int flag);
 
 //tokenizer_bools_1.c:
 bool	is_amp_pipe(char c);

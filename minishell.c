@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 12:22:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 17:46:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,40 @@ int main(int argc, char **argv, char **envp)
 		printf("Usage\n");
 }*/
 
-int	main(int argc, char **argv, char **envp)
+int	minishell(char *input)
 {
 	t_tokn	*tokens;
 
-	(void)envp;
 	tokens = NULL;
-    if (argc == 2)
-	{
-		if (tokenize(&tokens, argv[1], strlen(argv[1])))
+	if (tokenize(&tokens, input, strlen(input)))
+    	//print_tokens(tokens);
+		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+
    // 		lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
     		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	else
+		printf("Tokenization error.\n");
+	free_tokens(tokens);
+	return (0);
+}
+
+int main(void)
+{
+    char	*user_input;
+
+    while (1)
+	{
+        user_input = readline(MINISLAY);
+        if (user_input[0] != '\0')
+            add_history(user_input);
+        if (strcmp(user_input, "EXIT") == 0)
+		{
+        	free(user_input);
+			break;
+		}
 		else
-			printf("Parsing error.\n");
-		free_tokens(tokens);
-		return (0);
-	}
-    fprintf(stderr, "Usage: %s \"<command_string>\"\n", argv[0]);
-    return (127);
+			minishell(user_input);
+        free(user_input);
+    }
+    return 0;
 }

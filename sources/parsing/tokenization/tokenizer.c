@@ -6,13 +6,16 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 13:03:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/15 16:45:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//static const char	*g_hash[] = {};
+
 //Handles quote less explicitly than the previous stack/state approach
+//The magic number corresponds to the 2 quotes + the '\0' terminating byte.
 static char	*handle_quotes(const char *input, int *pos, int *type)
 {
 	int		start;
@@ -37,9 +40,8 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
 				*type |= DQTE;
 			else
 				*type |= SQTE;
-			(*pos)++;
+    		return ((*pos)++, token);
 		}
-    	return (token);
 	}
 	return (NULL);
 }
@@ -47,24 +49,33 @@ static char	*handle_quotes(const char *input, int *pos, int *type)
 //We use this fucntion to handle non special characters, hence building words.
 static char	*handle_words(const char *input, int *pos, int *type)
 {
-    int start;
+    int		start;
 
 	start = *pos;
+	*type = WORD;
     while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
 		(*pos)++;
-	*type = WORD;
     return (strndup(input + start, *pos - start));
 }
 
-/*
-//For now, we don't parse expansions and assignations because they're performed
-//dureing the execution phase -source: bash's man-.
-//Since we don't collapse quotes while parsing, they can be interpreted whenever
-//a WORD token is encountered while executiong -source: bash's man-.
-static char	*handle_expansions(const char *input, int *pos)
+static char	*handle_expansions(const char *input, int *pos, int *type)
 {
+    int		start;
 
-}*/
+	start = *pos;
+	*type = DOLL;
+    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
+	{
+		(*pos)++;
+		if (input[*pos] == '$')
+		{
+			if (*pos == start + 1)
+				(*pos)++;
+			break;
+		}	
+	}
+    return (strndup(input + start, *pos - start));
+}
 
 //We use this function to build a token list based on the user's input. If this
 //list is valid, its send to the lexer module.
@@ -88,10 +99,10 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_quotes(input, &pos, &type);
 		else if (strchr("&|()<>", input[pos]))
             token = handle_special_chars(input, &pos, &type);
-		//SPlit en 1 fichier contenant les differents cas.
+		else if (input[pos] == '$')
+			token = handle_expansions(input, &pos, &type);
 		else
             token = handle_words(input, &pos, &type);
-		//printf("%d	&	%s\n", type, token);
 		if (!create_new_token(head, &current, token, type))
 			return (false);
 		free(token);

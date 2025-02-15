@@ -1,0 +1,8 @@
+echo coucou && echo caca >> test.txt | grep caca
+echo coucou && echo caca
+
+echo coucou && echo caca >> infile.txt || << EOF grep 'pommes' > outfile.txt
+
+echo coucou && (echo caca >> test.txt | grep caca)
+echo coucou && (echo caca)
+echo coucou && (echo caca
