@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 16:45:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/16 08:37:31 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 
 	start = *pos;
 	*type = WORD;
-    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
+    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"=$", input[*pos]))
 		(*pos)++;
     return (strndup(input + start, *pos - start));
 }
@@ -64,7 +64,7 @@ static char	*handle_expansions(const char *input, int *pos, int *type)
 
 	start = *pos;
 	*type = DOLL;
-    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"", input[*pos]))
+    while (input[*pos] && !isspace(input[*pos]) && !strchr("&|()<>'\"=", input[*pos]))
 	{
 		(*pos)++;
 		if (input[*pos] == '$')
@@ -74,6 +74,20 @@ static char	*handle_expansions(const char *input, int *pos, int *type)
 			break;
 		}	
 	}
+    return (strndup(input + start, *pos - start));
+}
+
+//Precedence rule is enforced, yet what if we get ===== ?
+static char *handle_assignations(const char *input, int *pos, int *type)
+{
+    int start;
+
+    start = *pos;
+    if (*pos > 0 && !isspace(input[*pos - 1]))
+        *type = EQUL;
+    else
+        *type = WORD;
+    (*pos)++;
     return (strndup(input + start, *pos - start));
 }
 
@@ -101,7 +115,9 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_special_chars(input, &pos, &type);
 		else if (input[pos] == '$')
 			token = handle_expansions(input, &pos, &type);
-		else
+		else if (input[pos] == '=')
+            token = handle_assignations(input, &pos, &type);
+        else
             token = handle_words(input, &pos, &type);
 		if (!create_new_token(head, &current, token, type))
 			return (false);
