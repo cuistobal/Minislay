@@ -16,7 +16,6 @@ static void out_quotes()
 
 static void in_quotes()
 {
-
     if (inQuotes && currentQuote == input[i])
         inQuotes = 0;
     else if (!inQuotes)
@@ -84,7 +83,7 @@ int main(int argc, char **argv)
     char tokens[MAX_TOKENS][MAX_TOKEN_LENGTH];
     int tokenCount = 0;
 
-    tokenize(input, tokens, &tokenCount);
+    initial_tokenization(input, tokens, &tokenCount);
 
     printf("Tokens:\n");
     for (int i = 0; i < tokenCount; i++) {
