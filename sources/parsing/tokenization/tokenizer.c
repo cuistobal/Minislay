@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/16 08:37:31 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/17 11:02:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	current = NULL;
     while (pos < len)
 	{
+		type = 0;
         while (isspace(input[pos]))
 			pos++;
         if (input[pos] == '\0')
@@ -113,10 +114,10 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_quotes(input, &pos, &type);
 		else if (strchr("&|()<>", input[pos]))
             token = handle_special_chars(input, &pos, &type);
-		else if (input[pos] == '$')
-			token = handle_expansions(input, &pos, &type);
 		else if (input[pos] == '=')
             token = handle_assignations(input, &pos, &type);
+		else if (input[pos] == '$')
+			token = handle_expansions(input, &pos, &type);
         else
             token = handle_words(input, &pos, &type);
 		if (!create_new_token(head, &current, token, type))

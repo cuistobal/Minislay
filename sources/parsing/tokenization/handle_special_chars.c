@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/16 08:18:58 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/02/17 11:01:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ static char	*handle_single_identifier(const char *input, int *pos, int *type)
     else if (input[*pos] == '(')
     {        
         token = strndup(input + *pos, 1);
-        *type = XXXX;
+        *type = OPAR;
         (*pos)++;
     }
     else if (input[*pos] == ')')
     {
         token = strndup(input + *pos, 1);
-        *type = YYYY;
+        *type = CPAR;
         (*pos)++;
     }
     return (token);
@@ -95,8 +95,5 @@ char	*handle_special_chars(const char *input, int *pos, int *type)
     token = handle_redirections(input, pos, type);
     if (token != NULL)
 		return (token);
-	token = handle_single_identifier(input, pos, type);
-	if (token != NULL)
-		return (token);
-    return (token);
+	return (handle_single_identifier(input, pos, type));
 }
