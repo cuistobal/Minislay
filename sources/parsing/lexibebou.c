@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 16:40:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:57:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ bool	parse_command_list(t_tokn **current)
     return (*current == NULL);
 }
 
+// Command → CompoundCommand | SimpleCommand | Pipeline
 bool	parse_command(t_tokn **current)
 {
     t_tokn	*initial_node;
@@ -83,6 +84,31 @@ bool	parse_command(t_tokn **current)
 	return (false);
 }
 
+static bool	argument_or_redirection(t_tokn **current)
+{
+	if (*current)
+	{
+		if (!parse_redirection(current))
+		{
+			if (parse_argument(current))
+				return (argument_or_redirection(current));
+		}
+	}
+	return (current != NULL);
+}
+
+static bool	assignations(t_tokn **current)
+{
+	if (*current)
+	{
+		if (parse_assignment(current))
+			return (assignations(current));
+		return (false);
+	}
+	return (current != NULL);
+
+}
+
 //Separer en 3 fonctions	->	ASSIGNATIONS | XXX | (ARGUMENT | REDIRECTIONS)
 // SimpleCommand → Assignment* WORD (Argument | Redirection)*
 bool	parse_simple_command(t_tokn **current)
@@ -90,13 +116,13 @@ bool	parse_simple_command(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (*current)
 	{
-		//Boucle 1
-		while (parse_assignment(current))
-		{
-		}
-		//XXX
+		assignations(current);
 		if (parse_argument(current))
 		{
+			if (*current)
+				return (argument_or_redirection(current));
+		}
+		/*
 			//Boucle 2
     	//	while ((*current)->type >= WORD && (*current)->type <= ARED)//A modifier pour tenir compte du state parentheses.
 		//	{
@@ -110,7 +136,7 @@ bool	parse_simple_command(t_tokn **current)
 				{
 				}
 			}
-		}
+		}*/
     }
     return (*current == NULL);
 }
