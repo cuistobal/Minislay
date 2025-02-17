@@ -5,4 +5,5 @@ echo coucou >outfile outfile grep coucou wc -l
 >> outfile cat coucou les louslous bilous << EOF wc -l > file WWW cat echo weweeeeeweeeeeeee
 coucou outfile grep coucou wc -l
 echo coucou >outfile $PATH
+>> outfile echo weeeeeeeeee > outfile | wc && echo wlr
 

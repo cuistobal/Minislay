@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 16:57:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:25:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ static bool	argument_or_redirection(t_tokn **current)
 		{
 			if (parse_argument(current))
 				return (argument_or_redirection(current));
+			return (false);
 		}
+		return (argument_or_redirection(current));
 	}
 	return (current != NULL);
 }
@@ -117,11 +119,12 @@ bool	parse_simple_command(t_tokn **current)
 	if (*current)
 	{
 		assignations(current);
-		if (parse_argument(current))
+		return (argument_or_redirection(current));
+	/*	if (parse_argument(current))
 		{
 			if (*current)
 				return (argument_or_redirection(current));
-		}
+		}*/
 		/*
 			//Boucle 2
     	//	while ((*current)->type >= WORD && (*current)->type <= ARED)//A modifier pour tenir compte du state parentheses.
