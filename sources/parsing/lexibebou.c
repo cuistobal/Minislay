@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 15:30:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:40:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ bool	parse_command_list(t_tokn **current)
 bool	parse_command(t_tokn **current)
 {
     t_tokn	*initial_node;
-    bool	command_parsed;
 
-    command_parsed = false;
     initial_node = *current;
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if (*current)
@@ -76,14 +74,13 @@ bool	parse_command(t_tokn **current)
 			return (true);
 		else
 		{
-			printf("%d	->	%s\n", command_parsed, (*current)->value);
+			printf("%s\n", (*current)->value);
 			if ((*current)->type == LAND || (*current)->type == LORR)
 				return (true);
 		}
-		if (!command_parsed)
-    	    *current = initial_node;
+    	*current = initial_node;
 	}
-	return (command_parsed);
+	return (false);
 }
 
 //Separer en 3 fonctions	->	ASSIGNATIONS | XXX | (ARGUMENT | REDIRECTIONS)
@@ -112,9 +109,7 @@ bool	parse_simple_command(t_tokn **current)
 				while ((*current) && (parse_argument(current) || parse_redirection(current)))
 				{
 				}
-				return (true);
 			}
-			return (false);
 		}
     }
     return (*current == NULL);
