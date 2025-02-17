@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 13:45:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:54:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*handle_redirections(const char *input, int *pos, int *type)
 
 // Handle single characters: | -> returns NULL if we send a single &
 // EDGE case here
-static char	*handle_single_char(const char *input, int *pos, int *type)
+static char	*handle_single_identifier(const char *input, int *pos, int *type)
 {
 	char	*token;
 
@@ -70,23 +70,30 @@ static char	*handle_single_char(const char *input, int *pos, int *type)
         *type = PIPE;
         (*pos)++;
     }
+    else if (input[*pos] == '(')
+    {        
+        token = strndup(input + *pos, 1);
+        *type = OPAR;
+        (*pos)++;
+    }
+    else if (input[*pos] == ')')
+    {
+        token = strndup(input + *pos, 1);
+        *type = CPAR;
+        (*pos)++;
+    }
     return (token);
 }
 
 char	*handle_special_chars(const char *input, int *pos, int *type)
 {
-    char *token;
+    char    *token;
 
     token = handle_logical_operators(input, pos, type);
-    if (token != NULL)
+    if (token)
 		return (token);
     token = handle_redirections(input, pos, type);
-    if (token != NULL)
+    if (token)
 		return (token);
-	token = handle_single_char(input, pos, type);
-	if (token != NULL)
-		return (token);
-	token = strndup(input + *pos, 1);
-    (*pos)++;
-    return (token);
+	return (handle_single_identifier(input, pos, type));
 }

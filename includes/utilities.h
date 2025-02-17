@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/13 16:49:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 12:48:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*my_strtok_r(char *str, const char *delim, char **saveptr);
 
 //tokenizer_bools_2.c:
 bool	is_paren(char c);
+bool	is_quote(char c);
 bool	is_squotes(char c);
 bool	is_dquotes(char c);
 bool	is_iredir(char c);

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 17:46:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:09:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ int	minishell(char *input)
 
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
+	{
     	//print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-
-   // 		lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-    		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+   		 	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	}
 	else
 		printf("Tokenization error.\n");
 	free_tokens(tokens);
