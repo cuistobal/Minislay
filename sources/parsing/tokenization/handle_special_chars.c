@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 11:01:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:54:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ char	*handle_special_chars(const char *input, int *pos, int *type)
     char    *token;
 
     token = handle_logical_operators(input, pos, type);
-    if (token != NULL)
+    if (token)
 		return (token);
     token = handle_redirections(input, pos, type);
-    if (token != NULL)
+    if (token)
 		return (token);
 	return (handle_single_identifier(input, pos, type));
 }

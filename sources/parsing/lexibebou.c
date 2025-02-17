@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 11:51:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:30:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 // Main parsing function with backtracking
-bool parse_script(t_tokn *tokens)
+bool	parse_script(t_tokn *tokens)
 {
     t_tokn *current;
     t_tokn *initial_node;
@@ -31,7 +31,7 @@ bool parse_script(t_tokn *tokens)
 }
 
 // CommandList → Command ('&&' | '||') CommandList | Command
-bool parse_command_list(t_tokn **current)
+bool	parse_command_list(t_tokn **current)
 {
     t_tokn *initial_node;
 
@@ -86,40 +86,45 @@ bool	parse_command(t_tokn **current)
 	return (command_parsed);
 }
 
+//Separer en 3 fonctions	->	ASSIGNATIONS | XXX | (ARGUMENT | REDIRECTIONS)
 // SimpleCommand → Assignment* WORD (Argument | Redirection)*
 bool	parse_simple_command(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (*current)
 	{
-    	if ((*current)->type >= WORD && (*current)->type <= ARED)
+		//Boucle 1
+		while (parse_assignment(current))
 		{
-			if (parse_assignment(current))
-				return (parse_simple_command(current));
-    	    if ((*current)->type >= WORD && (*current)->type <= ARED)
+		}
+		//XXX
+		if (parse_argument(current))
+		{
+			//Boucle 2
+    	//	while ((*current)->type >= WORD && (*current)->type <= ARED)//A modifier pour tenir compte du state parentheses.
+		//	{
+			//	if ((*current)->type & WORD)
+			//		parse_argument(current);
+			//	else
+			//		parse_redirection(current);
+    	    if ((*current) && (parse_argument(current) || parse_redirection(current))) //mettre parse redirection en 1er ?
 			{
-    	        if ((*current)->type & WORD)
+				while ((*current) && (parse_argument(current) || parse_redirection(current)))
 				{
-    	            parse_argument(current);
-    	            return (parse_simple_command(current));
 				}
-				else
-				{
-					parse_redirection(current);
-    	        	return (parse_simple_command(current));
-				}
-    	    }
-			return (true);
+				return (true);
+			}
+			return (false);
 		}
     }
     return (*current == NULL);
 }
 
 // Pipeline → Command ('|' Command)*
-bool parse_pipeline(t_tokn **current)
+bool	parse_pipeline(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
-    if ((*current)->type == PIPE)
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__); 
+	if ((*current) && (*current)->type == PIPE)
 	{
 		*current = (*current)->next;
 		return (parse_command(current)); 
@@ -128,7 +133,7 @@ bool parse_pipeline(t_tokn **current)
 }
 
 // '(' CommandList ')'
-bool parse_compound_command(t_tokn **current)
+bool	parse_compound_command(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type == OPAR)
@@ -145,18 +150,15 @@ bool parse_compound_command(t_tokn **current)
 }
 
 // Assignment → WORD '=' Expression -> Implemtanton a revoir
-bool parse_assignment(t_tokn **current)
+bool	parse_assignment(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 
-    if (*current && (*current)->next)
+    if ((*current)->type & EQUL)
 	{
-        if ((*current)->type & WORD && (*current)->next->type == EQUL)
-		{
-            *current = (*current)->next->next;
-            parse_expression(current);
-        }
-    }
+		*current = (*current)->next->next;
+		return (true);
+	}
     return (false);
 }
 
@@ -166,7 +168,7 @@ bool	parse_argument(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type & WORD)
 	{
-        *current = (*current)->next;
+       	*current = (*current)->next;
         return (true);
     }
     return (false);
@@ -184,6 +186,7 @@ bool	parse_redirection(t_tokn **current)
             *current = (*current)->next;
             return (true);
         }
+		//Syntax error	->	Expected "" token after REDIRECTION
     }
     return (false);
 }

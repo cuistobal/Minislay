@@ -1,2 +1,3 @@
 echo "J'aime les pommes" | wc -l
 ls -l && ((ls -la || fre -asa) && khk -ddd) > outfile.txt | grep pommes > result << "EOF" | | grep $VAR
+echo "coucou 'les loulous' je suis une $VAR"&&(ech"o" $VAR)>outfile.txt && ="abc" || var="$var"

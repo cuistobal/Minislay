@@ -1,82 +1,73 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   initial_tokenization.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 15:04:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:13:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//CURRENT MODULE IMPLEMENTATION
+
 #include "minislay.h"
 
-static bool	comply_to_norm(const char *input, int *pos, int *t, int s, char *q)
+//Creates initial words.
+static char	*handle_words(const char *input, int *pos)
 {
-	if (*q)
-	{
-        if (input[*pos] == *q)
-			*q = '\0';
-	}
-	else
-	{
-		if (is_quote(input[*pos]))
-           	*q = input[*pos];
-		else if (isspace(input[*pos]))
-			return (false);
-		else if (input[*pos] == '=' && *pos > s)
-			*t = EQUL; 
-	}
-	return (true);
-}
+    int		start;
+    char	quote;
 
-//We use this fucntion to handle non special characters, hence building words.
-static char	*handle_words(const char *input, int *pos, int *type)
-{
-	int		start;
-	char	quote;
-
-	quote = '\0';
-	start = *pos;
-	*type = WORD;
-    while (input[*pos] && !strchr("&|()<>", input[*pos]))
+    start = *pos;
+    quote = '\0';
+    while (input[*pos])
 	{
-		if (!comply_to_norm(input, pos, type, start, &quote))
-			break;
-		(*pos)++;
-	}
+        if (quote)
+		{
+            if (input[*pos] == quote)
+                quote = '\0';
+        }
+		else
+		{
+			if (is_quote(input[*pos]))
+            	quote = input[*pos];
+			else if (isspace(input[*pos]))
+            	break;
+		}
+        (*pos)++;
+    }
 	if (quote)
 		return (NULL);
     return (strndup(input + start, *pos - start));
 }
 
-//We use this function to build a token list based on the user's input. If this
-//list is valid, its send to the lexer module.
-bool	tokenize(t_tokn **head, const char *input, int len)
+//Builds a token list based on the user's input. basically whitespaces 
+//collapsing
+bool tokenize(t_tokn **head, const char *input, int len)
 {
-    int 	pos;
-	int		type;
-	char	*token;
-	t_tokn	*current;
+    int		pos;
+    char	*token;
+    t_tokn	*current;
 
 	pos = 0;
 	token = NULL;
 	current = NULL;
-    while (pos < len)
+	while (pos < len)
+   // while (input[pos])
 	{
-		type = 0;
         while (isspace(input[pos]))
-			pos++;
+            pos++;
         if (input[pos] == '\0')
-			break;
-		else if (strchr("&|()<>", input[pos]))
-            token = handle_special_chars(input, &pos, &type);
-        else
-            token = handle_words(input, &pos, &type);
-		if (!create_new_token(head, &current, token, type))
-			return (false);
-		free(token);
+            break;
+        token = handle_words(input, &pos);
+        if (!create_new_token(head, &current, token, WORD))
+		{
+            free(token);
+            return (false);
+        }
+        free(token);
     }
     return (true);
 }
