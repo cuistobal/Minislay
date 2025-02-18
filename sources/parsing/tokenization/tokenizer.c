@@ -6,43 +6,59 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 15:04:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:24:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static bool	comply_to_norm(const char *input, int *pos, int *t, int s, char *q)
+//Making this stew fit the norminette recipe. IYKYK FRFR
+static bool	norminette(const char input, int *type, char *quote, bool check)
 {
-	if (*q)
+	if (*quote)
 	{
-        if (input[*pos] == *q)
-			*q = '\0';
+        if (input == *quote)
+			*quote = '\0';
 	}
 	else
 	{
-		if (is_quote(input[*pos]))
-           	*q = input[*pos];
-		else if (isspace(input[*pos]))
+		if (is_quote(input))
+           	*quote = input;
+		else if (isspace(input))
 			return (false);
-		else if (input[*pos] == '=' && *pos > s)
-			*t = EQUL; 
+		else if (input == '=' && check)
+			*type = EQUL; 
 	}
 	return (true);
 }
 
 //We use this fucntion to handle non special characters, hence building words.
+//Ungracefully handling the assignements vs words here:
+//
+//	->	If we get a '=', the word becomes an assignation if the '=' was not 
+//		preceded by an expansion inside the current token. Expansions past the
+//		'=' are ok though.
+//		Also, the token is considered a word if it starts with a '='. And that
+//		makes total sense. Btw, this case isnt throwing a syntax error, it's
+//		interpreted either as a command, or a command argument down the road.
+//
+//The function returns NULL if the quote is unclosed, or a duplicated copy of
+//the token's memory zone.
 static char	*handle_words(const char *input, int *pos, int *type)
 {
 	int		start;
 	char	quote;
+	bool	dollar;
 
 	quote = '\0';
 	start = *pos;
 	*type = WORD;
-    while (input[*pos] && !strchr("&|()<>", input[*pos]))
+    dollar = false;
+	while (input[*pos] && !strchr("&|()<>", input[*pos]))
 	{
-		if (!comply_to_norm(input, pos, type, start, &quote))
+		if (*type == WORD && !dollar && input[*pos] == '$')
+			dollar = true;
+		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
 			break;
 		(*pos)++;
 	}
@@ -76,7 +92,7 @@ bool	tokenize(t_tokn **head, const char *input, int len)
             token = handle_words(input, &pos, &type);
 		if (!create_new_token(head, &current, token, type))
 			return (false);
-		free(token);
+		//free(token);
     }
     return (true);
 }

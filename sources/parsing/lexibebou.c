@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 09:53:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:00:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,10 +177,9 @@ bool	parse_compound_command(t_tokn **current)
 bool	parse_assignment(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
-
-    if ((*current)->type & EQUL)
+    if ((*current) && (*current)->type & EQUL)
 	{
-		*current = (*current)->next->next;
+		*current = (*current)->next;
 		return (true);
 	}
     return (false);
@@ -190,7 +189,7 @@ bool	parse_assignment(t_tokn **current)
 bool	parse_argument(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
-    if ((*current)->type & WORD)
+    if ((*current) && (*current)->type & WORD)
 	{
        	*current = (*current)->next;
         return (true);
