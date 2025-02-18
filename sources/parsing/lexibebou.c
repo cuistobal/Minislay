@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 17:25:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 09:53:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,16 +201,25 @@ bool	parse_argument(t_tokn **current)
 // Redirection → ('>' | '>>' | '<' | '<<') WORD
 bool	parse_redirection(t_tokn **current)
 {
+	t_tokn	*save;
+
+	save = NULL;
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type >= IRED && (*current)->type <= ARED)
 	{
+		save = *current;
         *current = (*current)->next;
-        if ((*current)->type & WORD)
+        if ((*current))
 		{
-            *current = (*current)->next;
-            return (true);
-        }
-		//Syntax error	->	Expected "" token after REDIRECTION
+			if ((*current)->type & WORD)
+			{
+        	    *current = (*current)->next;
+        	    return (true);
+        	}
+			printf("syntax error: Unexpected %s token after %s token.\n", (*current)->value, save->value);
+		}
+		*current = save;
+		//Syntax error	->	Expected "" token after REDIRECTION -> FOUND EOF INSTEAD
     }
     return (false);
 }
