@@ -6,4 +6,6 @@ echo coucou >outfile outfile grep coucou wc -l
 coucou outfile grep coucou wc -l
 echo coucou >outfile $PATH
 >> outfile echo weeeeeeeeee > outfile | wc && echo wlr
+(echo >test "jaime els pommes") && echo success
+cat test test test test test test test test test test test test test test test test test test test test | grep "pommes" | wc -l
 
