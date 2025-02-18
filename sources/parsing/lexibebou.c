@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 15:54:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:16:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ bool	parse_script(t_tokn *tokens)
     if (tokens)
 	{
 		if (parse_command_list(&current))
+		{
+			//separateur
     	    return (true);
+		}
     	current = save;
 	}
 	return (false);
@@ -47,11 +50,14 @@ bool	parse_command_list(t_tokn **current)
 			{
 				if ((*current)->type == LAND || (*current)->type == LORR)
 				{
-                	*current = (*current)->next;
-					if (!*current)
-						return (false);
+                	//*current = (*current)->next;
+				//	if (!*current)
+				//		return (false);
+					return ((*current)->next);
 				}
-				return (parse_command_list(current));
+				return (true);
+			//	printf("Je n'ai rien a faire ici.\n");
+			//	return (parse_command_list(current));
             }
             return (true);
         }
@@ -193,6 +199,20 @@ bool	parse_simple_command(t_tokn **current)
     return (*current == NULL);
 }
 
+//Assesses if we're dealing with the last element of the list.
+static bool	has_next_elem(t_tokn *current)
+{
+	if (current)
+		return (current->next);
+	return (false);
+}
+
+//Assesses if the lexeme's value falls within the set range 
+static bool	valid_lexeme(t_tokn *current, int min, int max)
+{
+	return (current && current->type >= min && current->type <= max);	
+}
+
 // Pipeline → Command ('|' Command)*
 bool	parse_pipeline(t_tokn **current)
 {
@@ -207,8 +227,10 @@ bool	parse_pipeline(t_tokn **current)
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
+		if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
+			return (true);
 		//Faire une sous fonction de retour mdr
-    	return ((*current)->type >= OPAR && (*current)->type <= LORR && (*current)->next);
+    	//return ((*current)->type >= OPAR && (*current)->type <= LORR && (*current)->next);
 	}
 	//Pas sur de ce retour
 	return (false);

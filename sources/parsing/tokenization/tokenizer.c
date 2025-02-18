@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 15:40:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:11:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 //
 static char	*determinism(const char *input, int *pos, int *type)
 {
-	if (strchr("&|()<>", input[*pos]))
+	if (strchr(SPECIAL, input[*pos]))
 		return (handle_special_chars(input, pos, type));
 	return (handle_words(input, pos, type));
 }
@@ -101,20 +101,13 @@ bool	tokenize(t_tokn **head, const char *input, int len)
         if (input[pos] == '\0')
 			break;
 		token = determinism(input, &pos, &type);
-		if (!create_new_token(head, &current, token, type))
+		if (!create_new_token(head, &current, token, type)) 
 		{
 			free(token);
 			return (false);
 		}
-		/*
-		else
-		{
-			Create a syntax list here ?
-		}
-		*/
-		//free(token);
     }
-    return (true);
+	return (true);
 }
 
 /*	UTILS && TESTS

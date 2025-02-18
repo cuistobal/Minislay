@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 14:12:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:12:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 
 //Tokens definition by list
 # define GRAMMAR "()|&><$=*\""
+# define SPECIAL "()|&><"
 # define IAE "$=*"
 
 //Masks for terminal parser state
@@ -83,7 +84,7 @@
 
 
 //Others
-# define STACK_SIZE 1
+# define STACK_SIZE 2
 
 /*
 //New approach
