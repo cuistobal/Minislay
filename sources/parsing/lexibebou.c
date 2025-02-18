@@ -6,26 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 10:00:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:48:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 // Main parsing function with backtracking
+// We need to add a module that creates a copy of the meaningfull main list
+// elements and build the AST out of it OR build the AST straight away.
 bool	parse_script(t_tokn *tokens)
 {
-    t_tokn *current;
-    t_tokn *initial_node;
+    t_tokn	*save;
+    t_tokn	*current;
 
-    current = tokens;
-    initial_node = current;
+    save = tokens;
+	current = save;
     (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
     if (tokens)
 	{
 		if (parse_command_list(&current))
     	    return (true);
-    	current = initial_node;
+    	current = save;
 	}
 	return (false);
 }
@@ -33,13 +35,13 @@ bool	parse_script(t_tokn *tokens)
 // CommandList → Command ('&&' | '||') CommandList | Command
 bool	parse_command_list(t_tokn **current)
 {
-    t_tokn *initial_node;
+   // t_tokn *initial_node;
 
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
-    initial_node = *current;
+   // initial_node = *current;
     if (*current)
 	{
-        if (parse_command(current))
+		if (parse_command(current))
 		{
             if (*current)
 			{
@@ -53,11 +55,12 @@ bool	parse_command_list(t_tokn **current)
             }
             return (true);
         }
-        *current = initial_node;
+       // *current = initial_node;
     }
     return (*current == NULL);
 }
 
+/*OLD
 // Command → CompoundCommand | SimpleCommand | Pipeline
 bool	parse_command(t_tokn **current)
 {
@@ -82,6 +85,52 @@ bool	parse_command(t_tokn **current)
     	*current = initial_node;
 	}
 	return (false);
+}*/
+
+//TEST
+// Command → CompoundCommand | SimpleCommand | Pipeline
+bool parse_command(t_tokn **current)
+{
+    //t_tokn	*initial_node;
+
+    //initial_node = *current;
+    (*current) ? printf("%s\t@\t%s\n", (*current)->value, __func__) : printf("End\t@\t%s\n", __func__);
+    if (*current)
+    {
+        if ((*current)->type == OPAR)
+        {
+			*current = (*current)->next;
+            if (!parse_command_list(current))
+			{
+				printf("Syntax error: Expected token after '(' token.\n");
+                return (false);
+			}
+			/*else if (!*current || (*current)->type != CPAR)
+			{
+				printf("Syntax error: Expected ')' token.\n");
+				return (false);
+			}*/
+			if (*current)
+				return (*current = (*current)->next, true);
+		//	*current = (*current)->next;
+        //	return (true);
+        }
+        else if ((*current)->type != CPAR)
+		{
+			if (!parse_simple_command(current))
+			{
+				if ((*current)->type != CPAR)
+            		return (parse_pipeline(current));
+			}
+		}
+		if (*current)
+			return (*current = (*current)->next, true);
+     //   if (!*current || (*current)->type == CPAR)
+       //     return (true);
+        //*current = initial_node;
+    }
+	return (!*current || (*current)->type == CPAR);
+    //return (false);
 }
 
 static bool	argument_or_redirection(t_tokn **current)
@@ -164,7 +213,7 @@ bool	parse_compound_command(t_tokn **current)
 	{
         *current = (*current)->next;
         parse_command_list(current);
-        if ((*current)->type == CPAR)
+		if ((*current)->type == CPAR)
 		{
             *current = (*current)->next;
             return (true);
