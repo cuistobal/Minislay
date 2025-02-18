@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 10:24:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:40:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,21 @@ static char	*handle_words(const char *input, int *pos, int *type)
     return (strndup(input + start, *pos - start));
 }
 
+//
+static char	*determinism(const char *input, int *pos, int *type)
+{
+	if (strchr("&|()<>", input[*pos]))
+		return (handle_special_chars(input, pos, type));
+	return (handle_words(input, pos, type));
+}
+
+//
+static void	skip_whitespaces(const char *input, int *pos)
+{
+	while (isspace(input[*pos]))
+		(*pos)++;
+}
+
 //We use this function to build a token list based on the user's input. If this
 //list is valid, its send to the lexer module.
 bool	tokenize(t_tokn **head, const char *input, int len)
@@ -82,16 +97,21 @@ bool	tokenize(t_tokn **head, const char *input, int len)
     while (pos < len)
 	{
 		type = 0;
-        while (isspace(input[pos]))
-			pos++;
+		skip_whitespaces(input, &pos);
         if (input[pos] == '\0')
 			break;
-		else if (strchr("&|()<>", input[pos]))
-            token = handle_special_chars(input, &pos, &type);
-        else
-            token = handle_words(input, &pos, &type);
+		token = determinism(input, &pos, &type);
 		if (!create_new_token(head, &current, token, type))
+		{
+			free(token);
 			return (false);
+		}
+		/*
+		else
+		{
+			Create a syntax list here ?
+		}
+		*/
 		//free(token);
     }
     return (true);

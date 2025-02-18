@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 11:48:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:54:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,12 +197,21 @@ bool	parse_simple_command(t_tokn **current)
 bool	parse_pipeline(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__); 
-	if ((*current) && (*current)->type == PIPE)
+	if ((*current))
 	{
-		*current = (*current)->next;
-		return (parse_command(current)); 
+		if ((*current)->type == PIPE)
+		{
+			*current = (*current)->next;
+			if (*current)
+				return (parse_command(current)); 
+			printf("Invalid syntax, expected token after PIPE token.\n");	
+			return (false);
+		}
+		//Faire une sous fonction de retour mdr
+    	return ((*current)->type >= OPAR && (*current)->type <= LORR && (*current)->next);
 	}
-    return (false);
+	//Pas sur de ce retour
+	return (false);
 }
 
 // '(' CommandList ')'
