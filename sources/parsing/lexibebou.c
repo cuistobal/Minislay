@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 16:09:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:39:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,21 @@ static void	consume_token(t_tokn **token)
 		*token = (*token)->next;
 }
 
-/*
-//Parser state is a stack like int that increments each time the parser finds an
-//OPAR. It decreases when encountering a CPAR, unless state = -1. If so, throws
-//an error that stops the process (invalid syntax).
-static void create_parsing_structure(t_pars *parser)
-{
-	parser->state = -1;
-	parser->command_blocks = NULL;
-}*/
-
 //We use this function to split the original token list.*static bool	split_list(t_tokn *head, t_tokn *tail)
-static bool	split_list(t_tokn **head, t_tokn **tail)
+static bool	split_list(t_tokn **token, t_tokn **current, t_tokn **save)
 {
 	t_tokn	*new_head;
 
-	if (*head && *tail) // tail ? -> what if we reached the end of the list and tail is NULL ?
+	if (*token) // tail ? -> what if we reached the end of the list and tail is NULL ?
 	{
-		new_head = (*tail)->next;
-		(*tail)->next = NULL;
-		tail = head;
-		*head = new_head;
+		if (*current)
+		{
+			new_head = (*current)->next;
+			(*current)->next = NULL;
+			current = token;
+			token = save;
+			*save = new_head;
+		}
 	}
 	return (true); //Need to work on that return
 }
@@ -71,31 +65,46 @@ static bool create_command_node(t_bloc **list, t_bloc **tail, t_tokn *tokens)
 // Main parsing function with backtracking
 // We need to add a module that creates a copy of the meaningfull main list
 // elements and build the AST out of it OR build the AST straight away.
-bool	parse_script(t_bloc **list, t_tokn *tokens)
+bool	parse_script(t_bloc **list, t_tokn *tokens, t_tokn *save)
 {
-	//t_pars	parser;
-	t_bloc		*tail;
-    t_tokn		*current;
+	t_bloc			*tail;
+    t_tokn			*current;
 
 	tail = *list;
 	current = tokens;
     (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
-    if (tokens)
-	{
+   // if (tokens)
+//	{
+		//TEST
+		if (save != tokens && !is_state_active(current->type, OPAR))
+		{
+			printf("I'm here	%s\n", tokens->value);
+			create_command_node(list, &tail, tokens);
+			split_list(&tokens, &current, &save);
+			if (tokens)
+			{
+				if (tokens->type == LORR || tokens->type == LAND)
+					consume_token(&tokens);
+				if (tokens && save)
+					return (parse_script(&tail, tokens, save));
+			}
+		}
+		//	printf("		%s\n", tokens->value);
+		else if (tokens)
+		{
 		if (parse_command_list(&current))
 		{
+			current ? printf("Post parse_command()	->	%s	&&	%d\n", current->value, current->type) : printf("\n");
 			if (current && !is_state_active(current->type, OPAR))
 			{
 				create_command_node(list, &tail, tokens);
-				split_list(&tokens, &current);
+				split_list(&tokens, &current, &save);
 				if (tokens)
 				{
-					if (tokens->type == LORR || tokens->type == LAND) //LEAKS
-																	  //Also, no split nor consumption
-																	  //on subshell mode.
+					if (tokens->type == LORR || tokens->type == LAND)
 						consume_token(&tokens);
-					if (tokens && current)
-						return (parse_script(list, tokens));
+					if (tokens && save)
+						return (parse_script(&tail, tokens, save));
 				}
 				return (true);
 				//end of tokens (?)
@@ -107,7 +116,7 @@ bool	parse_script(t_bloc **list, t_tokn *tokens)
 					while (current && (current->type & LORR || current->type & LAND || current->type & CPAR))
 						consume_token(&current);
 				}
-				return (parse_script(list, current));
+				return (parse_script(list, current, save));
 			}
 			return (true);
 		}
@@ -291,7 +300,12 @@ bool	parse_pipeline(t_tokn **current)
 			return (false);
 		}
 		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
+		{
+			if ((*current)->type & CPAR)
+				printf("%s	->	%d	@	%s\n", (*current)->value, (*current)->type, __func__);
+				//consume_token(current);
 			return (true);
+		}
 	}
 	//Pas sur de ce retour
 	return (false);

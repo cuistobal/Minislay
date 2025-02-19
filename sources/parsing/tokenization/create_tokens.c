@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 15:07:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:24:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,12 @@ static bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 	static int	count;	
 
 	if (!*head)
+	{
 		count = -1;
-	if (count < 0)
 		*mask = INIT;
+	}
+	//if (count < 0)
+	//	*mask = INIT;
 	if (current)
 	{
 		if ((current->type == OPAR))
@@ -73,6 +76,8 @@ static bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 			if (count < 0)
 				return (false);
 			count--;
+			if (count < 0)
+				*mask = INIT;
 		}
 	}
 	return (true);
@@ -90,7 +95,8 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 	{
 		if (get_stacked(head, new_node, &mask))
 		{
-			if (!is_state_active(new_node->type, mask))
+			//if (!is_state_active(new_node->type, mask))
+			if (!(new_node->type & mask))
 				set_state(&(new_node)->type, mask);
 			insert_token(head, current, &new_node);		
 			return (true);
