@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 15:30:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:09:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ bool	parse_script(t_bloc **list, t_tokn *tokens)
 	{
 		if (parse_command_list(&current))
 		{
-			if (!is_state_active(current->type, OPAR))
+			if (current && !is_state_active(current->type, OPAR))
 			{
 				create_command_node(list, &tail, tokens);
 				split_list(&tokens, &current);
@@ -100,21 +100,20 @@ bool	parse_script(t_bloc **list, t_tokn *tokens)
 				return (true);
 				//end of tokens (?)
 			}
-			else
+			else if (current)
 			{
-				while (tokens->type & OPAR)
+				if (current && current->type & OPAR)
 				{
-					if ((tokens->type & LORR || tokens->type & LAND || tokens->type & CPAR))
+					while (current && (current->type & LORR || current->type & LAND || current->type & CPAR))
 						consume_token(&current);
-					else
-						break;
 				}
 				return (parse_script(list, current));
 			}
+			return (true);
 		}
 		//Invalid parenthese.
 	}
-	return (false);
+	return (*list);
 }
 
 // CommandList → Command ('&&' | '||') CommandList | Command
