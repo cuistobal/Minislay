@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 14:07:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:30:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,6 @@ static bool create_command_node(t_bloc **list, t_bloc **tail, t_tokn *tokens)
 	return (new_node);
 }
 
-//Checking parenthese syntax && detecting if we're in a subshell.
-static bool	check_sub_shells(t_tokn *token, int *count)
-{
-	if (token->type == OPAR)
-		(*count)++;
-	else if (token->type == CPAR)
-		(*count)--;
-	return (*count >= -1);
-}
-
 // Main parsing function with backtracking
 // We need to add a module that creates a copy of the meaningfull main list
 // elements and build the AST out of it OR build the AST straight away.
@@ -86,37 +76,41 @@ bool	parse_script(t_bloc **list, t_tokn *tokens)
 	//t_pars	parser;
 	t_bloc		*tail;
     t_tokn		*current;
-	static int	sub_shells;
 
 	tail = *list;
 	current = tokens;
     (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
     if (tokens)
 	{
-		//Ajout du module de check des sous shells
-		if (check_sub_shells(tokens, &sub_shells))
+		if (parse_command_list(&current))
 		{
-			if (parse_command_list(&current))
+			if (!is_state_active(current->type, OPAR))
 			{
-				if (sub_shells == -1)
+				create_command_node(list, &tail, tokens);
+				split_list(&tokens, &current);
+				if (tokens)
 				{
-					create_command_node(list, &tail, tokens);
-					split_list(&tokens, &current);
-					if (tokens)
-					{
-						if (tokens->type == LORR || tokens->type == LAND) //LEAKS
-							consume_token(&tokens);
-						if (tokens && current)
-							return (parse_script(list, tokens));
-					}
-					return (true);
+					if (tokens->type == LORR || tokens->type == LAND) //LEAKS
+																	  //Also, no split nor consumption
+																	  //on subshell mode.
+						consume_token(&tokens);
+					if (tokens && current)
+						return (parse_script(list, tokens));
 				}
-				else
-				{
-
-				}
+				return (true);
+				//end of tokens (?)
 			}
-			//end of tokens (?)
+			else
+			{
+				while (tokens->type & OPAR)
+				{
+					if ((tokens->type & LORR || tokens->type & LAND || tokens->type & CPAR))
+						consume_token(&current);
+					else
+						break;
+				}
+				return (parse_script(list, current));
+			}
 		}
 		//Invalid parenthese.
 	}
