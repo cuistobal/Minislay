@@ -6,31 +6,119 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 18:16:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:07:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//Move to utils -> remove static status
+static void	consume_token(t_tokn **token)
+{
+	if (*token)
+		*token = (*token)->next;
+}
+
+/*
+//Parser state is a stack like int that increments each time the parser finds an
+//OPAR. It decreases when encountering a CPAR, unless state = -1. If so, throws
+//an error that stops the process (invalid syntax).
+static void create_parsing_structure(t_pars *parser)
+{
+	parser->state = -1;
+	parser->command_blocks = NULL;
+}*/
+
+//We use this function to split the original token list.*static bool	split_list(t_tokn *head, t_tokn *tail)
+static bool	split_list(t_tokn **head, t_tokn **tail)
+{
+	t_tokn	*new_head;
+
+	if (*head && *tail) // tail ? -> what if we reached the end of the list and tail is NULL ?
+	{
+		new_head = (*tail)->next;
+		(*tail)->next = NULL;
+		tail = head;
+		*head = new_head;
+	}
+	return (true); //Need to work on that return
+}
+
+//Appending the sub token_list to the global command_list
+static bool create_command_node(t_bloc **list, t_bloc **tail, t_tokn *tokens)
+{
+	t_bloc	*new_node;
+
+	new_node = (t_bloc *)malloc(sizeof(t_bloc));
+	if (new_node)
+	{
+		new_node->token = tokens;
+		new_node->next = NULL;
+		if (!*list)
+		{
+			*list = new_node;
+			*tail = new_node;
+		}
+		else
+		{
+			(*tail)->next = new_node;
+			*tail = new_node;	
+		}
+	}
+	return (new_node);
+}
+
+//Checking parenthese syntax && detecting if we're in a subshell.
+static bool	check_sub_shells(t_tokn *token, int *count)
+{
+	if (token->type == OPAR)
+		(*count)++;
+	else if (token->type == CPAR)
+		(*count)--;
+	return (*count >= -1);
+}
+
 // Main parsing function with backtracking
 // We need to add a module that creates a copy of the meaningfull main list
 // elements and build the AST out of it OR build the AST straight away.
-bool	parse_script(t_tokn *tokens)
+bool	parse_script(t_bloc **list, t_tokn *tokens)
 {
-    t_tokn	*save;
-    t_tokn	*current;
+	//t_pars	parser;
+	t_bloc		*tail;
+    t_tokn		*current;
+	static int	sub_shells;
 
-    save = tokens;
-	current = save;
+	tail = *list;
+	current = tokens;
     (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
     if (tokens)
 	{
-		if (parse_command_list(&current))
+		//Ajout du module de check des sous shells
+		if (check_sub_shells(tokens, &sub_shells))
 		{
-			//separateur
-    	    return (true);
+			if (parse_command_list(&current))
+			{
+				if (sub_shells == -1)
+				{
+					create_command_node(list, &tail, tokens);
+					split_list(&tokens, &current);
+					if (tokens)
+					{
+						if (tokens->type == LORR || tokens->type == LAND) //LEAKS
+							consume_token(&tokens);
+						if (tokens && current)
+							return (parse_script(list, tokens));
+					}
+					return (true);
+				}
+				else
+				{
+
+				}
+			}
+			//end of tokens (?)
 		}
-    	current = save;
+		//Invalid parenthese.
 	}
 	return (false);
 }
@@ -54,6 +142,7 @@ bool	parse_command_list(t_tokn **current)
 				//	if (!*current)
 				//		return (false);
 					return ((*current)->next);
+				//	return (parse_command_list(current));
 				}
 				return (true);
 			//	printf("Je n'ai rien a faire ici.\n");
@@ -65,33 +154,6 @@ bool	parse_command_list(t_tokn **current)
     }
     return (*current == NULL);
 }
-
-/*OLD
-// Command → CompoundCommand | SimpleCommand | Pipeline
-bool	parse_command(t_tokn **current)
-{
-    t_tokn	*initial_node;
-
-    initial_node = *current;
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
-    if (*current)
-	{
-		if ((*current)->type == OPAR)
-    	    return (parse_compound_command(current));
-    	else if (!parse_simple_command(current))
-			return (parse_pipeline(current));
-    	if (!*current || (*current)->type == CPAR)
-			return (true);
-		else
-		{
-			printf("%s\n", (*current)->value);
-			if ((*current)->type == LAND || (*current)->type == LORR)
-				return (true);
-		}
-    	*current = initial_node;
-	}
-	return (false);
-}*/
 
 //TEST
 // Command → CompoundCommand | SimpleCommand | Pipeline
@@ -105,7 +167,7 @@ bool parse_command(t_tokn **current)
     {
         if ((*current)->type == OPAR)
         {
-			*current = (*current)->next;
+			consume_token(current);
             if (!parse_command_list(current))
 			{
 				printf("Syntax error: Expected token after '(' token.\n");
@@ -117,7 +179,10 @@ bool parse_command(t_tokn **current)
 				return (false);
 			}*/
 			if (*current)
-				return (*current = (*current)->next, true);
+			{
+				consume_token(current);
+				return (true);
+			}
 		//	*current = (*current)->next;
         //	return (true);
         }
@@ -125,12 +190,15 @@ bool parse_command(t_tokn **current)
 		{
 			if (!parse_simple_command(current))
 			{
-				if ((*current)->type != CPAR)
+				if ((*current) && (*current)->type != CPAR)
             		return (parse_pipeline(current));
 			}
 		}
 		if (*current)
-			return (*current = (*current)->next, true);
+		{
+			consume_token(current);
+			return (true);
+		}
      //   if (!*current || (*current)->type == CPAR)
        //     return (true);
         //*current = initial_node;
@@ -141,6 +209,7 @@ bool parse_command(t_tokn **current)
 
 static bool	argument_or_redirection(t_tokn **current)
 {
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (*current)
 	{
 		if (!parse_redirection(current))
@@ -151,18 +220,19 @@ static bool	argument_or_redirection(t_tokn **current)
 		}
 		return (argument_or_redirection(current));
 	}
-	return (current != NULL);
+	return (*current != NULL);
 }
 
 static bool	assignations(t_tokn **current)
 {
-	if (*current)
+    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+	if (current)
 	{
 		if (parse_assignment(current))
 			return (assignations(current));
 		return (false);
 	}
-	return (current != NULL);
+	return (*current != NULL);
 
 }
 
@@ -210,7 +280,7 @@ static bool	has_next_elem(t_tokn *current)
 //Assesses if the lexeme's value falls within the set range 
 static bool	valid_lexeme(t_tokn *current, int min, int max)
 {
-	return (current && current->type >= min && current->type <= max);	
+	return (current && (current->type >= min && current->type <= max));	
 }
 
 // Pipeline → Command ('|' Command)*
@@ -221,16 +291,14 @@ bool	parse_pipeline(t_tokn **current)
 	{
 		if ((*current)->type == PIPE)
 		{
-			*current = (*current)->next;
+			consume_token(current);
 			if (*current)
 				return (parse_command(current)); 
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
-		if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
+		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
 			return (true);
-		//Faire une sous fonction de retour mdr
-    	//return ((*current)->type >= OPAR && (*current)->type <= LORR && (*current)->next);
 	}
 	//Pas sur de ce retour
 	return (false);
@@ -242,11 +310,11 @@ bool	parse_compound_command(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type == OPAR)
 	{
-        *current = (*current)->next;
+		consume_token(current);
         parse_command_list(current);
 		if ((*current)->type == CPAR)
 		{
-            *current = (*current)->next;
+			consume_token(current);
             return (true);
         }
     }
@@ -259,7 +327,7 @@ bool	parse_assignment(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current) && (*current)->type & EQUL)
 	{
-		*current = (*current)->next;
+		consume_token(current);
 		return (true);
 	}
     return (false);
@@ -271,7 +339,7 @@ bool	parse_argument(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current) && (*current)->type & WORD)
 	{
-       	*current = (*current)->next;
+		consume_token(current);	
         return (true);
     }
     return (false);
@@ -287,12 +355,12 @@ bool	parse_redirection(t_tokn **current)
     if ((*current)->type >= IRED && (*current)->type <= ARED)
 	{
 		save = *current;
-        *current = (*current)->next;
+		consume_token(current);
         if ((*current))
 		{
 			if ((*current)->type & WORD)
 			{
-        	    *current = (*current)->next;
+				consume_token(current);
         	    return (true);
         	}
 			printf("syntax error: Unexpected %s token after %s token.\n", (*current)->value, save->value);
@@ -310,7 +378,7 @@ bool	parse_expression(t_tokn **current)
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type & DOLL && (*current)->type < SQTE)
 	{
-        *current = (*current)->next;
+		consume_token(current);
     	return (true);
 	}
 	return (parse_argument(current));

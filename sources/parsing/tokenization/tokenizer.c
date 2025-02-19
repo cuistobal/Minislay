@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 18:11:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:05:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 	if (*quote)
 	{
         if (input == *quote)
-			*quote = '\0';
+			*quote = INIT;
 	}
 	else
 	{
@@ -50,13 +50,13 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	char	quote;
 	bool	dollar;
 
-	quote = '\0';
+	quote = INIT;
 	start = *pos;
-	*type = WORD;
     dollar = false;
-	while (input[*pos] && !strchr("&|()<>", input[*pos]))
+	set_state(type, WORD);
+	while (input[*pos] && !strchr(SPECIAL, input[*pos]))
 	{
-		if (*type == WORD && !dollar && input[*pos] == '$')
+		if (*type & WORD && !dollar && input[*pos] == '$')
 			dollar = true;
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
 			break;
@@ -91,12 +91,12 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	char	*token;
 	t_tokn	*current;
 
-	pos = 0;
+	pos = INIT;
 	token = NULL;
 	current = NULL;
     while (pos < len)
 	{
-		type = 0;
+		type = INIT;
 		skip_whitespaces(input, &pos);
         if (input[pos] == '\0')
 			break;

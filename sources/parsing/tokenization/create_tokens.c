@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 17:54:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:05:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,21 @@ static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
 
 
 //We use this function to keep track of closed && unclosed parenthesis.
-bool	get_stacked(t_tokn **head, t_tokn *current)
+bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 {
 	static int	count;	
 
 	if (!*head)
-		count = 0;
-	else if (current)
+		count = -1;
+	if (count < 0)
+		*mask = INIT;
+	if (current)
 	{
 		if ((current->type == OPAR))
+		{
 			count++;
+			*mask = OPAR;
+		}
 		else if (current->type == CPAR)
 		{
 			if (count < 0)
@@ -70,7 +75,6 @@ bool	get_stacked(t_tokn **head, t_tokn *current)
 			count--;
 		}
 	}
-	current ? printf("%d	->	%s\n", count, current->value) : printf("%d\n", count);
 	return (true);
 }
 
@@ -78,13 +82,17 @@ bool	get_stacked(t_tokn **head, t_tokn *current)
 //passed as parameter.
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 {
-	t_tokn	*new_node;
+	static int	mask;
+	t_tokn		*new_node;
 
 	new_node = create_node(token, type);
 	if (new_node)
 	{
-		if (get_stacked(head, new_node))
+		if (get_stacked(head, new_node, &mask))
 		{
+			printf("%s	&&	%d\n", new_node->value, mask);
+			if (!is_state_active(new_node->type, mask))
+				set_state(&(new_node)->type, mask);
 			insert_token(head, current, &new_node);		
 			return (true);
 		}

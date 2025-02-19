@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 15:45:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:08:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ static void	print_tokens(t_tokn *tokens)
 		index++;
 	}
 }
+
+/*
+static void	print_list(t_bloc *list)
+{
+	int	index;
+
+	index = 0;
+	while (list)
+	{
+		printf("Command bloc %d:\n", index);
+		print_tokens(list->token);
+		list = list->next;
+		index++;
+	}
+}*/
 /*
 //Will become minishell for subshells recursive calls.
 int main(int argc, char **argv, char **envp)
@@ -79,14 +94,16 @@ int main(int argc, char **argv, char **envp)
 
 int	minishell(char *input)
 {
+//	t_bloc	*list;
 	t_tokn	*tokens;
 
+//	list = NULL;
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
-    	//print_tokens(tokens);
+    	print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-   		 	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+   		//parse_script(&list, tokens) ? print_list(list) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");

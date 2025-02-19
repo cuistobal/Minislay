@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 18:12:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 //(?) Are we sure about the masks value and order ?
 //Shouldn't we care about precedence in this code's distro
 
-
+# define INIT 0b0000000000000000
 # define OPAR 0b0000000000000001
 # define CPAR 0b0000000000000010
 
