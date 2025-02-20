@@ -6,11 +6,15 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 09:01:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:47:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+//	UTILS
+//
 
 //Move to utils -> remove static status
 static void	consume_token(t_tokn **token)
@@ -19,20 +23,101 @@ static void	consume_token(t_tokn **token)
 		*token = (*token)->next;
 }
 
-bool	parse_script(t_tokn *tokens)
+//Assesses if we're dealing with the last element of the list.
+static bool	has_next_elem(t_tokn *current)
+{
+	if (current)
+		return (current->next);
+	return (false);
+}
+
+//Assesses if the lexeme's value falls within the set range 
+static bool	valid_lexeme(t_tokn *current, int min, int max)
+{
+	return (current && (current->type >= min && current->type <= max));	
+}
+
+
+
+//
+//	ALGO
+//
+
+bool	build_ast(t_tree **ast, t_tokn *current)
+{
+	t_tree	*new_node;
+
+	if (!*ast)
+	{
+		if (current)
+		{
+			new_node = (t_tree *)malloc(sizeof(t_tree));
+			if (new_node)
+			{
+				*ast = new_node;
+				new_node->tokens = current;
+				new_node->right = NULL;
+				new_node->left = NULL;
+/*				if (parse_script(&(*ast)->right, (*current)->next))
+				{
+					(*current)->next = NULL;
+					return (parse_script(&(*ast)->left, token));
+				}
+				return (false);*/
+				return (true);
+			}
+			return (false);
+		}
+	}
+	return (ast);
+}
+
+/*
+static void	print_command(t_tokn *command, t_tokn *limit)
+{
+	printf("\n\nCOMAND	LIST:\n\n");
+	while (command && command != limit)
+	{
+		printf("%s	&&	%d\n", command->value, command->type);
+		command = command->next;
+	}
+	printf("\n\nEND	OF	LIST:\n\n");
+}*/
+
+bool	parse_script(t_tree	**ast, t_tokn *tokens)
 {
     t_tokn			*current;
 
 	current = tokens;
 	if (parse_command_list(&current))
 	{
-		current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
+		//current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
 		if (current)
 		{
-			if (current->type == LORR || current->type == LAND || current->type & CPAR)
+			//print_command(tokens, current);
+			while (current->type & LORR || current->type & LAND || current->type & CPAR || current->type & PIPE)
+			{
+				//printf("%s	IN	%s\n", current->value, __func__);
+				//print_command(tokens, current);
+				if (!(current->type & CPAR))
+				{
+					if (build_ast(ast, current))
+					{
+						if (parse_script(&(*ast)->right, current->next))
+						{
+							//current->next = NULL;
+							return (parse_script(&(*ast)->left, tokens));
+						}
+					}
+					return (false);
+				}
+				//	printf("NODIFICATION.\n");
+				//nodification
 				consume_token(&current);
-			printf("Sending %s back to Irak\n", current->value);
-			return (parse_script(current));
+				//consume_token(&save);
+			}
+			current ? printf("Sending %s back to Irak\n", current->value) : printf("NULL\n");
+			return (parse_script(ast, current));
 		}
 		return (true);
 	}
@@ -156,7 +241,8 @@ bool	parse_command_list(t_tokn **current)
 		{
             if (*current)
 			{
-				if ((*current)->type == LAND || (*current)->type == LORR)
+				//if ((*current)->type == LAND || (*current)->type == LORR)
+				if ((*current)->type & LAND || (*current)->type & LORR)
 				{
                 	//*current = (*current)->next;
 				//	if (!*current)
@@ -198,9 +284,14 @@ bool parse_command(t_tokn **current)
 				printf("Syntax error: Expected ')' token.\n");
 				return (false);
 			}*/
+//	THis intends to handle the CPAR following the last valid token of the expression.
+//	On hold for now.
 			if (*current)
 			{
+				printf("%s	in	%s	BEFORE CONSUMPTION\n", (*current)->value, __func__);
+		//		if ()
 				consume_token(current);
+				printf("%s	in	%s	AFTER CONSUMPTION\n", (*current)->value, __func__);
 				return (true);
 			}
 		//	*current = (*current)->next;
@@ -213,12 +304,12 @@ bool parse_command(t_tokn **current)
 				if ((*current) && (*current)->type != CPAR)
             		return (parse_pipeline(current));
 			}
-		}
+		}/*
 		if (*current)
 		{
 			consume_token(current);
 			return (true);
-		}
+		}*/
      //   if (!*current || (*current)->type == CPAR)
        //     return (true);
         //*current = initial_node;
@@ -291,27 +382,13 @@ bool	parse_simple_command(t_tokn **current)
     return (*current == NULL);
 }
 
-//Assesses if we're dealing with the last element of the list.
-static bool	has_next_elem(t_tokn *current)
-{
-	if (current)
-		return (current->next);
-	return (false);
-}
-
-//Assesses if the lexeme's value falls within the set range 
-static bool	valid_lexeme(t_tokn *current, int min, int max)
-{
-	return (current && (current->type >= min && current->type <= max));	
-}
-
 // Pipeline → Command ('|' Command)*
 bool	parse_pipeline(t_tokn **current)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__); 
 	if ((*current))
 	{
-		if ((*current)->type == PIPE)
+		if ((*current)->type & PIPE)
 		{
 			consume_token(current);
 			if (*current)
@@ -319,13 +396,15 @@ bool	parse_pipeline(t_tokn **current)
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
-		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
-		{
+		return (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR));
+//		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
+	//	{
+	//		printf("%s\n", (*current)->value);
 			//if ((*current)->type & CPAR)
 				//printf("%s	->	%d	@	%s\n", (*current)->value, (*current)->type, __func__);
-				consume_token(current);
-			return (true);
-		}
+				//consume_token(current);
+	//		return (true);
+	//	}
 	}
 	//Pas sur de ce retour
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 09:49:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:42:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ typedef	struct	tree
 	struct tree		*right;
 }	t_tree;
 
-//Used
+//Unused
 typedef struct blocks
 {
 	struct tokens	*token;
