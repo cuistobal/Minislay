@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 17:44:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:26:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	print_tokens(t_tokn *tokens)
 	printf("\n");
 }
 
+/*
 static void	print_ast(t_tree *ast)
 {
 	if (ast)
@@ -38,8 +39,14 @@ static void	print_ast(t_tree *ast)
 			ast->tokens = ast->tokens->next;
 		}
 		printf("\n");
+		printf("left node\n");
+		print_ast(ast->left);
+		printf("right node\n");
+		print_ast(ast->right);
+		return ;
 	}
-}
+	//printf("le vide lo\n");
+}*/
 
 //
 //	UTILS
@@ -72,24 +79,44 @@ static bool	valid_lexeme(t_tokn *current, int min, int max)
 //	ALGO
 //
 
-bool	build_ast(t_tree *ast, t_tokn *current)
+static void	delete_links(t_tokn *tokens, t_tokn *current)
 {
-	t_tree	*new_node;
+	while (tokens)
+	{
+	//	printf("%s ", (tokens)->value);
+		if ((tokens)->next == current)
+			(tokens)->next = NULL;
+		tokens = (tokens)->next;	
+	}
+//	printf("\n");
+	if (current)
+		(current)->next = NULL;
+}
+
+bool	build_ast(t_tree *ast, t_tokn *tokens, t_tokn *current)
+{
+	t_tokn	*next;
 
 	//printf("JE CONSTRUIT DES ABRES OUAIS OUAIS OUAIS\n");
 	if (!ast)
 	{
 		if (current)
 		{
-			new_node = (t_tree *)malloc(sizeof(t_tree));
-			if (new_node)
+			ast = (t_tree *)malloc(sizeof(t_tree));
+			if (ast)
 			{
-				ast = new_node;
-				new_node->tokens = current;
-				new_node->right = NULL;
-				new_node->left = NULL;
+				ast->tokens = current;
+				ast->right = NULL;
+				ast->left = NULL;
+				next = current->next;
+				delete_links(tokens, current);
+				if (parse_script((ast)->left, tokens))
+				{
+					return (parse_script((ast)->right, next));
+					//if (parse_script((ast)->right, next))
+					//	print_ast(ast);
+				}
 			}
-			return (new_node);
 		}
 	}
 	return (ast);
@@ -107,31 +134,17 @@ static void	print_command(t_tokn *command, t_tokn *limit)
 	printf("\n\nEND	OF	LIST:\n\n");
 }*/
 
-static void	delete_links(t_tokn *tokens, t_tokn *current)
-{
-	while (tokens)
-	{
-	//	printf("%s ", (tokens)->value);
-		if ((tokens)->next == current)
-			(tokens)->next = NULL;
-		tokens = (tokens)->next;	
-	}
-//	printf("\n");
-	if (current)
-		(current)->next = NULL;
-}
-
 bool	parse_script(t_tree	*ast, t_tokn *tokens)
 {
-    t_tokn			*next;
+   // t_tokn			*next;
     t_tokn			*current;
 
-	next = NULL;
+	//next = NULL;
 	current = tokens;
 
 	print_tokens(tokens);
 
-	print_ast(ast);
+//	print_ast(ast);
 
 	if (parse_command_list(&current))
 	{
@@ -146,25 +159,27 @@ bool	parse_script(t_tree	*ast, t_tokn *tokens)
 				//print_command(tokens, current);
 				if (!(current->type & CPAR))
 				{
-					if (build_ast(ast, current))
-					{
+					return (build_ast(ast, current, tokens));
+					//{
 						//tokens ? printf("After build AST				%s\n", tokens->value) :printf("After delete links			TOKENS IS NULL\n");
-						next = current->next;
-						delete_links(tokens, current);
-						if (parse_script(ast->left, tokens))
+						
+
+						//next = current->next;
+						//delete_links(tokens, current);
+						//if (parse_script(ast->left, tokens))
 						//if (parse_script(&(*ast)->right, current->next))
-						{
+						//{
 							//tokens ? printf("After parse right			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
 							//print_tokens(tokens);
 							//delete_links(tokens, current);
 							//print_tokens(tokens);
 							//tokens ? printf("After delete links			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
-							print_ast(ast);
-							return (parse_script(ast->right, next));
+						//	print_ast(ast);
+						//	return (parse_script(ast->right, next));
 							//return (parse_script(&(*ast)->left, tokens));
-						}
-					}
-					return (false);
+						//}
+					//}
+					//return (false);
 				}
 				consume_token(&current);
 			}

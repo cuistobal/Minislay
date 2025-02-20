@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 17:48:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:26:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ int	minishell(char *input)
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
    	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
 	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-		parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		parse_script(ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");
-	print_ast_DFS(ast, 0, 'r');
+	ast ? print_ast_DFS(ast, 0, 'r') : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	free_tokens(tokens);
 	return (0);
 }
