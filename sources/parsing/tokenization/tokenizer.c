@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 15:40:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:06:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 	if (*quote)
 	{
         if (input == *quote)
-			*quote = '\0';
+			*quote = INIT;
 	}
 	else
 	{
@@ -50,13 +50,16 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	char	quote;
 	bool	dollar;
 
-	quote = '\0';
+	quote = INIT;
 	start = *pos;
-	*type = WORD;
     dollar = false;
-	while (input[*pos] && !strchr("&|()<>", input[*pos]))
+	set_state(type, WORD);
+	//while (input[*pos] && !strchr(SPECIAL, input[*pos]))
+	while (input[*pos])
 	{
-		if (*type == WORD && !dollar && input[*pos] == '$')
+		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
+			break;
+		if (*type & WORD && !dollar && input[*pos] == '$')
 			dollar = true;
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
 			break;
@@ -70,7 +73,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 //
 static char	*determinism(const char *input, int *pos, int *type)
 {
-	if (strchr("&|()<>", input[*pos]))
+	if (strchr(SPECIAL, input[*pos]))
 		return (handle_special_chars(input, pos, type));
 	return (handle_words(input, pos, type));
 }
@@ -91,30 +94,24 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	char	*token;
 	t_tokn	*current;
 
-	pos = 0;
+	pos = INIT;
 	token = NULL;
 	current = NULL;
     while (pos < len)
 	{
-		type = 0;
+		type = INIT;
 		skip_whitespaces(input, &pos);
         if (input[pos] == '\0')
 			break;
 		token = determinism(input, &pos, &type);
-		if (!create_new_token(head, &current, token, type))
+		if (!create_new_token(head, &current, token, type)) 
 		{
 			free(token);
+			printf("Tokenization error @ %c for %s", input[pos], input + pos - 1);
 			return (false);
 		}
-		/*
-		else
-		{
-			Create a syntax list here ?
-		}
-		*/
-		//free(token);
     }
-    return (true);
+	return (true);
 }
 
 /*	UTILS && TESTS

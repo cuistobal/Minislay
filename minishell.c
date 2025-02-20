@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/18 15:45:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:28:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int main(int argc, char **argv. char **envp)
 	printf("Usage\n");
 }*/
 
+//
 static void	free_tokens(t_tokn *tokens)
 {
 	t_tokn *temp;
@@ -42,6 +43,7 @@ static void	free_tokens(t_tokn *tokens)
 	}
 }
 
+//
 static void	print_tokens(t_tokn *tokens)
 {
 	int	index;
@@ -54,6 +56,21 @@ static void	print_tokens(t_tokn *tokens)
 		index++;
 	}
 }
+
+/*
+static void	print_list(t_bloc *list)
+{
+	int	index;
+
+	index = 0;
+	while (list)
+	{
+		printf("Command bloc %d:\n", index);
+		print_tokens(list->token);
+		list = list->next;
+		index++;
+	}
+}*/
 /*
 //Will become minishell for subshells recursive calls.
 int main(int argc, char **argv, char **envp)
@@ -77,19 +94,40 @@ int main(int argc, char **argv, char **envp)
 		printf("Usage\n");
 }*/
 
+static void	print_ast_DFS(t_tree *ast)
+{
+	if (ast)
+	{
+		while (ast->tokens)
+		{
+			printf("%s\n", ast->tokens->value);
+			ast->tokens = ast->tokens->next;
+		}
+		print_ast_DFS(ast->left);
+		print_ast_DFS(ast->right);
+	}
+}
+
 int	minishell(char *input)
 {
+//	t_bloc	*list;
+	t_tree	*ast;
 	t_tokn	*tokens;
 
+	ast = NULL;
+//	list = NULL;
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
-    	//print_tokens(tokens);
+    //	print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-   		 	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+   	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
+	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");
+	print_ast_DFS(ast);
 	free_tokens(tokens);
 	return (0);
 }

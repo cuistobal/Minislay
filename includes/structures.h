@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/15 13:01:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:42:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ struct action
 	operate act[2];
 };
 
+/*OLD
 typedef struct parser
 {
 	char	*user;
@@ -88,7 +89,7 @@ typedef struct parser
     char	state;
 	int		top;
 	int		capacity;
-}   t_pars;
+}   t_pars;*/
 
 
 // Enum for different character groups
@@ -122,13 +123,13 @@ typedef struct tokens
 	struct tokens	*next;
 }	t_tokn;
 
-//Used
+/*OLD
 typedef struct stack
 {
 	int		top;
 	int		capacity;
 	char 	*stack;
-}	t_stck;
+}	t_stck;*/
 
 //Used
 typedef	struct	tree
@@ -137,5 +138,19 @@ typedef	struct	tree
 	struct tree		*left;
 	struct tree		*right;
 }	t_tree;
+
+//Unused
+typedef struct blocks
+{
+	struct tokens	*token;
+	struct blocks	*next;
+}	t_bloc;
+
+//Used
+typedef struct parser
+{
+	int		state;
+	t_tokn	*command_blocks;
+}	t_pars;
 
 #endif
