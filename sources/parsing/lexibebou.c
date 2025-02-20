@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 17:10:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:44:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,19 @@ static void	print_tokens(t_tokn *tokens)
 	printf("\n");
 }
 
-
+static void	print_ast(t_tree *ast)
+{
+	if (ast)
+	{
+		printf("PRINT AST 	->	");
+		while (ast->tokens)
+		{
+			printf("%s ", ast->tokens->value);
+			ast->tokens = ast->tokens->next;
+		}
+		printf("\n");
+	}
+}
 
 //
 //	UTILS
@@ -60,19 +72,19 @@ static bool	valid_lexeme(t_tokn *current, int min, int max)
 //	ALGO
 //
 
-bool	build_ast(t_tree **ast, t_tokn *current)
+bool	build_ast(t_tree *ast, t_tokn *current)
 {
 	t_tree	*new_node;
 
 	//printf("JE CONSTRUIT DES ABRES OUAIS OUAIS OUAIS\n");
-	if (!*ast)
+	if (!ast)
 	{
 		if (current)
 		{
 			new_node = (t_tree *)malloc(sizeof(t_tree));
 			if (new_node)
 			{
-				*ast = new_node;
+				ast = new_node;
 				new_node->tokens = current;
 				new_node->right = NULL;
 				new_node->left = NULL;
@@ -109,11 +121,18 @@ static void	delete_links(t_tokn *tokens, t_tokn *current)
 		(current)->next = NULL;
 }
 
-bool	parse_script(t_tree	**ast, t_tokn *tokens)
+bool	parse_script(t_tree	*ast, t_tokn *tokens)
 {
+    t_tokn			*next;
     t_tokn			*current;
 
+	next = NULL;
 	current = tokens;
+
+	print_tokens(tokens);
+
+	print_ast(ast);
+
 	if (parse_command_list(&current))
 	{
 		//current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
@@ -130,14 +149,19 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 					if (build_ast(ast, current))
 					{
 						//tokens ? printf("After build AST				%s\n", tokens->value) :printf("After delete links			TOKENS IS NULL\n");
-						if (parse_script(&(*ast)->right, current->next))
+						next = current->next;
+						delete_links(tokens, current);
+						if (parse_script(ast->left, tokens))
+						//if (parse_script(&(*ast)->right, current->next))
 						{
 							//tokens ? printf("After parse right			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
 							//print_tokens(tokens);
-							delete_links(tokens, current);
+							//delete_links(tokens, current);
 							//print_tokens(tokens);
 							//tokens ? printf("After delete links			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
-							return (parse_script(&(*ast)->left, tokens));
+							print_ast(ast);
+							return (parse_script(ast->right, next));
+							//return (parse_script(&(*ast)->left, tokens));
 						}
 					}
 					return (false);
