@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 18:16:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:18:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool    validate_syntax(t_tokn *head);
 
 // Function prototypes
 //bool parse_script(t_bloc **list, t_tokn *tokens, t_tokn *save);
-bool parse_script(t_tree *ast, t_tokn *tokens);
+bool parse_script(t_tree **ast, t_tokn *tokens);
 bool parse_command_list(t_tokn **tokens);
 bool parse_command(t_tokn **tokens);
 bool parse_simple_command(t_tokn **tokens);

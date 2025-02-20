@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 18:26:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:20:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,33 +93,44 @@ static void	delete_links(t_tokn *tokens, t_tokn *current)
 		(current)->next = NULL;
 }
 
-bool	build_ast(t_tree *ast, t_tokn *tokens, t_tokn *current)
+t_tree	*create_tree_node(t_tokn *tokens)
+{
+	t_tree	*new_node;
+
+	new_node = (t_tree *)malloc(sizeof(t_tree));
+	if (new_node)
+	{
+		new_node->tokens = tokens;
+		new_node->left = NULL;
+		new_node->right = NULL;
+	}
+	return (new_node);
+}
+
+bool	build_ast(t_tree **ast, t_tokn *tokens, t_tokn *current)
 {
 	t_tokn	*next;
 
 	//printf("JE CONSTRUIT DES ABRES OUAIS OUAIS OUAIS\n");
-	if (!ast)
+	if (current)
 	{
-		if (current)
+		if (!*ast)
+			*ast = create_tree_node(current);
+		if (*ast)
 		{
-			ast = (t_tree *)malloc(sizeof(t_tree));
-			if (ast)
+			next = current->next;
+			(*ast)->right = create_tree_node(next);
+			if ((*ast)->right)
 			{
-				ast->tokens = current;
-				ast->right = NULL;
-				ast->left = NULL;
-				next = current->next;
-				delete_links(tokens, current);
-				if (parse_script((ast)->left, tokens))
-				{
-					return (parse_script((ast)->right, next));
-					//if (parse_script((ast)->right, next))
-					//	print_ast(ast);
-				}
+				(*ast)->left = create_tree_node(tokens);
+				if ((*ast)->left)
+					delete_links(tokens, current);
+				return ((*ast)->left);
 			}
+			return ((*ast)->right);
 		}
 	}
-	return (ast);
+	return (*ast);
 }
 
 /*
@@ -134,9 +145,9 @@ static void	print_command(t_tokn *command, t_tokn *limit)
 	printf("\n\nEND	OF	LIST:\n\n");
 }*/
 
-bool	parse_script(t_tree	*ast, t_tokn *tokens)
+bool	parse_script(t_tree	**ast, t_tokn *tokens)
 {
-   // t_tokn			*next;
+    t_tokn			*next;
     t_tokn			*current;
 
 	//next = NULL;
@@ -159,7 +170,14 @@ bool	parse_script(t_tree	*ast, t_tokn *tokens)
 				//print_command(tokens, current);
 				if (!(current->type & CPAR))
 				{
-					return (build_ast(ast, current, tokens));
+					next = current->next;
+
+					if (build_ast(ast, current, tokens))
+					{
+						//ast->left ? (ast->right ? printf("BOTH OK\n") : printf("LEFT OK\n")) : (ast->right ? printf("RIGHT OK\n") : printf("BOTH KO\n"));
+						if (parse_script(&(*ast)->left, tokens))
+							return (parse_script(&(*ast)->right, next));
+					}
 					//{
 						//tokens ? printf("After build AST				%s\n", tokens->value) :printf("After delete links			TOKENS IS NULL\n");
 						
