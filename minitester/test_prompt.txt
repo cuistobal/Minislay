@@ -1,3 +1,5 @@
+((command1 'arg1' && command2 'arg2') && command3 'arg3') >> file1 && command4 file2 | command5 'arg5' | command6 arg6 > file3
+((command1 'arg1' && command2 'arg2') && command3 'arg3') >> file1 && (command4 file2 | command5 'arg5') | command6 arg6 > file3
 ((echo 'jaime els pommes' && echo 'les bananes') && echo 'les harricots') >> outfile.txt && cat outfile.txt | grep 'pommes' | wc -l > outfile.txt
 ((()))
 )()

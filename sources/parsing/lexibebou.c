@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 17:39:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 09:01:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,27 @@ static void	consume_token(t_tokn **token)
 		*token = (*token)->next;
 }
 
+bool	parse_script(t_tokn *tokens)
+{
+    t_tokn			*current;
+
+	current = tokens;
+	if (parse_command_list(&current))
+	{
+		current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
+		if (current)
+		{
+			if (current->type == LORR || current->type == LAND || current->type & CPAR)
+				consume_token(&current);
+			printf("Sending %s back to Irak\n", current->value);
+			return (parse_script(current));
+		}
+		return (true);
+	}
+	return (true);
+}
+
+/*
 //We use this function to split the original token list.*static bool	split_list(t_tokn *head, t_tokn *tail)
 static bool	split_list(t_tokn **token, t_tokn **current, t_tokn **save)
 {
@@ -30,8 +51,8 @@ static bool	split_list(t_tokn **token, t_tokn **current, t_tokn **save)
 		{
 			new_head = (*current)->next;
 			(*current)->next = NULL;
-			current = token;
-			token = save;
+			*current = *token;
+			*token = *save;
 			*save = new_head;
 		}
 	}
@@ -73,9 +94,8 @@ bool	parse_script(t_bloc **list, t_tokn *tokens, t_tokn *save)
 	tail = *list;
 	current = tokens;
     (tokens) ? printf("%s	@	%s\n", tokens->value, __func__) : printf("End	@	%s\n", __func__);
-   // if (tokens)
-//	{
-		//TEST
+    if (tokens)
+	{
 		if (save != tokens && !is_state_active(current->type, OPAR))
 		{
 			printf("I'm here	%s\n", tokens->value);
@@ -90,8 +110,6 @@ bool	parse_script(t_bloc **list, t_tokn *tokens, t_tokn *save)
 			}
 		}
 		//	printf("		%s\n", tokens->value);
-		else if (tokens)
-		{
 		if (parse_command_list(&current))
 		{
 			current ? printf("Post parse_command()	->	%s	&&	%d\n", current->value, current->type) : printf("\n");
@@ -123,7 +141,7 @@ bool	parse_script(t_bloc **list, t_tokn *tokens, t_tokn *save)
 		//Invalid parenthese.
 	}
 	return (*list);
-}
+}*/
 
 // CommandList → Command ('&&' | '||') CommandList | Command
 bool	parse_command_list(t_tokn **current)
@@ -220,6 +238,8 @@ static bool	argument_or_redirection(t_tokn **current)
 				return (argument_or_redirection(current));
 			return (false);
 		}
+		printf("Problematic token		->		");
+    	(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 		return (argument_or_redirection(current));
 	}
 	return (*current != NULL);
@@ -301,9 +321,9 @@ bool	parse_pipeline(t_tokn **current)
 		}
 		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
 		{
-			if ((*current)->type & CPAR)
-				printf("%s	->	%d	@	%s\n", (*current)->value, (*current)->type, __func__);
-				//consume_token(current);
+			//if ((*current)->type & CPAR)
+				//printf("%s	->	%d	@	%s\n", (*current)->value, (*current)->type, __func__);
+				consume_token(current);
 			return (true);
 		}
 	}

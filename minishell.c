@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 16:43:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 08:43:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,18 @@ int main(int argc, char **argv, char **envp)
 
 int	minishell(char *input)
 {
-	t_bloc	*list;
+//	t_bloc	*list;
 	t_tokn	*tokens;
 
-	list = NULL;
+//	list = NULL;
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
     //	print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
    	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
-   		parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");
