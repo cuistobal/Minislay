@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 15:28:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:40:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,18 @@ int main(int argc, char **argv, char **envp)
 		printf("Usage\n");
 }*/
 
-static void	print_ast_DFS(t_tree *ast)
+static void	print_ast_DFS(t_tree *ast, int lvl, char c)
 {
 	if (ast)
 	{
+		printf("%c level %d\n", c, lvl);
 		while (ast->tokens)
 		{
 			printf("%s\n", ast->tokens->value);
 			ast->tokens = ast->tokens->next;
 		}
-		print_ast_DFS(ast->left);
-		print_ast_DFS(ast->right);
+		print_ast_DFS(ast->left, lvl + 1, 'g');
+		print_ast_DFS(ast->right, lvl + 1, 'd');
 	}
 }
 
@@ -127,7 +128,7 @@ int	minishell(char *input)
 	}
 	else
 		printf("Tokenization error.\n");
-	print_ast_DFS(ast);
+	print_ast_DFS(ast, 0, 'r');
 	free_tokens(tokens);
 	return (0);
 }

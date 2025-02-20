@@ -6,11 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 15:47:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:10:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+//	TESTS
+//
+
+static void	print_tokens(t_tokn *tokens)
+{
+	printf("PRINT TOKENS	->	");
+	while (tokens)
+	{
+		printf("%s ", tokens->value);
+		tokens = tokens->next;
+	}
+	printf("\n");
+}
+
+
 
 //
 //	UTILS
@@ -47,6 +64,7 @@ bool	build_ast(t_tree **ast, t_tokn *current)
 {
 	t_tree	*new_node;
 
+	//printf("JE CONSTRUIT DES ABRES OUAIS OUAIS OUAIS\n");
 	if (!*ast)
 	{
 		if (current)
@@ -58,15 +76,8 @@ bool	build_ast(t_tree **ast, t_tokn *current)
 				new_node->tokens = current;
 				new_node->right = NULL;
 				new_node->left = NULL;
-/*				if (parse_script(&(*ast)->right, (*current)->next))
-				{
-					(*current)->next = NULL;
-					return (parse_script(&(*ast)->left, token));
-				}
-				return (false);*/
-				return (true);
 			}
-			return (false);
+			return (new_node);
 		}
 	}
 	return (ast);
@@ -84,6 +95,20 @@ static void	print_command(t_tokn *command, t_tokn *limit)
 	printf("\n\nEND	OF	LIST:\n\n");
 }*/
 
+static void	delete_links(t_tokn *tokens, t_tokn *current)
+{
+	while (tokens)
+	{
+	//	printf("%s ", (tokens)->value);
+		if ((tokens)->next == current)
+			(tokens)->next = NULL;
+		tokens = (tokens)->next;	
+	}
+//	printf("\n");
+	if (current)
+		(current)->next = NULL;
+}
+
 bool	parse_script(t_tree	**ast, t_tokn *tokens)
 {
     t_tokn			*current;
@@ -94,6 +119,7 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 		//current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
 		if (current)
 		{
+			print_tokens(tokens);
 			//print_command(tokens, current);
 			while (current->type & LORR || current->type & LAND || current->type & CPAR || current->type & PIPE)
 			{
@@ -103,20 +129,22 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 				{
 					if (build_ast(ast, current))
 					{
+						//tokens ? printf("After build AST				%s\n", tokens->value) :printf("After delete links			TOKENS IS NULL\n");
 						if (parse_script(&(*ast)->right, current->next))
 						{
-							//current->next = NULL;
+							//tokens ? printf("After parse right			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
+							//print_tokens(tokens);
+							delete_links(tokens, current);
+							//print_tokens(tokens);
+							//tokens ? printf("After delete links			%s\n", tokens->value) : printf("After delete links			TOKENS IS NULL\n");
 							return (parse_script(&(*ast)->left, tokens));
 						}
 					}
 					return (false);
 				}
-				//	printf("NODIFICATION.\n");
-				//nodification
 				consume_token(&current);
-				//consume_token(&save);
 			}
-			current ? printf("Sending %s back to Irak\n", current->value) : printf("NULL\n");
+			//current ? printf("Sending %s back to Irak\n", current->value) : printf("NULL\n");
 			return (parse_script(ast, current));
 		}
 		return (true);
@@ -288,10 +316,10 @@ bool parse_command(t_tokn **current)
 //	On hold for now.
 			if (*current)
 			{
-				printf("%s	in	%s	BEFORE CONSUMPTION\n", (*current)->value, __func__);
+		//		*current ? printf("%s	in	%s	BEFORE CONSUMPTION\n", (*current)->value, __func__);
 		//		if ()
 				consume_token(current);
-				printf("%s	in	%s	AFTER CONSUMPTION\n", (*current)->value, __func__);
+		//		*current ? printf("%s	in	%s	AFTER CONSUMPTION\n", (*current)->value, __func__);
 				return (true);
 			}
 		//	*current = (*current)->next;
@@ -329,8 +357,8 @@ static bool	argument_or_redirection(t_tokn **current)
 				return (argument_or_redirection(current));
 			return (false);
 		}
-		printf("Problematic token		->		");
-    	(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+//		printf("Problematic token		->		");
+//    	(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 		return (argument_or_redirection(current));
 	}
 	return (*current != NULL);
