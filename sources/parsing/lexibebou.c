@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/22 10:10:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:55:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,23 +153,22 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 	//next = NULL;
 	current = tokens;
 
-	print_tokens(tokens);
-
 //	print_ast(ast);
 
-	if (parse_command_list(&current))
+	if (current && parse_command_list(&current))
 	{
 		//current ? printf("		Sucessfully parsed tokens from { %s && %d } to { %s && %d }\n", tokens->value, tokens->type, current->value, current->type) : printf("			Last command starts at { %s && %d }\n", tokens->value, tokens->type);
 		if (current)
 		{
-			print_tokens(tokens);
+			print_tokens(current);
 			//print_command(tokens, current);
-			while (current->type & LORR || current->type & LAND || current->type & CPAR || current->type & PIPE)
+			if (current->type & LORR || current->type & LAND || current->type & CPAR)
 			{	
 				consume_token(&current);
-				if (current->type & CPAR)
+				while (current->type & CPAR)
 					consume_token(&current);
-				return (parse_script(ast, current));	
+			}
+			return (parse_script(ast, current));	
 
 //		AST MODULE CODE
 
@@ -217,8 +216,8 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 			return (parse_script(ast, current));
 		}
 		return (true);
-	}
-	return (true);
+	//}
+///	return (true);
 }
 
 /*
@@ -330,7 +329,7 @@ bool	parse_command_list(t_tokn **current)
 {
    // t_tokn *initial_node;
 
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
    // initial_node = *current;
     if (*current)
 	{
@@ -371,7 +370,8 @@ bool parse_command(t_tokn **current)
         if ((*current)->type == OPAR)
         {
 			consume_token(current);
-            if (!parse_command_list(current))
+           // if (!parse_command_list(current))
+			if (!parse_compound_command(current))
 			{
 				printf("Syntax error: Expected token after '(' token.\n");
                 return (false);
@@ -417,7 +417,7 @@ bool parse_command(t_tokn **current)
 
 static bool	argument_or_redirection(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (*current)
 	{
 		if (!parse_redirection(current))
@@ -435,7 +435,7 @@ static bool	argument_or_redirection(t_tokn **current)
 
 static bool	assignations(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (current)
 	{
 		if (parse_assignment(current))
@@ -515,7 +515,7 @@ bool	parse_compound_command(t_tokn **current)
 	{
 		consume_token(current);
         parse_command_list(current);
-		if ((*current)->type == CPAR)
+		if ((*current)->type & CPAR)
 		{
 			consume_token(current);
             return (true);
@@ -527,7 +527,7 @@ bool	parse_compound_command(t_tokn **current)
 // Assignment → WORD '=' Expression -> Implemtanton a revoir
 bool	parse_assignment(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current) && (*current)->type & EQUL)
 	{
 		consume_token(current);
@@ -539,7 +539,7 @@ bool	parse_assignment(t_tokn **current)
 // Argument → WORD
 bool	parse_argument(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current) && (*current)->type & WORD)
 	{
 		consume_token(current);	
@@ -554,7 +554,7 @@ bool	parse_redirection(t_tokn **current)
 	t_tokn	*save;
 
 	save = NULL;
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type >= IRED && (*current)->type <= ARED)
 	{
 		save = *current;
@@ -578,7 +578,7 @@ bool	parse_redirection(t_tokn **current)
 // Expression → '$' WORD | WORD
 bool	parse_expression(t_tokn **current)
 {
-    (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
+    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type & DOLL && (*current)->type < SQTE)
 	{
 		consume_token(current);
