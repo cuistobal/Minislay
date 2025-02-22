@@ -103,7 +103,7 @@ bool	parse_script(t_tokn *head)
 	{
 		if (!parse_command_list(&current))
 			printf("%s	&&	%d\n", current->value, current->type);
-		//return (parse_command_list(&current));
+		return (parse_command_list(&current));
 	}
 	return (current != head);
 }
@@ -117,6 +117,7 @@ bool	parse_command_list(t_tokn **current)
 	save = *current;
 	if (parse_command(current))
 	{
+        printf("%s  %d\n", (*current)->value, (*current)->type);
 		print_tokens(save, *current);
 //		operator = *current;
 		if ((*current) && ((*current)->type & LORR || (*current)->type & LAND))
@@ -172,13 +173,27 @@ bool	parse_compound_command(t_tokn **current)
 		{
 			if ((*current)->type & OPAR)
 			{
-				if (valid_lexeme(*current, PIPE, LORR | OPAR))
+				if (valid_lexeme(*current, CPAR, LORR | OPAR))
 				{
+                printf("%s  %d\n", (*current)->value, (*current)->type);
 					consume_token(current);
 					return (parse_command(current));
 				}
-				return (consume_token(current));
+			return (false);
+            //	return (consume_token(current));
 			}
+            else if ((*current)->type == CPAR)
+            {
+                consume_token(current);
+                if (*current)
+                {
+                    if (valid_lexeme(*current, WORD, SQTE))
+                        return (parse_command(current));
+                    else if ((*current)->type & PIPE)
+                        return (parse_pipeline(current));
+                }
+                return (!*current);
+            }
 		//	return (valid_lexeme(*current, OPAR, LORR | OPAR));
 		}
 	}
@@ -287,23 +302,31 @@ bool	parse_pipeline(t_tokn **current)
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
-		else if ((*current)->type & OPAR || (*current)->type == CPAR)
+		else if ((*current)->type & OPAR || (*current)->type & CPAR)
 		{
+			if (valid_lexeme(*current, LAND, LORR | OPAR))
+            {
+				consume_token(current);
+                if (has_next_elem(*current))
+				    return (parse_command(current));
+            } 
+            /*
 			if (has_next_elem(*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 			{
 				consume_token(current);
 				return (parse_command(current));
 			}
-			else if ((*current)->type & CPAR)
-			{
-				consume_token(current);
+			else if ((*current)->type == CPAR)
+			    return (consume_token(current));
+            
 				if (*current && (*current)->type > (LORR | OPAR))
 					return (parse_command(current));
-				return (true);
+		        //return (valid_lexeme(*current, WORD, LORR | OPAR));
 			}
-			//return (valid_lexeme(*current, PIPE, (LORR | OPAR)));
+            printf("%s\n", (*current)->value);*/
+            return (true); //A retravailler
 		}
-		return (valid_lexeme(*current, PIPE, (LORR | OPAR)));
+		return (valid_lexeme(*current, WORD, SQTE | OPAR));
 	}
 	return (!*current);
 }
