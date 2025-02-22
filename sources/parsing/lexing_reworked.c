@@ -24,8 +24,67 @@ bool	consume_token(t_tokn **current)
 	return (false);
 }
 
-//bool	parse_script(t_tree **ast, t_tokn *head)
-bool	parse_script(t_tokn *head)
+//AST BUILDER
+
+static void	delete_links(t_tokn *tokens, t_tokn *current)
+{
+	while (tokens)
+	{
+	//	printf("%s ", (tokens)->value);
+		if ((tokens)->next == current)
+			(tokens)->next = NULL;
+		tokens = (tokens)->next;	
+	}
+//	printf("\n");
+	if (current)
+		(current)->next = NULL;
+}
+
+t_tree	*create_tree_node(t_tokn *tokens)
+{
+	t_tree	*new_node;
+
+	new_node = (t_tree *)malloc(sizeof(t_tree));
+	if (new_node)
+	{
+		new_node->tokens = tokens;
+		new_node->left = NULL;
+		new_node->right = NULL;
+	}
+	return (new_node);
+}
+
+bool	build_ast(t_tree **ast, t_tokn *tokens, t_tokn *current)
+{
+	t_tokn	*next;
+
+	if (current)
+	{
+		if (!*ast)
+			*ast = create_tree_node(current);
+		if (*ast)
+		{
+			next = current->next;
+			(*ast)->right = create_tree_node(next);
+			if ((*ast)->right)
+			{
+				(*ast)->left = create_tree_node(tokens);
+				if ((*ast)->left)
+					delete_links(tokens, current);
+				return ((*ast)->left);
+			}
+			return ((*ast)->right);
+		}
+	}
+	return (*ast);
+}
+
+//
+
+
+
+bool	parse_script(t_tree **ast, t_tokn *head)
+//bool	parse_script(t_tokn *head)
 {
 	t_tokn	*current;
 
@@ -36,18 +95,19 @@ bool	parse_script(t_tokn *head)
 }
 
 //bool	parse_command_list(t_tree **ast, t_tokn **current)
-bool	parse_command_list(t_tokn **current)
+bool	parse_command_list(t_tree **ast, t_tokn **current)
 {
-	//t_tokn	*save;
+	t_tokn	*save;
+	t_tokn	*operator;
 
-	//save = *current;
+	save = *current;
 	if (parse_command(current))
 	{
-	//	create_ast_node(ast, *current, save);
+		operator = *current;
 		if ((*current) && ((*current)->type & LORR || (*current)->type & LAND))
 		{
-		//	if (create_ast_node(ast ,*current, save));
-		//	{
+			if (create_ast_node(ast ,*current, save));
+			{
 				if (consume_token(current))
 					//return (parse_command_list(&(*ast)->right, current));
 					return (parse_command_list(current));
@@ -60,7 +120,7 @@ bool	parse_command_list(t_tokn **current)
 				 * Both situations terrifies me.
 				 * Joke apart, we need to secure those scenarios
 				 */
-		//	}
+			}
 		}
 	/* It possibly makes more sense building the left side node after the right
 	 * side node. Hence, we'de remove the upper call to the create_ast_node()
