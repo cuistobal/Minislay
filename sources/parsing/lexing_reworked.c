@@ -23,7 +23,7 @@ bool	consume_token(t_tokn **current)
 	}
 	return (false);
 }
-
+/*
 //AST BUILDER
 
 static void	delete_links(t_tokn *tokens, t_tokn *current)
@@ -77,37 +77,52 @@ bool	build_ast(t_tree **ast, t_tokn *tokens, t_tokn *current)
 		}
 	}
 	return (*ast);
-}
+}*/
 
 //
+static void	print_tokens(t_tokn *start, t_tokn *end)
+{
+	printf("PRINT TOKENS	->	");
+	while (start && start != end)
+	{
+		printf("%s ", start->value);
+		start = start->next;
+	}
+	printf("\n");
+}
 
 
 
-bool	parse_script(t_tree **ast, t_tokn *head)
-//bool	parse_script(t_tokn *head)
+//bool	parse_script(t_tree **ast, t_tokn *head)
+bool	parse_script(t_tokn *head)
 {
 	t_tokn	*current;
 
 	current = head;
 	if (current)
-		return (parse_command_list(&current));
+	{
+		if (!parse_command_list(&current))
+			printf("%s	&&	%d\n", current->value, current->type);
+		//return (parse_command_list(&current));
+	}
 	return (current != head);
 }
 
 //bool	parse_command_list(t_tree **ast, t_tokn **current)
-bool	parse_command_list(t_tree **ast, t_tokn **current)
+bool	parse_command_list(t_tokn **current)
 {
 	t_tokn	*save;
-	t_tokn	*operator;
+//	t_tokn	*operator;
 
 	save = *current;
 	if (parse_command(current))
 	{
-		operator = *current;
+		print_tokens(save, *current);
+//		operator = *current;
 		if ((*current) && ((*current)->type & LORR || (*current)->type & LAND))
 		{
-			if (create_ast_node(ast ,*current, save));
-			{
+		//	if (create_ast_node(ast ,*current, save));
+		//	{
 				if (consume_token(current))
 					//return (parse_command_list(&(*ast)->right, current));
 					return (parse_command_list(current));
@@ -120,8 +135,9 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 				 * Both situations terrifies me.
 				 * Joke apart, we need to secure those scenarios
 				 */
-			}
+		//	}
 		}
+		return (*current);
 	/* It possibly makes more sense building the left side node after the right
 	 * side node. Hence, we'de remove the upper call to the create_ast_node()
 	 * function.
@@ -130,7 +146,7 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 	//	OR
 	//	return (create_ast_node(&(*ast)->left, *current, save));
 	}
-	return (*current);
+	return (!*current);
 }
 
 bool	parse_command(t_tokn **current)
@@ -230,7 +246,7 @@ static bool	argument_or_redirection(t_tokn **current)
 		}
 		return (argument_or_redirection(current));
 	}
-	return (*current != NULL);
+	return (!*current);
 }
 
 static bool	assignations(t_tokn **current)
@@ -242,7 +258,7 @@ static bool	assignations(t_tokn **current)
 			return (assignations(current));
 		return (false);
 	}
-	return (*current != NULL);
+	return (!*current);
 
 }
 
@@ -255,13 +271,13 @@ bool	parse_simple_command(t_tokn **current)
 		assignations(current);
 		return (argument_or_redirection(current));
     }
-    return (*current == NULL);
+	return (!*current);
 }
 
 // Pipeline → Command ('|' Command)*
 bool	parse_pipeline(t_tokn **current)
 {
-	if ((*current))
+	if (*current)
 	{
 		if ((*current)->type & PIPE)
 		{
@@ -285,7 +301,9 @@ bool	parse_pipeline(t_tokn **current)
 					return (parse_command(current));
 				return (true);
 			}
+			//return (valid_lexeme(*current, PIPE, (LORR | OPAR)));
 		}
+		return (valid_lexeme(*current, PIPE, (LORR | OPAR)));
 	}
-	return (false);
+	return (!*current);
 }
