@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/22 09:57:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/22 14:58:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,11 @@ static void	print_ast_DFS(t_tree *ast, int lvl, char c)
 int	minishell(char *input)
 {
 //	t_bloc	*list;
-	t_tree	*ast;
+//	t_tree	*ast;
 //	t_tokn	*list;
 	t_tokn	*tokens;
 
-	ast = NULL;
+//	ast = NULL;
 //	list = NULL;
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
@@ -183,12 +183,13 @@ int	minishell(char *input)
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
    	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
 	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-		parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	//	parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");
 	//ast ? print_ast_DFS(ast, 0, 'r') : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
-	ast ? printTree(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+	//ast ? printTree(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	//print_list(list);	
 	free_tokens(tokens);
 	return (0);

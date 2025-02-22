@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/22 13:55:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/22 13:59:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,7 +333,9 @@ bool	parse_command_list(t_tokn **current)
    // initial_node = *current;
     if (*current)
 	{
-		if (parse_command(current))
+		if ((*current)->type == OPAR)
+			return (parse_compound_command(current));
+		else if (parse_command(current))
 		{
             if (*current)
 			{
