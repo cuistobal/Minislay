@@ -44,7 +44,7 @@ bool	parse_command_list(t_tokn **current)
 	if (parse_command(current))
 	{
 	//	create_ast_node(ast, *current, save);
-		if ((*current)->type & LORR || (*current)->type & LAND)
+		if ((*current) && ((*current)->type & LORR || (*current)->type & LAND))
 		{
 		//	if (create_ast_node(ast ,*current, save));
 		//	{
@@ -70,7 +70,7 @@ bool	parse_command_list(t_tokn **current)
 	//	OR
 	//	return (create_ast_node(&(*ast)->left, *current, save));
 	}
-	return (false);
+	return (*current);
 }
 
 bool	parse_command(t_tokn **current)
@@ -78,15 +78,11 @@ bool	parse_command(t_tokn **current)
 //	t_tokn *save;
 
 //	save = *current;
-	if ((*current)->type != OPAR)
-	{
-		if (!parse_simple_command(current))
-		{
-		//	*current = save;
-			return (parse_pipeline(current));
-		}
-	}
-	return (parse_compound_command(current));
+	if ((*current)->type == OPAR)
+		return (parse_compound_command(current));
+	else if (!parse_simple_command(current))
+		return (parse_pipeline(current));
+	return (true);
 }
 
 //We can return false -> It's the last sub funciton that aprse command goes
@@ -110,7 +106,7 @@ bool	parse_compound_command(t_tokn **current)
 		//	return (valid_lexeme(*current, OPAR, LORR | OPAR));
 		}
 	}
-	return (*current);
+	return (false);
 }
 
 // Assignment → WORD '=' Expression -> Implemtanton a revoir
@@ -225,6 +221,8 @@ bool	parse_pipeline(t_tokn **current)
 			else if ((*current)->type & CPAR)
 			{
 				consume_token(current);
+				if (*current && (*current)->type > (LORR | OPAR))
+					return (parse_command(current));
 				return (true);
 			}
 		}
