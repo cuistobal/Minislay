@@ -6,11 +6,69 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 19:18:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/22 09:57:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+//	TESTS
+//
+#include <stdio.h>
+#include <stdlib.h>
+
+static void	print_tokens(t_tokn *tokens);
+
+
+
+// Fonction pour calculer la hauteur de l'arbre
+int height(t_tree* root)
+{
+    if (root == NULL)
+        return 0;
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+// Fonction pour imprimer un niveau de l'arbre
+void printLevel(t_tree* root, int level, int h)
+{
+    if (root == NULL)
+        return;
+    if (level == 1)
+	{
+        for (int i = 0; i < h; i++)
+            printf("  ");
+			printf("%d	&&	%d	", level, h);	
+		while (root->tokens)
+		{
+			printf("%s ", root->tokens->value);
+			root->tokens = root->tokens->next;
+		}
+		printf("\n");
+        for (int i = 0; i < h; i++)
+            printf("  ");
+    }
+	else if (level > 1)
+	{
+        printLevel(root->left, level - 1, h - 1);
+        printLevel(root->right, level - 1, h + 1);
+    }
+}
+
+// Fonction pour imprimer l'arbre par niveau
+void printTree(t_tree* root)
+{
+    int h = height(root);
+
+    for (int i = 1; i <= h; i++)
+	{
+        printLevel(root, i, 0);
+        printf("\n");
+    }
+}
 
 /*
 int main(int argc, char **argv. char **envp)
@@ -92,7 +150,7 @@ int main(int argc, char **argv, char **envp)
 	}
 	else
 		printf("Usage\n");
-}*/
+}
 
 static void	print_ast_DFS(t_tree *ast, int lvl, char c)
 {
@@ -107,7 +165,7 @@ static void	print_ast_DFS(t_tree *ast, int lvl, char c)
 		print_ast_DFS(ast->left, lvl + 1, 'g');
 		print_ast_DFS(ast->right, lvl + 1, 'd');
 	}
-}
+}*/
 
 int	minishell(char *input)
 {
@@ -129,7 +187,8 @@ int	minishell(char *input)
 	}
 	else
 		printf("Tokenization error.\n");
-	ast ? print_ast_DFS(ast, 0, 'r') : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+	//ast ? print_ast_DFS(ast, 0, 'r') : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+	ast ? printTree(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	//print_list(list);	
 	free_tokens(tokens);
 	return (0);

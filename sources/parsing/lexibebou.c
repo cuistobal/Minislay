@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 19:20:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/22 10:10:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ static void	print_command(t_tokn *command, t_tokn *limit)
 
 bool	parse_script(t_tree	**ast, t_tokn *tokens)
 {
-    t_tokn			*next;
-    t_tokn			*current;
+//	t_tokn			*next;
+	t_tokn			*current;
 
 	//next = NULL;
 	current = tokens;
@@ -165,10 +165,17 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 			print_tokens(tokens);
 			//print_command(tokens, current);
 			while (current->type & LORR || current->type & LAND || current->type & CPAR || current->type & PIPE)
-			{
+			{	
+				consume_token(&current);
+				if (current->type & CPAR)
+					consume_token(&current);
+				return (parse_script(ast, current));	
+
+//		AST MODULE CODE
+
 				//printf("%s	IN	%s\n", current->value, __func__);
 				//print_command(tokens, current);
-				if (!(current->type & CPAR))
+	/*			if (!(current->type & CPAR))
 				{
 					next = current->next;
 
@@ -200,6 +207,11 @@ bool	parse_script(t_tree	**ast, t_tokn *tokens)
 					//return (false);
 				}
 				consume_token(&current);
+				*/
+
+//		AST MODULE CODE ENDS
+
+
 			}
 			//current ? printf("Sending %s back to Irak\n", current->value) : printf("NULL\n");
 			return (parse_script(ast, current));
@@ -481,7 +493,7 @@ bool	parse_pipeline(t_tokn **current)
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
-		return (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR));
+		return (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR)); //LORR + OPAR btw
 //		else if (has_next_elem(*current) && valid_lexeme(*current, OPAR, LORR))
 	//	{
 	//		printf("%s\n", (*current)->value);
