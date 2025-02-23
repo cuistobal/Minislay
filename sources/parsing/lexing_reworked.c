@@ -75,7 +75,7 @@ static bool	build_right_side(t_tree **ast, t_tokn *tokens)
 		if (new)
 		{
 			(*ast)->right = new;
-			(*ast)->left = save;
+			new->left = save;
 		}
 	}
 	return (new);
@@ -100,8 +100,8 @@ static bool	build_left_side(t_tree **ast, t_tokn *tokens)
 		new = create_tree_node(tokens);
 		if (new)
 		{
-			(*ast) = new;
-			(*ast)->left = save;
+			new->left = save;
+			*ast = new;
 	//		printf("%s in bls\n", (*ast)->tokens->value);
 	//		printf("%s in bls\n", (*ast)->left->tokens->value);
 	//		(*ast)->right ? printf("%s in bls\n", (*ast)->left->tokens->value) : printf("NO RIGHT\n");
@@ -124,8 +124,8 @@ bool	build_ast(t_tree **ast, t_tokn *tokens, bool rooted)
 	//	(*ast) ? (*ast)->left ? printf("%s	%s post ba\n", (*ast)->tokens->value, (*ast)->left->tokens->value) : printf("%s	post ba\n", (*ast)->tokens->value) : printf("NO AST\n");
 	}
 	//else if (!*ast)
-	//	return (build_right_side(ast ,tokens));
-	return (build_right_side(&(*ast)->right ,tokens));
+	return (build_right_side(ast ,tokens));
+	//return (build_right_side(&(*ast)->right ,tokens));
 }
 
 /*
@@ -192,7 +192,10 @@ static bool	append_operator(t_tokn **operator, t_tokn **current, bool *rooted)
 	{
 		*operator = *current;
 		if (!(*current)->type & OPAR)
+		{
+			printf("%s	@	%d\n", (*current)->value, (*current)->type);
 			*rooted = true;
+		}
 		consume_token(current);
 		return (*current);
 	}

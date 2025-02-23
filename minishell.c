@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/23 16:25:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/23 17:38:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,41 @@ int main(int argc, char **argv, char **envp)
 		printf("Usage\n");
 }
 */
+/*
+static void	print_ast_BFS(t_tree *ast)
+{
+    int front = 0, rear = 0;
+    t_tree **queue, *current;
+
+	current = NULL;
+	if (ast)
+	{
+   		queue = (t_tree **)malloc(1000 * sizeof(t_tree*)); // Taille fixe pour simplifier
+    	queue[rear++] = ast;
+	    while (front < rear)
+		{
+    		current = queue[front++];
+        	printf("%s ", current->tokens->value);
+        	if (current->left)
+            	queue[rear++] = current->left;
+        	if (current->right)
+            	queue[rear++] = current->right;
+    		}
+    	free(queue);
+	}
+}*/
 
 static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 {
 	if (ast)
 	{
-		printf("%s	%d	%s\n", c, lvl, s);
+		printf("\n%s	%d	%s\n", c, lvl, s);
 		while (ast->tokens)
 		{
 			printf("%s ", ast->tokens->value);
 			ast->tokens = ast->tokens->next;
 		}
-		printf("\n\n");
+		printf("\n");
 
 		print_ast_DFS(ast->left, lvl + 1, "left", c);
 		
@@ -120,6 +143,7 @@ int	minishell(char *input)
 	else
 		printf("Tokenization error.\n");
 	ast ? print_ast_DFS(ast, 0, "root", "root") : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+//	ast ? print_ast_BFS(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	//print_list(list);	
 	free_tokens(tokens);
 	return (0);
