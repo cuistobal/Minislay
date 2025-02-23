@@ -9,4 +9,7 @@ echo coucou >outfile $PATH
 (echo >test "jaime els pommes") && echo success
 cat test test test test test test test test test test test test test test test test test test test test | grep "pommes" | wc -l
 echo coucou les loulous | wc -l >outfile| ls | grep *.c|wc-l >>outfile
-
+abc='' && << $abc | wc -l
+abc="" && << $abc | wc -l
+abc='' && << '$abc' | wc -l
+abc="" && << "$abc" | wc -l
