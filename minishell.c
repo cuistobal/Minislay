@@ -6,84 +6,11 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/22 14:58:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/23 16:25:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//
-//	TESTS
-//
-#include <stdio.h>
-#include <stdlib.h>
-
-static void	print_tokens(t_tokn *tokens);
-
-
-
-// Fonction pour calculer la hauteur de l'arbre
-int height(t_tree* root)
-{
-    if (root == NULL)
-        return 0;
-    int leftHeight = height(root->left);
-    int rightHeight = height(root->right);
-    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
-}
-
-// Fonction pour imprimer un niveau de l'arbre
-void printLevel(t_tree* root, int level, int h)
-{
-    if (root == NULL)
-        return;
-    if (level == 1)
-	{
-        for (int i = 0; i < h; i++)
-            printf("  ");
-			printf("%d	&&	%d	", level, h);	
-		while (root->tokens)
-		{
-			printf("%s ", root->tokens->value);
-			root->tokens = root->tokens->next;
-		}
-		printf("\n");
-        for (int i = 0; i < h; i++)
-            printf("  ");
-    }
-	else if (level > 1)
-	{
-        printLevel(root->left, level - 1, h - 1);
-        printLevel(root->right, level - 1, h + 1);
-    }
-}
-
-// Fonction pour imprimer l'arbre par niveau
-void printTree(t_tree* root)
-{
-    int h = height(root);
-
-    for (int i = 1; i <= h; i++)
-	{
-        printLevel(root, i, 0);
-        printf("\n");
-    }
-}
-
-/*
-int main(int argc, char **argv. char **envp)
-{
-	t_tokn	*tokens;
-	char 	*user_prompt;
-
-	tokens = NULL;
-	*user_prompt = NULL;
-	if (argc == 2)
-	{
-		user_prompt = readline();		
-	}
-	printf("Usage\n");
-}*/
 
 //
 static void	free_tokens(t_tokn *tokens)
@@ -151,30 +78,34 @@ int main(int argc, char **argv, char **envp)
 	else
 		printf("Usage\n");
 }
+*/
 
-static void	print_ast_DFS(t_tree *ast, int lvl, char c)
+static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 {
 	if (ast)
 	{
-		printf("%c level %d\n", c, lvl);
+		printf("%s	%d	%s\n", c, lvl, s);
 		while (ast->tokens)
 		{
-			printf("%s\n", ast->tokens->value);
+			printf("%s ", ast->tokens->value);
 			ast->tokens = ast->tokens->next;
 		}
-		print_ast_DFS(ast->left, lvl + 1, 'g');
-		print_ast_DFS(ast->right, lvl + 1, 'd');
+		printf("\n\n");
+
+		print_ast_DFS(ast->left, lvl + 1, "left", c);
+		
+		print_ast_DFS(ast->right, lvl + 1, "right", c);
 	}
-}*/
+}
 
 int	minishell(char *input)
 {
 //	t_bloc	*list;
-//	t_tree	*ast;
+	t_tree	*ast;
 //	t_tokn	*list;
 	t_tokn	*tokens;
 
-//	ast = NULL;
+	ast = NULL;
 //	list = NULL;
 	tokens = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
@@ -183,13 +114,12 @@ int	minishell(char *input)
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
    	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
 	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-	//	parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-		parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	//	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	}
 	else
 		printf("Tokenization error.\n");
-	//ast ? print_ast_DFS(ast, 0, 'r') : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
-	//ast ? printTree(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+	ast ? print_ast_DFS(ast, 0, "root", "root") : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	//print_list(list);	
 	free_tokens(tokens);
 	return (0);

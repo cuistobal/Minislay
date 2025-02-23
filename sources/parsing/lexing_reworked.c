@@ -27,6 +27,8 @@ bool	consume_token(t_tokn **current)
 
 //AST BUILDER
 
+
+//
 static void	delete_links(t_tokn *tokens, t_tokn *current)
 {
 	while (tokens)
@@ -39,6 +41,7 @@ static void	delete_links(t_tokn *tokens, t_tokn *current)
 		(current)->next = NULL;
 }
 
+//
 t_tree	*create_tree_node(t_tokn *tokens)
 {
 	t_tree	*new_node;
@@ -53,31 +56,79 @@ t_tree	*create_tree_node(t_tokn *tokens)
 	return (new_node);
 }
 
-bool	build_ast(t_tree **ast, t_tokn *tokens, t_tokn *current)
+static bool	build_right_side(t_tree **ast, t_tokn *tokens)
 {
-	t_tokn	*next;
+	t_tree	*new;
+	t_tree	*save;
 
-	if (current)
+	if (!*ast)
 	{
-		if (!*ast)
-			*ast = create_tree_node(current);
-		if (*ast)
+		new = create_tree_node(tokens);
+		if (new)
+			*ast = new;
+		return (new);
+	}
+	else
+	{
+		save = (*ast)->right;
+		new = create_tree_node(tokens);
+		if (new)
 		{
-			next = current->next;
-			(*ast)->right = create_tree_node(next);
-			if ((*ast)->right)
-			{
-				(*ast)->left = create_tree_node(tokens);
-				if ((*ast)->left)
-					delete_links(tokens, current);
-				return ((*ast)->left);
-			}
-			return ((*ast)->right);
+			(*ast)->right = new;
+			(*ast)->left = save;
 		}
 	}
-	return (*ast);
+	return (new);
 }
 
+static bool	build_left_side(t_tree **ast, t_tokn *tokens)
+{
+	t_tree	*new;
+	t_tree	*save;
+
+	if (!*ast)
+	{
+		new = create_tree_node(tokens);
+		if (new)
+			*ast = new;
+		return (new);
+	}
+	else
+	{
+		save = *ast;
+	//	printf("\n%s in bls\n", save->tokens->value);
+		new = create_tree_node(tokens);
+		if (new)
+		{
+			(*ast) = new;
+			(*ast)->left = save;
+	//		printf("%s in bls\n", (*ast)->tokens->value);
+	//		printf("%s in bls\n", (*ast)->left->tokens->value);
+	//		(*ast)->right ? printf("%s in bls\n", (*ast)->left->tokens->value) : printf("NO RIGHT\n");
+		}
+	}
+	return (new);
+}
+
+//
+bool	build_ast(t_tree **ast, t_tokn *tokens, bool rooted)
+{
+
+	if (!rooted)
+	{
+	//	(*ast) ? (*ast)->left ? printf("%s	%s pre ba\n", (*ast)->tokens->value, (*ast)->left->tokens->value) : printf("%s	pre ba\n", (*ast)->tokens->value) : printf("NO AST\n");
+		//if (!*ast)
+			return (build_left_side(ast, tokens));
+		//return (build_left_side(&(*ast)->left, tokens));
+	//	build_left_side(ast, tokens);	
+	//	(*ast) ? (*ast)->left ? printf("%s	%s post ba\n", (*ast)->tokens->value, (*ast)->left->tokens->value) : printf("%s	post ba\n", (*ast)->tokens->value) : printf("NO AST\n");
+	}
+	//else if (!*ast)
+	//	return (build_right_side(ast ,tokens));
+	return (build_right_side(&(*ast)->right ,tokens));
+}
+
+/*
 //
 static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
 {
@@ -88,24 +139,39 @@ static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
 		start = start->next;
 	}
 	printf("\n");
+}*/
+
+
+void	print_ast(t_tree *root)
+{
+	if (root)
+	{
+		while (root->tokens)
+		{
+			printf("%s ", root->tokens->value);
+			root->tokens = root->tokens->next;
+		}
+		print_ast(root->left);
+		print_ast(root->right);
+	}
 }
-
-
 
 bool	parse_script(t_tree **ast, t_tokn *head)
 //bool	parse_script(t_tokn *head)
 {
-	t_tree	*root;
+	bool	rooted;
+	//t_tree	*root;
 	t_tokn	*current;
 
-	root = *ast;
+	//root = *ast;
 	current = head;
+	rooted = false;	
 	if (current)
 	{
-		if (!parse_command_list(ast, &current))
+		if (!parse_command_list(ast, &current, &rooted))
 			printf("%s	&&	%d\n", current->value, current->type);
 		//return (parse_command_list(&current));
-		print_ast(root);
+//		print_ast(root);
 	}
 	return (current != head);
 }
@@ -120,40 +186,35 @@ static int	calls = 0;
 //	vers la gauche.
 //
 
-//0	- ROOT
-//1	- LEFT
-//2	- RIGHT
-static bool	build_tree(t_tree **ast, t_tokn *save, t_tokn *current)
+static bool	append_operator(t_tokn **operator, t_tokn **current, bool *rooted)
 {
-	t_tree	*new_branch;
-
-	if (current)
+	if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 	{
-		if (!*ast)
-			*ast = create_tree_node(NULL);
-		if (*ast)
-		{
-			if ((*current)->next)
-			{
-
-			}
-			else
-			{
-				(*ast)->right = create_tree_node();
-				return ((*ast)->right);
-			}
-		}
-		return (*ast); //if !(*ast)	->	malloc failed
+		*operator = *current;
+		if (!(*current)->type & OPAR)
+			*rooted = true;
+		consume_token(current);
+		return (*current);
 	}
-	return (save);
-	//return (save == current);	->	Fin de l arbre, les 2 sont nuls
+	return (false);
 }
 
-bool	parse_command_list(t_tree **ast, t_tokn **current)
+static bool	parse_next_branch(t_tree **ast, t_tokn **current, bool *rooted)
+{
+	if (*ast)
+	{
+		if (!*rooted)
+			return (parse_command_list(&(*ast)->left, current, rooted)); //	(?)
+		return (parse_command_list(&(*ast)->right, current, rooted)); //	(?)
+	}
+	return (parse_command_list(ast, current, rooted)); //	(?)
+}
+
+bool	parse_command_list(t_tree **ast, t_tokn **current, bool *rooted)
 //bool	parse_command_list(t_tokn **current)
 {
-	t_tokn	*save;
-	t_tokn	*operator;
+	t_tokn		*save;
+	t_tokn		*operator;
 
 	save = *current;
 	
@@ -161,23 +222,31 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 
 	if (*current)
 	{
-		if (parse_command(current))
+		if (parse_command(ast, current, rooted))
 		{
 		
 			//print_tokens(save, *current, calls, "BRANCH");
 		
 			calls++;
 
-			build_ast(ast, save, *current); // (*current)->next ? 	->	build on left
-									   		// else					->	build on root
+			build_ast(ast, save, *rooted);
 
 			//Creer un noeud left
-			printf("\nCREATE LEFT NODE");
-			print_tokens(save, *current, calls, "BRANCH");
+			//printf("\nCREATE LEFT NODE");
+			//print_tokens(save, *current, calls, "BRANCH");
 
 
 			if ((*current) && ((*current)->type & CPAR))
-				return (true);
+				return (true);	
+			if (append_operator(&operator, current, rooted))
+			{
+				build_ast(ast, operator, *rooted);
+				build_ast(&(*ast)->right, *current, *rooted);
+				delete_links(save, operator);
+				//print_ast(*ast);
+			}
+
+			/*	Old code that works
 			if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 			//		((*current)->type & LORR || (*current)->type & LAND))
 			{
@@ -188,14 +257,25 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 				//Loger l operateur logique
 				operator = *current;
 				consume_token(current);
+				
+				append_operator(&operator, current, rooted);	
 
-				if (*current)
+				if (!*current)
+					return (false); // That means the Logical operator is 
+									// followed by a NULL token
+				else
+				{
+					build_ast(ast, operator);
+					build_ast(&(*ast)->right, *current);
+
+					//J ai peur que ca casse la logique de l algo
 					//Creer un noeud droite
 					//Loger le reste de l'expression
-				
+				}
+
 				printf("\nCREATE RIGHT NODE");
 				print_tokens(*current, NULL, calls, "");
-					
+				*/	
 				/*Impossible to get there since consume_token() can dereference
 					 * current->next.
 					 * We could get a LORR | LAND without a following command
@@ -208,7 +288,21 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 			}
 			calls--;
 			//return (parse_command_list(current));
-			return (parse_command_list(&(*ast)->right, current)); //	(?)
+			//static -> SI on a rencontre le premier operateur logique
+			//			significatif:
+			//
+			//			On passe a droite
+			//			
+			//				else
+			//
+			//			On reste a gauche
+			//
+			
+
+
+			//return (parse_command_list(&(*ast)->right, current, rooted)); //	(?)
+		
+			return (parse_next_branch(ast, current, rooted));
 		}
 	//	return (*current);
 	/* It possibly makes more sense building the left side node after the right
@@ -218,13 +312,13 @@ bool	parse_command_list(t_tree **ast, t_tokn **current)
 	//	return (create_ast_node(ast, *current, save));
 	//	OR
 	//	return (create_ast_node(&(*ast)->left, *current, save));
-	}
+	//}
 	//	Edge case	->	current is NULL && different from save -> means that
 	//	parse_command() failed.
 	return (!*current);
 }
 
-bool	parse_command(t_tokn **current)
+bool	parse_command(t_tree **ast, t_tokn **current, bool *rooted)
 {
 	t_tokn *save;
 
@@ -233,24 +327,24 @@ bool	parse_command(t_tokn **current)
 	{
 		if ((*current)->type == OPAR)
 		{
-			if (parse_compound_command(current))
+			if (parse_compound_command(ast, current, rooted))
 				return (true);
 			*current = save;
 		}
 		if (!parse_simple_command(current))
-			return (parse_pipeline(current));
+			return (parse_pipeline(ast, current, rooted));
 	}
 	return (true);
 }
 
 //We can return false -> It's the last sub funciton that aprse command goes
 //Actually (?)
-bool	parse_compound_command(t_tokn **current)
+bool	parse_compound_command(t_tree **ast, t_tokn **current, bool *rooted)
 {
 	if ((*current)->type == OPAR)
 	{
 		consume_token(current);
-		if (parse_command_list(current))
+		if (parse_command_list(ast, current, rooted))
 		{
 			if ((*current)->type & CPAR)
 				return (consume_token(current));
@@ -353,7 +447,7 @@ bool	parse_simple_command(t_tokn **current)
 }
 
 // Pipeline → Command ('|' Command)*
-bool	parse_pipeline(t_tokn **current)
+bool	parse_pipeline(t_tree **ast, t_tokn **current, bool *rooted)
 {
 	if (*current)
 	{
@@ -361,7 +455,7 @@ bool	parse_pipeline(t_tokn **current)
 		{
 			consume_token(current);
 			if (*current)
-				return (parse_command(current)); 
+				return (parse_command(ast, current, rooted)); 
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			return (false);
 		}
