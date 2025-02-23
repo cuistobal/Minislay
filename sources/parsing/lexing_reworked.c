@@ -128,7 +128,7 @@ bool	build_ast(t_tree **ast, t_tokn *tokens, bool rooted)
 	//return (build_right_side(&(*ast)->right ,tokens));
 }
 
-/*
+
 //
 static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
 {
@@ -139,7 +139,7 @@ static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
 		start = start->next;
 	}
 	printf("\n");
-}*/
+}
 
 
 void	print_ast(t_tree *root)
@@ -207,8 +207,10 @@ static bool	parse_next_branch(t_tree **ast, t_tokn **current, bool *rooted)
 	if (*ast)
 	{
 		if (!*rooted)
-			return (parse_command_list(&(*ast)->left, current, rooted)); //	(?)
-		return (parse_command_list(&(*ast)->right, current, rooted)); //	(?)
+	//		return (parse_command_list(&(*ast)->left, current, rooted)); //	(?)
+	//	return (parse_command_list(&(*ast)->right, current, rooted)); //	(?)
+			return (parse_command_list(ast, current, rooted)); //	(?)
+		return (parse_command_list(ast, current, rooted)); //	(?)
 	}
 	return (parse_command_list(ast, current, rooted)); //	(?)
 }
@@ -232,21 +234,33 @@ bool	parse_command_list(t_tree **ast, t_tokn **current, bool *rooted)
 		
 			calls++;
 
-			build_ast(ast, save, *rooted);
+		//	build_ast(ast, save, *rooted);
 
 			//Creer un noeud left
 			//printf("\nCREATE LEFT NODE");
 			//print_tokens(save, *current, calls, "BRANCH");
+			
+
+			print_tokens(save, *current, calls, "parse_command()");
 
 
 			if ((*current) && ((*current)->type & CPAR))
 				return (true);	
 			if (append_operator(&operator, current, rooted))
 			{
-				build_ast(ast, operator, *rooted);
+			/*	build_ast(ast, operator, *rooted);
 				build_ast(&(*ast)->right, *current, *rooted);
 				delete_links(save, operator);
-				//print_ast(*ast);
+				//print_ast(*ast);*/
+				
+				printf("\nCREATE ROOT NODE");
+				printf("\n%s\n", operator->value);
+
+				delete_links(save, operator);
+				
+				printf("\nCREATE RIGHT NODE");
+				print_tokens(*current, NULL, calls, "append_operators()");
+
 			}
 
 			/*	Old code that works
