@@ -7,13 +7,13 @@ static bool	has_next_elem(t_tokn *current)
 	if (current)
 		return (current->next);
 	return (false);
-}
+}*/
 
 //Assesses if the lexeme's value falls within the set range 
 static bool	valid_lexeme(t_tokn *current, int min, int max)
 {
 	return (current && (current->type >= min && current->type <= max));	
-}*/
+}
 
 bool	consume_token(t_tokn **current)
 {
@@ -24,19 +24,17 @@ bool	consume_token(t_tokn **current)
 	}
 	return (false);
 }
-/*
+
 //AST BUILDER
 
 static void	delete_links(t_tokn *tokens, t_tokn *current)
 {
 	while (tokens)
 	{
-	//	printf("%s ", (tokens)->value);
 		if ((tokens)->next == current)
 			(tokens)->next = NULL;
 		tokens = (tokens)->next;	
 	}
-//	printf("\n");
 	if (current)
 		(current)->next = NULL;
 }
@@ -78,7 +76,7 @@ bool	build_ast(t_tree **ast, t_tokn *tokens, t_tokn *current)
 		}
 	}
 	return (*ast);
-}*/
+}
 
 //
 static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
@@ -94,17 +92,20 @@ static void	print_tokens(t_tokn *start, t_tokn *end, int calls, char *msg)
 
 
 
-//bool	parse_script(t_tree **ast, t_tokn *head)
-bool	parse_script(t_tokn *head)
+bool	parse_script(t_tree **ast, t_tokn *head)
+//bool	parse_script(t_tokn *head)
 {
+	t_tree	*root;
 	t_tokn	*current;
 
+	root = *ast;
 	current = head;
 	if (current)
 	{
-		if (!parse_command_list(&current))
+		if (!parse_command_list(ast, &current))
 			printf("%s	&&	%d\n", current->value, current->type);
 		//return (parse_command_list(&current));
+		print_ast(root);
 	}
 	return (current != head);
 }
@@ -119,11 +120,40 @@ static int	calls = 0;
 //	vers la gauche.
 //
 
-//bool	parse_command_list(t_tree **ast, t_tokn **current)
-bool	parse_command_list(t_tokn **current)
+//0	- ROOT
+//1	- LEFT
+//2	- RIGHT
+static bool	build_tree(t_tree **ast, t_tokn *save, t_tokn *current)
+{
+	t_tree	*new_branch;
+
+	if (current)
+	{
+		if (!*ast)
+			*ast = create_tree_node(NULL);
+		if (*ast)
+		{
+			if ((*current)->next)
+			{
+
+			}
+			else
+			{
+				(*ast)->right = create_tree_node();
+				return ((*ast)->right);
+			}
+		}
+		return (*ast); //if !(*ast)	->	malloc failed
+	}
+	return (save);
+	//return (save == current);	->	Fin de l arbre, les 2 sont nuls
+}
+
+bool	parse_command_list(t_tree **ast, t_tokn **current)
+//bool	parse_command_list(t_tokn **current)
 {
 	t_tokn	*save;
-//	t_tokn	*operator;
+	t_tokn	*operator;
 
 	save = *current;
 	
@@ -138,38 +168,35 @@ bool	parse_command_list(t_tokn **current)
 		
 			calls++;
 
+			build_ast(ast, save, *current); // (*current)->next ? 	->	build on left
+									   		// else					->	build on root
+
 			//Creer un noeud left
 			printf("\nCREATE LEFT NODE");
 			print_tokens(save, *current, calls, "BRANCH");
 
+
 			if ((*current) && ((*current)->type & CPAR))
 				return (true);
-				//while ((*current) && ((*current)->type & CPAR))
-			//	consume_token(current);
-			if ((*current) && ((*current)->type & LORR || (*current)->type & LAND))
+			if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
+			//		((*current)->type & LORR || (*current)->type & LAND))
 			{
 				printf("\nCREATE ROOT NODE");
 				printf("\n%s\n", (*current)->value);	
+				
 				//Retour sur la root
 				//Loger l operateur logique
-
-				//printf("BRANCHING ON				->	%s\n", (*current)->value);
-				//print_tokens(save, NULL, calls);
-			//	if (create_ast_node(ast ,*current, save));
-			//	{
-				//	if (consume_token(current))
-				//	{
-
+				operator = *current;
 				consume_token(current);
-						//Creer un noeud droite
-						//Loger le reste de l'expression
+
+				if (*current)
+					//Creer un noeud droite
+					//Loger le reste de l'expression
 				
 				printf("\nCREATE RIGHT NODE");
-			//	print_tokens(save, *current, calls, "LEAF && OP");
 				print_tokens(*current, NULL, calls, "");
-						//return (parse_command_list(&(*ast)->right, current));
-						//1	return (parse_command_list(current));
-					/*Impossible to get there since consume_token() can dereference
+					
+				/*Impossible to get there since consume_token() can dereference
 					 * current->next.
 					 * We could get a LORR | LAND without a following command
 					 * OR
@@ -178,14 +205,10 @@ bool	parse_command_list(t_tokn **current)
 					 * Both situations terrifies me.
 					 * Joke apart, we need to secure those scenarios
 					 */
-			//	}
 			}
-		//	if ((*current)->type & CPAR)
-		//		return (true);
-			//else if ((*current)->type & CPAR)
-			//	return (consume_token(current));
-			return (parse_command_list(current));
-			//return (true);
+			calls--;
+			//return (parse_command_list(current));
+			return (parse_command_list(&(*ast)->right, current)); //	(?)
 		}
 	//	return (*current);
 	/* It possibly makes more sense building the left side node after the right
