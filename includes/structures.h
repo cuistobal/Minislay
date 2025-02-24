@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 14:42:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/24 08:38:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,18 +139,12 @@ typedef	struct	tree
 	struct tree		*right;
 }	t_tree;
 
-//Unused
-typedef struct blocks
-{
-	struct tokens	*token;
-	struct blocks	*next;
-}	t_bloc;
-
 //Used
 typedef struct parser
 {
 	int		state;
-	t_tokn	*command_blocks;
+	t_tokn	*tokens;
+	t_tree	**ast;
 }	t_pars;
 
 #endif

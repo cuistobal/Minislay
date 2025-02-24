@@ -160,12 +160,11 @@ bool	parse_script(t_tree **ast, t_tokn *head)
 //bool	parse_script(t_tokn *head)
 {
 	bool	rooted;
-	//t_tree	*root;
 	t_tokn	*current;
 
 	//root = *ast;
 	current = head;
-	rooted = false;	
+	rooted = false;
 	if (current)
 	{
 		if (!parse_command_list(ast, &current, &rooted))
@@ -234,7 +233,7 @@ bool	parse_command_list(t_tree **ast, t_tokn **current, bool *rooted)
 		
 			calls++;
 
-		//	build_ast(ast, save, *rooted);
+			build_ast(ast, save, *rooted);
 
 			//Creer un noeud left
 			//printf("\nCREATE LEFT NODE");
@@ -248,10 +247,10 @@ bool	parse_command_list(t_tree **ast, t_tokn **current, bool *rooted)
 				return (true);	
 			if (append_operator(&operator, current, rooted))
 			{
-			/*	build_ast(ast, operator, *rooted);
+				build_ast(ast, operator, *rooted);
 				build_ast(&(*ast)->right, *current, *rooted);
 				delete_links(save, operator);
-				//print_ast(*ast);*/
+				//print_ast(*ast);
 				
 				printf("\nCREATE ROOT NODE");
 				printf("\n%s\n", operator->value);
@@ -363,7 +362,7 @@ bool	parse_compound_command(t_tree **ast, t_tokn **current, bool *rooted)
 		consume_token(current);
 		if (parse_command_list(ast, current, rooted))
 		{
-			if ((*current)->type & CPAR)
+			if ((*current) && (*current)->type & CPAR)
 				return (consume_token(current));
 		}
 	}
