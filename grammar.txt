@@ -30,19 +30,25 @@ Literals:
 
 3. Production Rules
 
-	Script           → CommandList
-	CommandList      → Command ( '&&' | '||' ) CommandList
-    	             | Command
-	Command          → SimpleCommand
-	                 | Pipeline
-	                 | CompoundCommand
-	SimpleCommand    → Assignment* WORD (Argument | Redirection)*
-	Assignment       → WORD '=' Expression
-	Argument         → WORD
-	Pipeline         → Command ( '|' Command )*
-	Redirection      → ( '>' | '>>' | '<' | '<<' ) WORD
-	CompoundCommand  → '(' CommandList ')'
-	Expression       → '$' WORD | WORD
+	Script           →	CommandList
+
+	CommandList      →	Command ( '&&' | '||' ) CommandList | Command
+
+	Command          →	CompoundCommand | SimpleCommand | Pipeline 
+
+	CompoundCommand  →	'(' CommandList ')'
+	
+	SimpleCommand    →	Assignment* WORD (Argument | Redirection)*
+	
+	Assignment       →	WORD '=' Expression
+	Expression       →	'$' WORD | WORD
+	Argument         →	WORD
+	
+	Pipeline         →	Command ( '|' Command )*
+	
+	Redirection      →	( '>' | '>>' | '<' | '<<' ) WORD
+	
+	CompoundCommand  →	'(' CommandList ')'
 
 4. Operator Precedence (Highest to Lowest)
 

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/23 17:38:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:25:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,24 +121,65 @@ static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 	}
 }
 
+static bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
+{
+	if (!(*parser))
+	{
+		*parser = (t_pars *)malloc(sizeof(t_pars));
+		if (*parser)
+		{
+			(*parser)->state = 0;
+			(*parser)->tokens = tokens;
+			(*parser)->ast = ast;
+		}
+	}
+	return (*parser);
+}
+
+static void	print_parser(t_pars *parser)
+{
+
+	if (parser)
+	{
+		printf("PRINTING %s\n", __func__);
+
+		parser->tokens ? print_tokens(parser->tokens) : printf("No tokens\n");
+
+		printf("state	->	%d\n", parser->state);
+		
+		parser->ast? print_ast_DFS(*(parser)->ast, 0, "root", "root") : printf("No AST\n");
+	}
+}
+
 int	minishell(char *input)
 {
-//	t_bloc	*list;
 	t_tree	*ast;
-//	t_tokn	*list;
+	t_pars	*parser;
 	t_tokn	*tokens;
 
 	ast = NULL;
-//	list = NULL;
 	tokens = NULL;
+	parser = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
-    //	print_tokens(tokens);
+		define_parser(&parser, &ast, tokens);
+		
+		print_parser(parser);
+    
+		//	print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
    	//	parse_script(&list, tokens, tokens) ? print_list(list) : printf("Syntax error.\n");
 	//	parse_script(&list, tokens, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
-		parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+	//	parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	//	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
+		
+		if (parse_script(&ast, tokens, &parser))
+
+		//parse_script(&ast, tokens, &parser) ? print_tokens(tokens) : printf("Syntax error.\n");
+		
+		printf("\n\n\n");
+		print_parser(parser);
+		printf("\n\n\n");
 	}
 	else
 		printf("Tokenization error.\n");

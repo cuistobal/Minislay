@@ -6,12 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 12:51:57 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/24 08:38:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:37:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+
+/*		OLD	->	TO BE REMOVED AFTER MERGE
 
 //We use this enum to append the right token type
 enum token_type
@@ -78,7 +80,7 @@ struct action
 	operate act[2];
 };
 
-/*OLD
+
 typedef struct parser
 {
 	char	*user;
@@ -89,8 +91,7 @@ typedef struct parser
     char	state;
 	int		top;
 	int		capacity;
-}   t_pars;*/
-
+}   t_pars;
 
 // Enum for different character groups
 typedef enum e_char_group
@@ -115,21 +116,22 @@ typedef enum
     CMD_COUNT
 }	state_manager;
 
-//Used
-typedef struct tokens
-{
-	int				type;	// Modifier pour utiliser un enum type (?)
-	char			*value;
-	struct tokens	*next;
-}	t_tokn;
-
-/*OLD
 typedef struct stack
 {
 	int		top;
 	int		capacity;
 	char 	*stack;
-}	t_stck;*/
+}	t_stck;
+
+		END OF OLD */
+
+//Used
+typedef struct tokens
+{
+	int				type;
+	char			*value;
+	struct tokens	*next;
+}	t_tokn;
 
 //Used
 typedef	struct	tree

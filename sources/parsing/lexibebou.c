@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:48:23 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/22 13:59:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:39:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ static void	print_ast(t_tree *ast)
 //	UTILS
 //
 
-//Move to utils -> remove static status
-static void	consume_token(t_tokn **token)
-{
-	if (*token)
-		*token = (*token)->next;
-}
 
 //Assesses if we're dealing with the last element of the list.
 static bool	has_next_elem(t_tokn *current)
@@ -361,43 +355,34 @@ bool	parse_command_list(t_tokn **current)
 
 //TEST
 // Command → CompoundCommand | SimpleCommand | Pipeline
-bool parse_command(t_tokn **current)
+bool	parse_command(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
 {
-    //t_tokn	*initial_node;
-
-    //initial_node = *current;
-    (*current) ? printf("%s\t@\t%s\n", (*current)->value, __func__) : printf("End\t@\t%s\n", __func__);
     if (*current)
     {
+
         if ((*current)->type == OPAR)
         {
-			consume_token(current);
-           // if (!parse_command_list(current))
-			if (!parse_compound_command(current))
+
+			consume_token(current, prev);
+
+			if (!parse_compound_command(current, prev, rooted, subshells))
 			{
 				printf("Syntax error: Expected token after '(' token.\n");
                 return (false);
 			}
-			/*else if (!*current || (*current)->type != CPAR)
-			{
-				printf("Syntax error: Expected ')' token.\n");
-				return (false);
-			}*/
-//	THis intends to handle the CPAR following the last valid token of the expression.
-//	On hold for now.
+
 			if (*current)
 			{
-		//		*current ? printf("%s	in	%s	BEFORE CONSUMPTION\n", (*current)->value, __func__);
-		//		if ()
-				consume_token(current);
-		//		*current ? printf("%s	in	%s	AFTER CONSUMPTION\n", (*current)->value, __func__);
-				return (true);
+
+				return (consume_token(current, prev));
+
 			}
-		//	*current = (*current)->next;
-        //	return (true);
+
         }
+
         else if ((*current)->type != CPAR)
 		{
+
 			if (!parse_simple_command(current))
 			{
 				if ((*current) && (*current)->type != CPAR)
@@ -510,16 +495,16 @@ bool	parse_pipeline(t_tokn **current)
 }
 
 // '(' CommandList ')'
-bool	parse_compound_command(t_tokn **current)
+bool	parse_compound_command(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
 {
     (*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
     if ((*current)->type == OPAR)
 	{
-		consume_token(current);
-        parse_command_list(current);
+		consume_token(current, prev);
+        parse_command_list(current, prev, rooted, subshells);
 		if ((*current)->type & CPAR)
 		{
-			consume_token(current);
+			consume_token(current, prev);
             return (true);
         }
     }
