@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/25 10:13:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:49:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	free_tokens(t_tokn *tokens)
 	}
 }
 
+/*
 //
 static void	print_tokens(t_tokn *tokens)
 {
@@ -42,7 +43,7 @@ static void	print_tokens(t_tokn *tokens)
 	}
 }
 
-/*
+
 static void	print_list(t_bloc *list)
 {
 	int	index;
@@ -101,7 +102,7 @@ static void	print_ast_BFS(t_tree *ast)
     		}
     	free(queue);
 	}
-}*/
+}
 
 static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 {
@@ -119,7 +120,7 @@ static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 		
 		print_ast_DFS(ast->right, lvl + 1, "right", c);
 	}
-}
+}*/
 
 //Appends the parser's token tab and returns true.
 bool	append_token_tab(t_tokn *tab[], t_tokn *pointer, int token_type)
@@ -147,26 +148,27 @@ static bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
 	return (*parser);
 }
 
+/*
 static void	print_parser(t_pars *parser)
 {
 
 	if (parser)
 	{
-		printf("PRINTING %s\n", __func__);
+		printf("%s\n\n", __func__);
 
 		//parser->tokens ? print_tokens(parser->tokens) : printf("No tokens\n");
 
 		if (parser->tab)
 		{
 			for (int i = 0; i < TTSIZE; i++)
-				parser->tab[i] ? printf("%s\n", parser->tab[i]->value) : printf("NULL");
+				parser->tab[i] ? printf("parser->tab[%d]	->	%s\n", i, parser->tab[i]->value) : printf("parser->tab[%d]	->	NULL\n", i);
 		}
 		
-		printf("state	->	%d\n", parser->state);
+		printf("state		->	%d\n", parser->state);
 		
 		parser->ast? print_ast_DFS(*(parser)->ast, 0, "root", "root") : printf("No AST\n");
 	}
-}
+}*/
 
 int	minishell(char *input)
 {
@@ -181,7 +183,7 @@ int	minishell(char *input)
 	{
 		define_parser(&parser, &ast, tokens);
 		
-		print_parser(parser);
+		//print_parser(parser);
     
 		//	print_tokens(tokens);
 		//	lexer(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
@@ -190,17 +192,17 @@ int	minishell(char *input)
 	//	parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	//	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 		
-		if (parse_script(&ast, tokens, parser))
-
+	//	if (parse_script(tokens, parser))
+		(parse_script(&ast, parser)) ? printf("Parsed successfully.\n") : printf("Failed to parse.\n");
 		//parse_script(&ast, tokens, &parser) ? print_tokens(tokens) : printf("Syntax error.\n");
 		
-		printf("\n\n\n");
-		print_parser(parser);
-		printf("\n\n\n");
+	//	printf("\n\n\n");
+	//	print_parser(parser);
+	//	printf("\n\n\n");
 	}
 	else
 		printf("Tokenization error.\n");
-	ast ? print_ast_DFS(ast, 0, "root", "root") : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
+//	ast ? print_ast_DFS(ast, 0, "root", "root") : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 //	ast ? print_ast_BFS(ast) : printf("L AST EST VIDE SES GRAND MORTS OUAIS\n");
 	//print_list(list);	
 	free_tokens(tokens);

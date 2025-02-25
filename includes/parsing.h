@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/24 16:14:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:19:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,22 @@ char	*handle_special_chars(const char *input, int *pos, int *type);
 bool    validate_syntax(t_tokn *head);
 
 // Function prototypes
-bool parse_script(t_tree **ast, t_tokn *tokens, t_pars **parser);
+bool parse_script(t_tree **ast, t_pars *parser);
+//bool parse_script(t_tokn *tokens, t_pars *parser);
 //bool parse_script(t_tokn *tokens);
 //bool parse_command_list(t_tokn **tokens);
-bool parse_command_list(t_tokn **tokens, t_tokn **prev, bool *rooted, int *subshells);
+bool parse_command_list(t_tokn **tokens, t_pars *parser);
 //bool parse_command_list(t_tree **ast, t_tokn **tokens, bool *rooted);
 //bool parse_command(t_tokn **tokens);
-bool parse_command(t_tokn **tokens, t_tokn **prev, bool *rooted, int *subshells);
-bool parse_simple_command(t_tokn **tokens, t_tokn **prev);
+bool parse_command(t_tokn **tokens, t_pars *parser);
+bool parse_simple_command(t_tokn **tokens, t_pars *parser);
 //bool parse_pipeline(t_tokn **tokens);
-bool parse_pipeline(t_tokn **tokens, t_tokn **prev, bool *rooted, int *subshells);
+bool parse_pipeline(t_tokn **tokens, t_pars *parser);
 //bool parse_compound_command(t_tokn **tokens);
-bool parse_compound_command(t_tokn **tokens, t_tokn **prev, bool *rooted, int *subshells);
-bool parse_assignment(t_tokn **tokens, t_tokn **prev);
-bool parse_argument(t_tokn **tokens, t_tokn **prev);
-bool parse_redirection(t_tokn **tokens, t_tokn **prev);
-bool parse_expression(t_tokn **tokens, t_tokn **prev);
+bool parse_compound_command(t_tokn **tokens, t_pars *parser);
+bool parse_assignment(t_tokn **tokens, t_pars *parser);
+bool parse_argument(t_tokn **tokens, t_pars *parser);
+bool parse_redirection(t_tokn **tokens, t_pars *parser);
+bool parse_expression(t_tokn **tokens, t_pars *parser);
 
 #endif

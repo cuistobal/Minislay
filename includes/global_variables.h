@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/25 09:02:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:29:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@
 
 //TT Stands for Token Tab
 # define TTSIZE 4
+
 # define TTHEAD 0
 # define TTPREV 1
 # define TTCURR 2
