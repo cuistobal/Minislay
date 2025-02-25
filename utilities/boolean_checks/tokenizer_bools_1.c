@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 13:55:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/17 12:46:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:41:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	is_redir(char c)
 	return (is_iredir(c) || is_oredir(c));
 }
 
+//Checking if we have either a single or a double quote
 bool	is_quote(char c)
 {
 	return (is_squotes(c) || is_dquotes(c));
