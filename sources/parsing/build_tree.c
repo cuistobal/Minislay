@@ -30,21 +30,31 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		branch->tokens = (*parser)->tab[TTCURR];
-		reset_token_tab(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
 
-		/*
+		if (is_amp_pipe(*(*parser)->tab[TTCURR]->value))
+		{
+
+			branch->tokens = (*parser)->tab[TTCURR];
+			
+			reset_token_tab(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
+
+		/*	OLD
 		if (parse_script(&parser->ast, parser))
 		{
 			reset_token_tab(parser, save, TTHEAD, branch->right);
 			return (parse_script(&(*ast)->right, parser));
 		}
 		*/
-		if (parse_script(parser))
-		{
-			reset_token_tab(*parser, save, TTHEAD, &branch->right);
-			return (parse_script(parser));
+		
+			if (parse_script(parser))
+			{
+				reset_token_tab(*parser, save, TTHEAD, &branch->right);
+				
+				return (parse_script(parser));
+			}
+			return (false);
 		}
+		branch->tokens = (*parser)->tab[TTHEAD];
 	}
 	return (branch);
 }
