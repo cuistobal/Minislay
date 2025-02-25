@@ -12,11 +12,12 @@ bool	parse_script(t_pars **parser)
 		if (parse_command_list(&current, *parser))
 		{
 			if (current)
-			{
+		//	{
 				append_token_tab((*parser)->tab, current->next, TTNEXT);
-				return (build_ast(parser));
-			}
-			return (true);
+		//		return (build_ast(parser));
+			return (build_ast(parser));
+		//	}
+		//	return (true);
 		}
 	}
 	return (!(*parser)->tab[TTHEAD]);	

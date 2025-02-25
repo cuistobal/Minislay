@@ -14,18 +14,18 @@ bool	reset_token_tab(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 
 	if (parser) 
 	{
-		if (parser->tab)
+		if ((parser)->tab)
 		{
 			index = 0;
 			while (index < TTSIZE)
 			{
-				parser->tab[index] = NULL;
+				(parser)->tab[index] = NULL;
 				if (index == i)
-					parser->tab[index] = token;
+					(parser)->tab[index] = token;
 				index++;	
 			}
 		}
-		parser->ast = branch;
+		(parser)->ast = branch;
 		return (true);
 	}
 	return (false);
