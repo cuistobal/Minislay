@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/24 16:25:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:13:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,14 @@ static void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s)
 	}
 }
 
+//Appends the parser's token tab and returns true.
+bool	append_token_tab(t_tokn *tab[], t_tokn *pointer, int token_type)
+{
+	tab[token_type] = pointer;
+	return (true);
+}
+
+//Static definition
 static bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
 {
 	if (!(*parser))
@@ -129,7 +137,10 @@ static bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
 		if (*parser)
 		{
 			(*parser)->state = 0;
-			(*parser)->tokens = tokens;
+			append_token_tab((*parser)->tab, tokens, TTHEAD);
+			append_token_tab((*parser)->tab, NULL, TTPREV);
+			append_token_tab((*parser)->tab, NULL, TTCURR);
+			append_token_tab((*parser)->tab, NULL, TTNEXT);
 			(*parser)->ast = ast;
 		}
 	}
@@ -143,8 +154,14 @@ static void	print_parser(t_pars *parser)
 	{
 		printf("PRINTING %s\n", __func__);
 
-		parser->tokens ? print_tokens(parser->tokens) : printf("No tokens\n");
+		//parser->tokens ? print_tokens(parser->tokens) : printf("No tokens\n");
 
+		if (parser->tab)
+		{
+			for (int i = 0; i < TTSIZE; i++)
+				parser->tab[i] ? printf("%s\n", parser->tab[i]->value) : printf("NULL");
+		}
+		
 		printf("state	->	%d\n", parser->state);
 		
 		parser->ast? print_ast_DFS(*(parser)->ast, 0, "root", "root") : printf("No AST\n");
@@ -173,7 +190,7 @@ int	minishell(char *input)
 	//	parse_script(&ast, tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 	//	parse_script(tokens) ? print_tokens(tokens) : printf("Syntax error.\n");
 		
-		if (parse_script(&ast, tokens, &parser))
+		if (parse_script(&ast, tokens, parser))
 
 		//parse_script(&ast, tokens, &parser) ? print_tokens(tokens) : printf("Syntax error.\n");
 		

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/24 16:04:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:02:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,13 @@
 
 //Others
 # define STACK_SIZE 2
+
+//TT Stands for Token Tab
+# define TTSIZE 4
+# define TTHEAD 0
+# define TTPREV 1
+# define TTCURR 2
+# define TTNEXT 3
 
 /*	OLD	->	CONFLICT WITH CURRENTLY USED MASKS
 

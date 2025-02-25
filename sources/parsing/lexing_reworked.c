@@ -18,13 +18,18 @@ static bool	valid_lexeme(t_tokn *current, int min, int max)
 }
 
 //This function saves the positions of current and sets it to ->next 
-bool	consume_token(t_tokn **current, t_tokn **prev)
+//
+//We dont append the TTNEXT elemnt of the tab yet
+bool	consume_token(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-		*prev = *current;
+		append_token_tab(parser->tab, *current, TTPREV);
 		*current = (*current)->next;
-		return (true);
+		append_token_tab(parser->tab, *current, TTCURR);
+		if (*current)
+			return (append_token_tab(parser->tab, (*current)->next, TTNEXT));
+		return (append_token_tab(parser->tab, NULL, TTNEXT));
 	}
 	return (false);
 }
@@ -119,22 +124,19 @@ static bool	build_left_side(t_tree **ast, t_tokn *tokens)
 }
 
 //
-bool	build_ast(t_tree **ast, t_tokn *tokens, bool rooted)
+bool	build_ast(t_tree **ast, t_pars *parser)
 {
-	if (!*ast)
-		*ast = create_tree_node(tokens);
+	if (ast)
+		*ast = create_tree_node(parser->tab[TTCURR]);
 	if (*ast)
 	{
-		if (!rooted)
-		
-			return (build_left_side(ast, tokens));
-
-		return (build_right_side(ast ,tokens));
-
+		(*ast)->tokens = parser->tab[TTCURR]
+		//scenario ?
+		(*ast)->right = create_tree_node(parser->tab[TTHEAD]);
+		//scenario ?
+		(*ast)->left = create_tree_node(parser->tab[TTNEXT]);
 	}
-
-	return (false);
-
+	return (*ast);	
 }
 
 
@@ -172,51 +174,53 @@ void	print_ast(t_tree *root)
 	}
 }
 
-bool	parse_script(t_tree **ast, t_tokn *head, t_pars **parser)
+bool	parse_script(t_tokn *head, t_pars *parser)
 //bool	parse_script(t_tokn *head)
 {
-	bool	rooted;
-	int		subshell;
-	t_tokn	*next;
-	t_tokn	*prev;
 	t_tokn	*current;
 	
-	next = NULL;
-	prev = NULL;
-	subshell = 0;
 	current = head;
-	rooted = false;
 	
-	if (current)
+	append_token_tab(parser->tab, head, TTHEAD);
+	
+	while (current)
 	{
 
-		while (current)
+		append_token_tab(parser->tab, current, TTCURR);
+			
+		if (parse_command_list(parser, &current))
 		{
-
-			if (parse_command_list(&current, &prev, &rooted, &subshell))
-			{
 				
-				if (current)
-					next = current->next;
+			if (current)
+				
+				append_token_tab(parser->tab, current->next, TTNEXT);
 
+				
 				//Silence the AST Warning
 				//(*ast) ? printf("AST ISNT NULL\n") : printf("AST IS NULL\n");
 
-				build_ast(ast, head, rooted);
-				(*parser)->tokens = next;
+			build_ast(parsing);
+				
+				//(*parser)->tokens = next;
+				
 				//	Build AST
 				
 				//
 				
 				//	Delete Links
 			
-			}
-			
-			current = next;		// This way we can keep track of the unparsed
-								// part of the list.
-
 		}
+
+		append_token_tab(parser->tab, current, TTPREV);
+
+		append_token_tab(parser->tab, parser->tab[TTNEXT], TTCURR);
+
+		append_token_tab(parser->tab, NULL, TTNEXT);
+
+		//current = next;			// This way we can keep track of the unparsed
+								// part of the list.
 	}
+//	}
 	return (current != head);
 }
 
@@ -228,16 +232,13 @@ bool	parse_script(t_tree **ast, t_tokn *head, t_pars **parser)
 //	vers la gauche.
 //
 
-static bool	append_operator(t_tokn **operator, t_tokn **current, t_tokn **prev, bool *rooted)
+static bool	append_operator(t_tokn **operator, t_tokn **current, t_tokn **prev, t_pars *parser)
 {
 	if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 	{
 		*operator = *current;
 		if (!(*current)->type & OPAR)
-		{
-			printf("%s	@	%d\n", (*current)->value, (*current)->type);
-			*rooted = true;
-		}
+			parser->state & ROOTEDD;
 		consume_token(current, prev);
 		return (*current);
 	}
@@ -261,22 +262,19 @@ static bool	parse_next_branch(t_tree **ast, t_tokn **current, bool *rooted)
 */
 
 
-bool	parse_command_list(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
+bool	parse_command_list(t_tokn **current, t_tokn **prev, t_pars *parser)
 //bool	parse_command_list(t_tokn **current)
 {
 	t_tokn		*save;			// For debug
-	t_tokn		*next;
 	t_tokn		*operator;
 
 	save = *current;			// For debug
-	
-	next = NULL;
 
 	//print_tokens(save, NULL, calls, "ROOT");
 
 	if (*current)
 	{
-		if (parse_command(current, prev, rooted, subshells))
+		if (parse_command(current, parser))
 		{
 		
 			calls++;
@@ -286,15 +284,12 @@ bool	parse_command_list(t_tokn **current, t_tokn **prev, bool *rooted, int *subs
 			if ((*current) && ((*current)->type & CPAR))	// To be modified to avoid
 															// the multitude of true returns
 															// when in nested ()
-			{
-				(*subshells)--;
 				return (true);
-			}
 
 
-			if (append_operator(&operator, current, prev, rooted))
+			if (append_operator(current, parser))
 			{
-				
+					
 				(*prev) ? printf("PREV	->	%s\n", (*prev)->value) : printf("PREV IS NULL\n");
 				(*current) ? printf("CURRENT	->	%s\n", (*current)->value) : printf("CURRENT IS NULL\n");
 				(next) ? printf("NEXT	->	%s\n", next->value) : printf("NEXT IS NULL\n");
@@ -313,33 +308,33 @@ bool	parse_command_list(t_tokn **current, t_tokn **prev, bool *rooted, int *subs
 	return (!*current);
 }
 
-bool	parse_command(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
+bool	parse_command(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
 	if (*current)
 	{
 		if ((*current)->type == OPAR)
 		{
-			if (parse_compound_command(current, prev, rooted, subshells))
+			if (parse_compound_command(current, prev, parser))
 				return (true);
 		}
-		if (!parse_simple_command(current, prev))
-			return (parse_pipeline(current, prev, rooted, subshells));
+		if (!parse_simple_command(current, prev, parser))
+			return (parse_pipeline(current, prev, parser));
 	}
 	return (true);
 }
 
 //We can return false -> It's the last sub funciton that aprse command goes
 //Actually (?)
-bool	parse_compound_command(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
+bool	parse_compound_command(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
 	if ((*current)->type == OPAR)
 	{
-		(*subshells)++;
+		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, prev);
-		if (parse_command_list(current, prev, rooted, subshells))
+		if (parse_command_list(current, prev, parser))
 		{
 			if ((*current) && (*current)->type & CPAR)
-				return (consume_token(current, prev)) ;
+				return (consume_token(current, prev));
 		}
 	}
 	return (false);
@@ -347,7 +342,7 @@ bool	parse_compound_command(t_tokn **current, t_tokn **prev, bool *rooted, int *
 
 // Assignment → WORD '=' Expression -> Implemtanton a revoir
 // Finalement → EQUL 
-bool	parse_assignment(t_tokn **current, t_tokn **prev)
+bool	parse_assignment(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
     if ((*current) && (*current)->type & EQUL)
 		return (consume_token(current, prev));
@@ -355,7 +350,7 @@ bool	parse_assignment(t_tokn **current, t_tokn **prev)
 }
 
 // Argument → WORD
-bool	parse_argument(t_tokn **current, t_tokn **prev)
+bool	parse_argument(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
     if ((*current) && (*current)->type & WORD)
 		return (consume_token(current, prev));
@@ -363,7 +358,7 @@ bool	parse_argument(t_tokn **current, t_tokn **prev)
 }
 
 // Redirection → ('>' | '>>' | '<' | '<<') WORD
-bool	parse_redirection(t_tokn **current, t_tokn **prev)
+bool	parse_redirection(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
 	if (*current)
 	{
@@ -450,7 +445,7 @@ bool	parse_simple_command(t_tokn **current, t_tokn **prev)
 }
 
 // Pipeline → Command ('|' Command)*
-bool	parse_pipeline(t_tokn **current, t_tokn **prev, bool *rooted, int *subshells)
+bool	parse_pipeline(t_tokn **current, t_tokn **prev, t_pars *parser)
 {
 	if (*current)
 	{
@@ -462,7 +457,7 @@ bool	parse_pipeline(t_tokn **current, t_tokn **prev, bool *rooted, int *subshell
 			
 			if (*current)
 
-				return (parse_command(current, prev, rooted, subshells)); 
+				return (parse_command(current, prev, parser)); 
 			
 			printf("Invalid syntax, expected token after PIPE token.\n");	
 			
