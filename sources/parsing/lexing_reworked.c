@@ -30,13 +30,20 @@ bool	parse_script(t_pars **parser)
 //	Donc, tant qu'on est dans un sous-shell, on allour recursivement des noeuds
 //	vers la gauche.
 //
-static bool	append_operator(t_tokn **current, t_pars *parser)
+static bool	ignore_nested_operators(t_tokn **current, t_pars *parser)
 {
 	if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 	{
-		if (!(*current)->type & OPAR)
+		if ((*current)->type & OPAR)
+		{
+			consume_token(current, parser);
+			return (parse_command_list(current, parser));
+		}
+		else
+		{
 			set_state(&parser->state, ROOTEDD);
-		return ((*current)->next);
+			return ((*current)->next);
+		}
 	}
 	return (*current);
 }
@@ -50,20 +57,11 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 		{
 			if (*current)
 			{
-				//if ((*current)->type & CPAR)
-
-				return (append_operator(current, parser));
+				while ((*current) && (*current)->type & CPAR)
+					consume_token(current, parser);
+				return (ignore_nested_operators(current, parser));
 			}
 		}
-	
-		//		return (true);
-
-		//If there is an operator -> end of the command block with CMPD CMND status
-		//
-		//ELse
-		//
-		//	Simple command | PIpeline
-		
 	}
 	return (!*current);
 }

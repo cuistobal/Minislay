@@ -23,7 +23,7 @@ bool	build_ast(t_pars **parser)
 	t_tree	*branch;
 
 	branch = NULL;
-	if (!(*parser)->ast)
+	if (!*((*parser)->ast))
 		*((*parser)->ast) = create_tree_node(NULL);
 	if (*((*parser)->ast))
 	{
