@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/25 17:29:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/26 09:07:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,13 @@ int	minishell(char *input)
 	parser = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
-	//	ast = create_tree_node(NULL);
-	//	if (ast)
-	//	{
-			if (define_parser(&parser, &ast, tokens))
-			{
-				if (parse_script(&parser))
-					print_ast(ast, "ROOT", "ROOT", 0);
-				else
-					printf("Failed to parse.\n");
-			}
-	//	}
+		if (define_parser(&parser, &ast, tokens))
+		{
+			if (parse_script(&parser))
+				print_ast(ast, "ROOT", "ROOT", 0);
+			else
+				printf("Failed to parse.\n");
+		}
 	}
 	else
 		printf("Tokenization error.\n");

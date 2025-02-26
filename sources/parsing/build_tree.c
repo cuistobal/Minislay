@@ -73,8 +73,11 @@ bool	build_ast(t_pars **parser)
 			}
 			return (false);
 		}
-		
+
 		branch->tokens = (*parser)->tab[TTHEAD];
+	
+		
+	//	branch->tokens->value ? printf("%s\n", branch->tokens->value) : printf("NOOOOOOPE\n");
 
 		//print_ast(branch, "", "", 10000000);
 	}
