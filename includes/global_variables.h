@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 13:36:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:29:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define MINISLAY "minislay > "
 
+/*
 //Not used anymore
 //Various states of the parser
 # define STATE_NORML 0b00000000
@@ -44,16 +45,22 @@
 # define TOKEN_PAREN_OPEN    14
 # define TOKEN_PAREN_CLOSE   15
 # define TOKEN_WILDCARD      16
+*/
 
 //Tokens definition by list
+
+//Used
 # define GRAMMAR "()|&><$=*\""
 # define SPECIAL "()|&><"
+
+//Not sure if used
 # define IAE "$=*"
 
-//Masks for terminal parser state
+//Not used yet
+# define QUOTES "\"'"
 
-//(?) Are we sure about the masks value and order ?
-//Shouldn't we care about precedence in this code's distro
+
+//Masks for terminal tokens
 
 # define INIT 0b0000000000000000
 # define OPAR 0b0000000000000001
@@ -76,18 +83,99 @@
 
 # define DQTE 0b0010000000000000
 
-# define DOLL 0b0010000000000000
+# define DOLL 0b0100000000000000
 
-# define SQTE 0b0100000000000000
+# define SQTE 0b1000000000000000
 
-# define XXXX 001000000000000000
+# define XXXX 0b1000000000000000
 
+//Masks for the parser status
+
+//	If SUBSHELL -> status & ROOTEDD || if status & ROOTED -> not rooted yet
+
+# define INITIAL 0b00000000 //(?) Usefull ? COnfilct with ROOTEDD status ?
+
+# define ROOTEDD 0b00000001 //Gets triggered when finding the first significant 
+							//grammar element.
+							//How to implement this logic when dealing with 
+							//Subshells
+							//
+							//Make the recursive call inherit the SUBSHELL 
+							//status ?
+							//
+							//	->	Desactivate on the first OPAR, reactivate on
+							//		the second if applies.
+							//
+
+# define SUBSHEL 0b00000010 //Gets triggered on CMPDCMD
+
+# define CMDLIST 0b00000100 //Gets triggered on LAND || LORR
+# define COMMAND 0b00001000 //Gets triggered if !(status & CMDLIST)
+
+# define CMPDCMD 0b00010000 //Gets triggred on OPAR
+
+# define PIPELIN 0b00100000 //Gets triggered on PIPE
+# define SIMPCMD 0b01000000 //Gets triggered if nothing else
+
+
+//To silence the Warning triggered by check status util
+//This bad boi nbeeds some reework
+# define STATE_ERROR 0b00100000
+
+/*
+//Masks for the parser status
+
+#define State START
+#define State 
+#define State 2
+#define State 3
+#define State 4
+#define State 5
+#define State 6
+#define State 7
+#define State 8
+#define State 9
+#define State 10
+#define State 11
+#define State 12
+#define State 13
+#define State 14
+#define State 15
+#define State 16
+#define State 17
+#define State 18
+#define State 19
+#define State 20
+#define State 21
+#define State 22
+#define State 23
+#define State 24
+#define State 25
+#define State 26
+#define State 27
+#define State 28
+#define State 29
+#define State 30
+#define State 31
+#define State 32
+#define State 33
+#define State 34
+#define State 35
+#define State 36
+*/
 
 //Others
 # define STACK_SIZE 2
 
-/*
-//New approach
+//TT Stands for Token Tab
+# define TTSIZE 4
+
+# define TTHEAD 0
+# define TTPREV 1
+# define TTCURR 2
+# define TTNEXT 3
+
+/*	OLD	->	CONFLICT WITH CURRENTLY USED MASKS
 
 # define DELIMITERS 9
 
@@ -127,4 +215,5 @@ enum
 # define SQTE '\''
 # define DQTE '"'
 */
+
 #endif

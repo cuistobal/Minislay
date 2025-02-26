@@ -1,0 +1,8 @@
+{
+   readline-leak
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:realloc
+   fun:__GI___libc_readline
+}
