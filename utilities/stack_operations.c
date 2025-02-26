@@ -6,13 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:59:00 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/07 09:53:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:40:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+/*
 
-//TEST
 void	push(t_pars *parser, char c)
 {
     if (parser->top >= parser->capacity)
@@ -26,8 +26,7 @@ void	push(t_pars *parser, char c)
 	}
 	parser->stack[parser->top++] = c;
 }
-/*
-//
+
 void	push(t_pars *parser, char c)
 {
     char	*new_stack;
@@ -50,7 +49,7 @@ void	push(t_pars *parser, char c)
 	parser->stack[parser->top++] = c;
 }*/
 
-//
+
 char	pop(t_pars *parser)
 {
     if (parser->top > 0)
@@ -58,10 +57,10 @@ char	pop(t_pars *parser)
     return '\0';
 }
 
-//
+
 char	peek(t_pars *parser)
 {
     if (parser->top > 0)
         return parser->stack[parser->top - 1];
     return '\0';
-}
+}*/

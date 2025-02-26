@@ -4,27 +4,12 @@ MAN:
 	->	OG	->	Ongoing implementation
 	->	OGT	->	Ongoing test phase
 	->	TDB	->	To be discussed
-
-OG	->	Read, Test & Modify the lexer's new version.
-
-	OK	->	Enforce norminette.
 		
-	TD	->	Modify the tester to ensure syntax rules are correctly handled
-
-TD	->	Modify the **token_list's structure.
-
-		We need 1 sublist per () block to prepare the execution_tree() && subshell()
-		modules.
+TD	->	Functions tests:
 		
-		Example:
-
-		((echo "bonjour" || echo "au revoir") && (echo "toi" || echo "iot")) && echo "gg wp"	
+		TD	->	lstat() && fstat() behaviours
 		
-		S0S1:																	S0S2:
-		((echo "bonjour" || echo "au revoir") && (echo "toi" || echo "iot"))	echo "gg wp"
-
-		S1S1:								S1S2:								
-		echo "bonjour" || echo "au revoir"	echo "toi" || echo "iot"
+		TD	->	test readline()'s behavour -memory stuff-
 
 TBD	->	Also, how does execution knows where the fds are without traversing the
 		whole tree ?
