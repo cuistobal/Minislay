@@ -4,17 +4,7 @@ MAN:
 	->	OG	->	Ongoing implementation
 	->	OGT	->	Ongoing test phase
 	->	TDB	->	To be discussed
-
-OG	->	Refactoring the parsing algorithm
-
-	OG	->	Implemnteming the parser structure logic
-
-			Defining states
-			Defining structure's content
-			Appending func() prototype
 		
-	TD	->	Modify the tester to ensure syntax rules are correctly handled
-
 TD	->	Functions tests:
 		
 		TD	->	lstat() && fstat() behaviours
