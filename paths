@@ -1,0 +1,6 @@
+SOURCES = \
+    sources/parsing/algorithm/build_tree.c \
+    sources/parsing/algorithm/parse_list.c \
+    sources/parsing/algorithm/parse_non_terminal.c \
+    sources/parsing/algorithm/parse_terminals.c \
+    sources/parsing/algorithm/parse_terminals1.c

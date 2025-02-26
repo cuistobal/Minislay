@@ -20,11 +20,11 @@ SOURCES = \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \
     sources/parsing/tokenization/check_sub_tokens.c \
-	sources/parsing/build_tree.c \
+    sources/parsing/algorithm/build_tree.c \
     sources/parsing/algorithm/parse_list.c \
     sources/parsing/algorithm/parse_non_terminal.c \
-    sources/parsing/algorithm/parse_terminals1.c \
     sources/parsing/algorithm/parse_terminals.c \
+    sources/parsing/algorithm/parse_terminals1.c \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
