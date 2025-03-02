@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/26 09:07:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:15:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,12 @@ int main(void)
     while (1)
 	{
         user_input = readline(MINISLAY);
-        if (user_input[0] != '\0')
-            add_history(user_input);
-        if (strcmp(user_input, "EXIT") == 0)
+        if (*user_input)
 		{
-        	free(user_input);
-			break;
-		}
-		else
+            add_history(user_input);
 			minishell(user_input);
-        free(user_input);
-    }
-    return 0;
+        	free(user_input);
+    	}
+	}
+    return (0);
 }
