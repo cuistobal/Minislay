@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/26 09:07:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/01 13:00:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	minishell(char *input)
 	{
 		if (define_parser(&parser, &ast, tokens))
 		{
-			if (parse_script(&parser))
-				print_ast(ast, "ROOT", "ROOT", 0);
-			else
-				printf("Failed to parse.\n");
+			//if (parse_script(&parser))
+				print_tokens(tokens);
+		//	else
+		//		printf("Failed to parse.\n");
 		}
 	}
 	else
