@@ -15,6 +15,8 @@ void	print_ast(t_tree *ast, char *origin, char *destination, int lvl)
 {
 	if (ast)
 	{
+	//	print_ast(ast->left, destination, "LEFT", lvl + 1);
+		
 		printf("%s	->	%s	@	%d\n", origin, destination, lvl);
 		while (ast->tokens)
 		{
@@ -22,10 +24,10 @@ void	print_ast(t_tree *ast, char *origin, char *destination, int lvl)
 			ast->tokens = ast->tokens->next;
 		}
 		printf("\n");
-	
+		
 		print_ast(ast->left, destination, "LEFT", lvl + 1);
 		
-		print_ast(ast->left, destination, "RIGHT", lvl + 1);
+		print_ast(ast->right, destination, "RIGHT", lvl + 1);
 
 		return ;
 	}
