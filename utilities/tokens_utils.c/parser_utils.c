@@ -8,7 +8,7 @@ bool	append_token_tab(t_tokn *tab[], t_tokn *pointer, int token_type)
 }
 
 //
-bool	reset_token_tab(t_pars *parser, t_tokn *token, int i, t_tree **branch)
+bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 {
 	int	index;
 
@@ -25,6 +25,10 @@ bool	reset_token_tab(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 				index++;	
 			}
 		}
+		if ((parser)->state & SUBSHEL)
+			(parser)->state = SUBSHEL;
+		else
+			(parser)->state = INITIAL;
 		(parser)->ast = branch;
 		return (true);
 	}
@@ -41,7 +45,7 @@ bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
 		*parser = (t_pars *)malloc(sizeof(t_pars));
 		if (*parser)
 		{
-			(*parser)->state = 0;
+			(*parser)->state = INITIAL;
 			append_token_tab((*parser)->tab, tokens, TTHEAD);
 			append_token_tab((*parser)->tab, NULL, TTPREV);
 			append_token_tab((*parser)->tab, NULL, TTCURR);
