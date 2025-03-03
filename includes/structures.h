@@ -1,6 +1,28 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
+//Sell's main structure, holding env etc
+typedef struct shell
+{
+	struct  envp	*envp;
+}	t_shel;
+
+//Env main structure -> Holds a pointer to environremnt variables, local 
+//variables and export's AVL tree.
+typedef struct envp
+{
+	struct env	*envp;
+	struct env	*local;
+	struct tree	*expt;
+}   t_envp;
+
+//Basic environement node
+typedef struct env
+{
+	char		*var;
+	struct  env *next;
+}   t_envn;
+
 //Tokens structure
 typedef struct tokens
 {
@@ -26,6 +48,5 @@ typedef struct parser
 }	t_pars;
 
 //AVL tree's structure
-
 
 #endif

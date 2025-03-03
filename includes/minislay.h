@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/03 09:05:40 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/03/03 09:13:37 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "parsing.h"
 
 int	minishell(char *input);
-//int	main(int argc, char **argv, char **envp);
-int	main(void);
+int	main(int argc, char **argv, char **envp);
+//int	main(void);
 
 #endif
