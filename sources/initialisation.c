@@ -30,6 +30,7 @@ static bool build_env(t_envp **mini_env, char **envp)
     return (false);
 }
 
+//
 bool    set_env(t_shel **minishell, char **envp)
 {
     if (*minishell)
