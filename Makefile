@@ -14,7 +14,9 @@ SOURCES = \
     utilities/tokens_utils.c/tokens_utils1.c \
     utilities/tokens_utils.c/parsing_utils.c \
     utilities/tokens_utils.c/parser_utils.c \
-    sources/parsing/tokenization/check_word_content.c \
+	utilities/builtins_utils/env_node.c \
+	sources/initialisation.c \
+	sources/parsing/tokenization/check_word_content.c \
     sources/parsing/tokenization/modify_tokens.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \

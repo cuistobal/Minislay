@@ -35,39 +35,29 @@ bool	build_ast(t_pars **parser)
 		delete_links(*parser);
 
 		save = (*parser)->tab[TTNEXT];
-		
-//		delete_links(*parser);
+
+		//test
+		if ((*parser)->state != INITIAL)
+		{
+			print_tokens((*parser)->tab[TTHEAD]);
+			printf("\n");
+			if ((*parser)->state & PIPELIN)
+				printf("Pipeline detected.\n");
+ 			if ((*parser)->state & SUBSHEL)
+				printf("Subshell detected.\n");
+		}
+		//
 
 		if ((*parser)->tab[TTCURR] && is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 
 			branch->tokens = (*parser)->tab[TTCURR];
-
-		//	(*(*parser)->ast)->left;
-		//	(*(*parser)->ast)->right;
+			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
 			
-		//	(*(*parser)->ast)->left = create_tree_node(NULL);
-			
-			reset_token_tab(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
-			
-			//reset_token_tab(parser, (*parser)->tab[TTHEAD], TTHEAD, &(*(*parser)->ast)->left);
-
-		/*	OLD
-		if (parse_script(&parser->ast, parser))
-		{
-			reset_token_tab(parser, save, TTHEAD, branch->right);
-			return (parse_script(&(*ast)->right, parser));
-		}
-		*/
-		
 			if (parse_script(parser))
 			{
-				
-		//		(*(*parser)->ast)->right = create_tree_node(NULL);
-			
-				reset_token_tab(*parser, save, TTHEAD, &branch->right);
-				
-				//reset_token_tab(parser, save, TTHEAD, &(*(*parser)->ast)->right);
+
+				reset_parser(*parser, save, TTHEAD, &branch->right);
 				
 				return (parse_script(parser));
 			}
@@ -76,10 +66,6 @@ bool	build_ast(t_pars **parser)
 
 		branch->tokens = (*parser)->tab[TTHEAD];
 	
-		
-	//	branch->tokens->value ? printf("%s\n", branch->tokens->value) : printf("NOOOOOOPE\n");
-
-		//print_ast(branch, "", "", 10000000);
 	}
 	return (branch);
 }
