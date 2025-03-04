@@ -2,6 +2,7 @@
 # define MINISLAY_TEST_H
 
 //minislays_test_utils.c:
+void	print_env(t_envp *minishell);
 void	print_tokens(t_tokn *current);
 void	print_ast(t_tree *ast, char *origin, char *destination, int lvl);
 void	print_ast_BFS(t_tree *ast);

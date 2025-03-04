@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/04 08:05:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/04 08:52:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ int	get_minishelled(t_shel **minishell, char *input)
 		if (define_parser(&parser, &ast, tokens))
 		{
 			if (parse_script(&parser))
+			{
 				print_ast(ast, "ROOT", "ROOT", 0);
+				print_env((*minishell)->envp);
+				//printf("%p\n", *minishell);//Shut down compilatione rro msg
+			}
 			else
 				printf("Failed to parse.\n");
 		}
@@ -36,6 +40,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 	else
 		printf("Tokenization error.\n");
 	free_tokens(tokens);
+	
 	return (0);
 }
 
@@ -71,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shel	*minishell;
 
+	(void)argv;
 	minishell = NULL;
 	if (argc == 1)
 	{

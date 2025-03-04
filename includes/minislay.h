@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/03 09:13:37 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/03/04 08:37:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@
 int	minishell(char *input);
 int	main(int argc, char **argv, char **envp);
 //int	main(void);
+
+//initialisation.c
+bool    set_env(t_shel **minishell, char **envp);
 
 #endif

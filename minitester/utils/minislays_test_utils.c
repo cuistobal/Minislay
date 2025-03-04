@@ -1,5 +1,20 @@
 #include "minislay.h"
 
+void	print_env(t_envp *minishell)
+{
+	t_env	*current;
+
+	if (minishell)
+	{
+		current = minishell->envp;
+		while (current)
+		{
+			printf("%s\n", current->var);
+			current = current->next;
+		}
+	}
+}
+
 //Printing tokens
 void	print_tokens(t_tokn *current)
 {
