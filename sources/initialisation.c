@@ -7,20 +7,23 @@ static bool build_export(t_shel **minishell)
 
 static bool build_env(t_envp **mini_env, char **envp)
 {
-    t_env   *new;
-    char    *value;
-    char    *variable;
+    t_env	*new;
+    char	*variable;
 
-    if ()
+    if (*mini_env)
     {
+		new = NULL;
         while (*envp)
         {
-            variable = my_strtok_r(*envp, "=", &value);
+            variable = strdup(*envp);
             if (variable)
             {
-                new = create_env_node(variable, value);
+                new = create_env_node(variable);
                 if (!new)
+				{
+					free (variable);
                     break ;
+				}
                 insert_env_node();
             }
             envp++;

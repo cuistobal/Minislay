@@ -21,7 +21,7 @@ typedef struct env
 {
 	char		*var;
 	struct  env *next;
-}   t_envn;
+}   t_env;
 
 //Tokens structure
 typedef struct tokens
