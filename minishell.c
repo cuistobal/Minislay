@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/03 09:21:20 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/03/04 08:05:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 	return (0);
 }
 
+//
 int	mini_loop(t_shel **minishell)
 {
     char	*user_input;
@@ -56,6 +57,7 @@ int	mini_loop(t_shel **minishell)
     return 0;
 }
 
+//
 static bool	mini_setup(t_shel **minishell, char **envp)
 {
 	*minishell = (t_shel *)malloc(sizeof(t_shel));
@@ -64,6 +66,7 @@ static bool	mini_setup(t_shel **minishell, char **envp)
 	return (*minishell);
 }
 
+//
 int	main(int argc, char **argv, char **envp)
 {
 	t_shel	*minishell;
