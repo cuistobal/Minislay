@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 13:06:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:03:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //make sens to dup() again ?
 //Also, do we make this bad boi static or do we eexpect to use it at some other
 //point of the programm ?
-t_tokn	*create_node(char *value, int type)
+t_tokn	*create_token_node(char *value, int type)
 {
     t_tokn *node;
 
@@ -92,7 +92,7 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 	static int	mask;
 	t_tokn		*new_node;
 
-	new_node = create_node(token, type);
+	new_node = create_token_node(token, type);
 	if (new_node)
 	{
 		if (get_stacked(head, new_node, &mask))

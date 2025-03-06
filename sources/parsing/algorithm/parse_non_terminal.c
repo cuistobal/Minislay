@@ -45,10 +45,8 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 	{
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
-		//test -> works
 		if (!((*current)->type & LAND) && !((*current)->type & LORR))
 		{
-		//
 			if (parse_command_list(current, parser))
 			{
 				if ((*current) && (*current)->type & CPAR)

@@ -48,8 +48,8 @@ void	print_ast(t_tree *ast, char *origin, char *destination, int lvl)
 		return ;
 	}
 
-	printf("%s	->	%s	@	%d\n", origin, destination, lvl);
-	printf("LEAF\n");
+//	printf("%s	->	%s	@	%d\n", origin, destination, lvl);
+//	printf("LEAF\n");
 }
 
 //
