@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/04 08:37:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:12:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@
 # include "utilities.h"
 # include "../minitester/utils/minislay_test.h"
 # include "parsing.h"
+# include "execution.h"
 
-int	minishell(char *input);
+int	get_minishelled(t_shel **minishell, char *input);
+int	mini_loop(t_shel **minishell);
+//int	minishell(char *input);
 int	main(int argc, char **argv, char **envp);
 //int	main(void);
 
