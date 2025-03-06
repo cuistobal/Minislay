@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/25 11:29:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:25:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,5 +215,15 @@ enum
 # define SQTE '\''
 # define DQTE '"'
 */
+
+# define BCNT 7
+
+# define BCDD "cd"
+# define BPWD "pwd"
+# define BENV "env"
+# define BECO "echo"
+# define BEXT "exit"
+# define BUST "unset"
+# define BEXP "export"
 
 #endif
