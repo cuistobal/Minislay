@@ -34,4 +34,24 @@ bool    prompt(char **prompt, t_tree *branch)
             current = current->next;
         }
     }
+	return (branch);
+}
+
+bool	handle_subshell(t_shel *minishell, t_tree *ast)
+{
+	t_shel	*copy;
+	char	*subshell_command;
+
+	copy = minishell;
+	subshell_command = NULL;
+	if (prompt(&subshell_command, ast))
+	{
+		printf("I'm a subshell hehe\n");
+		if (get_minishelled(&copy, subshell_command))
+		{
+			free(subshell_command);
+			return true;
+		}
+	}
+	return false;
 }

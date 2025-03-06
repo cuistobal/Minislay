@@ -28,6 +28,8 @@ SOURCES = \
     sources/parsing/algorithm/parse_non_terminal.c \
     sources/parsing/algorithm/parse_terminals.c \
     sources/parsing/algorithm/parse_terminals1.c \
+	sources/execution/subshells/subshells.c \
+	sources/execution/traverse_ast.c \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
