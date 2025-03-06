@@ -2,19 +2,6 @@
 
 static const char	g_delim[DELIMITERS] = {};
 
-static bool	append_token_list()
-{
-
-}
-
-static bool	create_sub_token(char *value, int pos)
-{
-	int		type;
-	char	*next_token;
-
-
-}
-
 static int	is_delimiter(char c)
 {
 	int	index;

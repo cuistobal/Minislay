@@ -28,7 +28,6 @@ static bool append_prompt(char **prompt, t_tokn *current)
 //Hence, we can eprform recursive call to minishell.
 static bool	prompt(char **prompt, t_tree *branch)
 {
-
     t_tokn  *current;
 
     if (branch)
@@ -36,12 +35,13 @@ static bool	prompt(char **prompt, t_tree *branch)
         current = branch->tokens;
         while (current)
         {
-			if (current->type != OPAR && current->type != CPAR)
+            current = current->next;
+			if (current && current->type != CPAR)
 			{
             	if (!append_prompt(prompt, current))
                 	return (false);
 			}
-            current = current->next;
+           // current = current->next;
         }
     }
 	return (branch);

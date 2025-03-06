@@ -33,7 +33,19 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR] && is_amp_pipe(*(*parser)->tab[TTCURR]->value))
+
+	//	printf("%s\n", (*parser)->tab[TTPREV]->value);
+	
+		/*
+		for (int  i = 0; i < TTSIZE; i++)
+		{
+			print_tokens((*parser)->tab[i]);
+			printf("\n");
+		}
+		printf("\n");
+		*/
+		if ((*parser)->tab[TTCURR]) //&& valid_lexeme(, ) 
+			//	is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
 			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);	
