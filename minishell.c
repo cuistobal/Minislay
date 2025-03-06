@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 10:16:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:39:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 		{
 			if (parse_script(&parser))
 			{
-				print_env((*minishell)->envp);
+				//print_env((*minishell)->envp);
 				traverse_ast(*minishell, ast);
 				//printf("%p\n", *minishell);//Shut down compilatione rro msg
 			}

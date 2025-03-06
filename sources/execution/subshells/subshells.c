@@ -10,9 +10,15 @@ static bool append_prompt(char **prompt, t_tokn *current)
         joined = ft_strjoin(*prompt, current->value);
         if (joined)
         {
-            free(prompt);
+            free(*prompt);
             *prompt = joined;
-            return (true);
+        	joined = ft_strjoin(*prompt, " ");
+			if (joined)
+			{
+            	free(*prompt);
+            	*prompt = joined;
+				return (true);
+			}
         }
     }
     return (false);
@@ -20,8 +26,9 @@ static bool append_prompt(char **prompt, t_tokn *current)
 
 //We use this function to turn the subshell part of the list into a string.
 //Hence, we can eprform recursive call to minishell.
-bool    prompt(char **prompt, t_tree *branch)
+static bool	prompt(char **prompt, t_tree *branch)
 {
+
     t_tokn  *current;
 
     if (branch)
@@ -29,8 +36,11 @@ bool    prompt(char **prompt, t_tree *branch)
         current = branch->tokens;
         while (current)
         {
-            if (!append_prompt(prompt, current))
-                return (false);
+			if (current->type != OPAR && current->type != CPAR)
+			{
+            	if (!append_prompt(prompt, current))
+                	return (false);
+			}
             current = current->next;
         }
     }
@@ -46,7 +56,7 @@ bool	handle_subshell(t_shel *minishell, t_tree *ast)
 	subshell_command = NULL;
 	if (prompt(&subshell_command, ast))
 	{
-		printf("I'm a subshell hehe\n");
+		//printf("SUBSHELL COMMAND	->	%s\n", subshell_command);
 		if (get_minishelled(&copy, subshell_command))
 		{
 			free(subshell_command);

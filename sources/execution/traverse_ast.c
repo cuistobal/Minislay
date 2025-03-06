@@ -4,13 +4,19 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 {
 	if (ast)
 	{
-		if (ast->tokens->type & OPAR)
-		{
-			handle_subshell(minishell, ast);
-		}
 		traverse_ast(minishell, ast->left);
 		//execute();
-		printf("Malcolm\n");
+		if (ast->tokens->type & OPAR)
+			handle_subshell(minishell, ast);
+		else
+		{
+			while (ast->tokens)
+			{
+				printf("%s ", ast->tokens->value);
+				ast->tokens = ast->tokens->next;
+			}
+			printf("\n");
+		}
 		traverse_ast(minishell, ast->right);
 	}
 }
