@@ -7,11 +7,11 @@ static bool append_prompt(char **prompt, t_tokn *current)
     joined = NULL;
     if (current)
     {
-        joined = strjoini(*prompt, current->value);
+        joined = ft_strjoin(*prompt, current->value);
         if (joined)
         {
             free(prompt);
-            prompt = joined;
+            *prompt = joined;
             return (true);
         }
     }

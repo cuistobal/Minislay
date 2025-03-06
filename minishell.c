@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/04 08:52:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 09:31:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,12 @@ static bool	mini_setup(t_shel **minishell, char **envp)
 {
 	*minishell = (t_shel *)malloc(sizeof(t_shel));
 	if (*minishell)
+	{
+		(*minishell)->envp = NULL;
+		(*minishell)->local = NULL;
+		(*minishell)->expt = NULL;
         return (set_env(minishell, envp));
+	}
 	return (*minishell);
 }
 
@@ -81,9 +86,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{
 		if (mini_setup(&minishell, envp))
-		{
 			return (mini_loop(&minishell));
-		}
 	}
     return 0;
 	//return (error());
