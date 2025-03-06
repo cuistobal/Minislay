@@ -56,7 +56,7 @@ bool	handle_subshell(t_shel *minishell, t_tree *ast)
 	subshell_command = NULL;
 	if (prompt(&subshell_command, ast))
 	{
-		//printf("SUBSHELL COMMAND	->	%s\n", subshell_command);
+		printf("SUBSHELL COMMAND	->	%s\n", subshell_command);
 		if (get_minishelled(&copy, subshell_command))
 		{
 			free(subshell_command);
