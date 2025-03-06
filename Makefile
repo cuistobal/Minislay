@@ -17,12 +17,9 @@ SOURCES = \
 	utilities/builtins_utils/env_node.c \
 	utilities/Libft/ft_strjoin.c \
 	sources/initialisation.c \
-	sources/parsing/tokenization/check_word_content.c \
-    sources/parsing/tokenization/modify_tokens.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \
-    sources/parsing/tokenization/check_sub_tokens.c \
     sources/parsing/algorithm/build_tree.c \
     sources/parsing/algorithm/parse_list.c \
     sources/parsing/algorithm/parse_non_terminal.c \

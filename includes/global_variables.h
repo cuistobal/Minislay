@@ -216,6 +216,16 @@ enum
 # define DQTE '"'
 */
 
+# define BCNT 7
+
+# define BCDD "cd"
+# define BPWD "pwd"
+# define BENV "env"
+# define BECO "echo"
+# define BEXT "exit"
+# define BUST "unset"
+# define BEXP "export"
+
 #define KEY 0
 #define VALUE 1
 
