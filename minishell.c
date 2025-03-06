@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/04 08:52:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:08:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,22 @@ int	get_minishelled(t_shel **minishell, char *input)
 	parser = NULL;
 	if (tokenize(&tokens, input, strlen(input)))
 	{
-		if (define_parser(&parser, &ast, tokens))
+		if (get_stacked(NULL, NULL, 0))
 		{
-			if (parse_script(&parser))
+			if (define_parser(&parser, &ast, tokens))
 			{
-				print_ast(ast, "ROOT", "ROOT", 0);
-				print_env((*minishell)->envp);
-				//printf("%p\n", *minishell);//Shut down compilatione rro msg
+				if (parse_script(&parser))
+				{
+					print_ast(ast, "ROOT", "ROOT", 0);
+					print_env((*minishell)->envp);
+					//printf("%p\n", *minishell);//Shut down compilatione rro msg
+				}
+				else
+					printf("Failed to parse.\n");
 			}
-			else
-				printf("Failed to parse.\n");
 		}
+		else
+			printf("Unmatched (.\n");
 	}
 	else
 		printf("Tokenization error.\n");

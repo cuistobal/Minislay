@@ -18,7 +18,7 @@ static bool	ignore_nested_operators(t_tokn **current, t_pars *parser)
 	return (*current);
 }
 
-//
+//This function identifies command blocks that will later be the AST'S elements 
 bool	parse_command_list(t_tokn **current, t_pars *parser)
 {
 	if (*current)

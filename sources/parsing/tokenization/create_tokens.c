@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 17:24:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:06:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
 
 
 //We use this function to keep track of closed && unclosed parenthesis.
-static bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
+bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 {
 	static int	count;	
 
-	if (!*head)
+	if (head && !*head)
 	{
 		count = -1;
 		*mask = INIT;
@@ -80,6 +80,8 @@ static bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 				*mask = INIT;
 		}
 	}
+	else
+		return (count < 0);
 	return (true);
 }
 
