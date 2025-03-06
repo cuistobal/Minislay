@@ -1,15 +1,16 @@
 #include "minislay.h"
 
-void	print_env(t_envp *minishell)
+void	print_env(t_env *environement)
 {
 	t_env	*current;
 
-	if (minishell)
+	if (environement)
 	{
-		current = minishell->envp;
+		printf("environement\n");
+		current = environement;
 		while (current)
 		{
-			printf("%s\n", current->var);
+			printf("%s	->	%s\n", current->var[KEY], current->var[VALUE]);
 			current = current->next;
 		}
 	}

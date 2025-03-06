@@ -15,6 +15,7 @@ SOURCES = \
     utilities/tokens_utils.c/parsing_utils.c \
     utilities/tokens_utils.c/parser_utils.c \
 	utilities/builtins_utils/env_node.c \
+	utilities/Libft/ft_strjoin.c \
 	sources/initialisation.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
@@ -24,6 +25,8 @@ SOURCES = \
     sources/parsing/algorithm/parse_non_terminal.c \
     sources/parsing/algorithm/parse_terminals.c \
     sources/parsing/algorithm/parse_terminals1.c \
+	sources/execution/subshells/subshells.c \
+	sources/execution/traverse_ast.c \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
