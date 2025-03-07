@@ -2,15 +2,27 @@
 
 Expansion found ? realloc
 
+static bool handle_regular_expansions()
+{
+
+}
+
+static bool handle_dqte_expansions()
+{
+    
+}
+
 //Entry point of the expansion module
-bool    expand(t_shel *minishell, char *token)
+bool    expand(t_shel *minishell, t_tokn *token)
 {
     int     index;
     char    expanded;
 
     if (minishell && token)
     {
-        index = 0;
-        while ()
+        if (token->type & DQTE)
+
+        else
+
     }
 }
