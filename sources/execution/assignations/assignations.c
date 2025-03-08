@@ -1,13 +1,15 @@
 #include "minislay.h"
 
+//Retrouve la clef et passe a la suivante
 static bool	find_key_in_env(t_shel **minishell, char *key, char *value)
 {
 	if (*minishell)
 	{
-
+			
 	}
 }
 
+//Trier la liste && implementer uen queue
 static void	find_matching_key(t_shel **minishell, char *key, char *value)
 {
 	if (minishell)
@@ -23,6 +25,7 @@ static void	find_matching_key(t_shel **minishell, char *key, char *value)
 	printf("Invalid minishell.\n");
 }
 
+//Envoyer une liste d'assignations
 bool	handle_assignations(t_shel **minishell, t_tokn *current)
 {
 	char	*key;
