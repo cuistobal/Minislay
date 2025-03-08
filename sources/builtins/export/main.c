@@ -1,72 +1,46 @@
 #include "avl_tree.h"
 
-int	main(int argc, char **argv, char **envp)
+//
+static bool	create_tree(t_avlt **root, char **envp)
 {
-	t_avlt	*root;
+	int		len;
+	char	*key;
+	char	*value;
 
-	(void)argc;
-	(void)argv;
-	root = NULL;
-	if (create_avlt_node(&root, *envp))
+	while (*envp)
 	{
-		envp++;
-		while (*envp)
+		key = strdup(*envp);
+		if (key)
 		{
-			if (!insert_node(&root, *envp))
-				break ;
+			strtok_r(key, "=", &value);
+			len = strlen(key);
+			if (!insert_node(root, key, value, len))
+			{
+				free(key);
+				return (false);
+			}
+			free(key);		//Not what I wanted to do but there is a small leak
+							//I can't fix otherwise :(
 			envp++;
 		}
-		pre_order_display(root);
 	}
-	return 0;
+	return (!*envp);
 }
 
-/*
+//
 int	main(int argc, char **argv, char **envp)
 {
-	char	*name;
-	t_avlt	*root;
-
-	(void)argc;
-	(void)argv;
-	root = NULL;
-	name = strtok(*envp, "=");
-	if (create_avlt_node(&root, name))
-	{
-		envp++;
-		name = strtok(*envp, "=");
-		while (*envp)
-		{
-			if (!insert_node(&root, name))
-				break ;
-			envp++;
-			name = strtok(*envp, "=");
-		}
-		pre_order_display(root);
-	}
-	return 0;
-}*/
-
-/*
-int	main(int argc, char **argv)
-{
 	t_avlt	*root;
 
 	root = NULL;
-	if (argc > 1)
+	if (create_tree(&root, envp))
 	{
-		argv++;
-		if (create_avlt_node(&root, *argv))
-		{
-			argv++;
-			while (*argv)
-			{
-				if (!insert_node(&root, *argv))
-					break ;	
-				argv++;
-			}
-			pre_order_display(root);
+		if (argc > 1)
+		{	
+			if (create_tree(&root, argv + 1))
+				pre_order_display(root);
 		}
 	}
+	free_tree(root);
 	return 0;
-}*/
+}
