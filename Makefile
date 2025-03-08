@@ -16,6 +16,7 @@ SOURCES = \
     utilities/tokens_utils.c/parser_utils.c \
 	utilities/builtins_utils/env_node.c \
 	utilities/Libft/ft_strjoin.c \
+	utilities/free_utils.c \
 	sources/initialisation.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \

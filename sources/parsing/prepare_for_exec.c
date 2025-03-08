@@ -1,5 +1,14 @@
 #include "minislay.h"
 
+/*
+ *
+ *		USELESS FOR NOW
+ *
+ *
+ */
+
+
+
 //
 static void	handle_assignations(t_tokn **current)
 {
@@ -7,7 +16,7 @@ static void	handle_assignations(t_tokn **current)
 	{
 		if (is_state_active((*current)->type, EQUL))
 		{
-			(*current)->type = ASSIGNS;
+			//(*current)->type = ASSIGNS;
 			*current = (*current)->next;
 			handle_assignations(current);
 		}

@@ -19,7 +19,7 @@ typedef struct env
 typedef struct	avltree
 {
 	int				height;
-	char			*data;
+	char			*data[2];
 	struct avltree	*left;
 	struct avltree	*right;
 }	t_avlt;

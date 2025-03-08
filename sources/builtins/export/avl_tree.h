@@ -29,7 +29,8 @@ int		my_max(const int a, const int b);
 void	pre_order_display(t_avlt *root);
 bool	create_avlt_node(t_avlt **new, char *key, char *value);
 bool	insert_node(t_avlt **node, char *key, char *value, int len);
-void	free_tree(t_avlt *root);
+void	free_avlt_tree(t_avlt *root);
+bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
 
 //rotations.c:
 bool	balance_tree(t_avlt **node, char *key, char *value, int len);

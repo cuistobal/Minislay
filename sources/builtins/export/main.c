@@ -30,17 +30,37 @@ static bool	create_tree(t_avlt **root, char **envp)
 //
 int	main(int argc, char **argv, char **envp)
 {
+	char	*key;
+	char	*value;
 	t_avlt	*root;
+	t_avlt	*find;
 
+	find = NULL;
 	root = NULL;
 	if (create_tree(&root, envp))
 	{
 		if (argc > 1)
-		{	
-			if (create_tree(&root, argv + 1))
-				pre_order_display(root);
+		{
+			argv++;
+			while (*argv)
+			{
+				key = strdup(*argv);
+				strtok_r(key, "=", &value);
+				if (find_element(root, &find, key, value))
+				{
+					printf("key was found	->	%s\n", find->data[1]);
+					free(find->data[1]);
+					find->data[1] = strdup(value);
+					printf("new value is	->	%s\n", find->data[1]);
+				}
+				else
+					printf("%s is not part of the environement\n", key);
+				free(key);
+				argv++;
+			}
 		}
+		//pre_order_display(root);
 	}
-	free_tree(root);
+	free_avlt_tree(root);
 	return 0;
 }

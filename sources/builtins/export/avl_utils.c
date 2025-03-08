@@ -16,12 +16,12 @@ int	my_max(const int a, const int b)
 	return (b);
 }
 
-void	free_tree(t_avlt *root)
+void	free_avlt_tree(t_avlt *root)
 {
 	if (root)
 	{
-		free_tree(root->left);
-		free_tree(root->right);
+		free_avlt_tree(root->left);
+		free_avlt_tree(root->right);
 		free(root->data[0]);
 		free(root->data[1]);
 		free(root);
@@ -82,3 +82,25 @@ bool	insert_node(t_avlt **node, char *key, char *value, int len)
 	return (balance_tree(node, key, value, len));
 }
 
+//
+bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
+{
+	if (tree)
+	{
+		if (tree->data[0])
+		{
+			if (strcmp(key, tree->data[0]) == 0)
+			{
+				*node = tree;
+				return (true);
+			}
+			else
+			{
+				if (strcmp(key, tree->data[0]) < 0)
+					return (find_element(tree->left, node, key, value));
+				return (find_element(tree->right, node, key, value));
+			}
+		}
+	}
+	return (false);
+}
