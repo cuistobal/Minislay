@@ -1,20 +1,22 @@
 #include "minislay.h"
 
-static bool	handle_assignations(t_shel *minishell, t_tokn *token)
+//
+bool	handle_assignations(t_shel *minishell, t_tokn *token)
 {
 	char	*key;	
 	char	*value;
 	char	*assignation;
 
-	if (token)
+	if (token && token->value)
 	{
-		assignation = token->value;
+		assignation = strdup(token->value);		//We need to keep the original memory intact
 		if (assignation)
 		{
 			key = assignation;
-			value = strtok_r(assignation, "=", NULL);
+			strtok_r(assignation, "=", &value); //Remove this magic number	
 			
 
-			find_key();
+
 		}
+	}
 }
