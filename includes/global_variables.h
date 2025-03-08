@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 14:05:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:03:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,50 +15,9 @@
 
 # define MINISLAY "minislay > "
 
-/*
-//Not used anymore
-//Various states of the parser
-# define STATE_NORML 0b00000000
-# define STATE_SQUOT 0b00000001
-# define STATE_DQUOT 0b00000010
-# define STATE_SSHEL 0b00000100
-# define STATE_IREDI 0b00001000
-# define STATE_OREDI 0b00010000
-# define STATE_ERROR 0b00100000
-//
-
-//Those status need to be reworked
-# define TOKEN_WORD          0
-# define TOKEN_ASSIGNMENT    1
-# define TOKEN_REDIR_IN      2
-# define TOKEN_REDIR_OUT     3
-# define TOKEN_APPEND        4
-# define TOKEN_HEREDOC       5
-# define TOKEN_PIPE          6
-# define TOKEN_SINGLE_QUOTE  7
-# define TOKEN_DOUBLE_QUOTE  8
-# define TOKEN_DOLLAR        9
-# define TOKEN_NEWLINE       10
-# define TOKEN_EOF           11
-# define TOKEN_AND_IF        12
-# define TOKEN_OR_IF         13
-# define TOKEN_PAREN_OPEN    14
-# define TOKEN_PAREN_CLOSE   15
-# define TOKEN_WILDCARD      16
-*/
-
-//Tokens definition by list
-
 //Used
 # define GRAMMAR "()|&><$=*\""
 # define SPECIAL "()|&><"
-
-//Not sure if used
-# define IAE "$=*"
-
-//Not used yet
-# define QUOTES "\"'"
-
 
 //Masks for terminal tokens
 
@@ -122,52 +81,7 @@
 //This bad boi nbeeds some reework
 # define STATE_ERROR 0b00100000
 
-/*
-//Masks for the parser status
-
-#define State START
-#define State 
-#define State 2
-#define State 3
-#define State 4
-#define State 5
-#define State 6
-#define State 7
-#define State 8
-#define State 9
-#define State 10
-#define State 11
-#define State 12
-#define State 13
-#define State 14
-#define State 15
-#define State 16
-#define State 17
-#define State 18
-#define State 19
-#define State 20
-#define State 21
-#define State 22
-#define State 23
-#define State 24
-#define State 25
-#define State 26
-#define State 27
-#define State 28
-#define State 29
-#define State 30
-#define State 31
-#define State 32
-#define State 33
-#define State 34
-#define State 35
-#define State 36
-*/
-
-//Others
-# define STACK_SIZE 2
-
-//TT Stands for Token Tab
+//TT Stands for Token Tab and refers to the token_tab used within t_pars struct
 # define TTSIZE 4
 
 # define TTHEAD 0
@@ -175,47 +89,8 @@
 # define TTCURR 2
 # define TTNEXT 3
 
-/*	OLD	->	CONFLICT WITH CURRENTLY USED MASKS
 
-# define DELIMITERS 9
-
-//Subshells
-# define OPAR '('
-# define CPAR ')'
-
-//Grammar
-# define PIPE '|'
-# define AMPR '&'
-
-//Redirections
-# define IRDR '<'
-# define ORDR '>'
-
-//Assignations
-# define EQUL '='
-
-//Expansions
-# define DOLL '$'
-# define STAR '*'
-
-enum
-{
-	OPAR,
-	CPAR,
-	PIPE,
-	AMPR,
-	IRDR,
-	ORDR,
-	EQUL,
-	DOLL,
-	STAR
-};
-
-//Quotes
-# define SQTE '\''
-# define DQTE '"'
-*/
-
+//Those macrops refers to the function tab we use for builtins
 # define BCNT 7
 
 # define BCDD "cd"
@@ -226,9 +101,29 @@ enum
 # define BUST "unset"
 # define BEXP "export"
 
-#define KEY 0
-#define VALUE 1
+//Those identifiers are used within our env nodes
+# define KEY 0
+# define VALUE 1
 
+//This is an additional grammar element representing the need for a recursive
+//call within the AST
 # define SUBSHELL "SUBSHELL"
+
+# define EXECTBL 0b00000001
+# define ARGUMNT 0b00000010 
+
+# define FILENAM 0b00000100
+
+# define ASSIGNS 0b00001000 
+
+/*
+# define REDIRIN 0b00001000 
+# define REDIDOC 0b00010000 
+# define REDIOUT 0b00100000 
+# define REDIAPD 0b01000000 
+*/
+
+//Shifting operator from token type to exec type
+# define CONVERT 3
 
 #endif

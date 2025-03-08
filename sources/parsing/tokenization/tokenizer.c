@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/20 14:06:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:29:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 		else if (isspace(input))
 			return (false);
 		else if (input == '=' && check)
-			*type = EQUL; 
+			*type = EQUL | WORD; 
 	}
 	return (true);
 }

@@ -12,9 +12,10 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 				handle_subshell(minishell, ast);
 			else
 			{
+			//	prepare_for_exec(ast);	
 				while (ast->tokens)
 				{
-					printf("%s ", ast->tokens->value);
+					printf("%s %d	", ast->tokens->value, ast->tokens->type);
 					ast->tokens = ast->tokens->next;
 				}
 				printf("\n");

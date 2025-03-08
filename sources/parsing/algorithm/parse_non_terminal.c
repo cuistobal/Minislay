@@ -32,7 +32,11 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 			return ((*current)->next);
 		}
 		//return (!((*current)->type & LAND) && !((*current)->type & LORR));
-        return (true); //A retravailler
+    
+		return (!valid_lexeme(*current, IRED, ARED));
+
+		//return (true); //A retravailler -> previous version
+
 	}
 	return (!*current);
 }

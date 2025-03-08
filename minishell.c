@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 14:28:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/08 13:24:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,12 @@ int	get_minishelled(t_shel **minishell, char *input)
 			printf("Unmatched (.\n");
 	}
 	else
+	{
 		printf("Tokenization error.\n");
-	free_tokens(tokens);
-	
+		free_tokens(tokens);
+		return (-1);
+	}
+	free_tree(ast);
 	return (0);
 }
 

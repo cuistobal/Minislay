@@ -23,28 +23,14 @@ bool	build_ast(t_pars **parser)
 	t_tree	*branch;
 
 	branch = NULL;
-	//Ajout check parser && parser->ast
-	//if (*parser && !*((*parser)->ast))
-	if (!*((*parser)->ast))
+	if (*parser && !*((*parser)->ast))
 		*((*parser)->ast) = create_tree_node(NULL);
-	//if (*parser && *((*parser)->ast))
-	if (*((*parser)->ast))
+	if (*parser && *((*parser)->ast))
 	{
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-
-	//	printf("%s\n", (*parser)->tab[TTPREV]->value);
-	
-		/*
-		for (int  i = 0; i < TTSIZE; i++)
-		{
-			print_tokens((*parser)->tab[i]);
-			printf("\n");
-		}
-		printf("\n");
-		*/
-		if ((*parser)->tab[TTCURR]) //&& valid_lexeme(, ) 
+		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], PIPE, LORR)) 
 			//	is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
@@ -54,9 +40,14 @@ bool	build_ast(t_pars **parser)
 				reset_parser(*parser, save, TTHEAD, &branch->right);	
 				return (parse_script(parser));
 			}
-			return (false);
+		//	return (false);
 		}
-		branch->tokens = (*parser)->tab[TTHEAD];
+		else if (!(*parser)->tab[TTNEXT])
+		{
+			branch->tokens = (*parser)->tab[TTHEAD];
+			return (true);
+		}
+		return (false);	
 	}
 	return (branch);
 }
