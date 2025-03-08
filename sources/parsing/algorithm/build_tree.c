@@ -30,7 +30,7 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR]) //&& valid_lexeme(, ) 
+		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], PIPE, LORR)) 
 			//	is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
@@ -40,9 +40,14 @@ bool	build_ast(t_pars **parser)
 				reset_parser(*parser, save, TTHEAD, &branch->right);	
 				return (parse_script(parser));
 			}
-			return (false);
+		//	return (false);
 		}
-		branch->tokens = (*parser)->tab[TTHEAD];
+		else if (!(*parser)->tab[TTNEXT])
+		{
+			branch->tokens = (*parser)->tab[TTHEAD];
+			return (true);
+		}
+		return (false);	
 	}
 	return (branch);
 }

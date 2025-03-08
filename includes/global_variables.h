@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 11:53:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/08 12:03:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,15 @@
 # define ARGUMNT 0b00000010 
 
 # define FILENAM 0b00000100
+
+# define ASSIGNS 0b00001000 
+
+/*
 # define REDIRIN 0b00001000 
 # define REDIDOC 0b00010000 
 # define REDIOUT 0b00100000 
 # define REDIAPD 0b01000000 
-
-# define ASSIGNS 0b10000000 
+*/
 
 //Shifting operator from token type to exec type
 # define CONVERT 3

@@ -27,6 +27,7 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
 	sources/execution/traverse_ast.c \
+	sources/parsing/prepare_for_exec.c \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
