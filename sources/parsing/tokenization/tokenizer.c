@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 12:29:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/09 14:31:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 		else if (isspace(input))
 			return (false);
 		else if (input == '=' && check)
-			*type = EQUL | WORD; 
+			set_state(type, EQUL);
 	}
 	return (true);
 }
@@ -54,7 +54,6 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	start = *pos;
     dollar = false;
 	set_state(type, WORD);
-	//while (input[*pos] && !strchr(SPECIAL, input[*pos]))
 	while (input[*pos])
 	{
 		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
