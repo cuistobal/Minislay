@@ -5,7 +5,15 @@ static bool	find_key_in_env(t_shel **minishell, char *key, char *value)
 {
 	if (*minishell)
 	{
-			
+		if ((*minishell)->expt)
+		{
+			// Chercher la clef dans l'arbre.
+			// Copier l'implementation du main de avlt			
+		
+			// Si la clef n'est pas dans l'arbre, l'ajouter dans la liste 
+			// locale
+
+		}
 	}
 }
 
@@ -25,6 +33,8 @@ static void	find_matching_key(t_shel **minishell, char *key, char *value)
 	printf("Invalid minishell.\n");
 }
 
+//SI assignation && commande -> assignation juste pour la commande
+//sINON, ASSIGNATION permanente.
 //Envoyer une liste d'assignations
 bool	handle_assignations(t_shel **minishell, t_tokn *current)
 {

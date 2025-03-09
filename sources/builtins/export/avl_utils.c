@@ -104,3 +104,12 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
 	}
 	return (false);
 }
+
+/*
+bool	remove node(t_avlt *tree, char *key)
+{
+	if (tree)
+	{
+
+	}
+}*/

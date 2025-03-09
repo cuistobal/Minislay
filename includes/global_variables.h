@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 12:03:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/09 10:58:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 //Used
 # define GRAMMAR "()|&><$=*\""
 # define SPECIAL "()|&><"
+# define EXPANDS "$*"
 
 //Masks for terminal tokens
 
