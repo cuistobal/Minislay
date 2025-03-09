@@ -1,21 +1,9 @@
 #include "minislay.h"
 
 //Expansion found ? realloc
-
-static bool handle_regular_expansions()
-{
-
-}
-
-static bool handle_dqte_expansions()
-{
-	
-}
-
+//
 //If star and no pattern match -> pattern stays unexpended EXPECT for $Expansions
-
-
-
+//
 //This is the main expansion function. Identifies $ && * elements within the
 //token's value and performs variable expansion.
 bool    expand(t_shel *minishell, t_tokn *token)
@@ -49,6 +37,7 @@ bool    expand(t_shel *minishell, t_tokn *token)
 	return (minishell);
 }
 
+//
 static bool	handle_dollars(char *value, int *index, bool *dollar, int *len)
 {
 	int		klen;
@@ -80,6 +69,7 @@ static bool	handle_dollars(char *value, int *index, bool *dollar, int *len)
 	return (false);
 }
 
+//
 static bool	handle_stars(char *value, int *index, bool *dollar, int *len)
 {
 	if (value)
@@ -89,10 +79,12 @@ static bool	handle_stars(char *value, int *index, bool *dollar, int *len)
 	return (false);
 }
 
+//
 bool	find_expansions_within_token(char *value, int *len)
 {
 	int		index;
 	bool	dollar;
+	char	quotes;
 
 	dollar = false;
 	if (value)
