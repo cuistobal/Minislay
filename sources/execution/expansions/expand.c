@@ -49,22 +49,38 @@ bool    expand(t_shel *minishell, t_tokn *token)
 	return (minishell);
 }
 
-static bool	handle_dollars(char *value, bool *dollar)
+static bool	handle_dollars(char *value, int *index, bool *dollar, int *len)
 {
+	int		klen;
+	char	*key;
+
+	key = NULL;
+	klen = *index;
 	if (value)
 	{
 		if (!dollar)
+		{
 			dollar = true;
+			while (value[*index])
+			{
+				if (is_space(value[*index])	|| strchr(EXPANDS, value[*index]))
+					break;
+				(*index)++;
+			}
+			key = strndup(value + klen, *index - klen);
+			if (key)
+				return (printf("%s\n", key), free(key), true);
+		}
 		else
 		{
 			dollar = false;
-			split[] = split[ - 1] 
+				
 		}
 	}
 	return (false);
 }
 
-static bool	handle_stars(char *value)
+static bool	handle_stars(char *value, int *index, bool *dollar, int *len)
 {
 	if (value)
 	{
@@ -73,7 +89,7 @@ static bool	handle_stars(char *value)
 	return (false);
 }
 
-bool	find_expansions_within_token(char *value)
+bool	find_expansions_within_token(char *value, int *len)
 {
 	int		index;
 	bool	dollar;
@@ -85,19 +101,10 @@ bool	find_expansions_within_token(char *value)
 		while (value[index])
 		{
 			if (value[index] == '$')
-			{
-				if (!dollar)
-					dollar = true;
-				else
-				{
-					dollar = false;
-					
-				}
-			}
+				handle_dollars(value, &index, &dollar, len);
 			if (value[index] == '*')
-			{
-
-			}
+				handle_stars(value, &index, &dollar, len);
+			index++;
 		}
 	}
 }
