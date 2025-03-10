@@ -1,7 +1,7 @@
 #include "minislay.h"
 
 //Checks the validity of the key
-static bool	valid_variable(char *key)
+bool	valid_variable(char *key)
 {
 	if (key)
 	{
