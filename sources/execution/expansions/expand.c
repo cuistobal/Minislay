@@ -12,19 +12,21 @@ static bool append_list_value()
 }
 
 //
-static bool append_expanded(char **expanded, char *buffer, )
+static bool append_expanded(char **expanded, char *buffer, int blen)
 {
     char    *merged;
 
     merged = NULL;
     if (*expanded)
     {
+        merged = 
         *expanded = (char *)realloc(*expanded)
     }
     else
         *expanded = strdup(buffer);
     return (*expanded);
 }
+
 //
 static bool get_expanded(t_shel *minishell, t_tokn **list)
 {
@@ -41,11 +43,15 @@ static bool get_expanded(t_shel *minishell, t_tokn **list)
     {
         if (!valid_variable(buffer))
         {
+            //leaks
             free(buffer);
             return (false);
         }
         else
         {
+            if (!expand_buffer())
+                //leaks
+                return false;
             append_expand(&expanded, buffer);
         }
     }
