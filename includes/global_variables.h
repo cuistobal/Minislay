@@ -124,6 +124,7 @@
 # define REDIAPD 0b01000000 
 */
 
+# define BSIZE 1024
 //Shifting operator from token type to exec type
 # define CONVERT 3
 

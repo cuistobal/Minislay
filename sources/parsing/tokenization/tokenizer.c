@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/09 14:31:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:46:39 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 			set_state(type, EQUL);
 	}
 	return (true);
+}
+
+static void expansion_flags(char input, bool *dollar, int *type, char quote)
+{
+    if (*type & WORD)
+    {
+	    if (!*dollar && quote != '\'' && input == '$')
+        {
+            set_state(type, DOLL);
+		    *dollar = true;
+        }
+        else if (!quote &&input == '*')
+        {
+            if (*dollar)
+		        *dollar = false;
+            set_state(type, STAR);
+        }
+    }
 }
 
 //We use this fucntion to handle non special characters, hence building words.
@@ -58,8 +76,16 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	{
 		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
 			break;
+
+        /*
 		if (*type & WORD && !dollar && input[*pos] == '$')
+        {
+            set_state(type, DOLL);
 			dollar = true;
+        }*/
+
+        expansion_flags(input[*pos], &dollar, type, quote);
+
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
 			break;
 		(*pos)++;
@@ -77,7 +103,7 @@ static char	*determinism(const char *input, int *pos, int *type)
 	return (handle_words(input, pos, type));
 }
 
-//
+//Un static and move to utils
 static void	skip_whitespaces(const char *input, int *pos)
 {
 	while (isspace(input[*pos]))
