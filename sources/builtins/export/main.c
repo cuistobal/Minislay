@@ -1,72 +1,66 @@
 #include "avl_tree.h"
 
-int	main(int argc, char **argv, char **envp)
+//
+static bool	create_tree(t_avlt **root, char **envp)
 {
-	t_avlt	*root;
+	int		len;
+	char	*key;
+	char	*value;
 
-	(void)argc;
-	(void)argv;
-	root = NULL;
-	if (create_avlt_node(&root, *envp))
+	while (*envp)
 	{
-		envp++;
-		while (*envp)
+		key = strdup(*envp);
+		if (key)
 		{
-			if (!insert_node(&root, *envp))
-				break ;
+			strtok_r(key, "=", &value);
+			len = strlen(key);
+			if (!insert_node(root, key, value, len))
+			{
+				free(key);
+				return (false);
+			}
+			free(key);		//Not what I wanted to do but there is a small leak
+							//I can't fix otherwise :(
 			envp++;
 		}
-		pre_order_display(root);
 	}
-	return 0;
+	return (!*envp);
 }
 
-/*
+//
 int	main(int argc, char **argv, char **envp)
 {
-	char	*name;
+	char	*key;
+	char	*value;
 	t_avlt	*root;
+	t_avlt	*find;
 
-	(void)argc;
-	(void)argv;
+	find = NULL;
 	root = NULL;
-	name = strtok(*envp, "=");
-	if (create_avlt_node(&root, name))
+	if (create_tree(&root, envp))
 	{
-		envp++;
-		name = strtok(*envp, "=");
-		while (*envp)
-		{
-			if (!insert_node(&root, name))
-				break ;
-			envp++;
-			name = strtok(*envp, "=");
-		}
-		pre_order_display(root);
-	}
-	return 0;
-}*/
-
-/*
-int	main(int argc, char **argv)
-{
-	t_avlt	*root;
-
-	root = NULL;
-	if (argc > 1)
-	{
-		argv++;
-		if (create_avlt_node(&root, *argv))
+		if (argc > 1)
 		{
 			argv++;
 			while (*argv)
 			{
-				if (!insert_node(&root, *argv))
-					break ;	
+				key = strdup(*argv);
+				strtok_r(key, "=", &value);
+				if (find_element(root, &find, key, value))
+				{
+					printf("key was found	->	%s\n", find->data[1]);
+					free(find->data[1]);
+					find->data[1] = strdup(value);
+					printf("new value is	->	%s\n", find->data[1]);
+				}
+				else
+					printf("%s is not part of the environement\n", key);
+				free(key);
 				argv++;
 			}
-			pre_order_display(root);
 		}
+		//pre_order_display(root);
 	}
+	free_avlt_tree(root);
 	return 0;
-}*/
+}

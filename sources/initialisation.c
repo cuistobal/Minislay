@@ -26,18 +26,18 @@ static bool build_export(t_shel **minishell)
 	return false;
 }*/
 
-static bool build_env(t_envp **minishell, char **envp)
+static bool build_env(t_shel **minishell, char **envp)
 {
     t_env	*new;
-    t_env	*head;
     t_env	*tail;
+    t_env	**head;
     char	*variable;
 
     if (*minishell)
     {
 		new = NULL;
         tail = NULL;
-		head = (*minishell)->envp;
+		head = &(*minishell)->envp;
 		while (*envp)
         {
             variable = strdup(*envp);
@@ -49,8 +49,8 @@ static bool build_env(t_envp **minishell, char **envp)
 					free (variable);
                     break ;
 				}
-                insert_env_node(&head, &tail, new);
-            }
+                insert_env_node(head, &tail, new);
+			}
             envp++;
         }
         return (!*envp);
@@ -62,14 +62,6 @@ static bool build_env(t_envp **minishell, char **envp)
 bool    set_env(t_shel **minishell, char **envp)
 {
     if (*minishell)
-    {
-        (*minishell)->envp = (t_envp *)malloc(sizeof(t_envp));
-        if ((*minishell)->envp)
-        {
-            return build_env(&(*minishell)->envp, envp);
-            //if (build_env(&(*minishell)->envp, envp))
-            //    return (build_export(minishell));
-        }
-    }
+        return (build_env(minishell, envp));
     return (false);
 }

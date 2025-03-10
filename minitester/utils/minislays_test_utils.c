@@ -1,15 +1,16 @@
 #include "minislay.h"
 
-void	print_env(t_envp *minishell)
+void	print_env(t_env *environement)
 {
 	t_env	*current;
 
-	if (minishell)
+	if (environement)
 	{
-		current = minishell->envp;
+		printf("environement\n");
+		current = environement;
 		while (current)
 		{
-			printf("%s\n", current->var);
+			printf("%s	->	%s\n", current->var[KEY], current->var[VALUE]);
 			current = current->next;
 		}
 	}
@@ -47,8 +48,8 @@ void	print_ast(t_tree *ast, char *origin, char *destination, int lvl)
 		return ;
 	}
 
-	printf("%s	->	%s	@	%d\n", origin, destination, lvl);
-	printf("LEAF\n");
+//	printf("%s	->	%s	@	%d\n", origin, destination, lvl);
+//	printf("LEAF\n");
 }
 
 //

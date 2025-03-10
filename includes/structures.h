@@ -4,24 +4,25 @@
 //Sell's main structure, holding env etc
 typedef struct shell
 {
-	struct  envp	*envp;
+	struct  env		*envp;
+	struct	env		*local;
+	struct	avltree	*expt;
 }	t_shel;
-
-//Env main structure -> Holds a pointer to environremnt variables, local 
-//variables and export's AVL tree.
-typedef struct envp
-{
-	struct env	*envp;
-	struct env	*local;
-	struct tree	*expt;
-}   t_envp;
 
 //Basic environement node
 typedef struct env
 {
-	char		*var;
+	char		*var[2];
 	struct  env *next;
 }   t_env;
+
+typedef struct	avltree
+{
+	int				height;
+	char			*data[2];
+	struct avltree	*left;
+	struct avltree	*right;
+}	t_avlt;
 
 //Tokens structure
 typedef struct tokens

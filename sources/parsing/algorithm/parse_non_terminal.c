@@ -31,7 +31,12 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 			// Invalid syntax
 			return ((*current)->next);
 		}
-        return (true); //A retravailler
+		//return (!((*current)->type & LAND) && !((*current)->type & LORR));
+    
+		return (!valid_lexeme(*current, IRED, ARED));
+
+		//return (true); //A retravailler -> previous version
+
 	}
 	return (!*current);
 }
@@ -44,10 +49,13 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 	{
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
-		if (parse_command_list(current, parser))
+		if (!((*current)->type & LAND) && !((*current)->type & LORR))
 		{
-			if ((*current) && (*current)->type & CPAR)
-				return (consume_token(current, parser));
+			if (parse_command_list(current, parser))
+			{
+				if ((*current) && (*current)->type & CPAR)
+					return (consume_token(current, parser));
+			}
 		}
 	}
 	return (false);

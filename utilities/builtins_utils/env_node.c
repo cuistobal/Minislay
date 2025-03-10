@@ -27,7 +27,8 @@ t_env	*create_env_node(char *value)
 	new = (t_env *)malloc(sizeof(t_env));
 	if (new)
 	{
-		new->var = value;
+		new->var[KEY] = strtok_r(value, "=", &value);
+		new->var[VALUE] = value;
 		new->next = NULL;
 	}
 	return (new);

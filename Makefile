@@ -15,18 +15,20 @@ SOURCES = \
     utilities/tokens_utils.c/parsing_utils.c \
     utilities/tokens_utils.c/parser_utils.c \
 	utilities/builtins_utils/env_node.c \
+	utilities/Libft/ft_strjoin.c \
+	utilities/free_utils.c \
 	sources/initialisation.c \
-	sources/parsing/tokenization/check_word_content.c \
-    sources/parsing/tokenization/modify_tokens.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \
-    sources/parsing/tokenization/check_sub_tokens.c \
     sources/parsing/algorithm/build_tree.c \
     sources/parsing/algorithm/parse_list.c \
     sources/parsing/algorithm/parse_non_terminal.c \
     sources/parsing/algorithm/parse_terminals.c \
     sources/parsing/algorithm/parse_terminals1.c \
+	sources/execution/subshells/subshells.c \
+	sources/execution/traverse_ast.c \
+	sources/parsing/prepare_for_exec.c \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
