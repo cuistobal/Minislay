@@ -18,7 +18,8 @@ static void	handle_assignations(t_shel **minishell, t_tokn *current)
 	}
 }
 
-static bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
+//Entry point 
+bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
 {
 	t_tokn	*current;
 	t_tokn	*expansions;
@@ -47,10 +48,14 @@ static bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
 	}
 }
 
+
+
+
+/*
 bool	execution(t_shel **minishell, t_tree *ast)
 {
 	if (*minishell && ast)
 	{
 		traverse_and_execute(minishell, ast);		
 	}
-}
+}*/
