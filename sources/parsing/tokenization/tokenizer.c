@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/09 14:31:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/10 08:36:24 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 			set_state(type, EQUL);
 	}
 	return (true);
+}
+
+static void expansion_flags(char input, bool *dollar, int *type)
+{
+    if (*type & WORD)
+    {
+	    if (!*dollar && input == '$')
+        {
+            set_state(type, DOLL);
+		    *dollar = true;
+        }
+        else if (input == '*')
+        {
+            if (*dollar)
+		        *dollar = false;
+            set_state(type, STAR);
+        }
+    }
 }
 
 //We use this fucntion to handle non special characters, hence building words.
@@ -58,8 +76,16 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	{
 		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
 			break;
+
+        /*
 		if (*type & WORD && !dollar && input[*pos] == '$')
+        {
+            set_state(type, DOLL);
 			dollar = true;
+        }*/
+
+        expansion_flags(input[*pos], &dollar, type);
+
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
 			break;
 		(*pos)++;
