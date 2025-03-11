@@ -26,14 +26,17 @@ static void	handle_assignations(t_tokn **current)
 //
 static void	handle_commands(t_tokn **current, bool *command)
 {
-	if (*command)
-		(*current)->type = ARGUMNT;
-	else
+	while (*current)
 	{
-		*command = true;
-		(*current)->type = EXECTBL;
+		if (*command)
+			(*current)->type = ARGUMNT;
+		else
+		{
+			*command = true;
+			(*current)->type = EXECTBL;
+		}
+		*current = (*current)->next;
 	}
-	*current = (*current)->next;
 }
 
 //
