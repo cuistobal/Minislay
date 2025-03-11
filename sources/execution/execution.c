@@ -19,62 +19,75 @@ static void	handle_assignations(t_shel **minishell, t_tokn *current)
 	}
 }*/
 
-static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn *list)
+//
+//
+//		MODIFICATION NEEDED BELOW	->	BOTH FUNCTION SHARE RESPONSIBILITY OR DO
+//		THE SAME JOB.
+//
+//
+
+
+
+static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 {
-	char	**execution;
+	int		count;
+	char	**exec;
+	t_tokn	*current;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
-
-	execution = NULL;
+	
+	exec = NULL;
 	expansions = NULL;
 	assignations = NULL;
-	if (split_list(list, &assignations, &expansions))
+	current = ast->tokens;
+	if (split_list(current, &assignations, &expansions))
 	{
-		//FIRST STEP	->	Expand the expansion list && indetiy commands && 
+
+		//FIRST STEP	->	Expand the expansion list && indetify commands && 
 		//					arguments. All WORDS following a redirection 
 		//					operator is a filename. We then handle redirections
+		
 		if (expand(expansions))
 		{
-			command = handle_commands(expansions);
-			if (command)
-				handle_redirections(expansions);
+			modify_token_types(&expansions, redirections, &count);
+			exec = get_command_and_arguments(expansions, count);
 		}
+
 		//SECOND STEP	->	Expand the assignation variables && append their
 		//					newly assigned value to the right list (envp, local
 		//					or command).
+
 		expand(assignations);
-		assign(assignations, expansions);
+		assign(assignations, expansions);	//We pass expansions because if we
+											//have no command/redirections, the
+											//assignations get sent to local.
 	}
-	return (execution);
+	return (exec);
 }
 
 //Entry point 
 bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
 {
-	t_tokn	*current;
-	t_tokn	*expansions;
-	t_tokn	*assignations;
 	char	**execution;
+	t_tokn	*expansions;
+	t_tokn	*redirections;
+	t_tokn	*assignations;
 
+	execution = NULL;
+	expansions = NULL;
+	redirections = NULL;
+	assignations = NULL;
 	if (*minishell && ast)
 	{
 		if (ast->tokens)
 		{
-			current = ast->tokens;
-			initialise_execution(minishell, ast, current);
-			split_list(current, &assignations, &expansions);	
-			expand(expansions);
-                
-		//	print_tokens(assignations);
-        //	print_tokens(expansions);
+			split_list(ast->tokens, &assignations, &expansions);	
+			execution = initialise_execution(minishell, ast, &redirections);
 				
-			handle_assignations(minishell, current);
-			current = current->next;
 		}
 		//Identify type of command
 		//
 		//Turn the token list into redirs && char **exec
-		}
 	}
 }
 
