@@ -10,28 +10,10 @@ static bool append_list_value(t_tokn *token, char *expanded)
     if (expanded && token)
     {
 		if (token->value)
-        	free(list->value); 
+        	free(token->value); 
     	token->value = expanded;
     }
     return (expanded);
-}
-
-//
-static bool append_expanded(char **expanded, char *buffer, int blen, int index)
-{
-	int		diff;
-	char	*temp;
-    char    *merged;
-
-    merged = NULL;
-    if (*expanded)
-    {
-        merged = 
-        *expanded = (char *)realloc(*expanded)
-    }
-    else
-        *expanded = strdup(buffer);
-    return (*expanded);
 }
 
 //
@@ -58,14 +40,34 @@ static bool	expand_buffer(t_shel *minishell, char **buffer)
 static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int *index)
 {
 	char	*temp;
+	char	*merged;
 
 	temp = NULL;
+	merged = NULL;
 	if (*expanded && *buffer)
 	{
-			
-		return (true);
+		temp = strndup(*expanded, *index);
+		if (temp)
+		{
+			merged = ft_strjoin(temp, *buffer);
+			if (merged)
+			{
+				free(temp);
+				*index =+ *blen;
+				temp = strdup(*expanded + *index);
+				merged = ft_strjoin(merged, temp);
+				if (merged)
+				{
+					free(*expanded);
+					*expanded = merged;
+				}
+				free(temp);
+				temp = NULL;
+				*blen = 0;
+			}
+		}
 	}
-	return (false);
+	return (merged);
 }
 
 //
@@ -73,26 +75,21 @@ static bool get_expanded(t_shel *minishell, t_tokn *token)
 {
     int     blen;
     int     index;
-	int		total;
     char    *buffer;
     char    *expanded;
     
     blen = 0;
     index = 0;
     buffer = NULL;
-    expanded = strdup(token->value);
+	expanded = strdup(token->value);
 	if (expanded)
 	{
-		total = strlen(expanded);
     	while (find_expansions(&buffer, expanded, &index, &blen))
     	{
 			if (expand_buffer(minishell, &buffer))
 			{
-				if (!copy_and_reset_buffer())
+				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
 					return (false);
-			}
-			index += blen;
-			blen = 0;
 			}
 		}
 	}
