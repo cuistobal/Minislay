@@ -1,11 +1,24 @@
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
-//Sell's main structure, holding env etc
+//	NEEDS FURTHER THINKING	->	USE THIS BAD BOI FOR SIGNALS ?
+//
+//Sell's main structure, holding environement variables and misc informations:
+//
+//	1.	envp	->	Linked list holding the env variable. Newly exported 
+//					variables are appended at the end of the list.
+//	2.	local	->	Linked list holding local variables, accessible only from
+//					this instance -No inheritance for subshells-.
+//	3.	command	->	Linkled list holding variable accessible for the command
+//					only -happens when you get an assignation list && a command
+//					list-. Gets reset for each command block.
+//	4.	expt	->	AVL Tree holding environement variables. Used for export &&
+//					quick access.
 typedef struct shell
 {
 	struct  env		*envp;
 	struct	env		*local;
+	struct	env		*command;
 	struct	avltree	*expt;
 }	t_shel;
 
@@ -16,6 +29,7 @@ typedef struct env
 	struct  env *next;
 }   t_env;
 
+//AVL Tree's structure
 typedef struct	avltree
 {
 	int				height;
@@ -47,7 +61,5 @@ typedef struct parser
 	struct tokens	*tab[TTSIZE];
 	struct tree		**ast;
 }	t_pars;
-
-//AVL tree's structure
 
 #endif

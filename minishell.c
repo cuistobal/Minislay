@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 13:24:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/11 08:54:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static bool	mini_setup(t_shel **minishell, char **envp)
 	{
 		(*minishell)->envp = NULL;
 		(*minishell)->local = NULL;
+		(*minishell)->command = NULL;
 		(*minishell)->expt = NULL;
         return (set_env(minishell, envp));
 	}
