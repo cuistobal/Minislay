@@ -8,21 +8,16 @@
 
 char    *expansion(char *token, int *index, int *blen)
 {
-    int start;
-
-    start = *index;
-    while (token[*index] && !strchr(LIMITERS, token[*index]))
+    while (token[*index + *blen] && !strchr(LIMITERS, token[*index + *blen]))
     {
         (*blen)++;
-        (*index)++;
-        if (strchr(SPECIALS, token[*index]))
+        if (strchr(SPECIALS, token[*index + *blen]))
         {
             (*blen)++;
-            (*index)++;
             break ;
         }
     }
-    return strndup(token + start, *index - start);
+    return (strndup(token + *index, *blen));
 }
 
 bool    find_expansions(char **buffer, char *token, int *index, int *blen)
@@ -48,9 +43,10 @@ int main(int argc, char **argv)
     int     blen;
     int     index;
     char    *buffer;
+	char	*temp;
 
     buffer = NULL;
-    if (argc > 1)
+	if (argc > 1)
     {
         argv++;
         blen = 0;
@@ -59,8 +55,10 @@ int main(int argc, char **argv)
         {
             while (find_expansions(&buffer, *argv, &index, &blen))
             {
-                printf("%s\n", buffer);
-                free(buffer);
+				printf("%s\n", buffer);
+				index += blen;
+				blen = 0;
+				free(buffer);
                 buffer = NULL;
             }
             argv++;
