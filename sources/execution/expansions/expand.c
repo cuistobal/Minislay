@@ -1,110 +1,112 @@
 #include "minislay.h"
 
-//Expansion found ? realloc
+//
+//
+//
 
-static bool handle_regular_expansions()
+//Move to utils
+static bool append_list_value()
 {
-
+    if (expanded)
+    {
+        free(list->value); 
+        list->value = expanded;
+    }
+    return (expanded);
 }
 
-static bool handle_dqte_expansions()
+//Move to utils
+bool	check_env_struct(t_shel *minishell)
 {
-	
-}
-
-//If star and no pattern match -> pattern stays unexpended EXPECT for $Expansions
-
-
-
-//This is the main expansion function. Identifies $ && * elements within the
-//token's value and performs variable expansion.
-bool    expand(t_shel *minishell, t_tokn *token)
-{
-	char	*key;
-	char	*value;
-	char	*expanded;
-	char	**expnd_tab;
-
 	if (minishell)
 	{
-		if (token)
-		{
-			value = token->value;
-			while (*value)
-			{
-				key = strpbrk(value, EXPANDS);
-				if (key)
-				{
-					
-				}
-				if (*value == '$')
-				{
-					key = 	
-				}
-				
-			}
-		}
-		return (token);
+
 	}
-	return (minishell);
 }
 
-static bool	handle_dollars(char *value, int *index, bool *dollar, int *len)
+//
+static bool append_expanded(char **expanded, char *buffer, int blen)
 {
-	int		klen;
-	char	*key;
+    char    *merged;
 
-	key = NULL;
-	klen = *index;
-	if (value)
-	{
-		if (!dollar)
-		{
-			dollar = true;
-			while (value[*index])
-			{
-				if (is_space(value[*index])	|| strchr(EXPANDS, value[*index]))
-					break;
-				(*index)++;
-			}
-			key = strndup(value + klen, *index - klen);
-			if (key)
-				return (printf("%s\n", key), free(key), true);
-		}
-		else
-		{
-			dollar = false;
-				
-		}
-	}
-	return (false);
+    merged = NULL;
+    if (*expanded)
+    {
+        merged = 
+        *expanded = (char *)realloc(*expanded)
+    }
+    else
+        *expanded = strdup(buffer);
+    return (*expanded);
 }
 
-static bool	handle_stars(char *value, int *index, bool *dollar, int *len)
+//
+static bool	expand_buffer(t_shel *minishell, char **expanded, char *buffer)
 {
-	if (value)
+	if (minishell)
 	{
 
+		if (minishell->expt)
+		{
+			//Try to retrieve the buffer's value within environement variables.
+		}
+
+		else if (minishell->local)
+		{
+			//Try to retrieve the buffer's value within local variables.
+		}
+		
+		//expanded = strup 
 	}
-	return (false);
 }
 
-bool	find_expansions_within_token(char *value, int *len)
+//
+static bool get_expanded(t_shel *minishell, t_tokn **list)
 {
-	int		index;
-	bool	dollar;
+    int     blen;
+    int     index;
+    char    *buffer;
+    char    *expanded;
+    
+    blen = 0;
+    index = 0;
+    buffer = NULL;
+    expanded = NULL;
+    while (find_expansions(&buffer, (*list)->value, &index, &blen))
+    {
+		/*	USELESS TO CHECK IT -> RULES APPLIES FOR ASSIGNASTIONS
+        if (!valid_variable(buffer))
+        {
+            //leaks
+            free(buffer);
+            return (false);
+        }
+        else
+        {*/
+            if (!expand_buffer(minishell, &expanded, buffer))
+                //leaks
+                return false;
+            append_expand(&expanded, buffer);
+	//	}
+    }
+    return (append_list_value());
+}
 
-	dollar = false;
-	if (value)
-	{
-		index = 0;
-		while (value[index])
-		{
-			if (value[index] == '$')
-				handle_dollars(value, &index, &dollar, len);
-			if (value[index] == '*')
-				handle_stars(value, &index, &dollar, len);
-			index++;
-		}
-	}
+//Entry point of the dollar expansion
+bool    expand(t_shel *minishell, t_tokn **list)
+{
+    if (minishell)
+    {
+        while (*list)
+        {
+            if ((*list)->type & DOLL)
+            {
+                if (!get_expanded(list))
+                    return (false);
+            }
+            move_pointer(list);
+        }
+        return (!*list);
+    }
+    return (minishell);
 }
