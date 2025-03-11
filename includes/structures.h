@@ -29,7 +29,8 @@ typedef struct env
 	struct  env *next;
 }   t_env;
 
-//AVL Tree's structure
+/*
+//AVL Tree's structuroe
 typedef struct	avltree
 {
 	int				height;
@@ -37,6 +38,7 @@ typedef struct	avltree
 	struct avltree	*left;
 	struct avltree	*right;
 }	t_avlt;
+*/
 
 //Tokens structure
 typedef struct tokens

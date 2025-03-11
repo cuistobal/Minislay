@@ -1,22 +1,4 @@
 #include "minislay.h"
-/*
-static bool	append_list(t_tokn **current, t_tokn **save)
-{
-	if (*current)
-		(*save)->next = NULL;
-	return (*current);	
-}*/
-
-inline bool	move_list_pointer(t_tokn **pointer, t_tokn **save)
-{
-	if (*pointer)
-	{
-		*save = *pointer;
-		*pointer = (*pointer)->next;
-		return (true);
-	}
-	return (false);
-}
 
 //We use this function to split the current's branch list into a list of
 //assignation tokens, and a list containing the rest of the tokens.

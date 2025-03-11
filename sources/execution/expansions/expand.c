@@ -4,6 +4,7 @@
 //
 //
 
+/*
 //Move to utils
 static bool append_list_value(t_tokn *token, char *expanded)
 {
@@ -14,7 +15,7 @@ static bool append_list_value(t_tokn *token, char *expanded)
     	token->value = expanded;
     }
     return (expanded);
-}
+}*/
 
 //
 static bool	expand_buffer(t_shel *minishell, char **buffer)
@@ -68,6 +69,39 @@ static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int
 		}
 	}
 	return (merged);
+}
+//
+static char    *expansion(char *token, int *index, int *blen)
+{
+    while (token[*index + *blen] && !strchr(LIMITERS, token[*index + *blen]))
+    {
+        (*blen)++;
+        if (strchr(SPECIALS, token[*index + *blen]))
+        {
+            (*blen)++;
+            break ;
+        }
+    }
+    return (strndup(token + *index, *blen));
+}
+
+//
+static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
+{
+    if (token)
+    {
+        while (token[*index])
+        {
+            while (token[*index] && token[*index] != '$')
+                (*index)++;
+            if (token[*index])
+            {
+                *buffer = expansion(token, index, blen);
+                return (*buffer);
+            }
+        }
+    }
+    return (false);
 }
 
 //

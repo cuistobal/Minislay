@@ -1,33 +1,8 @@
 #include "minislay.h"
 
-/*
-static void	handle_assignations(t_shel **minishell, t_tokn *current)
-{
-	char	*key;
-	char	*value;
-	char	*assignation;
-
-	if (current)
-	{
-		assignation = strdup(current->value);
-		if (assignation)
-		{
-			key = assignation;
-			strtok_r(key, "=", &value);
-			find_matching_key();
-		}
-	}
-}*/
-
-//
-//
-//		MODIFICATION NEEDED BELOW	->	BOTH FUNCTION SHARE RESPONSIBILITY OR DO
-//		THE SAME JOB.
-//
-//
-
-
-
+/*			OLD VERSION
+ *
+ *
 static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 {
 	int		count;
@@ -63,10 +38,25 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 											//assignations get sent to local.
 	}
 	return (exec);
+}*/
+
+//
+static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn *expansions)
+{
+	int		count;
+	char	**exec;
+	
+	exec = NULL;
+	if (expand(minishell, expansions))
+	{
+		modify_token_types(&expansions, redirections, &count);
+		exec = get_command_and_arguments(expansions, count);
+	}
+	return (exec);
 }
 
 //Entry point 
-bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
+bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 {
 	char	**execution;
 	t_tokn	*expansions;
@@ -81,14 +71,21 @@ bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
 	{
 		if (ast->tokens)
 		{
-			split_list(ast->tokens, &assignations, &expansions);	
-			execution = initialise_execution(minishell, ast, &redirections);
-				
+			split_list(ast->tokens, &assignations, &expansions);
+
+			execution = initialise_execution(*minishell, &redirections, expansions);
+
+			print_exec(assignations, expansions, redirections, execution);
+
+			expand(*minishell, assignations);
+			//assign(*minishell, assignations);
 		}
 		//Identify type of command
 		//
 		//Turn the token list into redirs && char **exec
+		return true;
 	}
+	return false;
 }
 
 

@@ -11,7 +11,7 @@ static void	append_redirections(t_tokn *redirections, t_tokn **current)
 	move_pointer(current);
 	if (*current)
 	{
-		set_state(&(*current)->type, FILENAME);
+		set_state(&(*current)->type, FILENAM);
 		save = *current;
 		move_pointer(current);
 		if (*current)
@@ -30,18 +30,18 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 	current = *expanded;
 	while (current)
 	{
-		if (valid_lexeme(current->type, IRED, ARED))
-			append_redirections(redirections, current);
+		if (valid_lexeme(current, IRED, ARED))
+			append_redirections(*redirections, &current);
 		else
 		{
 			if (command)
-				set_state(&(*expanded)->type, ARGUMENT);
+				set_state(&(*expanded)->type, ARGUMNT);
 			else
 			{
 				command = true;
 				set_state(&(*expanded)->type, COMMAND);
-				if (is_buitin((*expanded)->value))
-					set_state(&(*expanded)->type, BUILTIN);
+			//	if (is_builtin((*expanded)->value))
+			//		set_state(&(*expanded)->type, BUILTIN);
 			}
 			(*count)++;
 			move_pointer(&current);
