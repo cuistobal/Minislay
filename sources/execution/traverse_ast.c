@@ -22,5 +22,4 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 		}
 		traverse_ast(minishell, ast->right);
 	}
-	printf("vide\n");
 }

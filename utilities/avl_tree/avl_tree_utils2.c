@@ -51,7 +51,7 @@ bool	insert_node(t_avlt **node, char *key, char *value, int len)
 	else if (strncmp(key, (*node)->data[0], len) > 0)
 		return (insert_node(&(*node)->right, key, value, len));
 	(*node)->height = 1 + my_max(height((*node)->left), height((*node)->right));
-	return (balance_tree(node, key, value, len));
+	return (balance_tree(node, key, len));
 }
 
 /*			NEEDS IMPLEMENTATION
