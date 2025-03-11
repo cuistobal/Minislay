@@ -31,16 +31,17 @@ bool	traverse_and_execute(t_shel **minishell, t_tree *ast)
 		if (ast->tokens)
 		{
 			current = ast->tokens;
-	//		split_list(&assignations, &expansions);
-	//		while (is_state_active(current->type, EQUL))
-	//		{
-				split_list(current, &assignations, &expansions);
-				expand();
-                print_tokens(assignations);
-                print_tokens(expansions);
-				handle_assignations(minishell, current);
-				current = current->next;
-			}
+			
+			split_list(current, &assignations, &expansions);
+			
+			expand();
+                
+		//	print_tokens(assignations);
+        //	print_tokens(expansions);
+				
+			handle_assignations(minishell, current);
+			current = current->next;
+		}
 		//Identify type of command
 		//
 		//Turn the token list into redirs && char **exec

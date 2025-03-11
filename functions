@@ -1,0 +1,71 @@
+
+//globing.c:
+#include "globing.h";
+static char **append_expanded(char **expanded, int *size, char *filename);
+			return (NULL);;
+static char	**globing_loop(char **patterns, DIR *stream, int *size);
+					return (false);;
+static bool	open_directory(const char *dir_path, DIR **dir_stream);
+char	**globing(const char *globing, const char *path, int *count);
+
+//main.c:
+#include "globing.h";
+int	main(int argc, char **argv);
+
+//match_pattern.c:
+#include "globing.h";
+bool	match_pattern(char **patterns, char *current);
+
+//test_globing_patterns.c:
+#include "globing.h";
+void	free_array(char **array, int count);
+static char	*create_sub_string(const char *string, int length);
+static char	*handle_words(const char *globing, int *index);
+static char	*handle_stars(const char *globing, int *index);
+static bool	valid_pattern(const char globing, char **patterns, int pindex);
+char	**identify_globing_patterns(const char *globing, int *pindex);
+	return (patterns);;
+int	main(int argc, char **argv);
+
+//valid_variable.c:
+bool	valid_variable(char *key);
+static bool	retrieve_and_assign();
+bool	check_keys_validity(t_tokn *assignations);
+
+//expand.c:
+static bool append_list_value();
+bool	check_env_struct(t_shel *minishell);
+static bool append_expanded(char **expanded, char *buffer, int blen);
+static bool	expand_buffer(t_shel *minishell, char **expanded, char *buffer);
+		};
+		};
+	};
+static bool get_expanded(t_shel *minishell, t_tokn **list);
+            free(buffer);;
+                return false;;
+    };
+bool    expand(t_shel *minishell, t_tokn **list);
+
+//subshells.c:
+static bool	prompt(char **prompt, t_tree *branch);
+        };
+
+//assignations.c:
+                };
+            return false;;
+static bool	find_key_in_env(t_shel **minishell, char *key, char *value);
+static void	find_matching_key(t_shel **minishell, char *key, char *value);
+static bool check_key(char *key);
+                    break ;;
+bool	handle_assignations(t_shel **minishell, t_tokn *token);
+
+//traverse_ast.c:
+		if (ast->tokens);
+				while (ast->tokens);
+
+//split_list.c:
+bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
+
+//execution.c:
+bool	traverse_and_execute(t_shel **minishell, t_tree *ast);
+		};

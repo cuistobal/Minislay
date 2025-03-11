@@ -1,10 +1,16 @@
 NAME = minislay
 
 CC = gcc
+
 CFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES)
+
+BFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES_BONUS)
+
 LDFLAGS = -lreadline
 
-INCLUDES = includes
+INCLUDES = includes/mandatory
+
+INCLUDES_BONUS = includes
 
 SOURCES = \
     utilities/boolean_checks/tokenizer_bools_2.c \
@@ -32,7 +38,12 @@ SOURCES = \
     minishell.c \
     minitester/utils/minislays_test_utils.c
 
+SOURCES_BONUS = \
+
+
 OBJ = $(SOURCES:.c=.o)
+
+OBJ_BONUS = $(SOURCES_BONUS:.c=.o)
 
 all: $(NAME)
 	@ echo "G3t r34dy t0 5l4y (:"
@@ -42,6 +53,12 @@ $(NAME): $(OBJ)
 	
 %.o: %.c
 	@ $(CC) $(CFLAGS) -c $< -o $@
+
+$(BONUS): $(OBJ_BONUS)
+	@ $(CC) $(BFLAGS) -c $< -o $@
+
+bonus:
+	@ echo "G3t r34dy t0 B0NU5 5l4y (:"
 
 clean:
 	@ rm -rf $(OBJ)

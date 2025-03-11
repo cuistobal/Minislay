@@ -1,6 +1,6 @@
 #include "minislay.h"
 
-static bool find_key_in_local(t_shel *minishell, char *key, char *value)
+static bool find_key_in_local(t_shel **minishell, char *key, char *value)
 {
     t_env   *new;
 
@@ -84,10 +84,15 @@ static bool check_key(char *key)
     return (!*key);
 }
 
-//SI assignation && commande -> assignation juste pour la commande
-//sINON, ASSIGNATION permanente.
-//Envoyer une liste d'assignations
-bool	handle_assignations(t_shel *minishell, t_tokn *token)
+//Si assignation && commande -> assignation juste pour la commande
+//Sinon, assignation permanente dans l'environement || les variables locales.
+//
+//Les assignations doivent d'abord etre expand. Elles sont ensuite ajoutees ou
+//modifiees dans leur liste respective.
+//Envoyer une liste d'assignations.
+//
+//LEFT TO RIGHT PRIORITY
+bool	handle_assignations(t_shel **minishell, t_tokn *token)
 {
 	char	*key;
 	char	*value;
