@@ -1,23 +1,6 @@
 #include "minislay.h"
 
 //
-//
-//
-
-/*
-//Move to utils
-static bool append_list_value(t_tokn *token, char *expanded)
-{
-    if (expanded && token)
-    {
-		if (token->value)
-        	free(token->value); 
-    	token->value = expanded;
-    }
-    return (expanded);
-}*/
-
-//
 static bool	expand_buffer(t_shel *minishell, char **buffer)
 {
 	char	*value;
@@ -116,6 +99,7 @@ static bool get_expanded(t_shel *minishell, t_tokn **token)
     index = 0;
     buffer = NULL;
 	expanded = strdup((*token)->value);
+//	expanded = (*token)->value;
 	if (expanded)
 	{
     	while (find_expansions(&buffer, expanded, &index, &blen))
@@ -124,13 +108,15 @@ static bool get_expanded(t_shel *minishell, t_tokn **token)
 			{
 				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
 					return (false);
-				printf("%s\n", expanded);
 			}
 		}
 		free((*token)->value);
 		(*token)->value = expanded;
+		return true;
 	}
-	return (expanded);
+	//error message Memalloc failure
+	return false;
+//	return (expanded);
 }
 
 //Entry point of the dollar expansion
@@ -140,12 +126,10 @@ bool    expand(t_shel *minishell, t_tokn **list)
 	{
 		if ((*list)->type & DOLL)
     	{
-			printf("before	->	%s\n", (*list)->value);
         	if (!get_expanded(minishell, list))
 				return (false);
-			printf("after	->	%s\n", (*list)->value);
     	}
         move_pointer(list);
     }
-	return (!list);
+	return (!*list);
 }

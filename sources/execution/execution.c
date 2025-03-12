@@ -47,6 +47,11 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	t_tokn	*copy;
 
 	copy = *expansions;
+	/*
+	expand(minishell, &copy);
+	modify_token_types(expansions, redirections, &count);
+	return (get_command_and_arguments(*expansions, count));
+	*/
 	if (expand(minishell, &copy))
 	{
 		modify_token_types(expansions, redirections, &count);
@@ -75,8 +80,7 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 			execution = initialise_execution(*minishell, &redirections, &expansions);
 
-			if (execution)
-				print_exec(assignations, expansions, redirections, execution);
+			print_exec(assignations, expansions, redirections, execution);
 
 			if (expand(*minishell, &assignations))
 					print_tokens(assignations);
