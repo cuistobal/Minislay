@@ -6,6 +6,9 @@ static bool	expand_buffer(t_shel *minishell, char **buffer)
 	char	*value;
 
 	value = NULL;
+
+	//Implemeter is_special_expansion() pour gerer le $$, $? etc
+
 	if (find_key(minishell, &value, *buffer + 1))
 	{
 		free(*buffer);
@@ -25,11 +28,13 @@ static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int
 {
 	char	*temp;
 	char	*merged;
+	size_t	new_len;
 
 	temp = NULL;
 	merged = NULL;
 	if (*expanded && *buffer)
 	{
+		new_len = strlen(*buffer);
 		temp = strndup(*expanded, *index);
 		if (temp)
 		{
@@ -37,7 +42,7 @@ static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int
 			if (merged)
 			{
 				free(temp);
-				*index =+ *blen;
+				*index =+ new_len;
 				temp = strdup(*expanded + *index);
 				merged = ft_strjoin(merged, temp);
 				if (merged)
@@ -63,7 +68,7 @@ static char    *expansion(char *token, int *index, int *blen)
         {
             (*blen)++;
             break ;
-        }
+        }	
     }
     return (strndup(token + *index, *blen));
 }
@@ -71,20 +76,19 @@ static char    *expansion(char *token, int *index, int *blen)
 //
 static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
 {
-    if (token)
+    if (token && token[*index])
     {
-        while (token[*index])
+		printf("%s\n", token + *index);
+		while (token[*index] && token[*index] != '$')
+			(*index)++;
+		if (token[*index])
         {
-            while (token[*index] && token[*index] != '$')
-                (*index)++;
-            if (token[*index])
-            {
-                *buffer = expansion(token, index, blen);
-                return (*buffer);
-            }
-        }
+			*buffer = expansion(token, index, blen);
+            return (*buffer);
+      	}
     }
-    return (false);
+	return false;
+  //  return (token);
 }
 
 //
@@ -102,16 +106,19 @@ static bool get_expanded(t_shel *minishell, t_tokn **token)
 //	expanded = (*token)->value;
 	if (expanded)
 	{
-    	while (find_expansions(&buffer, expanded, &index, &blen))
-    	{
+		while (find_expansions(&buffer, expanded, &index, &blen))
+		{
 			if (expand_buffer(minishell, &buffer))
 			{
 				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
 					return (false);
+				index++;
 			}
+			//printf("%d	->	%s\n", index, expanded);
 		}
 		free((*token)->value);
 		(*token)->value = expanded;
+	//	printf("%s\n", expanded);
 		return true;
 	}
 	//error message Memalloc failure
@@ -126,8 +133,10 @@ bool    expand(t_shel *minishell, t_tokn **list)
 	{
 		if ((*list)->type & DOLL)
     	{
+			printf("before %s\n", (*list)->value);
         	if (!get_expanded(minishell, list))
 				return (false);
+			printf("after %s\n", (*list)->value);
     	}
         move_pointer(list);
     }

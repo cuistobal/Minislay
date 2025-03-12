@@ -94,15 +94,3 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 	}
 	return false;
 }
-
-
-
-
-/*
-bool	execution(t_shel **minishell, t_tree *ast)
-{
-	if (*minishell && ast)
-	{
-		traverse_and_execute(minishell, ast);		
-	}
-}*/
