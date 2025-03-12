@@ -42,7 +42,7 @@ static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int
 			if (merged)
 			{
 				free(temp);
-				*index =+ new_len;
+				*index += new_len;
 				temp = strdup(*expanded + *index);
 				merged = ft_strjoin(merged, temp);
 				if (merged)
@@ -64,32 +64,82 @@ static char    *expansion(char *token, int *index, int *blen)
     while (token[*index + *blen] && !strchr(LIMITERS, token[*index + *blen]))
     {
         (*blen)++;
-        if (strchr(SPECIALS, token[*index + *blen]))
+
+		if (strchr(SPECIALS, token[*index + *blen]))
         {
             (*blen)++;
             break ;
-        }	
+        }
     }
+    printf("expansion	->	%s	%d\n", strndup(token + *index, *blen), *index);
     return (strndup(token + *index, *blen));
 }
 
 //
 static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
 {
+	int		start;
+	bool	dollar;
+
+	start = *index;
+	dollar = false;
     if (token && token[*index])
-    {
-		printf("%s\n", token + *index);
-		while (token[*index] && token[*index] != '$')
+   	{
+		//dollar = token[*index] == '$';
+		while (token[*index])
+		{
+			if (strchr(SPECIALS, token[*index]))
+			{
+				if (dollar && *index != start)
+					break ;
+				dollar = token[*index] == '$';
+				printf("%s	&&	%c %d\n", token + *index, token[*index], *index);
+			}
+			
+		
+		//		if (token[*index] == '$')
+		//			(*index)++;
+		//		break ;
+		//	}
 			(*index)++;
+		}
 		if (token[*index])
         {
 			*buffer = expansion(token, index, blen);
+			printf("buffer	->	%s\n", *buffer);
             return (*buffer);
       	}
     }
 	return false;
   //  return (token);
 }
+
+/*
+static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
+{
+	bool	dollar;
+	
+	dollar = false;
+	while (*token)
+	{
+		if (*token == '$')
+		{
+			if (dollar)
+				break ;
+			dollar = true;
+		}
+		token++;
+		(*index)++;
+	}
+	printf("%c	%d\n", token[*index], *index);
+	if (*token)
+    {
+		*buffer = expansion(token, index, blen);
+        return (*buffer);
+    }
+	return false;
+  //  return (token);
+}*/
 
 //
 static bool get_expanded(t_shel *minishell, t_tokn **token)
@@ -112,7 +162,7 @@ static bool get_expanded(t_shel *minishell, t_tokn **token)
 			{
 				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
 					return (false);
-				index++;
+			//	index++;
 			}
 			//printf("%d	->	%s\n", index, expanded);
 		}
@@ -133,10 +183,8 @@ bool    expand(t_shel *minishell, t_tokn **list)
 	{
 		if ((*list)->type & DOLL)
     	{
-			printf("before %s\n", (*list)->value);
         	if (!get_expanded(minishell, list))
 				return (false);
-			printf("after %s\n", (*list)->value);
     	}
         move_pointer(list);
     }
