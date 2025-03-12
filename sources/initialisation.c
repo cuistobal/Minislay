@@ -1,5 +1,6 @@
 #include "minislay.h"
 
+/*
 //
 static bool build_export(t_shel **minishell)
 {
@@ -9,22 +10,19 @@ static bool build_export(t_shel **minishell)
 	current = NULL;
 	if (*minishell)
 	{
-		if ((*minishell)->envp)
+		//Needs building after merging the builtin branch			
+		current = (*minishell)->envp;
+		while (current)
 		{
-			//Needs building after merging the builtin branch			
-			current = (*minishell)->envp->envp;
-			while (current)
-			{
-				new = create_avlt_node(current->var);
-				if (!new)
-					break ;
-				insert()
-				current = current->next;	
-			}
+			new = create_avlt_node(current);
+			if (!new)
+				break ;
+			insert()
+			current = current->next;	
 		}
 	}
 	return false;
-}
+}*/
 
 //
 static bool build_env(t_shel **minishell, char **envp)
@@ -32,7 +30,6 @@ static bool build_env(t_shel **minishell, char **envp)
     t_env	*new;
     t_env	*tail;
     t_env	**head;
-//    char	*variable;
 
     if (*minishell)
     {
@@ -41,26 +38,15 @@ static bool build_env(t_shel **minishell, char **envp)
 		head = &(*minishell)->envp;
 		while (*envp)
         {
-//            variable = strdup(*envp);
-//            if (variable)
-            {
-  //              new = create_env_node(variable);
-                new = create_env_node(strdup(*envp));
-/*                if (!new)
-				{
-					free (variable);
-                    break ;
-				}*/
-				if (!new)
-					return false;
-                insert_env_node(head, &tail, new);
-				insert_node(&(*minishell)->expt, new->var[KEY], new->var[VALUE], )
-			}
-            envp++;
-        }
-        return (!*envp);
+        	new = create_env_node(strdup(*envp));
+			if (!new)	
+				return (false);
+            insert_env_node(head, &tail, new);
+			insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
+			envp++;
+		}
     }
-    return (false);
+    return (!*envp);
 }
 
 //

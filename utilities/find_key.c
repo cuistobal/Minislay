@@ -12,7 +12,7 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 		find_element(tree, &node, *value, key);
 		if (node)
 		{
-			*value = node->data[VALUE];
+			*value = node->env->var[VALUE];
 			return (true);
 		}
 	}

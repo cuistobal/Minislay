@@ -22,8 +22,8 @@ void	pre_order_display(t_avlt *root)
 	if (root)
 	{
 		pre_order_display(root->left);
-		printf("export %s", root->data[0]);
-		printf("=%s\n", root->data[1]);
+		printf("export %s", root->env->var[KEY]);
+		printf("=%s\n", root->env->var[VALUE]);
 		pre_order_display(root->right);
 	}
 }
@@ -33,16 +33,16 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
 {
 	if (tree)
 	{
-		if (tree->data[0])
+		if (tree->env->var[KEY])
 		{
-			if (strcmp(key, tree->data[0]) == 0)
+			if (strcmp(key, tree->env->var[KEY]) == 0)
 			{
 				*node = tree;
 				return (true);
 			}
 			else
 			{
-				if (strcmp(key, tree->data[0]) < 0)
+				if (strcmp(key, tree->env->var[KEY]) < 0)
 					return (find_element(tree->left, node, key, value));
 				return (find_element(tree->right, node, key, value));
 			}

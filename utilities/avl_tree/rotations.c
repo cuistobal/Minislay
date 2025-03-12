@@ -42,21 +42,21 @@ static void	left_rotate(t_avlt **x)
 //
 bool	balance_tree(t_avlt **node, char *key, int len)
 {
-	int	balance;
-
+	int		balance;
+	
 	balance = 0;
 	if (get_balance(*node, &balance))
 	{
-		if (balance > 1 && strncmp(key, (*node)->left->data[0], len) < 0)
+		if (balance > 1 && strncmp(key, (*node)->left->env->var[KEY], len) < 0)
 			right_rotate(node);
-		if (balance < -1 && strncmp(key, (*node)->right->data[0], len) > 0)
+		if (balance < -1 && strncmp(key, (*node)->right->env->var[KEY], len) > 0)
 			left_rotate(node);
-		if (balance > 1 && strncmp(key, (*node)->left->data[0], len) > 0)
+		if (balance > 1 && strncmp(key, (*node)->left->env->var[KEY], len) > 0)
 		{
 			left_rotate(&(*node)->left);
 			right_rotate(node);
 		}
-		if (balance < -1 && strncmp(key, (*node)->right->data[0], len) < 0)
+		if (balance < -1 && strncmp(key, (*node)->right->env->var[KEY], len) < 0)
 		{
 			right_rotate(&(*node)->right);
 			left_rotate(node);
