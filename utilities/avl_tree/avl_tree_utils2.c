@@ -82,7 +82,7 @@ bool	insert_avlt_node(t_avlt **node, t_env *env, int len)
 	}
 	if (strncmp(env->var[KEY], (*node)->env->var[KEY], len) < 0)
 		return (insert_avlt_node(&(*node)->left, env, len));
-	else if (strncmp(env->var[KEY], (*node)->env->var[KEY], len) < 0)
+	else if (strncmp(env->var[KEY], (*node)->env->var[KEY], len) > 0)
 		return (insert_avlt_node(&(*node)->right, env, len));
 	(*node)->height = 1 + my_max(height((*node)->left), height((*node)->right));
 	return (balance_tree(node, (*node)->env->var[KEY], len));

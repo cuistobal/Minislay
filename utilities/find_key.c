@@ -8,8 +8,7 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 	node = NULL;
 	if (tree)
 	{
-		printf("coucouuuuuuuuuuu\n");
-		find_element(tree, &node, *value, key);
+		find_element(tree, &node, key, *value);
 		if (node)
 		{
 			*value = node->env->var[VALUE];
@@ -63,5 +62,5 @@ bool	find_key(t_shel *minishell, char **value, char *key)
 			}
 		}
 	}
-	return (false);
+	return (*value);
 }

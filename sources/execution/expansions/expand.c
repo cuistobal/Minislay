@@ -105,7 +105,7 @@ static bool    find_expansions(char **buffer, char *token, int *index, int *blen
 }
 
 //
-static bool get_expanded(t_shel *minishell, t_tokn *token)
+static bool get_expanded(t_shel *minishell, t_tokn **token)
 {
     int     blen;
     int     index;
@@ -115,7 +115,7 @@ static bool get_expanded(t_shel *minishell, t_tokn *token)
     blen = 0;
     index = 0;
     buffer = NULL;
-	expanded = strdup(token->value);
+	expanded = strdup((*token)->value);
 	if (expanded)
 	{
     	while (find_expansions(&buffer, expanded, &index, &blen))
@@ -124,23 +124,28 @@ static bool get_expanded(t_shel *minishell, t_tokn *token)
 			{
 				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
 					return (false);
+				printf("%s\n", expanded);
 			}
 		}
+		free((*token)->value);
+		(*token)->value = expanded;
 	}
 	return (expanded);
 }
 
 //Entry point of the dollar expansion
-bool    expand(t_shel *minishell, t_tokn *list)
+bool    expand(t_shel *minishell, t_tokn **list)
 {
-	while (list)
+	while (*list)
 	{
-		if ((list)->type & DOLL)
+		if ((*list)->type & DOLL)
     	{
+			printf("before	->	%s\n", (*list)->value);
         	if (!get_expanded(minishell, list))
 				return (false);
+			printf("after	->	%s\n", (*list)->value);
     	}
-        move_pointer(&list);
+        move_pointer(list);
     }
 	return (!list);
 }

@@ -11,7 +11,7 @@ bool    is_builtin(char *command);
 void    modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count);
 
 //expand.c
-bool    expand(t_shel *minishell, t_tokn *list);
+bool    expand(t_shel *minishell, t_tokn **list);
 
 //
 bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);

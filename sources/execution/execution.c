@@ -41,18 +41,18 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 }*/
 
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn *expansions)
+static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
 {
 	int		count;
-	char	**exec;
-	
-	exec = NULL;
-	if (expand(minishell, expansions))
+	t_tokn	*copy;
+
+	copy = *expansions;
+	if (expand(minishell, &copy))
 	{
-		modify_token_types(&expansions, redirections, &count);
-		exec = get_command_and_arguments(expansions, count);
+		modify_token_types(expansions, redirections, &count);
+		return (get_command_and_arguments(*expansions, count));
 	}
-	return (exec);
+	return (NULL);
 }
 
 //Entry point 
@@ -73,11 +73,14 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 		{
 			split_list(ast->tokens, &assignations, &expansions);
 
-			execution = initialise_execution(*minishell, &redirections, expansions);
+			execution = initialise_execution(*minishell, &redirections, &expansions);
 
-			print_exec(assignations, expansions, redirections, execution);
+			if (execution)
+				print_exec(assignations, expansions, redirections, execution);
 
-			expand(*minishell, assignations);
+			if (expand(*minishell, &assignations))
+					print_tokens(assignations);
+			
 			//assign(*minishell, assignations);
 		}
 		//Identify type of command

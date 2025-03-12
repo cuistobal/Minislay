@@ -17,12 +17,15 @@ static void	right_rotate(t_avlt **y)
 	t_avlt	**x;
 	t_avlt	**t2;
 
-	x = &(*y)->left;
-	t2 = &(*x)->right;
-	(*x)->right = *y;
-	(*y)->left = *t2;
-	(*y)->height = my_max(height((*y)->left), height((*y)->right)) + 1;
-	(*x)->height = my_max(height((*x)->left), height((*x)->right)) + 1;
+	if (*y)
+	{
+		x = &(*y)->left;
+		t2 = &(*x)->right;
+		(*x)->right = *y;
+		(*y)->left = *t2;
+		(*y)->height = my_max(height((*y)->left), height((*y)->right)) + 1;
+		(*x)->height = my_max(height((*x)->left), height((*x)->right)) + 1;
+	}
 }
 
 //
@@ -31,12 +34,15 @@ static void	left_rotate(t_avlt **x)
 	t_avlt	**y;
 	t_avlt	**t2;
 
-	y = &(*x)->right;
-	t2 = &(*y)->left;
-	(*y)->left = *x;
-	(*x)->right = *t2;
-	(*x)->height = my_max(height((*x)->left), height((*x)->right)) + 1;
-	(*y)->height = my_max(height((*y)->left), height((*y)->right)) + 1;
+	if (*x)
+	{
+		y = &(*x)->right;
+		t2 = &(*y)->left;
+		(*y)->left = *x;
+		(*x)->right = *t2;
+		(*x)->height = my_max(height((*x)->left), height((*x)->right)) + 1;
+		(*y)->height = my_max(height((*y)->left), height((*y)->right)) + 1;
+	}
 }
 
 //
