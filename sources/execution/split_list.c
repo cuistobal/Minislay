@@ -16,16 +16,19 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions)
 {
 	t_tokn	*save;
 
-	save = current;
-	
+	save = current;	
 	if (current)
 	{
-
-		while (current && is_state_active(current->type, EQUL))
-			move_list_pointer(&current, &save);
+		if (is_state_active(current->type, EQUL))
+		{
+			*assignations = current;
+			while (current && is_state_active(current->type, EQUL))
+				move_list_pointer(&current, &save);
+		}
 		if (current)
 		{
-			save->next = NULL;
+			if (*assignations)
+				save->next = NULL;
 			*expansions = current;
 		}
 		//TBM
