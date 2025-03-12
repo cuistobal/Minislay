@@ -21,9 +21,16 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions)
 	{
 		if (is_state_active(current->type, EQUL))
 		{
+			//Implement check_assignation
+			//check_assignation();
+			//
 			*assignations = current;
 			while (current && is_state_active(current->type, EQUL))
+			{
+		//		if (!check_assignation())
+		//			break ;
 				move_list_pointer(&current, &save);
+			}
 		}
 		if (current)
 		{

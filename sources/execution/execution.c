@@ -78,8 +78,6 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 		{
 			split_list(ast->tokens, &assignations, &expansions);
 
-			check_assignations(&assignations, &expansions);	
-
 			execution = initialise_execution(*minishell, &redirections, &expansions);
 
 			print_exec(assignations, expansions, redirections, execution);
