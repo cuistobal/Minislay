@@ -23,7 +23,7 @@ static bool	expand_buffer(t_shel *minishell, char **buffer)
 	char	*value;
 
 	value = NULL;
-	if (find_key(minishell, &value, *buffer))
+	if (find_key(minishell, &value, *buffer + 1))
 	{
 		free(*buffer);
 		*buffer = strdup(value);

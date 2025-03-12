@@ -8,6 +8,7 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 	node = NULL;
 	if (tree)
 	{
+		printf("coucouuuuuuuuuuu\n");
 		find_element(tree, &node, *value, key);
 		if (node)
 		{

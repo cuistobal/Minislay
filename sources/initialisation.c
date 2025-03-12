@@ -1,6 +1,6 @@
 #include "minislay.h"
 
-/*
+//
 static bool build_export(t_shel **minishell)
 {
 	t_avlt	*new;
@@ -24,14 +24,15 @@ static bool build_export(t_shel **minishell)
 		}
 	}
 	return false;
-}*/
+}
 
+//
 static bool build_env(t_shel **minishell, char **envp)
 {
     t_env	*new;
     t_env	*tail;
     t_env	**head;
-    char	*variable;
+//    char	*variable;
 
     if (*minishell)
     {
@@ -40,16 +41,20 @@ static bool build_env(t_shel **minishell, char **envp)
 		head = &(*minishell)->envp;
 		while (*envp)
         {
-            variable = strdup(*envp);
-            if (variable)
+//            variable = strdup(*envp);
+//            if (variable)
             {
-                new = create_env_node(variable);
-                if (!new)
+  //              new = create_env_node(variable);
+                new = create_env_node(strdup(*envp));
+/*                if (!new)
 				{
 					free (variable);
                     break ;
-				}
+				}*/
+				if (!new)
+					return false;
                 insert_env_node(head, &tail, new);
+				insert_node(&(*minishell)->expt, new->var[KEY], new->var[VALUE], )
 			}
             envp++;
         }
