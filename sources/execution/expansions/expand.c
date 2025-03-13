@@ -58,6 +58,8 @@ static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int
 	}
 	return (merged);
 }
+
+/*		OLD
 //
 static char    *expansion(char *token, int *index, int *blen)
 {
@@ -71,8 +73,18 @@ static char    *expansion(char *token, int *index, int *blen)
             break ;
         }
     }
-    printf("expansion	->	%s	%d\n", strndup(token + *index, *blen), *index);
     return (strndup(token + *index, *blen));
+}*/
+
+static char    *expansion(char *token, int *index, int *blen)
+{
+    while (*blen < *index)
+    {
+        (*blen)++;
+		if (strchr(SPECIALS, token[*blen]))
+            break ;
+    }
+    return (strndup(token, *blen));
 }
 
 //
@@ -85,7 +97,6 @@ static bool    find_expansions(char **buffer, char *token, int *index, int *blen
 	dollar = false;
     if (token && token[*index])
    	{
-		//dollar = token[*index] == '$';
 		while (token[*index])
 		{
 			if (strchr(SPECIALS, token[*index]))
@@ -93,25 +104,16 @@ static bool    find_expansions(char **buffer, char *token, int *index, int *blen
 				if (dollar && *index != start)
 					break ;
 				dollar = token[*index] == '$';
-				printf("%s	&&	%c %d\n", token + *index, token[*index], *index);
 			}
-			
-		
-		//		if (token[*index] == '$')
-		//			(*index)++;
-		//		break ;
-		//	}
 			(*index)++;
 		}
-		if (token[*index])
+	//	if (token[*index])
         {
 			*buffer = expansion(token, index, blen);
-			printf("buffer	->	%s\n", *buffer);
             return (*buffer);
       	}
     }
 	return false;
-  //  return (token);
 }
 
 /*
