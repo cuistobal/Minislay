@@ -96,121 +96,101 @@ static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
 {
 	if (**key == '$') 	
 	{
+		printf("%s\n", *key);
 	//	if (!is_standard_key(value, *key))
 	//	{
 			if (!find_key(minishell, value, *key + 1))
 				return (false);
+			//printf("%s\n", *value);
 	//	}	
 	}
 	free(*key);
 	*key = NULL;
-	return true;
+	return (true);
 }
 
 //
-static bool	get_expanded(t_shel *minishell, t_tokn **token)
+static bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
 {
-	int		jndex;
-	int		index;
+//	int		jndex;
+//	int		index;
 	char	*key;	
-	char	*value;
-	char	**expanded;
+//	char	**expanded;
 
 	key = NULL;
 	value = NULL;
-	expanded = (char **)malloc(sizeof(char *) * 100);
-	if (expanded)
+//	expanded = (char **)malloc(sizeof(char *) * 100);
+//	if (expanded)
 	{
-		jndex = 0;
-		index = 0;
-		while ((*token)->value[index])
+//		jndex = 0;
+//		index = 0;
+		while ((*token)->value[*index])
 		{
-			key = retrieve_expansions((*token)->value, &index);
+		//	key = retrieve_expansions((*token)->value, &index);
+			key = retrieve_expansions((*token)->value, index);
 			if (key)
 			{
-				if (!retrieve_keys_value(minishell, &key, &value))
-					return false;
-				value = strdup(value);
-				if (!value)
-					return (false);
-				if (!strpbrk(value, " "))
-				{
-					expanded[jndex] = strtok_r(value, " ", &value);
-					jndex++;
-				}
-				else
-				{
-					expanded[jndex] = value;
-					while (strtok_r(value, " ", &value))
-					{
-						jndex++;
-						expanded[jndex] = value;
-					}
-					jndex++;
-				}
-			}
-		}
-		if (!(*token)->value[index])
-		{
-			char	*temp = NULL;
-			char	*merged = NULL;
-			
-			while (*expanded)
-			{
-				temp = merged;
-				merged = ft_strjoin(temp, *expanded);
-				if (!merged)
-					return false;
-				if (temp)
-					free(temp);
-				temp = NULL;
-				expanded++;
-			}
-			printf("%s\n", merged);
-		}
-	}
-	return false;
-}
-/*
-	//	BELONGS TO PROCESS_KEY
-
-				//if (!special_expansion(expansion))
-				if (*key == '$')
-				{
-					if (find_key(minishell, &value, key + 1))
-					{
-						printf("%s\n", value);
-					//	printf("%s\n", *expanded + index);
-					//	free(value);
-					}
-
-						if (value)
-							modify_expanded(expanded, value, index);
-
-				}
-			
-			//	else if (strmcp(key, "EOF"))
-				
-				printf("%s	->	%s		@	%s\n", key, value, expanded + index);
+				printf("%s\n", key);
+				if (retrieve_keys_value(minishell, &key, value))
+					*value = strdup(*value);
+				free (key);
+				return (*value);
 			}
 		}
 	}
 	return (false);
-}*/
+}
 
+//
 static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 {
+	(void)minishell;
 	if (is_state_active((*list)->type, DOLL))
 	{
-   		if (!get_expanded(minishell, list))
+//   		if (!get_expanded(minishell, list))
 			return (false);
 	}
+	return (true);
+}
+
+static bool	expand_for_globing(char *token)
+{
+//	int		index;
+//	char	*expanded;
+
+//	expanded = NULL;
+	if (token)
+	{
+//		index = 0;
+//		while (token[index])
+//		{
+		return true;			
+//		}
+	}
+	return false;
 }
 
 //if multiple dollars, split the list into subtokens
 static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 {
-	if ()
+	int		index;
+	char	*value;
+	
+	index = 0;
+	value = NULL;
+	if (is_state_active((*list)->type, STAR))
+		return (expand_for_globing((*list)->value));
+	else if (is_state_active((*list)->type, DOLL))
+	{
+		if (!get_expanded(minishell, list, &value, &index))
+			return (false);	
+		else
+		{
+			printf("%s\n", value);	
+		}
+	
+	}
+	return (true);
 }
 
 //Entry point of the dollar expansion
@@ -218,26 +198,24 @@ bool    expand(t_shel *minishell, t_tokn **list)
 {
 	while (*list)
 	{
-		if (is_state_active((*list)->type, DQTE))
+		if (!is_state_active((*list)->type, DQTE))
 		{
-			expand_in_quotes(minishell, list);
-			if (is_state_active((*list)->type, DOLL))
-    		{
-        		if (!get_expanded(minishell, list))
-					return (false);
-			}
+			if (!expand_no_quotes(minishell, list))
+				return (false);
 		}
 		else
 		{
-			
-		}
-		/*
-		if ((*list)->type & STAR)
-		{
-			if (!globing(minishell, &(*list)->value))
+			if (!expand_in_quotes(minishell, list))
 				return (false);
-    	}
-		*/
+		}
+
+		//	*OLD
+		//	if (is_state_active((*list)->type, DOLL))
+    	//	{
+        //		if (!get_expanded(minishell, list))
+		//			return (false);
+		//	}
+	
         move_pointer(list);
     }
 	return (!*list);
