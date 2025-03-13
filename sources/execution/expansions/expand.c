@@ -198,15 +198,38 @@ static bool	get_expanded(t_shel *minishell, t_tokn **token)
 	return (false);
 }*/
 
+static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
+{
+	if (is_state_active((*list)->type, DOLL))
+	{
+   		if (!get_expanded(minishell, list))
+			return (false);
+	}
+}
+
+//if multiple dollars, split the list into subtokens
+static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
+{
+	if ()
+}
+
 //Entry point of the dollar expansion
 bool    expand(t_shel *minishell, t_tokn **list)
 {
 	while (*list)
 	{
-		if ((*list)->type & DOLL)
-    	{
-        	if (!get_expanded(minishell, list))
-				return (false);
+		if (is_state_active((*list)->type, DQTE))
+		{
+			expand_in_quotes(minishell, list);
+			if (is_state_active((*list)->type, DOLL))
+    		{
+        		if (!get_expanded(minishell, list))
+					return (false);
+			}
+		}
+		else
+		{
+			
 		}
 		/*
 		if ((*list)->type & STAR)
