@@ -8,7 +8,7 @@ BFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES_BONUS)
 
 LDFLAGS = -lreadline
 
-INCLUDES = includes/mandatory
+INCLUDES = includes
 
 INCLUDES_BONUS = includes
 

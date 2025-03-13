@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/10 08:46:39 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/03/13 09:32:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void expansion_flags(char input, bool *dollar, int *type, char quote)
             set_state(type, DOLL);
 		    *dollar = true;
         }
-        else if (!quote &&input == '*')
+        else if (!quote && input == '*')
         {
             if (*dollar)
 		        *dollar = false;
