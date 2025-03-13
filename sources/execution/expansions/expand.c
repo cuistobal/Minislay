@@ -1,182 +1,192 @@
 #include "minislay.h"
 
 //
-static bool	expand_buffer(t_shel *minishell, char **buffer)
+static char	*extract_key(char *token, int *index, int start)
 {
-	char	*value;
+	int	tlen;
 
-	value = NULL;
-
-	//Implemeter is_special_expansion() pour gerer le $$, $? etc
-
-	if (find_key(minishell, &value, *buffer + 1))
+	tlen = 0;
+	while (token[*index])
 	{
-		free(*buffer);
-		*buffer = strdup(value);
-		return (*buffer);
-	}
-	else
-	{
-		free(*buffer);
-		*buffer = strdup("");		//Remove this magic number
-		return (*buffer);	
-	}
-	return (false);
-}
-
-static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int *index)
-{
-	char	*temp;
-	char	*merged;
-	size_t	new_len;
-
-	temp = NULL;
-	merged = NULL;
-	if (*expanded && *buffer)
-	{
-		new_len = strlen(*buffer);
-		temp = strndup(*expanded, *index);
-		if (temp)
+		(*index)++;
+		if (!isalnum(token[*index]) && token[*index] != '_')
 		{
-			merged = ft_strjoin(temp, *buffer);
-			if (merged)
+			if (tlen == 0)
 			{
-				free(temp);
-				*index += new_len;
-				temp = strdup(*expanded + *index);
-				merged = ft_strjoin(merged, temp);
-				if (merged)
+				if (token[*index] == '$' || token[*index] == '?')
 				{
-					free(*expanded);
-					*expanded = merged;
+					tlen++;	
+					(*index)++;
 				}
-				free(temp);
-				temp = NULL;
-				*blen = 0;
+				return strndup(token + start, tlen + 1);
 			}
+			break ;
 		}
+		tlen++;	
 	}
-	return (merged);
-}
-
-/*		OLD
-//
-static char    *expansion(char *token, int *index, int *blen)
-{
-    while (token[*index + *blen] && !strchr(LIMITERS, token[*index + *blen]))
-    {
-        (*blen)++;
-
-		if (strchr(SPECIALS, token[*index + *blen]))
-        {
-            (*blen)++;
-            break ;
-        }
-    }
-    return (strndup(token + *index, *blen));
-}*/
-
-static char    *expansion(char *token, int *index, int *blen)
-{
-    while (*blen < *index)
-    {
-        (*blen)++;
-		if (strchr(SPECIALS, token[*blen]))
-            break ;
-    }
-    return (strndup(token, *blen));
+	return strndup(token + start, tlen + 1);
+//	return strndup(token + start + 1, tlen);
 }
 
 //
-static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
+static char	*retrieve_expansions(char *token, int *index)
 {
 	int		start;
-	bool	dollar;
 
 	start = *index;
-	dollar = false;
-    if (token && token[*index])
-   	{
+	if (token[*index])
+	{
 		while (token[*index])
 		{
-			if (strchr(SPECIALS, token[*index]))
+			if (token[*index] == '$')
 			{
-				if (dollar && *index != start)
-					break ;
-				dollar = token[*index] == '$';
+				if (*index == start)
+					return extract_key(token, index, start);
+				return strndup(token + start, *index - start);	
 			}
 			(*index)++;
 		}
-	//	if (token[*index])
-        {
-			*buffer = expansion(token, index, blen);
-            return (*buffer);
-      	}
-    }
-	return false;
+		return ("EOF");
+	}
+	return (NULL);
 }
 
 /*
-static bool    find_expansions(char **buffer, char *token, int *index, int *blen)
+static bool	get_merged(char **merged, char **temp, char **expanded)
 {
-	bool	dollar;
-	
-	dollar = false;
-	while (*token)
+	if (*temp)
 	{
-		if (*token == '$')
+		*merged = ft_strjoin(*expanded, *temp);
+		if (*merged)
 		{
-			if (dollar)
-				break ;
-			dollar = true;
+			free(*temp);
+			*temp = NULL;
+			free(*expanded);
+			*expanded = *merged;
+			return (true);
 		}
-		token++;
-		(*index)++;
+		else
+		{
+			free(*temp);
+			*temp = NULL;
+			free(*expanded);
+			*expanded = NULL;
+		}
 	}
-	printf("%c	%d\n", token[*index], *index);
-	if (*token)
-    {
-		*buffer = expansion(token, index, blen);
-        return (*buffer);
-    }
-	return false;
-  //  return (token);
+	return (false);
 }*/
 
-//
-static bool get_expanded(t_shel *minishell, t_tokn **token)
+/*
+//Jouer avec un enum ici
+bool	is_standard_key(char **value, char *key)
 {
-    int     blen;
-    int     index;
-    char    *buffer;
-    char    *expanded;
-    
-    blen = 0;
-    index = 0;
-    buffer = NULL;
-	expanded = strdup((*token)->value);
-//	expanded = (*token)->value;
+	int	index;
+
+	index = 0;
+	while (g_keys[index])
+	{
+		if (strcmp(key, g_keys[index]) == 0)
+			*value = 	
+	}
+}*/
+
+//We use this function to determine if the key is a standard key or an env/user
+//defined key.
+static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
+{
+	if (**key == '$') 	
+	{
+	//	if (!is_standard_key(value, *key))
+	//	{
+			if (!find_key(minishell, value, *key + 1))
+				return (false);
+	//	}	
+	}
+	free(*key);
+	*key = NULL;
+	return true;
+}
+
+//
+static bool	get_expanded(t_shel *minishell, t_tokn **token)
+{
+	int		jndex;
+	int		index;
+	char	*key;	
+	char	*value;
+	char	**expanded;
+
+	key = NULL;
+	value = NULL;
+	expanded = (char **)malloc(sizeof(char *) * 100);
 	if (expanded)
 	{
-		while (find_expansions(&buffer, expanded, &index, &blen))
+		jndex = 0;
+		index = 0;
+		while ((*token)->value[index])
 		{
-			if (expand_buffer(minishell, &buffer))
+			key = retrieve_expansions((*token)->value, &index);
+			if (key)
 			{
-				if (!copy_and_reset_buffer(&expanded, &buffer, &blen, &index))
+				if (!retrieve_keys_value(minishell, &key, &value))
+					return false;
+				value = strdup(value);
+				if (!value)
 					return (false);
-			//	index++;
+				if (!strpbrk(value, " "))
+				{
+					expanded[jndex] = strtok_r(value, " ", &value);
+					jndex++;
+				}
+				else
+				{
+					expanded[jndex] = value;
+					while (strtok_r(value, " ", &value))
+					{
+						jndex++;
+						expanded[jndex] = value;
+					}
+					jndex++;
+				}
 			}
-			//printf("%d	->	%s\n", index, expanded);
 		}
-		free((*token)->value);
-		(*token)->value = expanded;
-	//	printf("%s\n", expanded);
-		return true;
+		if (!(*token)->value[index])
+		{
+			while (*expanded)
+			{
+				printf("%s\n", *expanded);
+				expanded++;
+			}
+		}
 	}
-	//error message Memalloc failure
 	return false;
-//	return (expanded);
 }
+/*
+	//	BELONGS TO PROCESS_KEY
+
+				//if (!special_expansion(expansion))
+				if (*key == '$')
+				{
+					if (find_key(minishell, &value, key + 1))
+					{
+						printf("%s\n", value);
+					//	printf("%s\n", *expanded + index);
+					//	free(value);
+					}
+
+						if (value)
+							modify_expanded(expanded, value, index);
+
+				}
+			
+			//	else if (strmcp(key, "EOF"))
+				
+				printf("%s	->	%s		@	%s\n", key, value, expanded + index);
+			}
+		}
+	}
+	return (false);
+}*/
 
 //Entry point of the dollar expansion
 bool    expand(t_shel *minishell, t_tokn **list)
@@ -187,7 +197,14 @@ bool    expand(t_shel *minishell, t_tokn **list)
     	{
         	if (!get_expanded(minishell, list))
 				return (false);
+		}
+		/*
+		if ((*list)->type & STAR)
+		{
+			if (!globing(minishell, &(*list)->value))
+				return (false);
     	}
+		*/
         move_pointer(list);
     }
 	return (!*list);
