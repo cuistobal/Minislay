@@ -96,7 +96,6 @@ static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
 {
 	if (**key == '$') 	
 	{
-		printf("%s\n", *key);
 	//	if (!is_standard_key(value, *key))
 	//	{
 			if (!find_key(minishell, value, *key + 1))
@@ -118,7 +117,7 @@ static bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *i
 //	char	**expanded;
 
 	key = NULL;
-	value = NULL;
+//	value = NULL;
 //	expanded = (char **)malloc(sizeof(char *) * 100);
 //	if (expanded)
 	{
@@ -130,7 +129,6 @@ static bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *i
 			key = retrieve_expansions((*token)->value, index);
 			if (key)
 			{
-				printf("%s\n", key);
 				if (retrieve_keys_value(minishell, &key, value))
 					*value = strdup(*value);
 				free (key);
@@ -175,20 +173,35 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 {
 	int		index;
 	char	*value;
-	
+	char	*merged;
+
 	index = 0;
 	value = NULL;
+	merged = NULL;	
 	if (is_state_active((*list)->type, STAR))
 		return (expand_for_globing((*list)->value));
 	else if (is_state_active((*list)->type, DOLL))
 	{
-		if (!get_expanded(minishell, list, &value, &index))
-			return (false);	
-		else
+		while ((*list)->value[index])
 		{
-			printf("%s\n", value);	
+			if (!get_expanded(minishell, list, &value, &index))
+				return (false);
+			
+// DEV LE MODULE PLS
+// *
+			char	*temp = merged;
+			merged = ft_strjoin(temp, value);
+			free(temp);
+			temp = NULL;
+			free(value);
+			value = NULL;
+			if (!merged)
+				return false;
+			printf("value	->	%s\n", merged);
+		
 		}
-	
+		free((*list)->value);
+		(*list)->value = merged;
 	}
 	return (true);
 }
