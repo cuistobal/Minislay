@@ -51,7 +51,7 @@ static char	*retrieve_expansions(char *token, int *index)
 	return (NULL);
 }
 
-/*
+
 static bool	get_merged(char **merged, char **temp, char **expanded)
 {
 	if (*temp)
@@ -74,7 +74,7 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 		}
 	}
 	return (false);
-}*/
+}
 
 /*
 //Jouer avec un enum ici
@@ -172,10 +172,12 @@ static bool	expand_for_globing(char *token)
 static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 {
 	int		index;
+	char	*temp;
 	char	*value;
 	char	*merged;
 
 	index = 0;
+	temp = NULL;
 	value = NULL;
 	merged = NULL;	
 	if (is_state_active((*list)->type, STAR))
@@ -187,8 +189,9 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			if (!get_expanded(minishell, list, &value, &index))
 				return (false);
 			
-// DEV LE MODULE PLS
-// *
+			if (!get_merged(&merged, &temp, &value))
+				return (false);
+/*
 			char	*temp = merged;
 			merged = ft_strjoin(temp, value);
 			free(temp);
@@ -198,7 +201,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			if (!merged)
 				return false;
 			printf("value	->	%s\n", merged);
-		
+			*/
 		}
 		free((*list)->value);
 		(*list)->value = merged;
