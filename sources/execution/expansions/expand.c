@@ -152,11 +152,21 @@ static bool	get_expanded(t_shel *minishell, t_tokn **token)
 		}
 		if (!(*token)->value[index])
 		{
+			char	*temp = NULL;
+			char	*merged = NULL;
+			
 			while (*expanded)
 			{
-				printf("%s\n", *expanded);
+				temp = merged;
+				merged = ft_strjoin(temp, *expanded);
+				if (!merged)
+					return false;
+				if (temp)
+					free(temp);
+				temp = NULL;
 				expanded++;
 			}
+			printf("%s\n", merged);
 		}
 	}
 	return false;
