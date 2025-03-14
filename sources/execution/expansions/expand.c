@@ -1,5 +1,7 @@
 #include "minislay.h"
 
+static const char *g_keys[DKCT] = {DSTR, DARO, DHAS, DEXT, DHYP, DPID, DCID, DNME, DLST, DIFS};
+
 //We use this utility to extract the key within the current token string.
 static char	*extract_key(char *token, int *index, int start)
 {
@@ -51,20 +53,23 @@ static char	*retrieve_expansions(char *token, int *index)
 	return (NULL);
 }
 
-/*
-//Jouer avec un enum ici
-//We use this utility to asses if a key 
-bool	is_standard_key(char **value, char *key)
+//Move to utils	->	check_keys.c
+static bool	is_standard_key(t_shel *minishell, char **value, char *key)
 {
 	int	index;
 
 	index = 0;
-	while (g_keys[index])
+	while (index < DKCT)
 	{
 		if (strcmp(key, g_keys[index]) == 0)
-			*value = 	
-	}
-}*/
+		{
+			*value = minishell->special[index];
+			break ;
+		}
+		index++;
+	}	
+	return (index < DKCT);
+}
 
 //We use this function to determine if the key is a standard key or an env/user
 //defined key.
@@ -76,13 +81,14 @@ static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
 			*value = strdup(*key);
 		else
 		{
-		//	if (!is_standard_key(value, *key))
-		//	{
+			if (!is_standard_key(minishell, value, *key))
+			{
 				if (!find_key(minishell, value, *key + 1))
 					return (false);
-				*value = strdup(*value);
-	//			printf("%s\n", *value);
-		//	}	
+		//		*value = strdup(*value);
+			}	
+			*value = strdup(*value);
+			printf("%s\n", *value);
 		}	
 //		printf("%s\n", *key);
 //		printf("%s\n", *value);

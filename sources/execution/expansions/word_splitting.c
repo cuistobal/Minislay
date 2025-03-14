@@ -15,7 +15,7 @@ bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded)
 	{
 		next = (*current)->next;
 		free((*current)->value);
-		(*current)->value = save;	
+		(*current)->value = save;
 		while (strtok_r(save, delimiter, &save))
 		{
 			if (*save)
