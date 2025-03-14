@@ -84,6 +84,7 @@ static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
 	//			printf("%s\n", *value);
 		//	}	
 		}	
+//		printf("%s\n", *key);
 //		printf("%s\n", *value);
 		free(*key);
 		*key = NULL;
@@ -153,6 +154,31 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 	return (false);
 }
 
+/*
+static bool	create_sub_list(t_tokn **current, char *merged, char *left)
+{
+	t_tokn	*new;
+	t_tokn	*next;
+	t_tokn	*save;
+
+	save = (*current)->next;
+	new = create_token_node(merged, WORD | DOLL);
+	if (new)
+	{
+		*current = new;
+		if (word_splitting(&new)
+		{
+			new->next = save;
+			next = create_token_node(left, WORD | DOLL);
+			if (next)
+			{
+				next->next = save;
+				*current = next;
+			}
+		}
+	}
+}*/
+
 //if multiple dollars, split the list into subtokens
 static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 {
@@ -171,12 +197,21 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 		{
 			if (!get_expanded(minishell, list, &value, &index))
 				return (false);
-			if (!is_state_active((*list)->type, STAR))
-				word_splitting(minishell, list, value);
 			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
+/*			if (!is_state_active((*list)->type, STAR))
+			{
+				if ((*list)->value[index])
+				{
+					printf("%s\n", (*list)->value + index);
+				}
+				if (!word_splitting(minishell, list, value))
+					return (false);
+			}*/
 		}
+		if (!is_state_active((*list)->type, STAR))
+			return (!word_splitting(minishell, list, value));
 		free((*list)->value);
 		(*list)->value = merged;
 	}
