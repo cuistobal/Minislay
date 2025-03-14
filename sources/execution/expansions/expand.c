@@ -1,6 +1,6 @@
 #include "minislay.h"
 
-//
+//We use this utility to extract the key within the current token string.
 static char	*extract_key(char *token, int *index, int start)
 {
 	int	tlen;
@@ -25,10 +25,10 @@ static char	*extract_key(char *token, int *index, int start)
 		tlen++;	
 	}
 	return strndup(token + start, tlen + 1);
-//	return strndup(token + start + 1, tlen);
 }
 
-//
+//We use this utility to discriminate keys and non keys within the current token
+//string.
 static char	*retrieve_expansions(char *token, int *index)
 {
 	int		start;
@@ -46,38 +46,14 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		return ("EOF");
+		return ("EOF");		//Needs to be modified.
 	}
 	return (NULL);
 }
 
-
-static bool	get_merged(char **merged, char **temp, char **expanded)
-{
-	if (*temp)
-	{
-		*merged = ft_strjoin(*expanded, *temp);
-		if (*merged)
-		{
-			free(*temp);
-			*temp = NULL;
-			free(*expanded);
-			*expanded = *merged;
-			return (true);
-		}
-		else
-		{
-			free(*temp);
-			*temp = NULL;
-			free(*expanded);
-			*expanded = NULL;
-		}
-	}
-	return (false);
-}
-
 /*
 //Jouer avec un enum ici
+//We use this utility to asses if a key 
 bool	is_standard_key(char **value, char *key)
 {
 	int	index;
@@ -94,49 +70,52 @@ bool	is_standard_key(char **value, char *key)
 //defined key.
 static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
 {
-	if (**key == '$') 	
+	if (*key)
 	{
-	//	if (!is_standard_key(value, *key))
-	//	{
-			if (!find_key(minishell, value, *key + 1))
-				return (false);
-			//printf("%s\n", *value);
-	//	}	
+		if (**key != '$')	
+			*value = strdup(*key);
+		else
+		{
+		//	if (!is_standard_key(value, *key))
+		//	{
+				if (!find_key(minishell, value, *key + 1))
+					return (false);
+				*value = strdup(*value);
+	//			printf("%s\n", *value);
+		//	}	
+		}	
+//		printf("%s\n", *value);
+		free(*key);
+		*key = NULL;
+		return (*value);
 	}
-	free(*key);
-	*key = NULL;
-	return (true);
+	return (*key);
 }
 
 //
 static bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
 {
-//	int		jndex;
-//	int		index;
 	char	*key;	
-//	char	**expanded;
+//	char	*temp;
 
 	key = NULL;
-//	value = NULL;
-//	expanded = (char **)malloc(sizeof(char *) * 100);
-//	if (expanded)
+//	temp = NULL;
+//	while ((*token)->value[*index])
+	if ((*token)->value[*index])
 	{
-//		jndex = 0;
-//		index = 0;
-		while ((*token)->value[*index])
+		key = retrieve_expansions((*token)->value, index);
+		if (key)
 		{
-		//	key = retrieve_expansions((*token)->value, &index);
-			key = retrieve_expansions((*token)->value, index);
-			if (key)
-			{
-				if (retrieve_keys_value(minishell, &key, value))
-					*value = strdup(*value);
-				free (key);
-				return (*value);
-			}
+			/*
+			if (!retrieve_keys_value(minishell, &key, value))
+				break ;
+			*/
+			if (!retrieve_keys_value(minishell, &key, value))
+				return (false);
+			return (true);
 		}
 	}
-	return (false);
+	return (!(*token)->value[*index]);
 }
 
 //
@@ -151,21 +130,27 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 	return (true);
 }
 
-static bool	expand_for_globing(char *token)
+//Move to utils.
+//We use this function to merge to arrays and free their original memory adress
+static bool	get_merged(char **merged, char **temp, char **expanded)
 {
-//	int		index;
-//	char	*expanded;
-
-//	expanded = NULL;
-	if (token)
+	*merged = ft_strjoin(*expanded, *temp);
+	if (*merged)
 	{
-//		index = 0;
-//		while (token[index])
-//		{
-		return true;			
-//		}
+		free(*temp);
+		*temp = NULL;
+		free(*expanded);
+		*expanded = *merged;
+		return (true);
 	}
-	return false;
+	else
+	{
+		free(*temp);
+		*temp = NULL;
+		free(*expanded);
+		*expanded = NULL;
+	}
+	return (false);
 }
 
 //if multiple dollars, split the list into subtokens
@@ -180,38 +165,32 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 	temp = NULL;
 	value = NULL;
 	merged = NULL;	
-	if (is_state_active((*list)->type, STAR))
-		return (expand_for_globing((*list)->value));
-	else if (is_state_active((*list)->type, DOLL))
+	if (is_state_active((*list)->type, DOLL))
 	{
 		while ((*list)->value[index])
 		{
 			if (!get_expanded(minishell, list, &value, &index))
 				return (false);
-			
+			if (!is_state_active((*list)->type, STAR))
+				word_splitting(minishell, list, value);
+			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
-/*
-			char	*temp = merged;
-			merged = ft_strjoin(temp, value);
-			free(temp);
-			temp = NULL;
-			free(value);
-			value = NULL;
-			if (!merged)
-				return false;
-			printf("value	->	%s\n", merged);
-			*/
 		}
 		free((*list)->value);
 		(*list)->value = merged;
 	}
+//	if (is_state_active((*list)->type, STAR))
+//		globing();
 	return (true);
 }
 
 //Entry point of the dollar expansion
 bool    expand(t_shel *minishell, t_tokn **list)
 {
+
+//	Implement the delimiter retrieval module
+
 	while (*list)
 	{
 		if (!is_state_active((*list)->type, DQTE))

@@ -1,28 +1,27 @@
 #include "minislay.h"
 
-/*
-//
-static bool build_export(t_shel **minishell)
-{
-	t_avlt	*new;
-	t_env	*current;
+static const char *g_spec[DKCT] = {VSTR, VARO, VHAS, VEXT, VHYP, VPID, VCID, VNME, VLST, VIFS};
 
-	current = NULL;
+//
+static bool	append_specials(t_shel **minishell)
+{
+	int		index;
+	char	*element;
+
 	if (*minishell)
 	{
-		//Needs building after merging the builtin branch			
-		current = (*minishell)->envp;
-		while (current)
+		index = 0;
+		while (index < DKCT)
 		{
-			new = create_avlt_node(current);
-			if (!new)
+			element = strdup(g_spec[index]);
+			if (!element)
 				break ;
-			insert()
-			current = current->next;	
+			(*minishell)->special[index] = element;
+			index++;
 		}
 	}
-	return false;
-}*/
+	return (index == DKCT);
+}
 
 //
 static bool build_env(t_shel **minishell, char **envp)
@@ -53,6 +52,9 @@ static bool build_env(t_shel **minishell, char **envp)
 bool    set_env(t_shel **minishell, char **envp)
 {
     if (*minishell)
-        return (build_env(minishell, envp));
+	{
+        if (build_env(minishell, envp))
+			return (append_specials(minishell));
+	}
     return (false);
 }

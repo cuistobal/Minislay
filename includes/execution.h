@@ -25,4 +25,8 @@ void    traverse_ast(t_shel **minishell, t_tree *ast);
 //subshells.c
 bool    handle_subshell(t_shel *minishell, t_tree *ast);
 
+//word_splitting.c
+bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
+
+
 #endif

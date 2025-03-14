@@ -42,6 +42,7 @@ SOURCES = \
 	sources/execution/execution.c \
 	sources/execution/split_list.c \
 	sources/execution/expansions/expand.c \
+	sources/execution/expansions/word_splitting.c \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/commands/is_builtin.c \
 	sources/execution/commands/modify_token_types.c \

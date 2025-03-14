@@ -16,10 +16,11 @@
 //					quick access.
 typedef struct shell
 {
+	struct	avltree	*expt;
 	struct  env		*envp;
 	struct	env		*local;
 	struct	env		*command;
-	struct	avltree	*expt;
+	char			*special[10];
 }	t_shel;
 
 //Basic environement node
