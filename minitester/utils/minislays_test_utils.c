@@ -72,7 +72,7 @@ void	print_ast_BFS(t_tree *ast)
             	queue[rear++] = current->left;
         	if (current->right)
             	queue[rear++] = current->right;
-    		}
+    	}
     	free(queue);
 	}
 }
@@ -127,10 +127,13 @@ void	print_exec(t_tokn *assignations, t_tokn *expansions, t_tokn *redirections, 
 	printf("REDIRECTIONS:\n");
 	print_tokens(redirections);
 	printf("EXECUTION:\n");
-	while (*execution)
+	if (execution)
 	{
-		printf("%s ", *execution);
-		execution++;
+		while (*execution)
+		{
+			printf("%s ", *execution);
+			execution++;
+		}
 	}
 	printf("\n");
 }

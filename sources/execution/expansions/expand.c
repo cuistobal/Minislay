@@ -119,18 +119,6 @@ static bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *i
 	return (!(*token)->value[*index]);
 }
 
-//
-static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
-{
-	(void)minishell;
-	if (is_state_active((*list)->type, DOLL))
-	{
-//   		if (!get_expanded(minishell, list))
-			return (false);
-	}
-	return (true);
-}
-
 //Move to utils.
 //We use this function to merge to arrays and free their original memory adress
 static bool	get_merged(char **merged, char **temp, char **expanded)
@@ -154,6 +142,35 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 	return (false);
 }
 
+//
+static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
+{
+	int		index;
+	char	*temp;
+	char	*value;
+	char	*merged;
+
+	index = 0;
+	temp = NULL;
+	value = NULL;
+	merged = NULL;	
+	if (is_state_active((*list)->type, DOLL))
+	{
+		while ((*list)->value[index])
+		{
+			if (get_expanded(minishell, list, &value, &index))
+			{	
+				temp = merged;
+				if (!get_merged(&merged, &temp, &value))
+					break ;
+			}
+		}
+		return (!(*list)->value[index]);
+	}
+	return (true);
+}
+
+//
 static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 {
 	int		count;
@@ -209,12 +226,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 				return (false);
 		}
 		if (is_state_active((*list)->type, STAR))
-			return (get_globed(minishell, list, merged));	
-		/*{
-			free((*list)->value);
-			(*list)->value = merged;
-			return (globing());
-		}*/
+			return (get_globed(minishell, list, merged));
 		return (word_splitting(minishell, list, value));
 	}
 	index = 1;
@@ -228,7 +240,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 	return (true);
 }
 
-//Entry point of the dollar expansion
+//Entry point of the expansion module
 bool    expand(t_shel *minishell, t_tokn **list)
 {
 
@@ -236,23 +248,19 @@ bool    expand(t_shel *minishell, t_tokn **list)
 
 	while (*list)
 	{
-		if (!is_state_active((*list)->type, DQTE))
+		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
 		{
-			if (!expand_no_quotes(minishell, list))
-				return (false);
+			if (!is_state_active((*list)->type, DQTE))
+			{
+				if (!expand_no_quotes(minishell, list))
+					return (false);
+			}
+			else
+			{
+				if (!expand_in_quotes(minishell, list))
+					return (false);
+			}
 		}
-		else
-		{
-			if (!expand_in_quotes(minishell, list))
-				return (false);
-		}
-
-		//	*OLD
-		//	if (is_state_active((*list)->type, DOLL))
-    	//	{
-        //		if (!get_expanded(minishell, list))
-		//			return (false);
-		//	}
 	
         move_pointer(list);
     }
