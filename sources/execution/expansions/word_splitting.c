@@ -16,19 +16,23 @@ bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded)
 		next = (*current)->next;
 		free((*current)->value);
 		(*current)->value = save;
-		while (strtok_r(save, delimiter, &save))
+		if (delimiter)
 		{
-			if (*save)
+			while (strtok_r(save, delimiter, &save))
 			{
-				new = create_token_node(save, (*current)->type);
-				if (!new)
-					break ;
-				(*current)->next = new;
-				*current = new;	
+				if (*save)
+				{
+					new = create_token_node(save, (*current)->type);
+					if (!new)
+						break ;
+					(*current)->next = new;
+					*current = new;	
+				}
 			}
+			(*current)->next = next;
+			*current = next;
 		}
-		(*current)->next = next;
-		*current = next;
+		return (true);
 	}
 	return (!save);
 }

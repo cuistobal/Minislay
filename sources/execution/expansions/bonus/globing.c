@@ -4,22 +4,18 @@
 //
 static char **append_expanded(char **expanded, int *size, char *filename)
 {
-//	char	*dup;
-//	char	**temp;
-
 	(*size)++;
-//	temp = expanded;
-	expanded = (char **)realloc(expanded, sizeof(char *) * *size);
+	expanded = (char **)realloc(expanded, sizeof(char *) * *size + 1);
 	if (expanded)
 	{
-		expanded[*size - 2] = strdup(filename);
-		if (!expanded[*size - 2])
+		expanded[*size - 1] = strdup(filename);
+		if (!expanded[*size - 1])
 		{
 			free_array(expanded, *size);
 			//memalloc failed
 			return (NULL);
 		}
-		expanded[*size - 1] = NULL;
+		expanded[*size] = NULL;
 		return (expanded);
 	}
 	free_array(expanded, *size);
@@ -87,7 +83,7 @@ char	**globing(const char *globing, const char *path, int *count)
 				if (expanded)
 				{
 					free_array(patterns, pindex);
-					closedir(dir_stream); 
+					closedir(dir_stream);
 					return (expanded);
 				}
 				free_array(patterns, pindex);
