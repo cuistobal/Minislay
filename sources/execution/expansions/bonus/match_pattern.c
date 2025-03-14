@@ -5,13 +5,13 @@
 bool	match_pattern(char **patterns, char *current)
 {
 	char	*temp;
-	int		index;
-	int		pindex;
+//	int		index;
+//	int		pindex;
 
 	if (patterns && current)
 	{
-		index = 0;
-		pindex = 0;
+//		index = 0;
+//		pindex = 0;
 		temp = NULL;
 		if (*patterns)
 		{

@@ -154,30 +154,37 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 	return (false);
 }
 
-/*
-static bool	create_sub_list(t_tokn **current, char *merged, char *left)
+static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 {
-	t_tokn	*new;
-	t_tokn	*next;
-	t_tokn	*save;
+	int		count;
+	char	**globed;
 
-	save = (*current)->next;
-	new = create_token_node(merged, WORD | DOLL);
-	if (new)
+	if (minishell)
+		printf("\n");	
+	count = 0;
+	globed = NULL;
+	free((*list)->value);
+	(*list)->value = merged;
+	globed = globing(merged, "." , &count);
+	if (globed)
 	{
-		*current = new;
-		if (word_splitting(&new)
+		if (count > 1)
 		{
-			new->next = save;
-			next = create_token_node(left, WORD | DOLL);
-			if (next)
+			while (*globed)
 			{
-				next->next = save;
-				*current = next;
+				printf("%s\n", *globed);
+				globed++;
 			}
+			//create_sub_list();
+		}
+		else
+		{
+			free((*list)->value);
+			(*list)->value = merged;
 		}
 	}
-}*/
+	return (globed);
+}
 
 //if multiple dollars, split the list into subtokens
 static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
@@ -200,23 +207,24 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
-/*			if (!is_state_active((*list)->type, STAR))
-			{
-				if ((*list)->value[index])
-				{
-					printf("%s\n", (*list)->value + index);
-				}
-				if (!word_splitting(minishell, list, value))
-					return (false);
-			}*/
 		}
-		if (!is_state_active((*list)->type, STAR))
-			return (!word_splitting(minishell, list, value));
-		free((*list)->value);
-		(*list)->value = merged;
+		if (is_state_active((*list)->type, STAR))
+			return (get_globed(minishell, list, merged));	
+		/*{
+			free((*list)->value);
+			(*list)->value = merged;
+			return (globing());
+		}*/
+		return (word_splitting(minishell, list, value));
 	}
-//	if (is_state_active((*list)->type, STAR))
-//		globing();
+	index = 1;
+	char	**globed = globing((*list)->value, ".", &index);
+	while (*globed)
+	{
+		printf("%s\n", *globed);
+		globed++;
+	}
+//	return (globing((*list)->value, ".", &index));
 	return (true);
 }
 

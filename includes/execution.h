@@ -28,5 +28,7 @@ bool    handle_subshell(t_shel *minishell, t_tree *ast);
 //word_splitting.c
 bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
 
+//globing.c
+char	**globing(const char *globing, const char *path, int *count);
 
 #endif

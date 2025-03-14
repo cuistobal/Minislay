@@ -4,11 +4,11 @@
 //
 static char **append_expanded(char **expanded, int *size, char *filename)
 {
-	char	*dup;
-	char	**temp;
+//	char	*dup;
+//	char	**temp;
 
 	(*size)++;
-	temp = expanded;
+//	temp = expanded;
 	expanded = (char **)realloc(expanded, sizeof(char *) * *size);
 	if (expanded)
 	{

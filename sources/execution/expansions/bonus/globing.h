@@ -15,6 +15,6 @@ char	**identify_globing_patterns(const char *globing, int *pindex);
 
 char	**globing(const char *globing, const char *path, int *count);
 
-int		main(int argc, char **argv);
+//int		main(int argc, char **argv);
 
 #endif

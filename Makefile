@@ -43,6 +43,9 @@ SOURCES = \
 	sources/execution/split_list.c \
 	sources/execution/expansions/expand.c \
 	sources/execution/expansions/word_splitting.c \
+	sources/execution/expansions/bonus/globing.c \
+	sources/execution/expansions/bonus/match_pattern.c \
+	sources/execution/expansions/bonus/test_globing_patterns.c \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/commands/is_builtin.c \
 	sources/execution/commands/modify_token_types.c \
