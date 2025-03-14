@@ -107,7 +107,7 @@ bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
 	{
 		key = retrieve_expansions((*token)->value, index);
 		if (key)
-			return (!retrieve_keys_value(minishell, &key, value));
+			return (retrieve_keys_value(minishell, &key, value));
 	}
 	return (!(*token)->value[*index]);
 }

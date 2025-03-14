@@ -42,6 +42,7 @@ SOURCES = \
 	sources/execution/execution.c \
 	sources/execution/split_list.c \
 	sources/execution/expansions/expand.c \
+	sources/execution/expansions/key_management.c \
 	sources/execution/expansions/word_splitting.c \
 	sources/execution/expansions/bonus/globing.c \
 	sources/execution/expansions/bonus/match_pattern.c \

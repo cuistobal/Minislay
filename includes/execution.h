@@ -31,4 +31,8 @@ bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
 //globing.c
 char	**globing(const char *globing, const char *path, int *count);
 
+//key_management.c
+bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index);
+
+
 #endif
