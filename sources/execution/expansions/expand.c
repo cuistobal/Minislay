@@ -58,6 +58,40 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 	return (true);
 }
 
+//Move to utils
+
+bool	insert_sub_list(t_tokn **list, char **new_elements)
+{
+	t_tokn	*new;
+	t_tokn	*save;
+	t_tokn	*next;
+	int		index;
+	
+	if (*list)
+	{
+		save = *list;
+		next = save->next;
+	}
+	if (new_elements)
+	{
+		index = 1;
+		free((*list)->value);
+		(*list)->value = new_elements[0]; 
+		while (new_elements[index])
+		{
+			new = create_token_node(new_elements[index], (*list)->type);
+			if (!new)
+				//memalloc failed
+				return false;	
+			(*list)->next = new;
+			*list = new;
+			index++;
+		}
+		(*list)->next = next;
+		*list = next;
+	}
+	return true;
+}
 //
 static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 {
@@ -65,18 +99,25 @@ static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 	char	**globed;
 
 	if (minishell)
-		printf("\n");	
+		printf("\n");
 	count = 0;
 	globed = NULL;
-	free((*list)->value);
-	(*list)->value = merged;
-	globed = globing(merged, "." , &count);
+	if (merged)
+	{
+		free((*list)->value);
+		(*list)->value = merged;
+	}
+	globed = globing((*list)->value, CWD, &count);
+	insert_sub_list(list, globed);	
+	/*
 	if (globed)
 	{
 		if (count > 1)
 		{
-			while (*globed)
-			{
+	while (globed)
+	{
+		if (!*globed)
+			break ;
 				printf("globed -> %s\n", *globed);
 				globed++;
 			}
@@ -87,7 +128,7 @@ static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 			free((*list)->value);
 			(*list)->value = merged;
 		}
-	}
+	}*/
 	return (globed);
 }
 
@@ -113,19 +154,26 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
 		}
-		if (is_state_active((*list)->type, STAR))
-			return (get_globed(minishell, list, merged));
-		return (word_splitting(minishell, list, value));
+		if (!is_state_active((*list)->type, STAR))
+			return (word_splitting(minishell, list, value));
+		//if (is_state_active((*list)->type, STAR))
+		//	return (get_globed(minishell, list, merged));
+		//return (word_splitting(minishell, list, value));
 	}
+	return (get_globed(minishell, list, merged));
+
+	/*
 	index = 1;
 	char	**globed = globing((*list)->value, ".", &index);
 	while (*globed)
 	{
-		printf("%s\n", *globed);
+		printf("%s ", *globed);
 		globed++;
 	}
+	printf("\n");
 //	return (globing((*list)->value, ".", &index));
-	return (true);
+	return (true);*/
+
 }
 
 //Entry point of the expansion module

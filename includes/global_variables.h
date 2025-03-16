@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/12 12:13:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/16 10:37:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,7 @@
 
 # define LIMITERS "     *"
 # define SPECIALS "$?"
+
+# define CWD "."
 
 #endif

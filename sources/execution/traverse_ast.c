@@ -16,7 +16,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			else
 			{
 				prepare_for_exec(minishell, ast);	
-				
+					
 			//	print_tokens(ast->tokens);
 			}
 		}

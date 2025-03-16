@@ -53,8 +53,6 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 			{
 				command = true;
 				set_state(&(*expanded)->type, COMMAND);
-			//	if (is_builtin((*expanded)->value))
-			//		set_state(&(*expanded)->type, BUILTIN);
 			}
 			(*count)++;
 			move_pointer(&current);
