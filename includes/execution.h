@@ -29,10 +29,15 @@ bool    handle_subshell(t_shel *minishell, t_tree *ast);
 bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
 
 //globing.c
-char	**globing(const char *globing, const char *path, int *count);
+void	free_array(char **array, int count);
+bool	match_pattern(char **patterns, char *current);
+char	**identify_globing_patterns(char *globing);
+bool	globing(t_tokn **list, const char *path);
 
 //key_management.c
 bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index);
+
+
 
 
 #endif

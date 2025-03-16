@@ -59,7 +59,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 }
 
 //Move to utils
-
+/*
 bool	insert_sub_list(t_tokn **list, char **new_elements)
 {
 	t_tokn	*new;
@@ -94,46 +94,17 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 		*list = next;
 	}
 	return true;
-}
-//
-static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
-{
-	int		count;
-//	char	**globed;
+}*/
 
-	if (minishell)
-		printf("\n");
-	count = 0;
-//	globed = NULL;
+//
+static bool	get_globed(t_tokn **list, char *merged)
+{
 	if (merged)
 	{
 		free((*list)->value);
 		(*list)->value = merged;
 	}
-//	globed = globing((*list)->value, CWD, &count);
-	globing((*list)->value, CWD, &count);
-
-	/*
-	if (globed)
-	{
-		if (count > 1)
-		{
-	while (globed)
-	{
-		if (!*globed)
-			break ;
-				printf("globed -> %s\n", *globed);
-				globed++;
-			}
-			//create_sub_list();
-		}
-		else
-		{
-			free((*list)->value);
-			(*list)->value = merged;
-		}
-	}*/
-	return (globed);
+	return (globing(list, CWD));
 }
 
 //if multiple dollars, split the list into subtokens
@@ -164,7 +135,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 		//	return (get_globed(minishell, list, merged));
 		//return (word_splitting(minishell, list, value));
 	}
-	return (get_globed(minishell, list, merged));
+	return (get_globed(list, merged));
 
 	/*
 	index = 1;
