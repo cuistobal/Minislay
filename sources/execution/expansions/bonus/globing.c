@@ -1,30 +1,22 @@
 #include "minislay.h"
 //#include "globing.h"
 
-static bool	insert_globing_result(t_tokn **list, t_tokn *head, char *filename)
+static bool	insert_globing_result(t_tokn **list, char *filename)
 {
-	t_tokn	*new;
+    t_tokn  *new;
 	char	*value;
 
+    new = NULL;
 	value = strdup(filename);
 	if (value)
 	{
-		if (*list == head)
-		{
-			free((*list)->value);
-			(*list)->value = value;
-		}
-		else
-		{
-			new = create_token_node(value, WORD);
-			if (new)
-			{
-				(*list)->next = new;
-				*list = new;
-				return (true);
-			}
-			free (value);
-		}
+	    new = create_token_node(value, WORD);
+	    if (new)
+	    {
+		    (*list)->next = new;
+            return (move_pointer(list));
+	    }
+	    free (value);
 	}
 	return (false);	
 }
@@ -33,12 +25,10 @@ static bool	insert_globing_result(t_tokn **list, t_tokn *head, char *filename)
 static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 {
 	t_tokn			*next;
-	t_tokn			*head;
 	struct dirent	*current;
 
 	current = NULL;
-	head = *list;
-	next = head->next;
+	next = (*list)->next;
 	if (patterns && stream)
 	{
 		current = readdir(stream);
@@ -46,13 +36,20 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-				if (!insert_globing_result(list, head, current->d_name))	
-					return ((*list)->next = next ,false);
+                /*
+                if (is_state_active((*list)->type, STAR))
+                {
+                    free((*list)->value);
+                    (*list)->value = strdup(current->d_name);
+                }*/
+                if (!insert_globing_result(list, current->d_name))
+                    break ;
 			}
 			current = readdir(stream);
 		}
 		(*list)->next = next;
-		*list = next;
+        *list = next;
+        return (!current);
 	}
 	return (true);		//To be modified
 }
