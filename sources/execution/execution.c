@@ -52,6 +52,9 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	modify_token_types(expansions, redirections, &count);
 	return (get_command_and_arguments(*expansions, count));
 	*/
+
+	modify_token_types(expansions, redirections, &count);
+
 	if (expand(minishell, &copy))
 	{
 		//globing

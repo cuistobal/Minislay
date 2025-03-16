@@ -74,18 +74,21 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 	}
 	if (new_elements)
 	{
-		index = 1;
+		index = 0;
 		free((*list)->value);
-		(*list)->value = new_elements[0]; 
+		(*list)->value = new_elements[index]; 
 		while (new_elements[index])
 		{
-			new = create_token_node(new_elements[index], (*list)->type);
-			if (!new)
-				//memalloc failed
-				return false;	
-			(*list)->next = new;
-			*list = new;
 			index++;
+			if (new_elements[index])
+			{
+				new = create_token_node(new_elements[index], (*list)->type);
+				if (!new)
+					//memalloc failed
+					return false;	
+				(*list)->next = new;
+				*list = new;
+			}
 		}
 		(*list)->next = next;
 		*list = next;
@@ -96,19 +99,20 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 {
 	int		count;
-	char	**globed;
+//	char	**globed;
 
 	if (minishell)
 		printf("\n");
 	count = 0;
-	globed = NULL;
+//	globed = NULL;
 	if (merged)
 	{
 		free((*list)->value);
 		(*list)->value = merged;
 	}
-	globed = globing((*list)->value, CWD, &count);
-	insert_sub_list(list, globed);	
+//	globed = globing((*list)->value, CWD, &count);
+	globing((*list)->value, CWD, &count);
+
 	/*
 	if (globed)
 	{

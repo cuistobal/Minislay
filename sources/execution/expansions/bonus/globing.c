@@ -1,5 +1,5 @@
-//#include "minislay.h"
-#include "globing.h"
+#include "minislay.h"
+//#include "globing.h"
 
 //
 static char **append_expanded(char **expanded, int *size, char *filename)
@@ -23,13 +23,16 @@ static char **append_expanded(char **expanded, int *size, char *filename)
 }
 
 //
-static char	**globing_loop(char **patterns, DIR *stream, int *size)
+//static char	**globing_loop(char **patterns, DIR *stream, int *size)
+static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *size)
 {
 	struct dirent	*current;
-	char			**expanded;
+//	char			**expanded;
+	t_tokn			*globed;
 
 	current = NULL;
-	expanded = NULL;
+//	expanded = NULL;
+	globed = NULL;
 	if (patterns && stream)
 	{
 		current = readdir(stream);
@@ -39,16 +42,21 @@ static char	**globing_loop(char **patterns, DIR *stream, int *size)
 			{
 				if (current->d_type == DT_REG)
 				{
-					expanded = append_expanded(expanded, size, current->d_name);
-					if (!expanded)
+				//	expanded = append_expanded(expanded, size, current->d_name);
+				//	if (!expanded)
+						
+					globed = create_new_token((char *)current->d_name, (int)WORD);
+					if (!globed)
 						//memalloc failed
 						return (false);
+						
 				}
 			}
 			current = readdir(stream);
 		}
 	}
-	return (expanded);
+	return (true);		//To be modified
+	//return (expanded);
 }
 
 //
@@ -64,16 +72,19 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 }
 
 //
-char	**globing(const char *globing, const char *path, int *count)
+//char	**globing(const char *globing, const char *path, int *count)
+bool	globing(t_tokn **list, const char *path, int *count)
 {
 	int		pindex;
+	char	*globing;
 	char	**patterns;
-	char	**expanded;
+//	char	**expanded;
 	DIR		*dir_stream;
 
 	pindex = 1;
 	patterns = NULL;
 	dir_stream = NULL;
+	globing = (*list)->value;	
 	if (globing && path)
 	{
 		if (open_directory(path, &dir_stream))
@@ -81,12 +92,14 @@ char	**globing(const char *globing, const char *path, int *count)
 			patterns = identify_globing_patterns(globing, &pindex);
 			if (patterns)
 			{
-				expanded = globing_loop(patterns, dir_stream, count);
-				if (expanded)
+//				expanded = globing_loop(patterns, dir_stream, count);
+//				if (expanded)
+				if (globing_loop(list ,patterns, dir_stream, count))
 				{
-					free_array(patterns, pindex);
+				//	free_array(patterns, pindex);
 					closedir(dir_stream);
-					return (expanded);
+					return true;
+				//	return (expanded);
 				}
 				free_array(patterns, pindex);
 			}

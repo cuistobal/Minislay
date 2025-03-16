@@ -21,16 +21,25 @@ static void	append_redirections(t_tokn **head, t_tokn **tail, t_tokn **current)
 	}
 }
 
+static void	append_token_type(t_tokn **expanded, t_tokn **current, t_tokn **previous, int *count)	
+{
+	*previous = *current;
+	if (*current == *expanded)
+		set_state(&(*expanded)->type, ARGUMNT);
+	else
+		set_state(&(*expanded)->type, COMMAND);
+	(*count)++;
+	move_pointer(current);
+}
+
 //
 void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 {
-	bool	command;
 	t_tokn	*current;
 	t_tokn	*previous;
 	t_tokn	*redir_list;
 
 	*count = 0;
-	command = false;
 	previous = NULL;
 	redir_list = *redirections;
 	current = *expanded;
@@ -46,6 +55,7 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 		}
 		else
 		{
+			/*
 			previous = current;
 			if (command)
 				set_state(&(*expanded)->type, ARGUMNT);
@@ -56,6 +66,8 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 			}
 			(*count)++;
 			move_pointer(&current);
+			*/
+			append_token_type(expanded, &current, &previous, count);
 		}
 	}
 }
