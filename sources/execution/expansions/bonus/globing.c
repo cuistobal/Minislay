@@ -37,13 +37,10 @@ static char	**globing_loop(char **patterns, DIR *stream, int *size)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-				if (current->d_type == DT_REG)
-				{
 					expanded = append_expanded(expanded, size, current->d_name);
 					if (!expanded)
 						//memalloc failed
 						return (false);	
-				}
 			}
 			current = readdir(stream);
 		}
