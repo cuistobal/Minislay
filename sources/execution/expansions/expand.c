@@ -111,28 +111,14 @@ static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 		(*list)->value = merged;
 	}
 	globed = globing((*list)->value, CWD, &count);
-
-	/*
 	if (globed)
 	{
-		if (count > 1)
-		{
-	while (globed)
-	{
-		if (!*globed)
-			break ;
-				printf("globed -> %s\n", *globed);
-				globed++;
-			}
-			//create_sub_list();
-		}
-		else
-		{
-			free((*list)->value);
-			(*list)->value = merged;
-		}
-	}*/
-	return (globed);
+		insert_sub_list(list, globed);
+		free(globed);
+		globed = NULL;
+		return (true);
+	}
+	return (false);
 }
 
 //if multiple dollars, split the list into subtokens
