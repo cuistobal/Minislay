@@ -99,19 +99,18 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
 {
 	int		count;
-//	char	**globed;
+	char	**globed;
 
 	if (minishell)
 		printf("\n");
 	count = 0;
-//	globed = NULL;
+	globed = NULL;
 	if (merged)
 	{
 		free((*list)->value);
 		(*list)->value = merged;
 	}
-//	globed = globing((*list)->value, CWD, &count);
-	globing((*list)->value, CWD, &count);
+	globed = globing((*list)->value, CWD, &count);
 
 	/*
 	if (globed)
