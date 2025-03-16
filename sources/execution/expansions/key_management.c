@@ -67,7 +67,7 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		return ("EOF");		//Needs to be modified.
+		//return ("EOF");		//Needs to be modified.
 	}
 	return (NULL);
 }
