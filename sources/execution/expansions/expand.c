@@ -150,12 +150,13 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 //Entry point of the expansion module
 bool    expand(t_shel *minishell, t_tokn **list)
 {
-
+    //t_tokn  *next; 
 //	Implement the delimiter retrieval module
 
+    //next = NULL;
 	while (*list)
 	{
-        printf("%s\n", (*list)->value);	
+       // next = (*list)->next;
 		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
 		{
 			if (!is_state_active((*list)->type, DQTE))
@@ -169,7 +170,7 @@ bool    expand(t_shel *minishell, t_tokn **list)
 					return (false);
 			}
 		}
-        move_pointer(list);
+       // move_pointer(list);
     }
-	return (!*list);
+    return (!*list);
 }
