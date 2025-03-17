@@ -90,19 +90,17 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 				*list = new;
 			}
 		}
-		(*list)->next = next;
+	//	(*list)->next = next;
 		*list = next;
 	}
 	return true;
 }
 //
-static bool	get_globed(t_shel *minishell, t_tokn **list, char *merged)
+static bool	get_globed(t_tokn **list, char *merged)
 {
 	int		count;
 	char	**globed;
 
-	if (minishell)
-		printf("\n");
 	count = 0;
 	globed = NULL;
 	if (merged)
@@ -145,24 +143,8 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 		}
 		if (!is_state_active((*list)->type, STAR))
 			return (word_splitting(minishell, list, value));
-		//if (is_state_active((*list)->type, STAR))
-		//	return (get_globed(minishell, list, merged));
-		//return (word_splitting(minishell, list, value));
 	}
-	return (get_globed(minishell, list, merged));
-
-	/*
-	index = 1;
-	char	**globed = globing((*list)->value, ".", &index);
-	while (*globed)
-	{
-		printf("%s ", *globed);
-		globed++;
-	}
-	printf("\n");
-//	return (globing((*list)->value, ".", &index));
-	return (true);*/
-
+	return (get_globed(list, merged));
 }
 
 //Entry point of the expansion module
@@ -173,6 +155,7 @@ bool    expand(t_shel *minishell, t_tokn **list)
 
 	while (*list)
 	{
+        printf("%s\n", (*list)->value);	
 		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
 		{
 			if (!is_state_active((*list)->type, DQTE))
@@ -186,7 +169,6 @@ bool    expand(t_shel *minishell, t_tokn **list)
 					return (false);
 			}
 		}
-	
         move_pointer(list);
     }
 	return (!*list);
