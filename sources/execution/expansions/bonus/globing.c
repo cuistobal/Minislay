@@ -1,7 +1,7 @@
 #include "minislay.h"
 //#include "globing.h"
 
-static bool	insert_globing_result(t_tokn **list, char *filename)
+static bool	insert_globing_result(t_tokn **list, char *filename, bool *init)
 {
     t_tokn  *new;
 	char	*value;
@@ -10,23 +10,35 @@ static bool	insert_globing_result(t_tokn **list, char *filename)
 	value = strdup(filename);
 	if (value)
 	{
-	    new = create_token_node(value, WORD);
-	    if (new)
-	    {
-		    (*list)->next = new;
-            return (move_pointer(list));
+        if (!*init)
+        {
+            free((*list)->value);
+            (*list)->value = value;
+            *init = true;
+            return (true);
+        }
+        else
+        {
+	        new = create_token_node(value, WORD);
+	        if (new)
+	        {
+		        (*list)->next = new;
+                return (move_pointer(list));
+	        }
+	        free (value);
 	    }
-	    free (value);
-	}
+    }
 	return (false);	
 }
 
 //static char	**globing_loop(char **patterns, DIR *stream, int *size)
 static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 {
+    bool            init;
 	t_tokn			*next;
 	struct dirent	*current;
 
+    init = false;
 	current = NULL;
 	next = (*list)->next;
 	if (patterns && stream)
@@ -36,7 +48,7 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-                if (!insert_globing_result(list, current->d_name))
+                if (!insert_globing_result(list, current->d_name, &init))
                     break ;
 			}
 			current = readdir(stream);

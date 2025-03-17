@@ -13,7 +13,8 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 			free(*temp);
 			*temp = NULL;
 		}
-		free(*expanded);
+		if (*expanded)
+            free(*expanded);
 		*expanded = *merged;
 		return (true);
 	}
@@ -131,24 +132,8 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 		}
 		if (!is_state_active((*list)->type, STAR))
 			return (word_splitting(minishell, list, value));
-		//if (is_state_active((*list)->type, STAR))
-		//	return (get_globed(minishell, list, merged));
-		//return (word_splitting(minishell, list, value));
 	}
 	return (get_globed(list, merged));
-
-	/*
-	index = 1;
-	char	**globed = globing((*list)->value, ".", &index);
-	while (*globed)
-	{
-		printf("%s ", *globed);
-		globed++;
-	}
-	printf("\n");
-//	return (globing((*list)->value, ".", &index));
-	return (true);*/
-
 }
 
 //Entry point of the expansion module
@@ -171,9 +156,8 @@ bool    expand(t_shel *minishell, t_tokn **list)
 				if (!expand_in_quotes(minishell, list))
 					return (false);
 			}
-		}
-	
-        move_pointer(list);
+		}	
+        //move_pointer(list);
     }
 	return (!*list);
 }
