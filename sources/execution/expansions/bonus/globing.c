@@ -36,12 +36,6 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-                /*
-                if (is_state_active((*list)->type, STAR))
-                {
-                    free((*list)->value);
-                    (*list)->value = strdup(current->d_name);
-                }*/
                 if (!insert_globing_result(list, current->d_name))
                     break ;
 			}
