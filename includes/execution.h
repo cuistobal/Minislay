@@ -26,7 +26,8 @@ void    traverse_ast(t_shel **minishell, t_tree *ast);
 bool    handle_subshell(t_shel *minishell, t_tree *ast);
 
 //word_splitting.c
-bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
+//bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
+bool	word_splitting(t_shel *minishell, t_tokn **current);
 
 //globing.c
 void	free_array(char **array, int count);

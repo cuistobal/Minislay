@@ -130,8 +130,11 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
 		}
+       // free((*list)->value);
+        (*list)->value = merged;
 		if (!is_state_active((*list)->type, STAR))
-			return (word_splitting(minishell, list, value));
+			return (word_splitting(minishell, list));
+		//	return (word_splitting(minishell, list, value));
 	}
 	return (get_globed(list, merged));
 }
