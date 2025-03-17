@@ -5,7 +5,7 @@
 static char **append_expanded(char **expanded, int *size, char *filename)
 {
 	(*size)++;
-	expanded = (char **)realloc(expanded, sizeof(char *) * *size + 1);
+	expanded = (char **)realloc(expanded, sizeof(char *) * (*size + 1));
 	if (expanded)
 	{
 		expanded[*size - 1] = strdup(filename);

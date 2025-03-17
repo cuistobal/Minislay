@@ -7,7 +7,7 @@ char	**get_command_and_arguments(t_tokn *list, int count)
 	char	**commands;
 
 	index = 0;
-	commands = (char **)malloc(sizeof(char *) * count);
+	commands = (char **)malloc(sizeof(char *) * (count + 1));
 	if (commands)
 	{	
 		while (list)

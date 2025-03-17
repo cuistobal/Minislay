@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/14 10:11:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/17 10:15:51 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ t_tokn	*create_token_node(char *value, int type)
 		if (node)
 		{
     		node->type = type;
-			node->value = value;
-			//node->value = strdup(value);
+			//node->value = value;
+			node->value = strdup(value);
 			node->next = NULL;
 		}
 	}
