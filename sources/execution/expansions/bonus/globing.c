@@ -1,35 +1,46 @@
 #include "minislay.h"
 //#include "globing.h"
 
-//
-static char **append_expanded(char **expanded, int *size, char *filename)
+static bool	insert_globing_result(t_tokn **list, char *filename, bool *init)
 {
-	(*size)++;
-	expanded = (char **)realloc(expanded, sizeof(char *) * (*size + 1));
-	if (expanded)
+    t_tokn  *new;
+	char	*value;
+
+    new = NULL;
+	value = strdup(filename);
+	if (value)
 	{
-		expanded[*size - 1] = strdup(filename);
-		if (!expanded[*size - 1])
-		{
-			free_array(expanded, *size);
-			//memalloc failed
-			return (NULL);
-		}
-		expanded[*size] = NULL;
-		return (expanded);
-	}
-	free_array(expanded, *size);
-	return (expanded);
+        if (!*init)
+        {
+            free((*list)->value);
+            (*list)->value = value;
+            *init = true;
+            return (true);
+        }
+        else
+        {
+	        new = create_token_node(value, WORD);
+	        if (new)
+	        {
+		        (*list)->next = new;
+                return (move_pointer(list));
+	        }
+	        free (value);
+	    }
+    }
+	return (false);	
 }
 
-//
-static char	**globing_loop(char **patterns, DIR *stream, int *size)
+//static char	**globing_loop(char **patterns, DIR *stream, int *size)
+static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 {
+    bool            init;
+	t_tokn			*next;
 	struct dirent	*current;
-	char			**expanded;
 
+    init = false;
 	current = NULL;
-	expanded = NULL;
+	next = (*list)->next;
 	if (patterns && stream)
 	{
 		current = readdir(stream);
@@ -37,15 +48,16 @@ static char	**globing_loop(char **patterns, DIR *stream, int *size)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-					expanded = append_expanded(expanded, size, current->d_name);
-					if (!expanded)
-						//memalloc failed
-						return (false);	
+        if (!insert_globing_result(list, current->d_name, &init))
+                    break ;
 			}
 			current = readdir(stream);
 		}
+		(*list)->next = next;
+        *list = next;
+        return (!current);
 	}
-	return (expanded);
+	return (true);		//To be modified
 }
 
 //
@@ -60,36 +72,26 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 	return (false);
 }
 
-//
-char	**globing(const char *globing, const char *path, int *count)
+//char	**globing(const char *globing, const char *path, int *count)
+bool	globing(t_tokn **list, const char *path) 
 {
-	int		pindex;
 	char	**patterns;
-	char	**expanded;
 	DIR		*dir_stream;
 
-	pindex = 1;
 	patterns = NULL;
 	dir_stream = NULL;
-	if (globing && path)
+	if (*list)
 	{
 		if (open_directory(path, &dir_stream))
 		{
-			patterns = identify_globing_patterns(globing, &pindex);
+			patterns = identify_globing_patterns((*list)->value);
 			if (patterns)
 			{
-				expanded = globing_loop(patterns, dir_stream, count);
-				if (expanded)
-				{
-					free_array(patterns, pindex);
-					closedir(dir_stream);
-					return (expanded);
-				}
-				free_array(patterns, pindex);
+				if (globing_loop(list ,patterns, dir_stream))
+					return (closedir(dir_stream), true);
 			}
 			closedir(dir_stream);
 		}
-		return (NULL); //allocation error
 	}
-	return (NULL); //invalid globing variable
+	return (false);
 }

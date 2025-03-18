@@ -1,5 +1,5 @@
-//#include "minislay.h"
-#include "globing.h"
+#include "minislay.h"
+//#include "globing.h"
 
 //
 void	free_array(char **array, int count)
@@ -29,18 +29,21 @@ static char	*handle_words(const char *globing, int *index)
 {
 	int	start;
 
+//	if (globing && globing[*index])
 	if (globing)
 	{
 		start = *index;
 		while (globing[*index])
 		{
 			(*index)++;
-			if (globing[*index] == '*')
+			if (!globing[*index] || globing[*index] == '*')
 				break ;
 		}
 		return (create_sub_string(globing + start, *index - start));
 	}
-	return (false);
+	return (NULL);
+//	return (!globing[*index]);
+//	return (false);
 }
 
 //
@@ -54,55 +57,76 @@ static char	*handle_stars(const char *globing, int *index)
 		while (globing[*index])
 		{
 			(*index)++;
-			if (globing[*index] != '*')
+			if (!globing[*index] || globing[*index] != '*')
 				break ;
 		}
 		return (create_sub_string(globing + start, 1));
 	}
-	return (false);
+	return (NULL);
+//	return (false);
 }
 
 //
-static bool	valid_pattern(const char globing, char **patterns, int pindex)
+static char *handle_pattern(char *globing, int *index)
+{
+	char	*new;
+
+	new = NULL;
+	if (globing[*index] == '*')
+		new = handle_stars(globing, index);
+	else
+		new = handle_words(globing, index);
+	return (new);
+}
+
+//
+static bool	valid_pattern(const char globing, char ***patterns, int pindex)
 {
 	if (globing != '\0')
 	{
-		free_array(patterns, pindex);
+		free_array(*patterns, pindex);
 		return (false);
 	}
 	return (true);
 }
 
 //We use this function to identify the patterns within the the globing variable
-char	**identify_globing_patterns(const char *globing, int *pindex)
+char	**identify_globing_patterns(char *globing)
 {
 	int		index;
+	int		pindex;
 	char	**patterns;
 	
 	patterns = NULL;
 	if (globing)
 	{
 		index = 0;	
+		pindex = 0;
 		while (globing[index])
 		{	
-			(*pindex)++;
-			patterns = (char **)realloc(patterns, sizeof(char *) * *pindex);
+			pindex++;
+			patterns = (char **)realloc(patterns, sizeof(char *) * (pindex + 1));
 			if (patterns)
 			{
-				patterns[*pindex - 1] = NULL;
+				patterns[pindex - 1] = handle_pattern(globing, &index);
+				patterns[pindex] = NULL;
+			/*
+				patterns[pindex] = NULL;
 				if (globing[index] == '*')
-					patterns[*pindex - 2] = handle_stars(globing, &index);
+					patterns[pindex - 1] = handle_stars(globing, &index);
 				else
-					patterns[*pindex - 2] = handle_words(globing, &index);
-				if (!patterns[*pindex - 2])
+					patterns[pindex - 1] = handle_words(globing, &index);
+			*/
+				if (!patterns[pindex - 1])
 					break ;
 			}
 		}
-		valid_pattern(globing[index], patterns, *pindex);
+		valid_pattern(globing[index], &patterns, pindex);
 	}
 	//error -> invalid globing variable
 	return (patterns);
-}/*
+}
+/*
 //TEST
 int	main(int argc, char **argv)
 {

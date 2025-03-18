@@ -13,7 +13,8 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 			free(*temp);
 			*temp = NULL;
 		}
-		free(*expanded);
+		if (*expanded)
+            free(*expanded);
 		*expanded = *merged;
 		return (true);
 	}
@@ -59,7 +60,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 }
 
 //Move to utils
-
+/*
 bool	insert_sub_list(t_tokn **list, char **new_elements)
 {
 	t_tokn	*new;
@@ -94,29 +95,17 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 		*list = next;
 	}
 	return true;
-}
+}*/
+
 //
 static bool	get_globed(t_tokn **list, char *merged)
 {
-	int		count;
-	char	**globed;
-
-	count = 0;
-	globed = NULL;
 	if (merged)
 	{
 		free((*list)->value);
 		(*list)->value = merged;
 	}
-	globed = globing((*list)->value, CWD, &count);
-	if (globed)
-	{
-		insert_sub_list(list, globed);
-		free(globed);
-		globed = NULL;
-		return (true);
-	}
-	return (false);
+	return (globing(list, CWD));
 }
 
 //if multiple dollars, split the list into subtokens
@@ -141,8 +130,11 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
 		}
+       // free((*list)->value);
+        (*list)->value = merged;
 		if (!is_state_active((*list)->type, STAR))
-			return (word_splitting(minishell, list, value));
+			return (word_splitting(minishell, list));
+		//	return (word_splitting(minishell, list, value));
 	}
 	return (get_globed(list, merged));
 }
@@ -169,8 +161,8 @@ bool    expand(t_shel *minishell, t_tokn **list)
 				if (!expand_in_quotes(minishell, list))
 					return (false);
 			}
-		}
-       // move_pointer(list);
+		}	
+        //move_pointer(list);
     }
     return (!*list);
 }
