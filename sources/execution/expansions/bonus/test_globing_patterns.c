@@ -29,18 +29,21 @@ static char	*handle_words(const char *globing, int *index)
 {
 	int	start;
 
+//	if (globing && globing[*index])
 	if (globing)
 	{
 		start = *index;
 		while (globing[*index])
 		{
 			(*index)++;
-			if (globing[*index] == '*')
+			if (!globing[*index] || globing[*index] == '*')
 				break ;
 		}
 		return (create_sub_string(globing + start, *index - start));
 	}
-	return (false);
+	return (NULL);
+//	return (!globing[*index]);
+//	return (false);
 }
 
 //
@@ -54,12 +57,13 @@ static char	*handle_stars(const char *globing, int *index)
 		while (globing[*index])
 		{
 			(*index)++;
-			if (globing[*index] != '*')
+			if (!globing[*index] || globing[*index] != '*')
 				break ;
 		}
 		return (create_sub_string(globing + start, 1));
 	}
-	return (false);
+	return (NULL);
+//	return (false);
 }
 
 //
