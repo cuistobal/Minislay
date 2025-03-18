@@ -40,5 +40,4 @@ bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index);
 
 bool	handle_redirection_list(t_tokn **list);
 
-
 #endif

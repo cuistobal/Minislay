@@ -12,7 +12,7 @@ static bool open_outfile_append(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_RDONLY);
+				fd = open((*redirections)->value, O_WRONLY | O_APPEND | O_CREAT);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);
@@ -42,7 +42,7 @@ static bool open_here_doc(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_RDONLY);
+				fd = open((*redirections)->value, O_APPEND | O_CREAT);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);
@@ -72,7 +72,7 @@ static bool open_outfile(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_RDONLY);
+				fd = open((*redirections)->value, O_WRONLY | O_CREAT | O_TRUNC);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);
@@ -126,20 +126,20 @@ bool	handle_redirection_list(t_tokn **list)
 	t_tokn	*redirections;
 
 	redirections = *list;
-    while (redirections)
-    {
-        if (valid_lexeme(redirections, IRED, ARED))
-        {
-            if (redirections->type == IRED)
-                open_infile(&redirections);
-            else if (redirections->type == ORED)
-                open_outfile(&redirections);
-            else if (redirections->type == ARED)
-                open_outfile_append(&redirections);
-            else if (redirections->type == HDOC)
-                open_here_doc(&redirections);
-        }	
-        move_pointer(&redirections);
-    }
-    return true;
+   	while (redirections)
+   	{
+       	if (valid_lexeme(redirections, IRED, ARED))
+       	{
+           	if (redirections->type == IRED)
+               	open_infile(&redirections);
+           	else if (redirections->type == ORED)
+               	open_outfile(&redirections);
+           	else if (redirections->type == ARED)
+               	open_outfile_append(&redirections);
+           	else if (redirections->type == HDOC)
+               	open_here_doc(&redirections);
+       	}	
+       	move_pointer(&redirections);
+   	}
+    return (true);
 }
