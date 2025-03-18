@@ -21,9 +21,10 @@ void	print_tokens(t_tokn *current)
 {
 	while (current)
 	{
-		printf("%s ", current->value);
+		printf("%s %d	", current->value, current->type);
 		current = current->next;
 	}
+	printf("\n");
 }
 
 //Printing AST
@@ -71,7 +72,7 @@ void	print_ast_BFS(t_tree *ast)
             	queue[rear++] = current->left;
         	if (current->right)
             	queue[rear++] = current->right;
-    		}
+    	}
     	free(queue);
 	}
 }
@@ -115,4 +116,24 @@ void	print_parser(t_pars *parser)
 
 		parser->ast? print_ast_DFS(*(parser)->ast, 0, "root", "root") : printf("No AST\n");
 	}
+}
+
+void	print_exec(t_tokn *assignations, t_tokn *expansions, t_tokn *redirections, char **execution)
+{
+	printf("ASSIGNATIONS:\n");
+	print_tokens(assignations);
+	printf("EXPANSIONS:\n");
+	print_tokens(expansions);
+	printf("REDIRECTIONS:\n");
+	print_tokens(redirections);
+	printf("EXECUTION:\n");
+	if (execution)
+	{
+		while (*execution)
+		{
+			printf("%s ", *execution);
+			execution++;
+		}
+	}
+	printf("\n");
 }

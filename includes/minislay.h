@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 10:12:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/16 15:03:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 # include "standard_headers.h"
 # include "global_variables.h"
+# include "expansions.h"
 # include "structures.h"
-# include "utilities.h"
+# include "utilities/utilities.h"
 # include "../minitester/utils/minislay_test.h"
 # include "parsing.h"
 # include "execution.h"

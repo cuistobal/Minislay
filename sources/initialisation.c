@@ -1,37 +1,34 @@
 #include "minislay.h"
 
-/*
-static bool build_export(t_shel **minishell)
-{
-	t_avlt	*new;
-	t_env	*current;
+static const char *g_spec[DKCT] = {VSTR, VARO, VHAS, VEXT, VHYP, VPID, VCID, VNME, VLST, VIFS};
 
-	current = NULL;
+//
+static bool	append_specials(t_shel **minishell)
+{
+	int		index;
+	char	*element;
+
 	if (*minishell)
 	{
-		if ((*minishell)->envp)
+		index = 0;
+		while (index < DKCT)
 		{
-			//Needs building after merging the builtin branch			
-			current = (*minishell)->envp->envp;
-			while (current)
-			{
-				new = create_avlt_node(current->var);
-				if (!new)
-					break ;
-				insert()
-				current = current->next;	
-			}
+			element = strdup(g_spec[index]);
+			if (!element)
+				break ;
+			(*minishell)->special[index] = element;
+			index++;
 		}
 	}
-	return false;
-}*/
+	return (index == DKCT);
+}
 
+//
 static bool build_env(t_shel **minishell, char **envp)
 {
     t_env	*new;
     t_env	*tail;
     t_env	**head;
-    char	*variable;
 
     if (*minishell)
     {
@@ -40,28 +37,24 @@ static bool build_env(t_shel **minishell, char **envp)
 		head = &(*minishell)->envp;
 		while (*envp)
         {
-            variable = strdup(*envp);
-            if (variable)
-            {
-                new = create_env_node(variable);
-                if (!new)
-				{
-					free (variable);
-                    break ;
-				}
-                insert_env_node(head, &tail, new);
-			}
-            envp++;
-        }
-        return (!*envp);
+        	new = create_env_node(strdup(*envp));
+			if (!new)	
+				return (false);
+            insert_env_node(head, &tail, new);
+			insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
+			envp++;
+		}
     }
-    return (false);
+    return (!*envp);
 }
 
 //
 bool    set_env(t_shel **minishell, char **envp)
 {
     if (*minishell)
-        return (build_env(minishell, envp));
+	{
+        if (build_env(minishell, envp))
+			return (append_specials(minishell));
+	}
     return (false);
 }

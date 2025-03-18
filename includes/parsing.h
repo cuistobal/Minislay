@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 12:59:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/14 10:11:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,8 @@ char	*handle_special_chars(const char *input, int *pos, int *type);
 
 //create_tokens.c:
 t_tokn	*create_token_node(char *value, int type);
+void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new);
 bool	get_stacked(t_tokn **head, t_tokn *current, int *mask);
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type);
-
-
-//tests
-void	prepare_for_exec(t_tree *branch);
 
 #endif

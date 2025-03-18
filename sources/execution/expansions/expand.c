@@ -1,115 +1,116 @@
 #include "minislay.h"
 
-//
-//
-//
 
-//Move to utils
-static bool append_list_value(t_tokn *token, char *expanded)
+//Move to utils.
+//We use this function to merge to arrays and free their original memory adress
+static bool	get_merged(char **merged, char **temp, char **expanded)
 {
-    if (expanded && token)
-    {
-		if (token->value)
-        	free(list->value); 
-    	token->value = expanded;
-    }
-    return (expanded);
-}
-
-//
-static bool append_expanded(char **expanded, char *buffer, int blen, int index)
-{
-	int		diff;
-	char	*temp;
-    char    *merged;
-
-    merged = NULL;
-    if (*expanded)
-    {
-        merged = 
-        *expanded = (char *)realloc(*expanded)
-    }
-    else
-        *expanded = strdup(buffer);
-    return (*expanded);
-}
-
-//
-static bool	expand_buffer(t_shel *minishell, char **buffer)
-{
-	char	*value;
-
-	value = NULL;
-	if (find_key(minishell, &value, *buffer))
+	//*merged = ft_strjoin(*expanded, *temp);
+	*merged = ft_strjoin(*temp, *expanded);
+	if (*merged)
 	{
-		free(*buffer);
-		*buffer = strdup(value);
-		return (*buffer);
+		if (*temp)
+		{
+			free(*temp);
+			*temp = NULL;
+		}
+//		if (*expanded)
+//            free(*expanded);
+		*expanded = *merged;
+		return (true);
 	}
 	else
 	{
-		free(*buffer);
-		*buffer = strdup("");		//Remove this magic number
-		return (*buffer);	
-	}
-	return (false);
-}
-
-static bool	copy_and_reset_buffer(char **expanded, char **buffer, int *blen, int *index)
-{
-	char	*temp;
-
-	temp = NULL;
-	if (*expanded && *buffer)
-	{
-			
-		return (true);
+		if (*temp)
+		{
+			free(*temp);
+			*temp = NULL;
+		}
+		free(*expanded);
+		*expanded = NULL;
 	}
 	return (false);
 }
 
 //
-static bool get_expanded(t_shel *minishell, t_tokn *token)
+static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 {
-    int     blen;
-    int     index;
-	int		total;
-    char    *buffer;
-    char    *expanded;
-    
-    blen = 0;
-    index = 0;
-    buffer = NULL;
-    expanded = strdup(token->value);
-	if (expanded)
+	int		index;
+	char	*temp;
+	char	*value;
+	char	*merged;
+
+	index = 0;
+	temp = NULL;
+	value = NULL;
+	merged = NULL;	
+	if (is_state_active((*list)->type, DOLL))
 	{
-		total = strlen(expanded);
-    	while (find_expansions(&buffer, expanded, &index, &blen))
-    	{
-			if (expand_buffer(minishell, &buffer))
-			{
-				if (!copy_and_reset_buffer())
-					return (false);
-			}
-			index += blen;
-			blen = 0;
+		while ((*list)->value[index])
+		{
+			if (get_expanded(minishell, list, &value, &index))
+			{	
+				temp = merged;
+				if (!get_merged(&merged, &temp, &value))
+					break ;
 			}
 		}
+		return (!(*list)->value[index]);
 	}
-	return (expanded);
+	return (true);
 }
 
-//Entry point of the dollar expansion
-bool    expand(t_shel *minishell, t_tokn *list)
+//if multiple dollars, split the list into subtokens
+static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 {
-	while (list)
+	int		index;
+	char	*temp;
+	char	*value;
+	char	*merged;
+
+	index = 0;
+	temp = NULL;
+	value = NULL;
+	merged = NULL;
+	if (is_state_active((*list)->type, DOLL))
 	{
-		if ((list)->type & DOLL)
-    	{
-        	if (!get_expanded(minishell, list))
+		while ((*list)->value[index])
+		{
+			if (!get_expanded(minishell, list, &value, &index))
 				return (false);
-    	}
-        move_pointer(&list);
+			temp = merged;
+			if (!get_merged(&merged, &temp, &value))
+				return (false);
+		}
+       // free((*list)->value);
+        (*list)->value = merged;
+		if (!is_state_active((*list)->type, STAR))
+			return (word_splitting(minishell, list));
+		//	return (word_splitting(minishell, list, value));
+	}
+	return (globing(list, CWD));
+	//return (get_globed(list, merged));
+}
+
+//Entry point of the expansion module
+bool    expand(t_shel *minishell, t_tokn **list)
+{
+	while (*list)
+	{
+		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
+		{
+			if (!is_state_active((*list)->type, DQTE))
+			{
+				if (!expand_no_quotes(minishell, list))
+					return (false);
+			}
+			else
+			{
+				if (!expand_in_quotes(minishell, list))
+					return (false);
+			}
+		}
+        	move_pointer(list);
     }
-	return (!list);
+    return (!*list);
 }

@@ -1,22 +1,4 @@
 #include "minislay.h"
-/*
-static bool	append_list(t_tokn **current, t_tokn **save)
-{
-	if (*current)
-		(*save)->next = NULL;
-	return (*current);	
-}*/
-
-inline bool	move_list_pointer(t_tokn **pointer, t_tokn **save)
-{
-	if (*pointer)
-	{
-		*save = *pointer;
-		*pointer = (*pointer)->next;
-		return (true);
-	}
-	return (false);
-}
 
 //We use this function to split the current's branch list into a list of
 //assignation tokens, and a list containing the rest of the tokens.
@@ -34,20 +16,26 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions)
 {
 	t_tokn	*save;
 
-	save = current;
-	
-	if (current && current->type & EQUL)
+	save = current;	
+	if (current)
 	{
-		*assignations = current;
-		while (current)
+		if (is_state_active(current->type, EQUL))
 		{
-			if (!is_state_active(current->type, EQUL))
-				break ;	
-			move_list_pointer(&current, &save);
+			//Implement check_assignation
+			//check_assignation();
+			//
+			*assignations = current;
+			while (current && is_state_active(current->type, EQUL))
+			{
+		//		if (!check_assignation())
+		//			break ;
+				move_list_pointer(&current, &save);
+			}
 		}
 		if (current)
 		{
-			save->next = NULL;
+			if (*assignations)
+				save->next = NULL;
 			*expansions = current;
 		}
 		//TBM
@@ -55,3 +43,5 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions)
 	}
 	return (!current);
 }
+
+//IL FAUT INTEGRER LE MODULE DE CHECK DE VALIDITE POUR LES ASSIGNATIONS

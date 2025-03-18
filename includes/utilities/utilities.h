@@ -6,12 +6,14 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/08 13:22:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:20:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITIES_H
 # define UTILITIES_H
+
+# include "avl_tree.h"
 
 //tokenizer_bools_1.c:
 bool	is_amp_pipe(char c);
@@ -58,7 +60,13 @@ t_env	*create_env_node(char *value);
 //ft_strjoin.c
 char	*ft_strjoin(const char *s1, const char *s2);
 
+//misc.c
+bool	move_pointer(t_tokn **pointer);
+bool	move_env_pointer(t_env **pointer);
+bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 
+//find_key.c
+bool    find_key(t_shel *minishell, char **value, char *key);
 
 //tests
 

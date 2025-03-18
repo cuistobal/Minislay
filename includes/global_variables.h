@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/09 10:58:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/18 09:33:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,14 @@
 # define BSIZE 1024
 //Shifting operator from token type to exec type
 # define CONVERT 3
+
+//test expansions
+
+# define LIMITERS "     *"
+# define SPECIALS "$?"
+
+# define CWD "."
+
+# define PATH "PATH"
 
 #endif

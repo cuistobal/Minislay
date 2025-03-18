@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/06 14:03:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:47:37 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_tokn	*create_token_node(char *value, int type)
 		{
     		node->type = type;
 			node->value = value;
-			//node->value = strdup(value);
+		//	node->value = strdup(value);
 			node->next = NULL;
 		}
 	}
@@ -39,7 +39,7 @@ t_tokn	*create_token_node(char *value, int type)
 
 //This utility inserts the new token inside the token_list.
 //Do we make this one static ?
-static void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
+void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
 {
 	if (*new_node)
 	{

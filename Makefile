@@ -23,6 +23,11 @@ SOURCES = \
 	utilities/builtins_utils/env_node.c \
 	utilities/Libft/ft_strjoin.c \
 	utilities/free_utils.c \
+	utilities/misc.c \
+	utilities/find_key.c \
+	utilities/avl_tree/avl_tree_utils1.c \
+	utilities/avl_tree/avl_tree_utils2.c \
+	utilities/avl_tree/rotations.c \
 	sources/initialisation.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
@@ -34,8 +39,19 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
 	sources/execution/traverse_ast.c \
-	sources/parsing/prepare_for_exec.c \
-    minishell.c \
+	sources/execution/execution.c \
+	sources/execution/split_list.c \
+	sources/execution/expansions/expand.c \
+	sources/execution/expansions/key_management.c \
+	sources/execution/expansions/word_splitting.c \
+	sources/execution/expansions/bonus/globing.c \
+	sources/execution/expansions/bonus/match_pattern.c \
+	sources/execution/expansions/bonus/test_globing_patterns.c \
+	sources/execution/commands/get_command_and_arguments.c \
+	sources/execution/commands/command_type.c \
+	sources/execution/commands/modify_token_types.c \
+	sources/execution/redirections/handle_redirections.c \
+	minishell.c \
     minitester/utils/minislays_test_utils.c
 
 SOURCES_BONUS = \
