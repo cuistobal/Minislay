@@ -38,7 +38,7 @@ bool	globing(t_tokn **list, const char *path);
 //key_management.c
 bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index);
 
-
+bool	handle_redirection_list(t_tokn **list);
 
 
 #endif

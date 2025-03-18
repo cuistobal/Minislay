@@ -53,17 +53,20 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	return (get_command_and_arguments(*expansions, count));
 	*/
 
-	//modify_token_types(expansions, redirections, &count);
+	modify_token_types(expansions, redirections, &count);
 
 	if (expand(minishell, &copy))
 	{
 		//globing
 		modify_token_types(expansions, redirections, &count);
+		handle_redirection_list(redirections);	
 		return (get_command_and_arguments(*expansions, count));
 	}
 	return (NULL);
 }
-
+/*
+static bool	expand_redirections()
+*/
 //Entry point 
 bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 {
@@ -82,7 +85,11 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 		{
 			split_list(ast->tokens, &assignations, &expansions);
 
+			//perform expansions
+
 			execution = initialise_execution(*minishell, &redirections, &expansions);
+
+			//expand redirections
 
 			print_exec(assignations, expansions, redirections, execution);
 

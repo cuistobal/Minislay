@@ -5,6 +5,9 @@
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
+//	char	**command;
+
+//	command = NULL;
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
@@ -16,7 +19,8 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			else
 			{
 				prepare_for_exec(minishell, ast);	
-					
+			//	command = prepare_for_exec(minishell, ast);	
+			//	execute(command);	
 			//	print_tokens(ast->tokens);
 			}
 		}

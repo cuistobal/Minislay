@@ -50,7 +50,8 @@ SOURCES = \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/commands/command_type.c \
 	sources/execution/commands/modify_token_types.c \
-    minishell.c \
+	sources/execution/redirections/handle_redirections.c \
+	minishell.c \
     minitester/utils/minislays_test_utils.c
 
 SOURCES_BONUS = \
