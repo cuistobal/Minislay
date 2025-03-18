@@ -1,6 +1,5 @@
 #include "minislay.h"
 
-
 static bool words(t_tokn **current, char *delimiter)
 {
     t_tokn  *new;
@@ -26,7 +25,7 @@ static bool words(t_tokn **current, char *delimiter)
             word = strtok_r(expanded, delimiter, &expanded);
         }
         (*current)->next = save;
-        *current = save;
+        //*current = save;
     }
     return (!*expanded);
 }

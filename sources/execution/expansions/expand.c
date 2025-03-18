@@ -164,8 +164,8 @@ bool    expand(t_shel *minishell, t_tokn **list)
 				if (!expand_in_quotes(minishell, list))
 					return (false);
 			}
-		}	
-        //move_pointer(list);
+		}
+        move_pointer(list);
     }
     return (!*list);
 }

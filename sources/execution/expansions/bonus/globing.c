@@ -48,13 +48,13 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-        if (!insert_globing_result(list, current->d_name, &init))
+        		if (!insert_globing_result(list, current->d_name, &init))
                     break ;
 			}
 			current = readdir(stream);
 		}
 		(*list)->next = next;
-        *list = next;
+	//	*list = next;
         return (!current);
 	}
 	return (true);		//To be modified
