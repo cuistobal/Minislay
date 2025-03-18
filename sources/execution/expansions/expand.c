@@ -5,7 +5,8 @@
 //We use this function to merge to arrays and free their original memory adress
 static bool	get_merged(char **merged, char **temp, char **expanded)
 {
-	*merged = ft_strjoin(*expanded, *temp);
+	//*merged = ft_strjoin(*expanded, *temp);
+	*merged = ft_strjoin(*temp, *expanded);
 	if (*merged)
 	{
 		if (*temp)
@@ -13,8 +14,8 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 			free(*temp);
 			*temp = NULL;
 		}
-		if (*expanded)
-            free(*expanded);
+//		if (*expanded)
+//            free(*expanded);
 		*expanded = *merged;
 		return (true);
 	}
@@ -97,16 +98,17 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 	return true;
 }*/
 
+/*
 //
 static bool	get_globed(t_tokn **list, char *merged)
 {
 	if (merged)
 	{
-		free((*list)->value);
-		(*list)->value = merged;
+	//	free((*list)->value);
+	//	(*list)->value = merged;
 	}
 	return (globing(list, CWD));
-}
+}*/
 
 //if multiple dollars, split the list into subtokens
 static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
@@ -119,7 +121,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 	index = 0;
 	temp = NULL;
 	value = NULL;
-	merged = NULL;	
+	merged = NULL;
 	if (is_state_active((*list)->type, DOLL))
 	{
 		while ((*list)->value[index])
@@ -136,7 +138,8 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 			return (word_splitting(minishell, list));
 		//	return (word_splitting(minishell, list, value));
 	}
-	return (get_globed(list, merged));
+	return (globing(list, CWD));
+	//return (get_globed(list, merged));
 }
 
 //Entry point of the expansion module

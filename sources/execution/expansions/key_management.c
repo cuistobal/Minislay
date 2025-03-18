@@ -67,31 +67,32 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		//return ("EOF");		//Needs to be modified.
+		return (token + start);		//Needs to be modified.
 	}
 	return (NULL);
 }
 
 //We use this function to determine if the key is a standard key or an env/user
 //defined key.
-static bool	retrieve_keys_value(t_shel *minishell, char **key, char **value)
+static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 {
-	if (*key)
+	if (key)
 	{
-		if (**key != '$')
-			*value = strdup(*key);
+		if (*key != '$')
+			*value = strdup(key);
 		else
 		{
-			if (!is_standard_key(minishell, value, *key))
+			if (!is_standard_key(minishell, value, key))
 			{
-				if (!find_key(minishell, value, *key + 1))
+				if (!find_key(minishell, value, key + 1))
 					return (false);
 			}
 			*value = strdup(*value);
-			printf("%s\n", *value);
 		}
+		/*
 		free(*key);
 		*key = NULL;
+		*/
 		return (*value);
 	}
 	return (*key);
@@ -107,7 +108,16 @@ bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
 	{
 		key = retrieve_expansions((*token)->value, index);
 		if (key)
-			return (retrieve_keys_value(minishell, &key, value));
+		{
+			if (retrieve_keys_value(minishell, key, value))
+			{
+				return (true);	
+			}
+			//return (retrieve_keys_value(minishell, &key, value));
+		*value = strdup(key);
+		//	(*token)->value + *index;
+		return (true);
+		}
 	}
 	return (!(*token)->value[*index]);
 }
