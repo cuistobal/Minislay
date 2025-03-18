@@ -48,7 +48,7 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-                if (!insert_globing_result(list, current->d_name, &init))
+        if (!insert_globing_result(list, current->d_name, &init))
                     break ;
 			}
 			current = readdir(stream);
@@ -72,7 +72,6 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 	return (false);
 }
 
-//
 //char	**globing(const char *globing, const char *path, int *count)
 bool	globing(t_tokn **list, const char *path) 
 {

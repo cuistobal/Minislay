@@ -91,7 +91,7 @@ bool	insert_sub_list(t_tokn **list, char **new_elements)
 				*list = new;
 			}
 		}
-		(*list)->next = next;
+	//	(*list)->next = next;
 		*list = next;
 	}
 	return true;
@@ -142,11 +142,13 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 //Entry point of the expansion module
 bool    expand(t_shel *minishell, t_tokn **list)
 {
-
+    //t_tokn  *next; 
 //	Implement the delimiter retrieval module
 
+    //next = NULL;
 	while (*list)
 	{
+       // next = (*list)->next;
 		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
 		{
 			if (!is_state_active((*list)->type, DQTE))
@@ -162,5 +164,5 @@ bool    expand(t_shel *minishell, t_tokn **list)
 		}	
         //move_pointer(list);
     }
-	return (!*list);
+    return (!*list);
 }
