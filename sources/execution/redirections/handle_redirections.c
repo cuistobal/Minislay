@@ -42,7 +42,7 @@ static bool open_here_doc(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_APPEND | O_CREAT);
+				fd = open((*redirections)->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);

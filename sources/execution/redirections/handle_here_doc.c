@@ -22,7 +22,7 @@ static bool	quoted_limiter()
 	char	*line;			
 }
 
-void	create_temp_file()
+void	create_temp_file(char *delimiter)
 {
 
 }
