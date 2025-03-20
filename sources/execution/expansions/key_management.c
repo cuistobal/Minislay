@@ -99,14 +99,14 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 }
 
 //
-bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
+bool	get_expanded(t_shel *minishell, char **token, char **value, int *index)
 {
 	char	*key;
 
 	key = NULL;
-	if ((*token)->value[*index])
+	if (*token[*index])
 	{
-		key = retrieve_expansions((*token)->value, index);
+		key = retrieve_expansions(*token, index);
 		if (key)
 		{
 			if (retrieve_keys_value(minishell, key, value))
@@ -119,5 +119,5 @@ bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
 		return (true);
 		}
 	}
-	return (!(*token)->value[*index]);
+	return (!*token[*index]);
 }

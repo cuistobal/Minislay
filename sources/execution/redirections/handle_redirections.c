@@ -12,7 +12,7 @@ static bool open_outfile_append(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_WRONLY | O_APPEND | O_CREAT);
+				fd = open((*redirections)->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);
@@ -30,10 +30,8 @@ static bool open_outfile_append(t_tokn **redirections)
 }
 
 // Function to open a here-document
-static bool open_here_doc(t_tokn **redirections)
+static bool open_here_doc(t_shel *minishell, t_tokn **redirections)
 {
-	int	fd;
-
 	if (*redirections)
 	{
         move_pointer(redirections);
@@ -41,6 +39,8 @@ static bool open_here_doc(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
+				handle_here_doc(minishell, redirections);
+				/*
 				fd = open((*redirections)->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 				if (fd == -1)
 				{
@@ -49,6 +49,7 @@ static bool open_here_doc(t_tokn **redirections)
 				}
 				(*redirections)->type = fd; 
         		return (move_pointer(redirections));
+				*/
 			}
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");
@@ -117,7 +118,7 @@ static bool open_infile(t_tokn **redirections)
 }
 
 // Function to handle redirections
-bool	handle_redirection_list(t_tokn **list)
+bool	handle_redirection_list(t_shel *minishell, t_tokn **list)
 {
 	t_tokn	*redirections;
 
@@ -133,7 +134,7 @@ bool	handle_redirection_list(t_tokn **list)
            	else if (redirections->type == ARED)
                	open_outfile_append(&redirections);
            	else if (redirections->type == HDOC)
-               	open_here_doc(&redirections);
+               	open_here_doc(minishell, &redirections);
        	}	
        	move_pointer(&redirections);
    	}

@@ -52,6 +52,7 @@ SOURCES = \
 	sources/execution/commands/modify_token_types.c \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/redirections/handle_redirections.c \
+	sources/execution/redirections/handle_here_doc.c \
 	minishell.c \
     minitester/utils/minislays_test_utils.c
 

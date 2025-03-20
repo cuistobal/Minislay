@@ -52,10 +52,8 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	
 	if (expand(minishell, &copy))
 	{
-
-	//	modify_token_types(expansions, redirections, &count);
 		
-		handle_redirection_list(redirections);
+		handle_redirection_list(minishell, redirections);
 
 		return (get_command_and_arguments(minishell, *expansions, count));
 	}
@@ -88,6 +86,8 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 				
 			print_tokens(redirections);
 			print_tokens(expansions);
+
+			//Redirections belong there
 
 			//expand redirections
 

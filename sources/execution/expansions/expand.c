@@ -48,7 +48,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 	{
 		while ((*list)->value[index])
 		{
-			if (get_expanded(minishell, list, &value, &index))
+			if (get_expanded(minishell, &(*list)->value, &value, &index))
 			{	
 				temp = merged;
 				if (!get_merged(&merged, &temp, &value))
@@ -76,7 +76,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 	{
 		while ((*list)->value[index])
 		{
-			if (!get_expanded(minishell, list, &value, &index))
+			if (!get_expanded(minishell, &(*list)->value, &value, &index))
 				return (false);
 			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
