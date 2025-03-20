@@ -19,8 +19,7 @@ static bool open_outfile_append(t_tokn **redirections)
 					return (false);
 				}
 				(*redirections)->type = fd; 
-        		move_pointer(redirections);
-				return (true);	
+        		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");
@@ -49,8 +48,7 @@ static bool open_here_doc(t_tokn **redirections)
 					return (false);
 				}
 				(*redirections)->type = fd; 
-        		move_pointer(redirections);
-				return (true);	
+        		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");
@@ -79,8 +77,7 @@ static bool open_outfile(t_tokn **redirections)
 					return (false);
 				}
 				(*redirections)->type = fd; 
-        		move_pointer(redirections);
-				return (true);	
+        		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");
@@ -109,8 +106,7 @@ static bool open_infile(t_tokn **redirections)
 					return (false);
 				}
 				(*redirections)->type = fd; 
-        		move_pointer(redirections);
-				return (true);	
+        		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");

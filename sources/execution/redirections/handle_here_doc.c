@@ -24,5 +24,5 @@ static bool	quoted_limiter()
 
 void	create_temp_file(char *delimiter)
 {
-
+	
 }
