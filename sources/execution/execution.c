@@ -53,11 +53,11 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	if (expand(minishell, &copy))
 	{
 
-		modify_token_types(expansions, redirections, &count);
+	//	modify_token_types(expansions, redirections, &count);
 		
 		handle_redirection_list(redirections);
 
-		return (get_command_and_arguments(*expansions, count));
+		return (get_command_and_arguments(minishell, *expansions, count));
 	}
 	return (NULL);
 }

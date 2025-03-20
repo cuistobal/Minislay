@@ -1,7 +1,7 @@
 #include "minislay.h"
 
 //Utility to create the char **tab required for execution.
-char	**get_command_and_arguments(t_tokn *list, int count)
+char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 {
 	int		index;
 	char	**commands;
@@ -12,6 +12,14 @@ char	**get_command_and_arguments(t_tokn *list, int count)
 	{	
 		while (list)
 		{
+			if (index == 0 && command_type(list->value))
+			{
+				if (!retrieve_path(minishell, &list->value))
+				{
+					free_array(commands, count);
+					break ;
+				}
+			}
 			commands[index] = list->value;
 			move_pointer(&list);
 			index++;

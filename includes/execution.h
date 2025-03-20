@@ -1,8 +1,14 @@
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
+//command_type.c
+bool	command_type(char *command);
+
+//retrieve_path.c
+bool	retrieve_path(t_shel *minishell, char **command);
+
 //get_command_and_arguments.c
-char    **get_command_and_arguments(t_tokn *list, int count);
+char    **get_command_and_arguments(t_shel *minishell, t_tokn *list, int count);
 
 //is_builtin.c
 bool    is_builtin(char *command);
