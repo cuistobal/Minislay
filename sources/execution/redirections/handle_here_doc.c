@@ -9,14 +9,25 @@ static bool	expand_line(t_shel *minishell,	char **line)
 	value = NULL;
 	if (*line)
 	{
+		index = 0;
 		printf("before expansion	->	%s\n", *line);
+		while (*line[index])
+		{
+			printf("%s\n", *line + index);
+			if (*line[index] == '\0')
+				return (true);
+			get_expanded(minishell, line, &value, &index);
+			printf("%s	%d\n", value, index);	
+		}
+		/*
 		index = 0;
 		while (*line[index])
 		{
+			printf("%s\n", *line + index);
 			if (*line[index] == '$')
 				get_expanded(minishell, line, &value, &index);
 			index++;
-		}
+		}*/
 		printf("after expansion	->	%s\n", *line);
 	}
 	return (*line);
@@ -68,31 +79,31 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
 	limiter = limiter_handler((*redirections)->value, &expansions);
 	if (limiter)
 	{
-		printf("%s	->	%ld\n", limiter, strlen(limiter));
-	fd = open("heredoc", O_APPEND | O_CREAT | O_RDWR, 0644);
-	if (fd >= 0)
-	{
-		(*redirections)->type = fd;
-		line = readline(">");
-		while (line) 
+		fd = open("heredoc", O_APPEND | O_CREAT | O_RDWR, 0644);
+		if (fd >= 0)
 		{
-			if (strncmp(line, limiter, strlen(line)) == 0)
-				return (free(line), close(fd), true);
-			if (expansions)
-			{
-				if (!expand_line(minishell, &line))
-					return (printf("EXPANSION ERROR\n"), close(fd), false);
-			}
-			if (write(fd, line, strlen(line)))
-			{
-				if (!write(fd, "\n", 1))
-					return (free(line), close(fd), printf("Can't write into %d\n", fd), false);	
-			}
-			free(line);
+			(*redirections)->type = fd;
 			line = readline(">");
+			rl_on_new_line();
+			while (line) 
+			{
+				if (strncmp(line, limiter, strlen(line)) == 0)
+					return (free(line), close(fd), true);
+				if (expansions)
+				{
+					if (!expand_line(minishell, &line))
+						return (printf("EXPANSION ERROR\n"), close(fd), false);
+				}
+				if (write(fd, line, strlen(line)))
+				{
+					if (!write(fd, "\n", 1))
+						return (free(line), close(fd), printf("Can't write into %d\n", fd), false);	
+				}
+				free(line);
+				line = readline(">");
+				rl_on_new_line();
+			}	
 		}
-	
-	}
 	}
 	return (printf("Unable to open heredoc with %s\n", (*redirections)->value), false);
 }

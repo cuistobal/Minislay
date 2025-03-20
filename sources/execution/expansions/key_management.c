@@ -63,6 +63,7 @@ static char	*retrieve_expansions(char *token, int *index)
 			{
 				if (*index == start)
 					return extract_key(token, index, start);
+				//index modification here ?
 				return strndup(token + start, *index - start);	
 			}
 			(*index)++;
