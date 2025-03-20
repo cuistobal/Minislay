@@ -74,8 +74,10 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
 	{
 		(*redirections)->type = fd;
 		line = readline(">");
-		while (line && strncmp(line, limiter, strlen(limiter)) != 0)
+		while (line) 
 		{
+			if (strncmp(line, limiter, strlen(line)) == 0)
+				return (free(line), close(fd), true);
 			if (expansions)
 			{
 				if (!expand_line(minishell, &line))
@@ -89,6 +91,7 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
 			free(line);
 			line = readline(">");
 		}
+	
 	}
 	}
 	return (printf("Unable to open heredoc with %s\n", (*redirections)->value), false);
