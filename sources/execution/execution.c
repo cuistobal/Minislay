@@ -57,8 +57,6 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 		
 		handle_redirection_list(minishell, redirections);
 
-		printf("Count is %d\n", count);	
-
 		return (get_command_and_arguments(minishell, *expansions, count));
 	}
 	return (NULL);
@@ -84,12 +82,12 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 			//perform expansions
 			
-			print_tokens(expansions);
+	//		print_tokens(expansions);
 
 			execution = initialise_execution(*minishell, &redirections, &expansions);
 				
-			print_tokens(redirections);
-			print_tokens(expansions);
+	//		print_tokens(redirections);
+	//		print_tokens(expansions);
 
 			//Redirections belong there
 
@@ -97,8 +95,10 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 			print_exec(assignations, expansions, redirections, execution);
 
+//			execve(*execution, execution + 1, NULL);
+
 			if (expand(*minishell, &assignations))
-					print_tokens(assignations);
+				print_tokens(assignations);
 			
 			//assign(*minishell, assignations);
 		}

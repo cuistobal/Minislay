@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/11 14:20:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/03/22 09:34:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 
 //find_key.c
 bool    find_key(t_shel *minishell, char **value, char *key);
+
+//get_merged.c
+bool	get_merged(char **merged, char **temp, char **expanded);
 
 //tests
 

@@ -22,6 +22,7 @@ SOURCES = \
     utilities/tokens_utils.c/parser_utils.c \
 	utilities/builtins_utils/env_node.c \
 	utilities/Libft/ft_strjoin.c \
+	utilities/Libft/get_merged.c \
 	utilities/free_utils.c \
 	utilities/misc.c \
 	utilities/find_key.c \

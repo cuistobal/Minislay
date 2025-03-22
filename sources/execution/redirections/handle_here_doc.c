@@ -1,34 +1,42 @@
 #include "minislay.h"
+/*
+static bool	insert_expansion()
+{
 
+}
+*/
 //This function expands the line. 
 static bool	expand_line(t_shel *minishell,	char **line)
 {
 	int		index;
+	char	*temp;
 	char	*value;
+	char	*merged;
 
+	temp = NULL;
 	value = NULL;
+	merged = NULL;
 	if (*line)
 	{
+		printf("Before expansion	->	%s\n", *line);
 		index = 0;
-		printf("before expansion	->	%s\n", *line);
 		while (*line[index])
 		{
-			printf("%s\n", *line + index);
-			if (*line[index] == '\0')
-				return (true);
-			get_expanded(minishell, *line, &value, &index);
-			printf("%s	%d\n", value, index);	
+			printf("%s	&&	%d\n", *line + index, index);
+			if (get_expanded(minishell, *line, &value, &index))
+			{
+				temp = merged;
+				if (!get_merged(&merged, &temp, &value))
+					break ;
+			}
+			printf("%d	%c\n", *line[index], *line[index]);
+			if (*line[index] == '\0' || *line[index] == '\n')
+				break ;
 		}
-		/*
-		index = 0;
-		while (*line[index])
-		{
-			printf("%s\n", *line + index);
-			if (*line[index] == '$')
-				get_expanded(minishell, line, &value, &index);
-			index++;
-		}*/
-		printf("after expansion	->	%s\n", *line);
+		free(*line);
+		*line = merged;
+		printf("after expansion		->	%s\n", *line);
+		return (*line[index] == '\0');
 	}
 	return (*line);
 }

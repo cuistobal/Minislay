@@ -108,11 +108,10 @@ bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 		{
 			if (retrieve_keys_value(minishell, key, value))
 			{
-				printf("%s	becomes	%s\n", key, *value);
-
 				return (true);	
 			}
-			*value = strdup(key);
+	//		*value = strdup(key);
+			*value = "";
 			return (true);
 		}
 	}

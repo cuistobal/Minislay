@@ -1,35 +1,5 @@
 #include "minislay.h"
 
-
-//Move to utils.
-//We use this function to merge to arrays and free their original memory adress
-static bool	get_merged(char **merged, char **temp, char **expanded)
-{
-	//*merged = ft_strjoin(*expanded, *temp);
-	*merged = ft_strjoin(*temp, *expanded);
-	if (*merged)
-	{
-		if (*temp)
-		{
-			free(*temp);
-			*temp = NULL;
-		}
-		*expanded = *merged;
-		return (true);
-	}
-	else
-	{
-		if (*temp)
-		{
-			free(*temp);
-			*temp = NULL;
-		}
-		free(*expanded);
-		*expanded = NULL;
-	}
-	return (false);
-}
-
 //
 static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 {
