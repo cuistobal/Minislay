@@ -42,7 +42,7 @@ char	**identify_globing_patterns(char *globing);
 bool	globing(t_tokn **list, const char *path);
 
 //key_management.c
-bool	get_expanded(t_shel *minishell, char **token, char **value, int *index);
+bool	get_expanded(t_shel *minishell, char *token, char **value, int *index);
 
 bool	handle_redirection_list(t_shel *minishell, t_tokn **list);
 

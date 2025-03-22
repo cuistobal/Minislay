@@ -46,6 +46,8 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	int		count;
 	t_tokn	*copy;
 
+	count = 0;
+
 	modify_token_types(expansions, redirections, &count);
 
 	copy = *expansions;
@@ -54,6 +56,8 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	{
 		
 		handle_redirection_list(minishell, redirections);
+
+		printf("Count is %d\n", count);	
 
 		return (get_command_and_arguments(minishell, *expansions, count));
 	}

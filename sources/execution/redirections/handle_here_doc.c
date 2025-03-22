@@ -16,7 +16,7 @@ static bool	expand_line(t_shel *minishell,	char **line)
 			printf("%s\n", *line + index);
 			if (*line[index] == '\0')
 				return (true);
-			get_expanded(minishell, line, &value, &index);
+			get_expanded(minishell, *line, &value, &index);
 			printf("%s	%d\n", value, index);	
 		}
 		/*
