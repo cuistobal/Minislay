@@ -16,8 +16,9 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 			{
 				if (!retrieve_path(minishell, &list->value))
 				{
-					free_array(commands, count);
-					break ;
+			//		free_array(commands, count);
+			//		break ;
+					printf("No path for command %s\n", list->value);	
 				}
 			}
 			commands[index] = list->value;

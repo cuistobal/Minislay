@@ -90,35 +90,31 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 			}
 			*value = strdup(*value);
 		}
-		/*
-		free(*key);
-		*key = NULL;
-		*/
 		return (*value);
 	}
 	return (*key);
 }
 
 //
-bool	get_expanded(t_shel *minishell, char **token, char **value, int *index)
+bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 {
 	char	*key;
 
 	key = NULL;
-	if (*token[*index])
+	if (token && token[*index])
 	{
-		key = retrieve_expansions(*token, index);
+		key = retrieve_expansions(token, index);
 		if (key)
 		{
 			if (retrieve_keys_value(minishell, key, value))
 			{
+				printf("%s	becomes	%s\n", key, *value);
+
 				return (true);	
 			}
-			//return (retrieve_keys_value(minishell, &key, value));
-		*value = strdup(key);
-		//	(*token)->value + *index;
-		return (true);
+			*value = strdup(key);
+			return (true);
 		}
 	}
-	return (!*token[*index]);
+	return (!token[*index]);
 }

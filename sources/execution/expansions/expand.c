@@ -14,8 +14,6 @@ static bool	get_merged(char **merged, char **temp, char **expanded)
 			free(*temp);
 			*temp = NULL;
 		}
-//		if (*expanded)
-//            free(*expanded);
 		*expanded = *merged;
 		return (true);
 	}
@@ -48,7 +46,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 	{
 		while ((*list)->value[index])
 		{
-			if (get_expanded(minishell, &(*list)->value, &value, &index))
+			if (get_expanded(minishell, (*list)->value, &value, &index))
 			{	
 				temp = merged;
 				if (!get_merged(&merged, &temp, &value))
@@ -76,20 +74,17 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 	{
 		while ((*list)->value[index])
 		{
-			if (!get_expanded(minishell, &(*list)->value, &value, &index))
+			if (!get_expanded(minishell, (*list)->value, &value, &index))
 				return (false);
 			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
 		}
-       // free((*list)->value);
         (*list)->value = merged;
 		if (!is_state_active((*list)->type, STAR))
 			return (word_splitting(minishell, list));
-		//	return (word_splitting(minishell, list, value));
 	}
 	return (globing(list, CWD));
-	//return (get_globed(list, merged));
 }
 
 //Entry point of the expansion module

@@ -1,20 +1,4 @@
 #include "minislay.h"
-//#include "globing.h"
-
-//
-void	free_array(char **array, int count)
-{
-	if (array)
-	{
-		while (count--)
-		{
-			free(array[count]);
-			array[count] = NULL;
-		}
-		free(array);
-		array = NULL;
-	}
-}
 
 //
 static char	*create_sub_string(const char *string, int length)
