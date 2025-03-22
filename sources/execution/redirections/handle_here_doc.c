@@ -98,7 +98,7 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
 			rl_on_new_line();
 			while (line)
 			{
-				if (strncmp(line, limiter, strlen(line)) == 0)
+				if (!strncmp(line, limiter, strlen(line)))
 				{
 					if (strlen(line) > 0)
 						break ;
