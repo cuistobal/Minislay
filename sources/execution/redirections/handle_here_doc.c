@@ -25,13 +25,9 @@ static bool	expand_line(t_shel *minishell,	char **line)
 				return (false);	
 			if (strncmp(value, *line, strlen(value)) == 0)
 				index++;
-			else
-			{
-				temp = merged;
-				if (!get_merged(&merged, &temp, &value))
-					return (false);
-				printf("%s\n", merged);
-			}
+			temp = merged;
+			if (!get_merged(&merged, &temp, &value))
+				return (false);
 		}
 	//	*line = merged;
 
