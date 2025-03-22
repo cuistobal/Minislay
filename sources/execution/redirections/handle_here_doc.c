@@ -18,23 +18,32 @@ static bool	expand_line(t_shel *minishell,	char **line)
 	merged = NULL;
 	if (*line)
 	{
-		printf("Before expansion	->	%s\n", *line);
 		index = 0;
 		while (*line[index])
 		{
-			printf("%s	&&	%d\n", *line + index, index);
-			if (get_expanded(minishell, *line, &value, &index))
+			printf("Index before	->	%d\n", index);
+			if (!get_expanded(minishell, *line, &value, &index))
+				return (false);	
+			if (!strncmp(value, *line, strlen(value)) == 0)
 			{
 				temp = merged;
 				if (!get_merged(&merged, &temp, &value))
-					break ;
+					return (false);
 			}
-			printf("%d	%c\n", *line[index], *line[index]);
+			printf("Index after	->	%d\n", index);
+			printf("merged	->	%s\n", value);
+			*line = merged;
 			if (*line[index] == '\0' || *line[index] == '\n')
 				break ;
 		}
-		free(*line);
-		*line = merged;
+			//		*line = merged;
+
+	//		printf("%d	%c\n", *line[index], *line[index]);
+	//		if (*line[index] == '\0' || *line[index] == '\n')
+	//			break ;
+	//	}
+//		free(*line);
+//		*line = merged;
 		printf("after expansion		->	%s\n", *line);
 		return (*line[index] == '\0');
 	}
