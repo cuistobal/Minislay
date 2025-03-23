@@ -40,6 +40,20 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	return (exec);
 }*/
 
+static void	execute_command(t_shel **minishell, char **command)
+{
+	pid_t	pid;
+
+	if (command)
+	{
+		if (**command == '/')
+		{
+			pid = create_process();		
+		}
+		
+	}
+}
+
 //
 static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
 {
@@ -65,12 +79,12 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //Entry point 
 bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 {
-	char	**execution;
+	char	**command;
 	t_tokn	*expansions;
 	t_tokn	*redirections;
 	t_tokn	*assignations;
 
-	execution = NULL;
+	command = NULL;
 	expansions = NULL;
 	redirections = NULL;
 	assignations = NULL;
@@ -84,7 +98,7 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 			
 	//		print_tokens(expansions);
 
-			execution = initialise_execution(*minishell, &redirections, &expansions);
+			command = initialise_execution(*minishell, &redirections, &expansions);
 				
 	//		print_tokens(redirections);
 	//		print_tokens(expansions);
@@ -93,7 +107,7 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 			//expand redirections
 
-			print_exec(assignations, expansions, redirections, execution);
+			print_exec(assignations, expansions, redirections, command);
 
 //			execve(*execution, execution + 1, NULL);
 
@@ -101,6 +115,8 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 				print_tokens(assignations);
 			
 			//assign(*minishell, assignations);
+		
+			execute_command(minishell, command);
 		}
 		//Identify type of command
 		//
