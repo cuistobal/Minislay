@@ -1,60 +1,69 @@
 #include "minislay.h"
 
-static bool	try_path(char **command, char *path, int *index)
+//Lastly, we try to access the command binary throughthe different paths we 
+//found.
+static bool	test_path(char **command, char *path)
 {
-	int		start;
-	char	*copy;
+	char	*temp;
 	char	*merged;
 
-	copy = NULL;
+	temp = NULL;
 	merged = NULL;
-	start = *index;
 	if (path)
 	{
-		//Iterate through the PATH's variables
-
-		while (path[*index])
+		temp = ft_strjoin(path, "/");
+		if (temp)
 		{
-			if (isspace(path[*index]))
-				break ;
-			(*index)++;
-		}
-
-		//Retrieve a PATH and merge it with the current command
-		copy = strndup(path + start, *index);
-		if (copy)
-		{
-			merged = ft_strjoin(copy, *command);
+			merged = ft_strjoin(temp, *command);
 			if (merged)
 			{
-				if (access(merged, X_OK))
+				free(temp);
+				if (access(merged, F_OK | X_OK) == 0)
 				{
+					printf("%s\n", merged);
 					*command = merged;
 					return (true);
 				}
+				free(merged);
 			}
 		}
 	}
 	return (false);
 }
 
-//We use this function to retrieve the path to the command's binary.
+//We use this function to loop trough the PATH contained in env.
+static bool	try_path(char **command, char *path)
+{
+	char	*copy;
+
+	copy = NULL;
+	if (path)
+	{
+		copy = strdup(strtok_r(path, ":", &path));
+		while (copy)
+		{
+			if (test_path(command, copy))
+				return (free(copy), true);
+			free(copy);
+			copy = strtok_r(path, ":", &path);
+			if (copy)
+				copy = strdup(copy);
+		}
+	}
+	//Error message -> No path
+	return (false);
+}
+
+//We use this function to retrieve the PATH env variable.
 bool	retrieve_path(t_shel *minishell, char **command)
 {
-	char	*temp;
 	char	*path;
-	int		index;
 
-	index = 0;
-	temp = NULL;
 	path = NULL;
 	if (minishell && *command)
 	{
 		if (find_key(minishell, &path, PATH))
-		{
-			while (!try_path(command, path, &index))
-				index++;
-
-		}
+			return (try_path(command, path));
 	}
+	return (false);
 }

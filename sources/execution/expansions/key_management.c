@@ -63,6 +63,7 @@ static char	*retrieve_expansions(char *token, int *index)
 			{
 				if (*index == start)
 					return extract_key(token, index, start);
+				//index modification here ?
 				return strndup(token + start, *index - start);	
 			}
 			(*index)++;
@@ -89,35 +90,30 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 			}
 			*value = strdup(*value);
 		}
-		/*
-		free(*key);
-		*key = NULL;
-		*/
 		return (*value);
 	}
 	return (*key);
 }
 
 //
-bool	get_expanded(t_shel *minishell, t_tokn **token, char **value, int *index)
+bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 {
 	char	*key;
 
 	key = NULL;
-	if ((*token)->value[*index])
+	if (token && token[*index])
 	{
-		key = retrieve_expansions((*token)->value, index);
+		key = retrieve_expansions(token, index);
 		if (key)
 		{
 			if (retrieve_keys_value(minishell, key, value))
 			{
 				return (true);	
 			}
-			//return (retrieve_keys_value(minishell, &key, value));
-		*value = strdup(key);
-		//	(*token)->value + *index;
-		return (true);
+	//		*value = strdup(key);
+			*value = "";
+			return (true);
 		}
 	}
-	return (!(*token)->value[*index]);
+	return (!token[*index]);
 }
