@@ -64,13 +64,10 @@ static bool	append_heredoc(char *expanded, int fd)
 {
 	if (expanded)
 	{
-		if (write(fd, expanded, strlen(expanded)))
-		{
-			if (write(fd, "\n", 1))
-				return (true);
-		}
+		if (!write(fd, expanded, strlen(expanded)))
+			return false;
 	}
-	return (false);
+	return (write(fd, "\n", 1));
 }
 
 //This utility creates a temporary file and fills it with the user's input. If
