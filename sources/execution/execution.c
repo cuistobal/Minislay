@@ -44,14 +44,10 @@ static void	execute_command(t_shel **minishell, char **command)
 {
 	pid_t	pid;
 
-	if (command)
-	{
-		if (**command == '/')
-		{
-			pid = create_process();		
-		}
-		
-	}
+	if (!command)
+		return ;
+	if (**command == '/')
+		pid = create_process();	
 }
 
 //
@@ -74,7 +70,13 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
-//Entry point 
+//Entry point -> Needs some rework
+//
+//	Either:
+//	
+//		-> 	Fix the misleading name
+//		->	Change the return type to char**
+//
 bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 {
 	char	**command;
