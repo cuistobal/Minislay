@@ -40,6 +40,7 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	return (exec);
 }*/
 
+/*
 static void	execute_command(t_shel **minishell, char **command)
 {
 	pid_t	pid;
@@ -49,6 +50,7 @@ static void	execute_command(t_shel **minishell, char **command)
 	if (**command == '/')
 		pid = create_process();	
 }
+*/
 
 //
 static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
@@ -115,7 +117,8 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 	if (expand(*minishell, &assignations))
 		print_tokens(assignations);
 	
-	execute_command(minishell, command);
+//	execute_command(minishell, command);
+
 	//Identify type of command
 	//
 	//Turn the token list into redirs && char **exec

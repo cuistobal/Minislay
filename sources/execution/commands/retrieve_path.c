@@ -18,6 +18,7 @@ static bool	test_path(char **command, char *path)
 	if (!merged)
 		return (false);
 	free(temp);
+	printf("%s\n", merged);
 	if (!access(merged, F_OK | X_OK) == 0)
 		return (free(merged), false);
 	*command = merged;
@@ -28,20 +29,23 @@ static bool	test_path(char **command, char *path)
 static bool	try_path(char **command, char *path)
 {
 	char	*copy;
+	char	*try_path;
 
 	copy = NULL;
+	try_path = NULL;
 	if (!path)
 		return (false);
-	copy = strdup(strtok_r(path, ":", &path));
-	while (copy)
+	copy = strdup(path);
+	try_path = copy;
+	while (*try_path)
 	{
-		if (test_path(command, copy))
-			return (free(copy), true);
-		free(copy);
-		copy = strtok_r(path, ":", &path);
-		if (copy)
-			copy = strdup(copy);
+		if (test_path(command, strtok_r(try_path, ":", &try_path)))
+		{
+			free(copy);
+			return (true);
+		}
 	}
+	free(copy);
 	//Error message -> No path
 	return (false);
 }

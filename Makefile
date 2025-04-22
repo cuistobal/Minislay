@@ -48,7 +48,6 @@ SOURCES = \
 	sources/execution/expansions/bonus/globing.c \
 	sources/execution/expansions/bonus/match_pattern.c \
 	sources/execution/expansions/bonus/test_globing_patterns.c \
-	sources/execution/commands/command_type.c \
 	sources/execution/commands/retrieve_path.c \
 	sources/execution/commands/modify_token_types.c \
 	sources/execution/commands/get_command_and_arguments.c \
