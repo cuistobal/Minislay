@@ -9,26 +9,19 @@ static bool	test_path(char **command, char *path)
 
 	temp = NULL;
 	merged = NULL;
-	if (path)
-	{
-		temp = ft_strjoin(path, "/");
-		if (temp)
-		{
-			merged = ft_strjoin(temp, *command);
-			if (merged)
-			{
-				free(temp);
-				if (access(merged, F_OK | X_OK) == 0)
-				{
-					printf("%s\n", merged);
-					*command = merged;
-					return (true);
-				}
-				free(merged);
-			}
-		}
-	}
-	return (false);
+	if (!path)
+		return (false);
+	temp = ft_strjoin(path, "/");
+	if (!temp)
+		return (false);
+	merged = ft_strjoin(temp, *command);
+	if (!merged)
+		return (false);
+	free(temp);
+	if (!access(merged, F_OK | X_OK) == 0)
+		return (free(merged), false);
+	*command = merged;
+	return (true);
 }
 
 //We use this function to loop trough the PATH contained in env.
@@ -37,18 +30,17 @@ static bool	try_path(char **command, char *path)
 	char	*copy;
 
 	copy = NULL;
-	if (path)
+	if (!path)
+		return (false);
+	copy = strdup(strtok_r(path, ":", &path));
+	while (copy)
 	{
-		copy = strdup(strtok_r(path, ":", &path));
-		while (copy)
-		{
-			if (test_path(command, copy))
-				return (free(copy), true);
-			free(copy);
-			copy = strtok_r(path, ":", &path);
-			if (copy)
-				copy = strdup(copy);
-		}
+		if (test_path(command, copy))
+			return (free(copy), true);
+		free(copy);
+		copy = strtok_r(path, ":", &path);
+		if (copy)
+			copy = strdup(copy);
 	}
 	//Error message -> No path
 	return (false);
@@ -60,10 +52,9 @@ bool	retrieve_path(t_shel *minishell, char **command)
 	char	*path;
 
 	path = NULL;
-	if (minishell && *command)
-	{
-		if (find_key(minishell, &path, PATH))
-			return (try_path(command, path));
-	}
+	if (!minishell || !*command)
+		return (false);
+	if (find_key(minishell, &path, PATH))
+		return (try_path(command, path));
 	return (false);
 }
