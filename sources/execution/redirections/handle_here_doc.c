@@ -85,8 +85,8 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
 	limiter = limiter_handler((*redirections)->value, &expansions);
 	if (limiter)
 	{
-		free((*redirections)->value);
-		(*redirections)->value = limiter;
+	//	free((*redirections)->value);
+	//	(*redirections)->value = limiter;
 		fd = open(HEREDOC, O_APPEND | O_CREAT | O_RDWR, 0644);
 		if (fd >= 0)
 		{

@@ -66,14 +66,12 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 
 	copy = *expansions;
 	
-	if (expand(minishell, &copy))
-	{
-		
-		handle_redirection_list(minishell, redirections);
+	if (!expand(minishell, &copy))
+		return (NULL);
 
-		return (get_command_and_arguments(minishell, *expansions, count));
-	}
-	return (NULL);
+	handle_redirection_list(minishell, redirections);
+
+	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
 //Entry point 
@@ -88,40 +86,36 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 	expansions = NULL;
 	redirections = NULL;
 	assignations = NULL;
-	if (*minishell && ast)
-	{
-		if (ast->tokens)
-		{
-			split_list(ast->tokens, &assignations, &expansions);
+	if (!*minishell && !ast)
+		return (false);
 
-			//perform expansions
+	if (!ast->tokens)	
+		return (false);
+	split_list(ast->tokens, &assignations, &expansions);
+
+	//perform expansions
 			
-	//		print_tokens(expansions);
+	//print_tokens(expansions);
 
-			command = initialise_execution(*minishell, &redirections, &expansions);
+	command = initialise_execution(*minishell, &redirections, &expansions);
 				
-	//		print_tokens(redirections);
-	//		print_tokens(expansions);
+	//print_tokens(redirections);
+	//print_tokens(expansions);
 
-			//Redirections belong there
+	//Redirections belong there
 
-			//expand redirections
+	//expand redirections
 
-			print_exec(assignations, expansions, redirections, command);
+	print_exec(assignations, expansions, redirections, command);
 
-//			execve(*execution, execution + 1, NULL);
+	//execve(*execution, execution + 1, NULL);
 
-			if (expand(*minishell, &assignations))
-				print_tokens(assignations);
-			
-			//assign(*minishell, assignations);
-		
-			execute_command(minishell, command);
-		}
-		//Identify type of command
-		//
-		//Turn the token list into redirs && char **exec
-		return true;
-	}
-	return false;
+	if (expand(*minishell, &assignations))
+		print_tokens(assignations);
+	
+	execute_command(minishell, command);
+	//Identify type of command
+	//
+	//Turn the token list into redirs && char **exec
+	return true;
 }
