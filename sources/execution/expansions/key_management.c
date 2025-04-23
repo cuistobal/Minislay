@@ -48,27 +48,47 @@ static char	*extract_key(char *token, int *index, int start)
 	return strndup(token + start, tlen + 1);
 }
 
+static inline void	quote_state(char current, char *quote, bool *sqte)
+{
+	if (is_quote(current))
+	{
+		if (!*quote)
+		{
+			*quote = current;
+			*sqte = *quote == '\'';
+		}
+		else if (*quote == current)
+		{
+			*quote = INIT;
+			*sqte = *quote == '\'';
+		}
+	}
+
+}
 //We use this utility to discriminate keys and non keys within the current token
 //string.
 //This is where we should implement the SQTE DQTE discrimination. POssibly using
 //a stack approach where we pile the quotes if peek() == token[index].
 static char	*retrieve_expansions(char *token, int *index)
 {
-	bool	sqte;
-	int		start;
-	char	quote;
+	bool		sqte;
+	int			start;
+	static char	quote;
 
-	quote = INIT;
 	sqte = false;
+//	quote = INIT;
 	start = *index;
+	if (*index == 0)
+		quote = INIT;
 	if (token[*index])
 	{
 		while (token[*index])
 		{
-
 			// quote_handler()	This smol util needs implemetantion.
 			// 					Note that a similar code snippet is implemented
 			// 					in tokenizer.c
+		//	printf("@%d	->	bool = %d, token[*index] = %c, quote = %c\n", *index, sqte, token[*index], quote);		
+			/*
 			if (is_quote(token[*index]))
 			{
 				if (!quote)
@@ -77,14 +97,21 @@ static char	*retrieve_expansions(char *token, int *index)
 					sqte = quote == '\'';
 				}
 				else if (quote == token[*index])
+				{
 					quote = INIT;
+					sqte = quote == '\'';
+				}
 			}
-			else if (token[*index] == '$' && !sqte)
+			*/
+			quote_state(token[*index], &quote, &sqte);
+		//	else if (token[*index] == '$' && !sqte)
+			if (token[*index] == '$' && !sqte)
 			{
+				printf("%s\n", token + *index);
 				if (*index == start)
-					return extract_key(token, index, start);
+					return (extract_key(token, index, start));
 				//index modification here ?
-				return strndup(token + start, *index - start);	
+				return (strndup(token + start, *index - start));
 			}
 			(*index)++;
 		}
@@ -126,12 +153,8 @@ bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 		key = retrieve_expansions(token, index);
 		if (key)
 		{
-			if (retrieve_keys_value(minishell, key, value))
-			{
-				return (true);	
-			}
-	//		*value = strdup(key);
-			*value = "";
+			if (!retrieve_keys_value(minishell, key, value))
+				*value = "";
 			return (true);
 		}
 	}
