@@ -17,7 +17,7 @@ char    **get_command_and_arguments(t_shel *minishell, t_tokn *list, int count);
 void    modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count);
 
 //expand.c
-bool    expand(t_shel *minishell, t_tokn **list);
+bool    expand(t_shel *minishell, t_tokn **list, int *count);
 
 //
 bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
@@ -40,7 +40,7 @@ bool	word_splitting(t_shel *minishell, t_tokn **current);
 void	free_array(char **array, int count);
 bool	match_pattern(char **patterns, char *current);
 char	**identify_globing_patterns(char *globing);
-bool	globing(t_tokn **list, const char *path);
+bool	globing(t_tokn **list, const char *path, int *count);
 
 //key_management.c
 bool	get_expanded(t_shel *minishell, char *token, char **value, int *index);

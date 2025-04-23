@@ -1,7 +1,7 @@
 #include "minislay.h"
 //#include "globing.h"
 
-static bool	insert_globing_result(t_tokn **list, char *filename, bool *init)
+static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int *count)
 {
     t_tokn  *new;
 	char	*value;
@@ -22,6 +22,7 @@ static bool	insert_globing_result(t_tokn **list, char *filename, bool *init)
 	        new = create_token_node(value, WORD);
 	        if (new)
 	        {
+				(*count)++;
 		        (*list)->next = new;
                 return (move_pointer(list));
 	        }
@@ -32,7 +33,7 @@ static bool	insert_globing_result(t_tokn **list, char *filename, bool *init)
 }
 
 //static char	**globing_loop(char **patterns, DIR *stream, int *size)
-static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
+static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count)
 {
     bool            init;
 	t_tokn			*next;
@@ -48,7 +49,7 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream)
 		{
 			if (match_pattern(patterns, current->d_name))
 			{
-        		if (!insert_globing_result(list, current->d_name, &init))
+        		if (!insert_globing_result(list, current->d_name, &init, count))
                     break ;
 			}
 			current = readdir(stream);
@@ -73,7 +74,7 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 }
 
 //char	**globing(const char *globing, const char *path, int *count)
-bool	globing(t_tokn **list, const char *path) 
+bool	globing(t_tokn **list, const char *path, int *count) 
 {
 	char	**patterns;
 	DIR		*dir_stream;
@@ -87,7 +88,7 @@ bool	globing(t_tokn **list, const char *path)
 			patterns = identify_globing_patterns((*list)->value);
 			if (patterns)
 			{
-				if (globing_loop(list ,patterns, dir_stream))
+				if (globing_loop(list ,patterns, dir_stream, count))
 					return (closedir(dir_stream), true);
 			}
 			closedir(dir_stream);

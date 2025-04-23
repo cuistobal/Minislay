@@ -90,7 +90,7 @@ static bool	quote_removal(t_tokn *list)
 
 	while (list)
 	{
-		tlen = (int)strlen(list->value);
+		tlen = (int)strlen(list->value);		
 		removed = (char *)malloc(sizeof(char) * tlen);
 		if (!removed)
 			return (false);
@@ -113,8 +113,9 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	modify_token_types(expansions, redirections, &count);
 
 	copy = *expansions;
-	
-	if (!expand(minishell, &copy))
+
+	//Inserer la modification de count pour le globing
+	if (!expand(minishell, &copy, &count))
 		return (NULL);
 
 	if (!quote_removal(*expansions))
@@ -180,3 +181,5 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 	//Turn the token list into redirs && char **exec
 	return (command);
 }
+
+

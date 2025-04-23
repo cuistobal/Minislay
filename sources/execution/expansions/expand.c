@@ -33,7 +33,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 }
 
 //if multiple dollars, split the list into subtokens
-static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
+static bool expand_no_quotes(t_shel *minishell, t_tokn **list, int *count)
 {
 	int		index;
 	char	*temp;
@@ -58,18 +58,18 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list)
 		if (!is_state_active((*list)->type, STAR))
 			return (word_splitting(minishell, list));
 	}
-	return (globing(list, CWD));
+	return (globing(list, CWD, count));
 }
 
 //Entry point of the expansion module
-bool    expand(t_shel *minishell, t_tokn **list)
+bool    expand(t_shel *minishell, t_tokn **list, int *count)
 {
 	while (*list)
 	{
 	//	if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
 		if (((*list)->type & DOLL || (*list)->type & STAR))
 		{
-			if (!((*list)->type & DQTE) && (!expand_no_quotes(minishell, list)))
+			if (!((*list)->type & DQTE) && (!expand_no_quotes(minishell, list, count)))
 				return (false);
 			else if ((*list)->type & DQTE && !expand_in_quotes(minishell, list))
 				return (false);
