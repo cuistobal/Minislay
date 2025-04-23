@@ -91,14 +91,14 @@ static bool	quote_removal(t_tokn *list)
 	while (list)
 	{
 		tlen = (int)strlen(list->value);		
-		removed = (char *)malloc(sizeof(char) * tlen);
+		removed = (char *)calloc(tlen, sizeof(char));
 		if (!removed)
 			return (false);
 		memset(removed, 0, tlen);
 		quote_removal_helper(list->value, removed);
 		free(list->value);
 		list->value = removed;
-		list = list->next;	
+		list = list->next;
 	}
 	return (true);
 }

@@ -32,7 +32,7 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 	char	**commands;
 
 	index = 0;
-	commands = (char **)malloc(sizeof(char *) * (count + 1));
+	commands = (char **)calloc(count + 1, sizeof(char *));
 	if (!commands)
 		return (NULL);
 	while (list)

@@ -4,8 +4,12 @@
 
 void	execute_command(char **command, char **env)
 {
-	if (!execve(*command, command + 1, env))
-		exit(-1);
+	
+	exit(execve(*command, command + 1, env));
+//	if (execve(*command, command + 1, env) == -1)
+//		printf("exec failed\n");
+//	if (execve(*command, command + 1, env))
+//		exit(-1);
 }
 
 static bool	join_env(char **joined, char *temp[3])
