@@ -2,13 +2,24 @@
 
 //void	create_process()
 
-int	execute_command(char **command, char **env)
+void	execute_command(char **command, char **env)
 {
 	if (!execve(*command, command + 1, env))
 		exit(-1);
 }
 
-char	**rebuild_env(t_shel *minishell)
+static bool	join_env(char **joined, char *temp[3])
+{
+	*joined = ft_strjoin(temp[0], temp[1]);
+	if (!*joined)
+		return (false);
+	*joined = ft_strjoin(*joined, temp[2]);
+	if (!*joined)
+		return (false);
+	return (true);
+}
+
+char	**rebuild_env(t_shel *minishell, int *size)
 {
 	int		index;
 	char	**env;
@@ -18,16 +29,29 @@ char	**rebuild_env(t_shel *minishell)
 	temp[0] = NULL;	
 	temp[1] = "=";	
 	temp[2] = NULL;	
-	env = (char **)malloc(sizeof(char *) * 50);
+	env = (char **)malloc(sizeof(char *) * *size);
 	if (!env)
 		return (NULL);
 	while (minishell->envp)
 	{
+		if (index == *size - 1)
+		{
+			*size = *size << 1;
+			env = (char **)realloc(env, sizeof(char *) * *size);
+			if (!env)
+				return (NULL);
+		}
 		temp[0] = minishell->envp->var[0];
 		temp[2] = minishell->envp->var[1];
-		env[index] = join_env();		
+		if (!join_env(&env[index], temp))
+		{
+			free_array(env, *size);
+			return (NULL);
+		}
 		index++;
-	}	
+		minishell->envp = minishell->envp->next;
+	}
+	return (env);
 }
 
 //Main travsersal function of the AST
@@ -35,9 +59,11 @@ char	**rebuild_env(t_shel *minishell)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
+	int		size;
 	char	**env;
 	char	**command;
 
+	size = 50;
 	env = NULL;
 	command = NULL;
 	if (ast)
@@ -56,7 +82,12 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 					printf("command is NULL\n");
 					return ;
 				}
-				env = rebuild_env(*minishell);
+		//Turn into a bool to check alloc failure (?)	
+				env = rebuild_env(*minishell, &size);
+				
+				if (!env)
+					free_array(env, size);
+		//end	
 				execute_command(command, env);
 				//	Append error code && return
 				/*
