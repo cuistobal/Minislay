@@ -56,19 +56,28 @@ static char	*retrieve_expansions(char *token, int *index)
 {
 	bool	sqte;
 	int		start;
+	char	quote;
 
+	quote = INIT;
 	sqte = false;
 	start = *index;
 	if (token[*index])
 	{
 		while (token[*index])
 		{
-			if (token[*index] == '\'')
+
+			// quote_handler()	This smol util needs implemetantion.
+			// 					Note that a similar code snippet is implemented
+			// 					in tokenizer.c
+			if (is_quote(token[*index]))
 			{
-				if (!sqte)
-					sqte = true;
-				else
-					sqte = false;
+				if (!quote)
+				{
+					quote = token[*index];
+					sqte = quote == '\'';
+				}
+				else if (quote == token[*index])
+					quote = INIT;
 			}
 			else if (token[*index] == '$' && !sqte)
 			{
@@ -106,6 +115,7 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 	return (*key);
 }
 
+//
 bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 {
 	char	*key;
