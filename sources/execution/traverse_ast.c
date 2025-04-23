@@ -12,17 +12,45 @@ void	execute_command(char **command, char **env)
 //		exit(-1);
 }
 
+//
 static bool	join_env(char **joined, char *temp[3])
 {
-	*joined = ft_strjoin(temp[0], temp[1]);
-	if (!*joined)
-		return (false);
-	*joined = ft_strjoin(*joined, temp[2]);
-	if (!*joined)
-		return (false);
-	return (true);
+	char	*merged;
+
+	merged = ft_strjoin(strdup(temp[0]), strdup(temp[1]));
+	if (!merged)
+		return (free(merged), merged = NULL,false);
+	merged = ft_strjoin(merged, strdup(temp[2]));
+	if (!merged)
+		return (free(merged), merged = NULL,false);
+	return (*joined = merged, true);
 }
 
+//
+static void	*resize_array(void *array, int array_type, int *size)
+{
+	int		len;
+	void	*new;
+
+	len = *size;
+	*size = *size << 1;
+	new = realloc(array, array_type * *size);
+	if (!new)
+		return (NULL);
+	memset(new, 0, (array_type *len));
+	return (new);
+}
+
+static void	reset_array(char **array, int start, int end)
+{
+	int	reset;
+
+	reset = 0;
+	if (!array)
+		return ;
+	while (reset < end - start )
+		array[start + reset++] = NULL;
+}
 //
 static char	**rebuild_env(t_shel *minishell, int *size)
 {
@@ -31,29 +59,22 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	char	*temp[3];
 
 	index = 0;
-	temp[0] = NULL;	
-	temp[1] = "=";	
-	temp[2] = NULL;	
 	env = (char **)malloc(sizeof(char *) * *size);
 	if (!env)
 		return (NULL);
+	reset_array(env, 0, *size);	
 	while (minishell->envp)
 	{
+		reset_array(temp, 0, 3);
+		temp[1] = "=";
 		if (index == *size - 1)
-		{
-			*size = *size << 1;
-			env = (char **)realloc(env, sizeof(char *) * *size);
-			if (!env)
-				return (NULL);
-		}
+			env = (char **)resize_array(env, sizeof(char *), size);
+		if (!env)
+			return (NULL);
 		temp[0] = minishell->envp->var[0];
 		temp[2] = minishell->envp->var[1];
-		if (!join_env(&env[index], temp))
-		{
-			free_array(env, *size);
-			return (NULL);
-		}
-		index++;
+		if (!join_env(&env[index++], temp))
+			return (free_array(env, *size), NULL);
 		minishell->envp = minishell->envp->next;
 	}
 	return (env);
@@ -68,7 +89,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	char	**env;
 	char	**command;
 
-	size = 50;
+	size = 1;
 	env = NULL;
 	command = NULL;
 	if (ast)
