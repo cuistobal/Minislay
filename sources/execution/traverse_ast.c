@@ -74,7 +74,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
-		if (ast->tokens)
+		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
@@ -104,6 +104,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 					waitpid(pid, &status, WIFEXITED(status));
 					printf("%d\n", WEXITSTATUS(status));
 				}
+	
 				//	Append error code && return
 				/*
 				{
