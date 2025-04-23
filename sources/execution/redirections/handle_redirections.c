@@ -14,10 +14,7 @@ static bool open_outfile_append(t_tokn **redirections)
 			{
 				fd = open((*redirections)->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
 				if (fd == -1)
-				{
-					printf("Unable to open %s\n", (*redirections)->value);
-					return (false);
-				}
+					return (printf("Unable to open %s\n", (*redirections)->value), false);
 				(*redirections)->type = fd; 
         		return (move_pointer(redirections));
 			}

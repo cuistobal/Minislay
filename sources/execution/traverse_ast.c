@@ -23,7 +23,8 @@ static bool	join_env(char **joined, char *temp[3])
 	return (true);
 }
 
-char	**rebuild_env(t_shel *minishell, int *size)
+//
+static char	**rebuild_env(t_shel *minishell, int *size)
 {
 	int		index;
 	char	**env;
@@ -92,7 +93,17 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 				if (!env)
 					free_array(env, size);
 		//end	
-				execute_command(command, env);
+		
+				int status;
+
+				pid_t pid = fork();
+				if (pid == 0)
+					execute_command(command, env);
+				else
+				{
+					waitpid(pid, &status, WIFEXITED(status));
+					printf("%d\n", WEXITSTATUS(status));
+				}
 				//	Append error code && return
 				/*
 				{
