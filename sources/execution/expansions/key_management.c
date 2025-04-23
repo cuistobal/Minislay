@@ -50,16 +50,27 @@ static char	*extract_key(char *token, int *index, int start)
 
 //We use this utility to discriminate keys and non keys within the current token
 //string.
+//This is where we should implement the SQTE DQTE discrimination. POssibly using
+//a stack approach where we pile the quotes if peek() == token[index].
 static char	*retrieve_expansions(char *token, int *index)
 {
+	bool	sqte;
 	int		start;
 
+	sqte = false;
 	start = *index;
 	if (token[*index])
 	{
 		while (token[*index])
 		{
-			if (token[*index] == '$')
+			if (token[*index] == '\'')
+			{
+				if (!sqte)
+					sqte = true;
+				else
+					sqte = false;
+			}
+			else if (token[*index] == '$' && !sqte)
 			{
 				if (*index == start)
 					return extract_key(token, index, start);
@@ -72,8 +83,6 @@ static char	*retrieve_expansions(char *token, int *index)
 	}
 	return (NULL);
 }
-
-
 
 //We use this function to determine if the key is a standard key or an env/user
 //defined key.

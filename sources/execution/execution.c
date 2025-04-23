@@ -52,6 +52,7 @@ static void	execute_command(t_shel **minishell, char **command)
 }
 */
 
+//
 static void	quote_removal_helper(char *token, char *removed)
 {
 	int		save;
