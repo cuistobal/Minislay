@@ -57,6 +57,7 @@ bool	retrieve_path(t_shel *minishell, char **command)
 
 	path = NULL;
 	if (!minishell || !*command)
+	//	|| !**command))
 		return (false);
 	if (find_key(minishell, &path, PATH))
 		return (try_path(command, path));

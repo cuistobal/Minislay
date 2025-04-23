@@ -39,7 +39,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions)
 			*expansions = current;
 		}
 		//TBM
-		return true;
+		return (true);
 	}
 	return (!current);
 }

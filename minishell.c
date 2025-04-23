@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/12 09:08:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/23 09:08:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,14 @@ int	get_minishelled(t_shel **minishell, char *input)
 	ast = NULL;
 	tokens = NULL;
 	parser = NULL;
-	if (tokenize(&tokens, input, strlen(input)))
-	{
-		if (get_stacked(NULL, NULL, 0))
-		{
-			if (define_parser(&parser, &ast, tokens))
-			{
-				if (parse_script(&parser))
-				{
-				//	print_ast(ast, "ROOT", "ROOT", 0);
-				//	print_env((*minishell)->envp);
-          			traverse_ast(minishell, ast);
-				//	printf("%p\n", *minishell);//Shut down compilatione rro msg
-				}
-				else
-					printf("Failed to parse.\n");
-			}
-		}
-		else
-			printf("Unmatched (.\n");
-	}
-	else
-	{
-		printf("Tokenization error.\n");
-		free_tokens(tokens);
-		return (-1);
-	}
-	free_tree(ast);
-	return (0);
+	if (!tokenize(&tokens, input, strlen(input)))
+		return (printf(TOKENIZATION), free_tokens(tokens), -1);
+	if (!get_stacked(NULL, NULL, 0))
+		return (printf("%s unmatched '('\n", SYNTAX), -1);
+	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
+		return (printf(PARSING), free_tokens(tokens), free_tree(ast), -1);
+	traverse_ast(minishell, ast);
+	return (free_tree(ast), 0);
 }
 
 //
@@ -75,15 +55,13 @@ int	mini_loop(t_shel **minishell)
 static bool	mini_setup(t_shel **minishell, char **envp)
 {
 	*minishell = (t_shel *)malloc(sizeof(t_shel));
-	if (*minishell)
-	{
-		(*minishell)->envp = NULL;
-		(*minishell)->local = NULL;
-		(*minishell)->command = NULL;
-		(*minishell)->expt = NULL;
-        return (set_env(minishell, envp));
-	}
-	return (*minishell);
+	if (!*minishell)
+		return (false);
+	(*minishell)->envp = NULL;
+	(*minishell)->local = NULL;
+	(*minishell)->command = NULL;
+	(*minishell)->expt = NULL;
+    return (set_env(minishell, envp));
 }
 
 //

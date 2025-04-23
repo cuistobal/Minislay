@@ -1,5 +1,9 @@
 #include "minislay.h"
 
+//We need to implement the token split when dealing with weird stuff like
+//"$PATH"'PATH'
+//The code currently expands the '$PATH' variable iif it is preceeded with a
+//double quoted or unquoted $ token.
 //
 static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 {
@@ -62,20 +66,15 @@ bool    expand(t_shel *minishell, t_tokn **list)
 {
 	while (*list)
 	{
-		if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
+	//	if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
+		if (((*list)->type & DOLL || (*list)->type & STAR))
 		{
-			if (!is_state_active((*list)->type, DQTE))
-			{
-				if (!expand_no_quotes(minishell, list))
-					return (false);
-			}
-			else
-			{
-				if (!expand_in_quotes(minishell, list))
-					return (false);
-			}
+			if (!((*list)->type & DQTE) && (!expand_no_quotes(minishell, list)))
+				return (false);
+			else if ((*list)->type & DQTE && !expand_in_quotes(minishell, list))
+				return (false);
 		}
-        	move_pointer(list);
+        move_pointer(list);
     }
     return (!*list);
 }

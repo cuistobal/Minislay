@@ -8,6 +8,8 @@ static	bool is_builtin(char *command)
 	int	index;
 
 	index = 0;
+	if (!command || !*command)
+		return (false);
 	while (index < BCNT)
 	{
 		if (strcmp(command, g_b[index]) == 0)
@@ -20,8 +22,7 @@ static	bool is_builtin(char *command)
 //
 static bool	is_absolute(char *command)
 {
-	printf("%s\n", command);
-	return (*command == '/');
+	return (command && *command && *command == '/');
 }
 
 //Utility to create the char **tab required for execution.

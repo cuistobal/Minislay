@@ -73,6 +73,8 @@ static char	*retrieve_expansions(char *token, int *index)
 	return (NULL);
 }
 
+
+
 //We use this function to determine if the key is a standard key or an env/user
 //defined key.
 static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
@@ -95,7 +97,6 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 	return (*key);
 }
 
-//
 bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 {
 	char	*key;
@@ -117,3 +118,22 @@ bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
 	}
 	return (!token[*index]);
 }
+
+/*
+bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
+{
+	char	*key;
+
+	key = NULL;
+	if (!token || !token[*index])
+		return (false);
+	key = retrieve_expansions(token, index);
+	if (!key)
+		return (false);
+	if (retrieve_keys_value(minishell, key, value))
+		return (true);	
+
+	*value = "";
+	return (true);
+}
+*/
