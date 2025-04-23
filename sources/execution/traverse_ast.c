@@ -122,8 +122,9 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 					execute_command(command, env);
 				else
 				{
-					waitpid(pid, &status, WIFEXITED(status));
-					printf("%d\n", WEXITSTATUS(status));
+					waitpid(pid, &status, 0);
+					if (WIFEXITED(status))
+						printf("%d\n", WEXITSTATUS(status));
 				}
 	
 				//	Append error code && return

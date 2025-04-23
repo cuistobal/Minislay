@@ -14,15 +14,22 @@ static bool	test_path(char **command, char *path)
 	temp = ft_strjoin(path, "/");
 	if (!temp)
 		return (false);
+/*
+ *
+ * 	There is a read probleme here, apprently, the command token alcks 1 bit of
+ * 	memory from somewhere, hence giving us an invalid read on the first command
+ * 	when using ls.
+ *
+ */
+
+
 	merged = ft_strjoin(temp, *command);
 	if (!merged)
 		return (false);
 	free(temp);
-	printf("%s\n", merged);
 	if (!access(merged, F_OK | X_OK) == 0)
 		return (free(merged), false);
-	*command = merged;
-	return (true);
+	return (free(*command), *command = merged, true);
 }
 
 //We use this function to loop trough the PATH contained in env.
