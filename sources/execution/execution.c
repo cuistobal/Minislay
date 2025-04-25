@@ -40,6 +40,7 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	return (exec);
 }*/
 
+/*
 static void	execute_command(t_shel **minishell, char **command)
 {
 	pid_t	pid;
@@ -49,7 +50,58 @@ static void	execute_command(t_shel **minishell, char **command)
 	if (**command == '/')
 		pid = create_process();	
 }
+*/
 
+//
+static void	quote_removal_helper(char *token, char *removed)
+{
+	int		save;
+	int		index;
+	char	quote;
+
+	save = 0;
+	index = 0;
+	quote = INIT;
+	while (token[index])
+	{
+		if (!quote)
+		{
+			if (is_quote(token[index]))
+				quote = token[index];
+			else
+				removed[save++] = token[index];
+		}
+		else
+		{
+			if (token[index] == quote)
+				quote = INIT;
+			else
+				removed[save++] = token[index];
+		}
+		index++;
+	}
+}
+
+//
+static bool	quote_removal(t_tokn *list)
+{
+	int		tlen;
+	char	*removed;
+
+	while (list)
+	{
+		tlen = strlen(list->value);		
+		removed = (char *)calloc(tlen, sizeof(char));
+		if (!removed)
+			return (false);
+		memset(removed, 0, tlen);
+		quote_removal_helper(list->value, removed);
+		free(list->value);
+		list->value = removed;
+		list = list->next;
+	}
+	return (true);
+}
 //
 static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
 {
@@ -61,10 +113,14 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	modify_token_types(expansions, redirections, &count);
 
 	copy = *expansions;
-	
-	if (!expand(minishell, &copy))
+
+	//Inserer la modification de count pour le globing
+	if (!expand(minishell, &copy, &count))
 		return (NULL);
 
+	if (!quote_removal(*expansions))
+		return (NULL);
+	
 	handle_redirection_list(minishell, redirections);
 
 	return (get_command_and_arguments(minishell, *expansions, count));
@@ -77,7 +133,8 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //		-> 	Fix the misleading name
 //		->	Change the return type to char**
 //
-bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
+//bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
+char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 {
 	char	**command;
 	t_tokn	*expansions;
@@ -89,35 +146,24 @@ bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
 	redirections = NULL;
 	assignations = NULL;
 	if (!*minishell && !ast)
-		return (false);
+		return (NULL);
 
 	if (!ast->tokens)	
-		return (false);
+		return (NULL);
+
 	split_list(ast->tokens, &assignations, &expansions);
 
-	//perform expansions
-			
-	//print_tokens(expansions);
-
 	command = initialise_execution(*minishell, &redirections, &expansions);
-				
-	//print_tokens(redirections);
-	//print_tokens(expansions);
 
-	//Redirections belong there
+//	print_exec(assignations, expansions, redirections, command);
 
-	//expand redirections
+//	if (!expand(*minishell, &assignations))
+//		return (NULL);
 
-	print_exec(assignations, expansions, redirections, command);
+//	print_tokens(assignations);
 
-	//execve(*execution, execution + 1, NULL);
-
-	if (expand(*minishell, &assignations))
-		print_tokens(assignations);
-	
-	execute_command(minishell, command);
 	//Identify type of command
 	//
 	//Turn the token list into redirs && char **exec
-	return true;
+	return (command);
 }

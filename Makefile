@@ -24,6 +24,8 @@ SOURCES = \
 	utilities/Libft/ft_strjoin.c \
 	utilities/Libft/get_merged.c \
 	utilities/free_utils.c \
+	utilities/messages.c \
+	utilities/mem_utils.c \
 	utilities/misc.c \
 	utilities/find_key.c \
 	utilities/avl_tree/avl_tree_utils1.c \
@@ -48,7 +50,6 @@ SOURCES = \
 	sources/execution/expansions/bonus/globing.c \
 	sources/execution/expansions/bonus/match_pattern.c \
 	sources/execution/expansions/bonus/test_globing_patterns.c \
-	sources/execution/commands/command_type.c \
 	sources/execution/commands/retrieve_path.c \
 	sources/execution/commands/modify_token_types.c \
 	sources/execution/commands/get_command_and_arguments.c \

@@ -52,15 +52,13 @@ static bool	find_key_in_command(t_env *command, char **value, char *key)
 //return false;
 bool	find_key(t_shel *minishell, char **value, char *key)
 {
-	if (minishell)
-	{
-		if (!find_key_in_avlt(minishell->expt, value, key))
-		{
-			if (!find_key_in_local(minishell->local, value, key))
-			{
-				return (find_key_in_command(minishell->command, value, key));
-			}
-		}
-	}
-	return (*value);
+	if (!minishell)
+		return (false);
+	if (find_key_in_avlt(minishell->expt, value, key))
+		return (*value);
+	if (find_key_in_local(minishell->local, value, key))
+		return (*value);
+	if (find_key_in_command(minishell->command, value, key))
+		return (*value);
+	return (false);
 }
