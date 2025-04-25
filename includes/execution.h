@@ -2,7 +2,9 @@
 # define EXECUTION_H
 
 //command_type.c
-//bool	command_type(char *command);
+bool	is_builtin(char *command);
+bool	is_absolute(char *command);
+bool	is_executable(char *command);
 
 //retrieve_path.c
 bool	retrieve_path(t_shel *minishell, char **command);

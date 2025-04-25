@@ -1,35 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_command_and_arguments.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/25 12:12:15 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
-static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
-
-//static bool	is_builtin(char *command)
-static	bool is_builtin(char *command)
-{
-	int	index;
-
-	index = 0;
-	if (!command || !*command)
-		return (false);
-	while (index < BCNT)
-	{
-		if (strcmp(command, g_b[index]) == 0)
-			break;
-		index++;
-	}
-	printf("%s %d\n", command, index);
-	return (index < BCNT);
-}
-
-//
-static bool	is_absolute(char *command)
-{
-	return (command && *command && *command == '/');
-}
-
-static bool	is_executable(char *command)
-{
-	return (command && *command && strncmp(command, "./", 2) == 0 );
-}
 //Utility to create the char **tab required for execution.
 char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 {

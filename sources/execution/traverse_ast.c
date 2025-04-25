@@ -2,6 +2,7 @@
 
 //void	create_process()
 
+//
 void	execute_command(char **commands, char **env)
 {
 	char	*command;
@@ -10,6 +11,12 @@ void	execute_command(char **commands, char **env)
 	command = *commands;
 	arguments = commands + 1;
 	exit(execve(command, arguments, env));
+}
+
+//
+void	execute_builtin(char **command, char **env)
+{
+
 }
 
 /*
@@ -59,6 +66,21 @@ void	*resize_array(void *array, int array_type, int *size)
 	return (new);
 }
 */
+
+void	create_child_process(t_shel	*minishell, char **command, char **env)
+{
+	int status;
+
+	pid_t pid = fork();
+	if (pid == 0)
+		execute_command(command, env);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			printf("%d\n", WEXITSTATUS(status));
+	}
+}
 
 static void	reset_array(char **array, int start, int end)
 {
@@ -126,36 +148,13 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast)
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
 					return (error_message("Command alloc failed.\n"));
-			//		printf("command is NULL\n");
-
-				env = rebuild_env(*minishell, &size);				
+				env = rebuild_env(*minishell, &size);
 				if (!env)
 					return (free_array(env, size), error_message("env alloc failed.\n"));
-		//end	
-		
-				int status;
-
-				pid_t pid = fork();
-				if (pid == 0)
-					execute_command(command, env);
+				if (!is_builtin(*command))
+					create_child_process(*minishell, command, env);
 				else
-				{
-					waitpid(pid, &status, 0);
-					if (WIFEXITED(status))
-						printf("%d\n", WEXITSTATUS(status));
-				}
-	
-				//	Append error code && return
-				/*
-				{
-					for (int  i = 0; command[i]; i++)
-						printf("%s ", command[i]);
-					printf("\n");
-				}
-				*/
-//				create_process();	
-//				execute(command);	
-			//	print_tokens(ast->tokens);
+					execute_builtin(command, env);
 			}
 		}
 		traverse_ast(minishell, ast->right);
