@@ -16,6 +16,7 @@ static	bool is_builtin(char *command)
 			break;
 		index++;
 	}
+	printf("%s %d\n", command, index);
 	return (index < BCNT);
 }
 
