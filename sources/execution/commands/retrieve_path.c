@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 17:35:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:36:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static bool	test_path(char **command, char *path)
 	temp = ft_strjoin(path, "/");
 	if (!temp)
 		return (false);
+
 /*
  *
- * 	There is a read probleme here, apprently, the command token alcks 1 bit of
+ * 	There is a read probleme here, apprently, the command token lacks 1 bit of
  * 	memory from somewhere, hence giving us an invalid read on the first command
  * 	when using ls.
  *
@@ -59,10 +60,7 @@ static bool	try_path(char **command, char *path)
 	while (*try_path)
 	{
 		if (test_path(command, strtok_r(try_path, ":", &try_path)))
-		{
-			free(copy);
-			return (true);
-		}
+			return (free(copy), true);
 	}
 	free(copy);
 	//Error message -> No path

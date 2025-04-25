@@ -52,7 +52,6 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 			}
 			*/
 		}
-		printf("%s for %d && %d\n", list->value, count, index);
 		commands[index] = list->value;
 		move_pointer(&list);
 		index++;
