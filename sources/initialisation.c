@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 14:12:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:18:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ static bool build_env(t_shel **minishell, char **envp)
 //
 bool    set_env(t_shel **minishell, char **envp)
 {
-    if (*minishell)
-	{
-        if (build_env(minishell, envp))
-			return (append_specials(minishell));
-	}
-    return (false);
+    if (!*minishell)
+    	return (false);
+    if (!build_env(minishell, envp))
+    	return (false);	
+	else
+		return (append_specials(minishell));
 }

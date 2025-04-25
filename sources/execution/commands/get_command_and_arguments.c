@@ -42,10 +42,7 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 			if (!is_builtin(list->value) && !is_absolute(list->value))
 			{
 				if (!retrieve_path(minishell, &list->value))
-				{
-					printf("No path for command %s\n", list->value);	
-					return (NULL);
-				}
+					return (error_message("Invalid command\n"), NULL);
 			}
 			/*
 			{

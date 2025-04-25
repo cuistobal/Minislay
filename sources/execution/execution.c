@@ -150,36 +150,20 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 	if (!ast->tokens)	
 		return (NULL);
+
 	split_list(ast->tokens, &assignations, &expansions);
 
-	//perform expansions
-			
-	//print_tokens(expansions);
-
 	command = initialise_execution(*minishell, &redirections, &expansions);
-				
-	//print_tokens(redirections);
-	//print_tokens(expansions);
 
-	//Redirections belong there
-
-	//expand redirections
-
-	print_exec(assignations, expansions, redirections, command);
-
-	//execve(*execution, execution + 1, NULL);
+//	print_exec(assignations, expansions, redirections, command);
 
 //	if (!expand(*minishell, &assignations))
 //		return (NULL);
 
-	print_tokens(assignations);
-	
-//	execute_command(minishell, command);
+//	print_tokens(assignations);
 
 	//Identify type of command
 	//
 	//Turn the token list into redirs && char **exec
 	return (command);
 }
-
-

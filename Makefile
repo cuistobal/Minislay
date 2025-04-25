@@ -24,6 +24,8 @@ SOURCES = \
 	utilities/Libft/ft_strjoin.c \
 	utilities/Libft/get_merged.c \
 	utilities/free_utils.c \
+	utilities/messages.c \
+	utilities/mem_utils.c \
 	utilities/misc.c \
 	utilities/find_key.c \
 	utilities/avl_tree/avl_tree_utils1.c \
