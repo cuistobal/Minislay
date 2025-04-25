@@ -27,7 +27,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 char	**prepare_for_exec(t_shel **minishell, t_tree *ast);
 
 //traverse_ast.c
-void    traverse_ast(t_shel **minishell, t_tree *ast);
+bool	traverse_ast(t_shel **minishell, t_tree *ast);
 
 //subshells.c
 bool    handle_subshell(t_shel *minishell, t_tree *ast);

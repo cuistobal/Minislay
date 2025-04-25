@@ -25,6 +25,10 @@ static bool	is_absolute(char *command)
 	return (command && *command && *command == '/');
 }
 
+static bool	is_executable(char *command)
+{
+	return (command && *command && strncmp(command, "./", 2) == 0 );
+}
 //Utility to create the char **tab required for execution.
 char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 {
@@ -41,16 +45,12 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 		{
 			if (!is_builtin(list->value) && !is_absolute(list->value))
 			{
-				if (!retrieve_path(minishell, &list->value))
-					return (error_message("Invalid command\n"), NULL);
+				if (!is_executable(list->value))
+				{
+					if (!retrieve_path(minishell, &list->value))
+						return (error_message("Invalid command\n"), NULL);
+				}
 			}
-			/*
-			{
-			//		free_array(commands, count);
-			//		break ;
-				printf("No path for command %s\n", list->value);	
-			}
-			*/
 		}
 		commands[index] = list->value;
 		move_pointer(&list);

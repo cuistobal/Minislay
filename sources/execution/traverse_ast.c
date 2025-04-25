@@ -9,24 +9,7 @@ void	execute_command(char **commands, char **env)
 
 	command = *commands;
 	arguments = commands + 1;
-	printf("%p\n", command);
-	printf("%p\n", arguments);
-	printf("%p\n", *arguments);
-	printf("%p\n", env);
-	printf("%p\n", *env);
-	/*
-	for (int i = 0; command[i]; i++)
-		printf("commands[i]	->	%s\n", command[i]);	
-	for (int i = 0; env[i]; i++)
-		printf("env[i]	->	%s\n", env[i]);
-	*/
-//	exit(execve(*command, command + 1, env));
 	exit(execve(command, arguments, env));
-
-	//	if (execve(*command, command + 1, env) == -1)
-//		printf("exec failed\n");
-//	if (execve(*command, command + 1, env))
-//		exit(-1);
 }
 
 /*
@@ -122,7 +105,7 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+bool	traverse_ast(t_shel **minishell, t_tree *ast)
 {
 	int		size;
 	char	**env;
@@ -140,18 +123,14 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 				handle_subshell(*minishell, ast);
 			else
 			{
-			//	prepare_for_exec(minishell, ast);	
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
-				{
-					printf("command is NULL\n");
-					return ;
-				}
-		//Turn into a bool to check alloc failure (?)	
-				env = rebuild_env(*minishell, &size);
-				
+					return (error_message("Command alloc failed.\n"));
+			//		printf("command is NULL\n");
+
+				env = rebuild_env(*minishell, &size);				
 				if (!env)
-					free_array(env, size);
+					return (free_array(env, size), error_message("env alloc failed.\n"));
 		//end	
 		
 				int status;
@@ -181,4 +160,5 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 		}
 		traverse_ast(minishell, ast->right);
 	}
+	return (!ast);
 }

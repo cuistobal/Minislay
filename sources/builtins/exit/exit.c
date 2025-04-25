@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:38:41 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/25 11:36:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-void	pwd(char *current_dir)
+void	my_exit(void)
 {
-	char	*current;
-	char	temp[BSIZE];
-
-	current = NULL;
-	memset(temp, 0, BSIZE);
-	if (getcwd(temp, BSIZE))
-	{
-		current = strdup(temp);
-		write(1, current, strlen(current));
-		//mettre dans la struct;
-	}
-	write(1, current_dir, strlen(current_dir));
-	//APpend error code
+	exit(0);
 }
