@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 15:47:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:21:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,6 @@ void	execute_command(char **commands, char **env)
 	exit(execve(command, arguments, env));
 }
 
-/*
-//
-void	execute_builtin(t_shel *minishell, char **command, char **env)
-{
-	int	index;
-
-	if (!minishell || (!command || !*command) || (!env || !*env))
-		return ;
-	index = 0;
-	while (index < X)
-	{
-		if (strcmp(*command, g_b[index]) == 0)
-			g_f[index];
-	}
-
-}
-*/
 //
 static bool	join_env(char **joined, char *temp[3])
 {
@@ -128,7 +111,7 @@ t_exec	*create_execution_node(char **command, char **environ)
 	return (new);
 }
 
-static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec **exec)
 {
 	int		size;
 	char	**env;
@@ -144,68 +127,71 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	if (!env)
 		return (free_array(env, size), error_message(INV_ENV));
 
-	//Insert the new_node
 
-	if (exec)
-	{
-		exec->next = create_execution_node(command, env);
-		exec = exec->next;
-	}
-	else
-	{
-		exec = create_execution_node(command, env);
-		exec = exec->next;
-	}
+	*exec = create_execution_node(command, env);
 	return (true);
 }
 
-static void	execute(t_exec *execution)
+static void	execute(t_exec **execution)
 {
 	t_exec	*current;
 
 	current = NULL;
-	while (execution)
+	printf("%s\n", *(*execution)->command);	
+	while (*execution)
 	{
-		current = execution;
-		current->pid = fork();
-		if (current->pid < 0)
+		current = *execution;
+		(*execution)->pid = fork();
+		if ((*execution)->pid < 0)
 		{
 			error_message(FORK_FAILED);
 			return ;
 		}
 		else if (current->pid == 0)
-			execute_command(current->command, current->environ);
-		execution = execution->next;
+			execute_command((*execution)->command, (*execution)->environ);
+		*execution = (*execution)->next;
 	//	free_exec_node(current);
 	}
 }
 
+void	insert_execution_token(t_queu *queue, t_exec *new)
+{
+	t_exec	*head;
+	t_exec	*tail;
+
+	head = (t_exec *)queue->head;
+	tail = (t_exec *)queue->tail;
+	if (!head)
+	{
+		head = execution;
+		tail = execution;	
+	}
+	else
+	{
+		(tail)->next = execution;
+		tail = (tail)->next;
+	}
+}
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-bool	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution)
+void	traverse_ast(t_shel **minishell, t_tree *ast, t_queu **queue)
 {
-/*
-	int		size;
-	char	**env;
-	char	**command;
+	t_exec	*new;
 
-	size = 1;
-	env = NULL;
-	command = NULL;
-*/
+	new = NULL;
 	if (ast)
 	{
-		if (!is_state_active(ast->tokens->type, PIPE) && execution)
-			execute(execution);	
-		traverse_ast(minishell, ast->left, execution);
+		traverse_ast(minishell, ast->left, queue);
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
 			else
 			{
-				get_command_and_env(minishell, ast, execution);
+				if (!get_command_and_env(minishell, ast, &new))
+					return ;
+				insert_execution_token(queue, new);
 		/*
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
@@ -224,7 +210,9 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution)
 			//	*/
 			}
 		}
-		traverse_ast(minishell, ast->right, execution);
+		traverse_ast(minishell, ast->right, head);
+		printf("%p\n", head);
+		if (!is_state_active(ast->tokens->type, PIPE) && head)
+			execute(head);	
 	}
-	return (!ast);
 }

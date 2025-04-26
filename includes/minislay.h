@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 08:47:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:26:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "global_variables.h"
 # include "expansions.h"
 # include "structures.h"
+# include "containers.h"
 # include "errors.h"
 # include "utilities/utilities.h"
 # include "../minitester/utils/minislay_test.h"
