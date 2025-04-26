@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 14:49:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:58:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
-t_exec	*create_execution_node(char **command, char **envp)
+t_exec	*create_execution_node(void *p1, void *p2)
+//		char **command, char **envp)
 {
 	t_exec	*new;
 	int		pipefd[2];
@@ -119,10 +120,12 @@ t_exec	*create_execution_node(char **command, char **envp)
 		return (NULL);
 	if (pipe(pipefd) < 0)
 		return (free(new), error_message(PIPE_FAILED), NULL);
-	new->environ = envp;
+//	new->environ = envp;
+	new->p1 = p1;
+	new->p2 = p2;
 	new->pipe[0] = pipefd[0];
 	new->pipe[1] = pipefd[1];
-	new->command = command;
+//	new->command = command;
 	new->func = NULL;
 	new->next = NULL;
 	return (new);
@@ -144,9 +147,18 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	command = prepare_for_exec(minishell, ast, func);	
 	if (!command)
 		return (error_message(INV_COMMAND));
-	env = rebuild_env(*minishell, &size);
-	if (!env)
-		return (free_array(env, size), error_message(INV_ENV));
+
+	if (func == execute_command)
+	{
+		env = rebuild_env(*minishell, &size);
+		if (!env)
+			return (free_array(env, size), error_message(INV_ENV));
+	}
+
+
+	
+	//Insert the new_node
+
 	if (exec)
 		exec->next = create_execution_node(command, env);	
 	else
@@ -161,6 +173,7 @@ static void	free_exec_node(t_exec *node)
 	index = 0;
 	if (!node)
 		return ;
+/*
 	if (node->command)
 	{
 		while (node->command[index])
@@ -183,6 +196,17 @@ static void	free_exec_node(t_exec *node)
 		free(node->environ);
 		node->environ = NULL;
 	}
+	*/
+	if (node->p1)
+	{
+		free(node->p1);
+		node->p1 = NULL;
+	}
+	if (node->p2)
+	{
+		free(node->p2);
+		node->p2 = NULL;
+	}
 	free(node);
 	node = NULL;
 }
@@ -196,7 +220,8 @@ static void	execute(t_exec *execution)
 	while (execution)
 	{
 		current = execution;
-		current->func(current->command, current->environ);		
+	//	current->func(current->command, current->environ);		
+		current->func(current->p1, current->p2);
 		execution = execution->next;
 		free_exec_node(current);
 	}

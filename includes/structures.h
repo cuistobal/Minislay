@@ -69,8 +69,12 @@ typedef struct exec
 {
 	pid_t		pid;
 	int			pipe[2];
+	/*
 	char		**command;
 	char		**environ;
+	*/
+	void		*p1;
+	void		*p2;
 	void		(*func)(char **, char **);
 	struct exec	*next;
 }	t_exec;
