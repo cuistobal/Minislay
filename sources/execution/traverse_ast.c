@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 15:37:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:47:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	command = prepare_for_exec(minishell, ast);
 	if (!command)
 		return (error_message(INV_COMMAND));
+	env = rebuild_env(*minishell, &size);	
 	if (!env)
 		return (free_array(env, size), error_message(INV_ENV));
 
@@ -158,29 +159,33 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	return (true);
 }
 
-
-/*
-static bool	get_command_and_env()
+static void	execute(t_exec *execution)
 {
-	int		size;
-	char	**env;
-	char	**command;
+	t_exec	*current;
 
-	size = 1;
-	env = NULL;
-	command = NULL;
-	if (!minishel || !ast)
-		return (false);
-
-	return (true);
+	current = NULL;
+	while (execution)
+	{
+		current = execution;
+		current->pid = fork();
+		if (current->pid < 0)
+		{
+			error_message(FORK_FAILED);
+			return ;
+		}
+		else if (current->pid == 0)
+			execute_command(current->command, current->environ);
+		execution = execution->next;
+	//	free_exec_node(current);
+	}
 }
-*/
 
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-bool	traverse_ast(t_shel **minishell, t_tree *ast)
+bool	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution)
 {
+/*
 	int		size;
 	char	**env;
 	char	**command;
@@ -188,17 +193,20 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast)
 	size = 1;
 	env = NULL;
 	command = NULL;
-
+*/
 	if (ast)
 	{
-		traverse_ast(minishell, ast->left);
+		if (!is_state_active(ast->tokens->type, PIPE) && execution)
+			execute(execution);	
+		traverse_ast(minishell, ast->left, execution);
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
 			else
 			{
-		//		get_command_and_env(minishell, ast, execution);
+				get_command_and_env(minishell, ast, execution);
+		/*
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
 					return (error_message("Command alloc failed.\n"));
@@ -209,13 +217,14 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast)
 
 				if (!is_builtin(*command))
 					create_child_process(*minishell, command, env);
+		*/
 				/*
 				else
 					execute_builtin(command, env);
 			//	*/
 			}
 		}
-		traverse_ast(minishell, ast->right);
+		traverse_ast(minishell, ast->right, execution);
 	}
 	return (!ast);
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 09:32:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:41:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 char	**prepare_for_exec(t_shel **minishell, t_tree *ast);
 
 //traverse_ast.c
-bool	traverse_ast(t_shel **minishell, t_tree *ast);
+bool	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution);
 
 //subshells.c
 bool    handle_subshell(t_shel *minishell, t_tree *ast);
