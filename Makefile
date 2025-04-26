@@ -27,15 +27,19 @@ SOURCES = \
 	utilities/messages.c \
 	utilities/mem_utils.c \
 	utilities/misc.c \
+	utilities/cleanup.c \
 	utilities/find_key.c \
 	utilities/avl_tree/avl_tree_utils1.c \
 	utilities/avl_tree/avl_tree_utils2.c \
 	utilities/avl_tree/rotations.c \
 	sources/initialisation.c \
+	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \
 	sources/builtins/env/env.c \
 	sources/builtins/exit/exit.c \
+	sources/builtins/export/export.c \
 	sources/builtins/pwd/pwd.c \
+	sources/builtins/unset/unset.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \

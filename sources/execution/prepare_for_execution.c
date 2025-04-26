@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:49:45 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 12:51:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:29:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
+static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions, void (*func)(void *, void *))
 {
 	int		count;
 	t_tokn	*copy;
@@ -33,7 +33,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	
 	handle_redirection_list(minishell, redirections);
 
-	return (get_command_and_arguments(minishell, *expansions, count));
+	return (get_command_and_arguments(minishell, *expansions, count, func));
 }
 
 //Entry point -> Needs some rework
@@ -44,7 +44,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //		->	Change the return type to char**
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
+char	**prepare_for_exec(t_shel **minishell, t_tree *ast, void (*func)(void *, void *))
 {
 	char	**command;
 	t_tokn	*expansions;
@@ -63,7 +63,7 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 	split_list(ast->tokens, &assignations, &expansions);
 
-	command = initialise_execution(*minishell, &redirections, &expansions);
+	command = initialise_execution(*minishell, &redirections, &expansions, func);
 
 //	print_exec(assignations, expansions, redirections, command);
 

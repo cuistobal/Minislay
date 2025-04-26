@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 14:15:18 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/04/26 14:42:37 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 14:44:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//Prints the environement variables
-//void	env(t_shel *minishell)
-void	env(void *p1, void *p2)
+// Needs a proper implementation
+void	unset(void *p1, void *p2)
 {
-	t_env	*head;
-	t_env	*current;
+	char	*param;
 	t_shel	*minishell;
 
-	head = (t_env *)p2;
+	param = (char *)p2;
 	minishell = (t_shel *)p1;
-	if (!minishell || !minishell->envp)
-	{
-		error_message("No env\n");
+	if (!minishell || !param)
 		return ;
-	}
-	current = head; 
-	while (current)
-    {
-		write(1, current->var[0], strlen(current->var[0]));
-		write(1,"=", 1);
-		write(1, current->var[1], strlen(current->var[1]));
-		write(1,"\n", 1);
-        current = current->next;
-    }
+	printf("%s\n", param);
 }

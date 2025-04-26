@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 13:13:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:49:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
 static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, unset};
 */
 //
-void	execute_command(char **commands, char **env)
+void	execute_command(void *p1, void *p2)
 {
-	char	*command;
-	char	**arguments;
+	char	**env;
+	char	**commands;
 
-	command = *commands;
-	arguments = commands + 1;
-	exit(execve(command, arguments, env));
+	env	= (char **)p2;
+	commands = (char **)p1;
+	exit(execve(*commands, commands + 1, env));
 }
 
 /*
@@ -133,13 +133,15 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	int		size;
 	char	**env;
 	char	**command;
-
+	void	(*func)(void *, void *);
+	
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
 	env = NULL;
+	func = NULL;
 	command = NULL;
-	command = prepare_for_exec(minishell, ast);	
+	command = prepare_for_exec(minishell, ast, func);	
 	if (!command)
 		return (error_message(INV_COMMAND));
 	env = rebuild_env(*minishell, &size);
@@ -152,6 +154,54 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	return (true);
 }
 
+static void	free_exec_node(t_exec *node)
+{
+	int	index;
+
+	index = 0;
+	if (!node)
+		return ;
+	if (node->command)
+	{
+		while (node->command[index])
+		{
+			free(node->command[index]);
+			node->command[index] = NULL;
+			index++;
+		}
+		free(node->command);
+		node->command = NULL;
+	}
+	index = 0;
+	if (node->environ)
+	{
+		while (node->environ[index])
+		{
+			free(node->environ[index]);
+			node->environ[index] = NULL;
+		}
+		free(node->environ);
+		node->environ = NULL;
+	}
+	free(node);
+	node = NULL;
+}
+
+//
+static void	execute(t_exec *execution)
+{
+	t_exec	*current;
+
+	current = NULL;
+	while (execution)
+	{
+		current = execution;
+		current->func(current->command, current->environ);		
+		execution = execution->next;
+		free_exec_node(current);
+	}
+}
+
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
@@ -162,8 +212,14 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution)
 //	head = execution;
 	if (ast)
 	{
+		/*
 		if (is_state_active(ast->tokens->type, PIPE))
 			printf("%s\n", ast->tokens->value);
+		else if (is_state_active(ast->tokens->type, LAND | LORR))	
+			printf("%s\n", ast->tokens->value);
+		*/
+		if (is_state_active(ast->tokens->type, LAND | LORR) && execution)	
+			execute(execution);
 		traverse_ast(minishell, ast->left, execution);
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{

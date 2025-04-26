@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 13:02:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:38:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXECUTION_H
 
 //command_type.c
-bool	is_builtin(char *command);
+bool	is_builtin(char *command, void (* func)(void *, void *));
 bool	is_absolute(char *command);
 bool	is_executable(char *command);
 
@@ -22,7 +22,7 @@ bool	is_executable(char *command);
 bool	retrieve_path(t_shel *minishell, char **command);
 
 //get_command_and_arguments.c
-char    **get_command_and_arguments(t_shel *minishell, t_tokn *list, int count);
+char    **get_command_and_arguments(t_shel *minishell, t_tokn *list, int count, void (*func)(void *, void *));
 
 //is_builtin.c
 //bool    is_builtin(char *command);
@@ -38,7 +38,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast);
+char	**prepare_for_exec(t_shel **minishell, t_tree *ast, void (*func)(void *, void *));
 
 //traverse_ast.c
 void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution);
@@ -63,7 +63,7 @@ bool	get_expanded(t_shel *minishell, char *token, char **value, int *index);
 bool	handle_redirection_list(t_shel *minishell, t_tokn **list);
 bool	handle_here_doc(t_shel *minishell, t_tokn **redirections);
 
-void	execute_command(char **command, char **envp);
+void	execute_command(void *p1, void *p2);
 void	execute_builtin(t_shel *minishell, char **command, char **envp);
 
 //quote_removal.c

@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 13:11:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:56:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Utility to create the char **tab required for execution.
-char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
+char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count, void (*func)(void *, void *))
 {
 	int		index;
 	char	**commands;
@@ -26,12 +26,13 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 	{
 		if (index == 0)
 		{
-			if (!is_builtin(list->value) && !is_absolute(list->value))
+			if (!is_builtin(list->value, func) && !is_absolute(list->value))
 			{
 				if (!is_executable(list->value))
 				{
 					if (!retrieve_path(minishell, &list->value))
 						return (NULL);
+					func = execute_command;	
 				}
 			}
 		}
