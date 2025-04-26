@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 09:24:34 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
@@ -47,10 +59,8 @@ bool	globing(t_tokn **list, const char *path, int *count);
 //key_management.c
 bool	get_expanded(t_shel *minishell, char *token, char **value, int *index);
 
+//redirections
 bool	handle_redirection_list(t_shel *minishell, t_tokn **list);
-
-
-//
 bool	handle_here_doc(t_shel *minishell, t_tokn **redirections);
 
 #endif

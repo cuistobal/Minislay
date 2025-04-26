@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 09:49:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:12:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ bool	get_merged(char **merged, char **temp, char **expanded);
 
 //mem_utils.c
 void	*resize_array(void *array, int array_type, int *size);
+void	reset_array(char **array, int start, int end);
 
 //messages.c
 bool	error_message(char *message);

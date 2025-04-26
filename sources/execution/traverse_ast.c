@@ -19,23 +19,6 @@ void	execute_builtin(char **command, char **env)
 			
 }
 
-/*
-void    create_process(pid_t *new)
-{
-    *new = fork();
-    if (*new < 0)
-        return (false);
-    else if (*new > 0)
-    {
-		
-    }
-    else
-    {
-		execute_command()	
-    }
-}
-*/
-
 //
 static bool	join_env(char **joined, char *temp[3])
 {
@@ -50,23 +33,7 @@ static bool	join_env(char **joined, char *temp[3])
 	return (*joined = merged, true);
 }
 
-/*
-//Moved to utils
-void	*resize_array(void *array, int array_type, int *size)
-{
-	int		len;
-	void	*new;
-
-	len = *size;
-	*size = *size << 1;
-	new = realloc(array, array_type * *size);
-	if (!new)
-		return (NULL);
-	memset(new + (array_type * len), 0, (array_type * len));
-	return (new);
-}
-*/
-
+//
 void	create_child_process(t_shel	*minishell, char **command, char **env)
 {
 	int status;
@@ -80,17 +47,6 @@ void	create_child_process(t_shel	*minishell, char **command, char **env)
 		if (WIFEXITED(status))
 			printf("%d\n", WEXITSTATUS(status));
 	}
-}
-
-static void	reset_array(char **array, int start, int end)
-{
-	int	reset;
-
-	reset = 0;
-	if (!array)
-		return ;
-	while (reset < end - start )
-		array[start + reset++] = NULL;
 }
 
 // Had to declare a current pointer bc the original minishel pointer is moved
