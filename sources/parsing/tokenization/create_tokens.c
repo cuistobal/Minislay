@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/03/17 12:47:37 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/26 12:46:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 	//	*mask = INIT;
 	if (current)
 	{
-		if ((current->type == OPAR))
+		if (current->type == OPAR)
 		{
 			count++;
 			*mask = OPAR;

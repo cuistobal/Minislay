@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:18:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:46:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static bool	append_specials(t_shel **minishell)
 	int		index;
 	char	*element;
 
+	index = 0;
 	if (*minishell)
 	{
-		index = 0;
 		while (index < DKCT)
 		{
 			element = strdup(g_spec[index]);

@@ -105,12 +105,8 @@ void	print_parser(t_pars *parser)
 		printf("%s\n\n", __func__);
 
 		//parser->tokens ? print_tokens(parser->tokens) : printf("No tokens\n");
-
-		if (parser->tab)
-		{
-			for (int i = 0; i < TTSIZE; i++)
-				parser->tab[i] ? printf("parser->tab[%d]	->	%s\n", i, parser->tab[i]->value) : printf("parser->tab[%d]	->	NULL\n", i);
-		}
+		for (int i = 0; i < TTSIZE; i++)
+			parser->tab[i] ? printf("parser->tab[%d]	->	%s\n", i, parser->tab[i]->value) : printf("parser->tab[%d]	->	NULL\n", i);
 
 		printf("state		->	%d\n", parser->state);
 

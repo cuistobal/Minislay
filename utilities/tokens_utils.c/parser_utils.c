@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 12:45:17 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 12:45:51 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //Appends the parser's token tab and returns true
@@ -14,16 +26,13 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 
 	if (parser) 
 	{
-		if ((parser)->tab)
+		index = 0;
+		while (index < TTSIZE)
 		{
-			index = 0;
-			while (index < TTSIZE)
-			{
-				(parser)->tab[index] = NULL;
-				if (index == i)
-					(parser)->tab[index] = token;
-				index++;	
-			}
+			(parser)->tab[index] = NULL;
+			if (index == i)
+				(parser)->tab[index] = token;
+			index++;	
 		}
 		if ((parser)->state & SUBSHEL)
 			(parser)->state = SUBSHEL;

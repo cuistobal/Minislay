@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 12:45:08 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 12:45:11 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //We use this function to split the token lists into sublists separated by the
 //current most meaningfull grammar operator
 void	delete_links(t_pars *parser)
 {
-	if (parser && parser->tab)
+	if (parser)
 	{
 		if (parser->tab[TTPREV])
 			parser->tab[TTPREV]->next = NULL;

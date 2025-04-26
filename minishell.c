@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 09:08:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:02:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,21 @@
 int	get_minishelled(t_shel **minishell, char *input)
 {
 	t_tree	*ast;
-	t_pars	*parser;
 	t_tokn	*tokens;
-
+	t_pars	*parser;
+	t_exec	execution;
+	bool	pipeline;
 	ast = NULL;
 	tokens = NULL;
 	parser = NULL;
+	pipeline = false;
 	if (!tokenize(&tokens, input, strlen(input)))
 		return (printf(TOKENIZATION), free_tokens(tokens), -1);
 	if (!get_stacked(NULL, NULL, 0))
 		return (printf("%s unmatched '('\n", SYNTAX), -1);
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), -1);
-	traverse_ast(minishell, ast);
+	traverse_ast(minishell, ast, &execution);
 	return (free_tree(ast), 0);
 }
 

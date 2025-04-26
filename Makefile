@@ -1,6 +1,6 @@
 NAME = minislay
 
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES)
 
@@ -47,6 +47,7 @@ SOURCES = \
 	sources/execution/subshells/subshells.c \
 	sources/execution/split_list.c \
 	sources/execution/traverse_ast.c \
+	sources/execution/quote_removal.c \
 	sources/execution/expansions/expand.c \
 	sources/execution/prepare_for_execution.c \
 	sources/execution/expansions/key_management.c \
