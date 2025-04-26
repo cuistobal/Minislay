@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 14:58:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:32:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,10 @@ t_exec	*create_execution_node(void *p1, void *p2)
 		return (NULL);
 	if (pipe(pipefd) < 0)
 		return (free(new), error_message(PIPE_FAILED), NULL);
-//	new->environ = envp;
 	new->p1 = p1;
 	new->p2 = p2;
 	new->pipe[0] = pipefd[0];
 	new->pipe[1] = pipefd[1];
-//	new->command = command;
 	new->func = NULL;
 	new->next = NULL;
 	return (new);
@@ -136,33 +134,41 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	int		size;
 	char	**env;
 	char	**command;
-	void	(*func)(void *, void *);
-	
+//	void	(*func)(void *, void *);
+
+
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
-	env = NULL;
 	func = NULL;
-	command = NULL;
 	command = prepare_for_exec(minishell, ast, func);	
 	if (!command)
 		return (error_message(INV_COMMAND));
 
-	if (func == execute_command)
+	if (func != execute_command)
 	{
 		env = rebuild_env(*minishell, &size);
 		if (!env)
 			return (free_array(env, size), error_message(INV_ENV));
 	}
-
+	else
+	{
+		printf("Beware of builtins\n");	
+	}
 
 	
 	//Insert the new_node
 
 	if (exec)
+	{
 		exec->next = create_execution_node(command, env);	
+		exec = exec->next;
+	}
 	else
+	{
 		exec = create_execution_node(command, env);	
+		exec = exec->next;
+	}	
 	return (true);
 }
 
@@ -181,7 +187,8 @@ static void	free_exec_node(t_exec *node)
 			free(node->command[index]);
 			node->command[index] = NULL;
 			index++;
-		}
+		
+			}
 		free(node->command);
 		node->command = NULL;
 	}
@@ -220,8 +227,10 @@ static void	execute(t_exec *execution)
 	while (execution)
 	{
 		current = execution;
-	//	current->func(current->command, current->environ);		
-		current->func(current->p1, current->p2);
+		if (current->func)	
+			current->func(current->p1, current->p2);
+		else
+			printf("No exec function\n");
 		execution = execution->next;
 		free_exec_node(current);
 	}
@@ -232,26 +241,22 @@ static void	execute(t_exec *execution)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec *execution)
 {
-//	t_exec	*head;
-//
-//	head = execution;
 	if (ast)
 	{
-		/*
-		if (is_state_active(ast->tokens->type, PIPE))
-			printf("%s\n", ast->tokens->value);
-		else if (is_state_active(ast->tokens->type, LAND | LORR))	
-			printf("%s\n", ast->tokens->value);
-		*/
+
 		if (is_state_active(ast->tokens->type, LAND | LORR) && execution)	
 			execute(execution);
+
 		traverse_ast(minishell, ast->left, execution);
+
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
+
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
 			else
 			{
+				
 			// Need to append the error_code
 				if (!get_command_and_env(minishell, ast, execution))
 					return ;

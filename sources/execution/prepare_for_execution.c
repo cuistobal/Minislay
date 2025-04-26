@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:49:45 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 14:29:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:17:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast, void (*func)(void *, vo
 	split_list(ast->tokens, &assignations, &expansions);
 
 	command = initialise_execution(*minishell, &redirections, &expansions, func);
+
 
 //	print_exec(assignations, expansions, redirections, command);
 

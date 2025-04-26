@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 13:56:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:19:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,11 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count, voi
 		return (NULL);
 	while (list)
 	{
-		if (index == 0)
+		if (index == 0 && !is_builtin(list->value, func) && !is_absolute(list->value))
 		{
-			if (!is_builtin(list->value, func) && !is_absolute(list->value))
-			{
-				if (!is_executable(list->value))
-				{
-					if (!retrieve_path(minishell, &list->value))
-						return (NULL);
-					func = execute_command;	
-				}
-			}
+			if (!is_executable(list->value) && !retrieve_path(minishell, &list->value))
+				return (NULL);
+			func = execute_command;	
 		}
 		commands[index] = list->value;
 		move_pointer(&list);
