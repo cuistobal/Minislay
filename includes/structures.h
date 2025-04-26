@@ -65,4 +65,14 @@ typedef struct parser
 	struct tree		**ast;
 }	t_pars;
 
+typedef struct exec
+{
+	pid_t		pid;
+	int			pipe[2];
+	char		**command;
+	char		**environ;
+	void		(*func)(char **, char **);
+	struct exec	*next;
+}	t_exec;
+
 #endif

@@ -10,10 +10,16 @@ void	echo(const char **arguments, bool flag);
 //env.c
 void	env(t_shel *minishell);
 
+//export.c
+void	my_export(void);
+
 //exit.c
 void	my_exit(void);
 
 //pwd.c
 void	pwd(char *current_dir);
+
+//unsset.v
+void	unset(void);
 
 #endif

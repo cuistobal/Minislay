@@ -1,7 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   traverse_ast.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 11:05:47 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
-//void	create_process()
-
+/*
+static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
+static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, unset};
+*/
 //
 void	execute_command(char **commands, char **env)
 {
@@ -13,12 +27,23 @@ void	execute_command(char **commands, char **env)
 	exit(execve(command, arguments, env));
 }
 
+/*
 //
-void	execute_builtin(char **command, char **env)
+void	execute_builtin(t_shel *minishell, char **command, char **env)
 {
-			
-}
+	int	index;
 
+	if (!minishell || (!command || !*command) || (!env || !*env))
+		return ;
+	index = 0;
+	while (index < X)
+	{
+		if (strcmp(*command, g_b[index]) == 0)
+			g_f[index];
+	}
+
+}
+*/
 //
 static bool	join_env(char **joined, char *temp[3])
 {
@@ -33,11 +58,14 @@ static bool	join_env(char **joined, char *temp[3])
 	return (*joined = merged, true);
 }
 
+
 //
 void	create_child_process(t_shel	*minishell, char **command, char **env)
 {
 	int status;
 
+	if (!minishell)
+		return ;
 	pid_t pid = fork();
 	if (pid == 0)
 		execute_command(command, env);
@@ -48,6 +76,7 @@ void	create_child_process(t_shel	*minishell, char **command, char **env)
 			printf("%d\n", WEXITSTATUS(status));
 	}
 }
+
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
@@ -80,6 +109,23 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
+/*
+static bool	get_command_and_env()
+{
+	int		size;
+	char	**env;
+	char	**command;
+
+	size = 1;
+	env = NULL;
+	command = NULL;
+	if (!minishel || !ast)
+		return (false);
+
+	return (true);
+}
+*/
+
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
@@ -92,6 +138,7 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast)
 	size = 1;
 	env = NULL;
 	command = NULL;
+
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
@@ -101,16 +148,21 @@ bool	traverse_ast(t_shel **minishell, t_tree *ast)
 				handle_subshell(*minishell, ast);
 			else
 			{
+		//		get_command_and_env(minishell, ast, execution);
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
 					return (error_message("Command alloc failed.\n"));
 				env = rebuild_env(*minishell, &size);
 				if (!env)
 					return (free_array(env, size), error_message("env alloc failed.\n"));
+
+
 				if (!is_builtin(*command))
 					create_child_process(*minishell, command, env);
+				/*
 				else
 					execute_builtin(command, env);
+			//	*/
 			}
 		}
 		traverse_ast(minishell, ast->right);

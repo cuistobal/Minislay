@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:44:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:33:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@
 # define BPWD "pwd"
 # define BENV "env"
 # define BECO "echo"
-# define BEXT "my_exit"
+# define BEXT "exit"
 # define BUST "unset"
 # define BEXP "export"
 

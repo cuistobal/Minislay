@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 09:21:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:29:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 # define MEMALLOC "Malloc failed.\n"
 # define DUP_FAILED "dup() failed.\n"
 # define RTRD "My brother in CHrist, you are r3t4rd3d.\n"
+# define FORK_FAILED "Fork failed\n."
 
 #endif
