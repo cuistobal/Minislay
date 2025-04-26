@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 11:05:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:37:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,56 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	}
 	return (env);
 }
+
+t_exec	*create_execution_node(char **command, char **environ)
+{
+	t_exec	*new;
+	int		pipefd[2];
+
+	new = malloc(sizeof(t_exec));
+	if (!new)
+		return (NULL);
+	if (pipe(pipefd) < 0)
+		return (free(new), error_message(PIPE_FAILED), NULL);
+	new->command = command;
+	new->environ = environ;
+	new->pipe[0] = pipefd[0];
+	new->pipe[1] = pipefd[1];
+	new->func = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
+{
+	int		size;
+	char	**env;
+	char	**command;
+
+	if (!minishell || !ast)
+		return (false);
+	size = 1;
+	command = prepare_for_exec(minishell, ast);
+	if (!command)
+		return (error_message(INV_COMMAND));
+	if (!env)
+		return (free_array(env, size), error_message(INV_ENV));
+
+	//Insert the new_node
+
+	if (exec)
+	{
+		exec->next = create_execution_node(command, env);
+		exec = exec->next;
+	}
+	else
+	{
+		exec = create_execution_node(command, env);
+		exec = exec->next;
+	}
+	return (true);
+}
+
 
 /*
 static bool	get_command_and_env()
