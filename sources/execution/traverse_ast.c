@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 10:30:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:44:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
+
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
