@@ -2,83 +2,104 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct vector {
-    void    *size;
-    void    *head;
-    void    *tail;
-    void    (*helper)(void *, void *, void *);
-} t_vect;
+typedef struct vector
+{
+    void	**data;
+    size_t	size;
+    size_t	capacity;
+    size_t	elementSize;
+}	t_vect;
 
-void resize_vector(t_vect **initial, t_vect *new) {
-    if (!initial || !*initial || !new) return;
-
-    size_t i = 0;
-    size_t j = *(size_t *)(*initial)->size;
-    unsigned char *n = (unsigned char *)new->head;
-    unsigned char *init = (unsigned char *)(*initial)->head;
-
-    while (i < j) {
-        n[i] = init[i];
-        i++;
-    }
-
-    free((*initial)->head);
-    (*initial)->head = NULL;
-    free(*initial);
-    *initial = new; // Update the caller's pointer
+//
+void	init_vector(t_vect *vector, size_t cap, size_t esize)
+{
+	vector->data = (void **)malloc(cap * sizeof(void *));
+    array->size = 0;
+    array->capacity = cap;
+    array->elementSize = esize;
 }
 
-void init_vector(t_vect *vector, void *esize, void *newsize) {
-    size_t len = *(size_t *)esize * *(size_t *)newsize;
-    vector->size = (void *)len;
-    vector->head = malloc(len);
-    if (!vector->head) {
-        free(vector);
-        return;
-    }
-
-    unsigned char *initializer = (unsigned char *)vector->head;
-    for (size_t index = 0; index < len; index++) {
-        initializer[index] = 0;
-    }
-    vector->tail = vector->head + (len - 1);
+// Free the memory allocated for the dynamic array
+void	free_vector(t_vect *vector)
+{
+    free(array->data);
+    array->data = NULL;
+    array->size = array->capacity = 0;
 }
 
-void helper(void **ptr, void *elem_size, void *new_size) {
-    t_vect *initial = *(t_vect **)ptr;
-    t_vect *vector = (t_vect *)malloc(sizeof(t_vect));
-    if (!vector) return;
-
-    init_vector(vector, elem_size, new_size);
-    if (initial) {
-        resize_vector((t_vect**)ptr, vector);
-    } else {
-        *ptr = vector; // Initialize the vector pointer if it's NULL
-    }
+// Resize the dynamic array when capacity is reached
+void resizeDynamicArray(DynamicArray *array, size_t newCapacity) {
+    array->data = (void **)realloc(array->data, newCapacity * sizeof(void *));
+    array->capacity = newCapacity;
 }
 
-int main(int argc, char **argv) {
-    size_t size;
-    size_t elen;
-    char *text;
-    t_vect *vector = NULL;
+// Add an element to the dynamic array
+void pushBack(DynamicArray *array, void *value) {
+    if (array->size >= array->capacity) {
+        resizeDynamicArray(array, array->capacity == 0 ? 1 : array->capacity * 2);
+    }
+    array->data[array->size] = malloc(array->elementSize);
+    memcpy(array->data[array->size], value, array->elementSize);
+    array->size++;
+}
 
-    if (argc > 2) {
-        text = argv[1];
-        for (int i = 2; argv[i]; i++) {
-            elen = sizeof(char);
-            size = atoi(argv[i]);
-            helper((void **)&vector, (void *)&elen, (void *)&size);
-            memcpy(vector->head, text, *(size_t *)vector->size);
-            printf("%s\n", (char *)vector->head);
-        }
+// Get an element from the dynamic array
+void *get(DynamicArray *array, size_t index) {
+    if (index >= array->size) {
+        fprintf(stderr, "Index out of bounds\n");
+        exit(EXIT_FAILURE);
+    }
+    return array->data[index];
+}
+
+// Set an element in the dynamic array
+void set(DynamicArray *array, size_t index, void *value) {
+    if (index >= array->size) {
+        fprintf(stderr, "Index out of bounds\n");
+        exit(EXIT_FAILURE);
+    }
+    memcpy(array->data[index], value, array->elementSize);
+}
+
+// Get the size of the dynamic array
+size_t size(DynamicArray *array)
+{
+    return array->size;
+}
+
+// Get the capacity of the dynamic array
+size_t capacity(DynamicArray *array)
+{
+    return array->capacity;
+}
+
+int main(int *argc, char **argv)
+{
+	char	*text;
+    DynamicArray array;
+
+
+	initDynamicArray(&array, (size_t)atoi(argv[1]), sizeof(char *)); // Initialize with an initial capacity of 2 for int elements
+
+
+    pushBack(&array, &value1);
+    pushBack(&array, &value2);
+    pushBack(&array, &value3);
+
+    printf("Size: %zu\n", size(&array));
+    printf("Capacity: %zu\n", capacity(&array));
+
+    for (size_t i = 0; i < size(&array); i++) {
+        int *val = (int *)get(&array, i);
+        printf("Element at index %zu: %d\n", i, *val);
     }
 
-    // Free the final vector
-    if (vector) {
-        free(vector->head);
-        free(vector);
-    }
+    int newValue = 25;
+    set(&array, 1, &newValue);
+    int *val = (int *)get(&array, 1);
+    printf("Element at index 1 after set: %d\n", *val);
+
+    freeDynamicArray(&array);
 
     return 0;
 }
