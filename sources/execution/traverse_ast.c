@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 09:11:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:30:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,12 @@ void	execute_command(char **commands, char **env)
 
 	command = *commands;
 	arguments = commands + 1;
-	exit(execve(command, arguments, env));
+//test
+	pid_t	pid = fork();
+	if (pid == 0)
+//
+		exit(execve(command, arguments, env));
+
 }
 
 //
@@ -92,6 +97,7 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
+/*
 t_exec	*create_execution_node(char **command, char **environ)
 {
 	t_exec	*new;
@@ -110,8 +116,9 @@ t_exec	*create_execution_node(char **command, char **environ)
 	new->next = NULL;
 	return (new);
 }
+*/
 
-static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec **exec)
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 {
 	int		size;
 	char	**env;
@@ -126,12 +133,11 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec **exec)
 	env = rebuild_env(*minishell, &size);	
 	if (!env)
 		return (free_array(env, size), error_message(INV_ENV));
-
-
-	*exec = create_execution_node(command, env);
+	execute_command(command, env);
 	return (true);
 }
 
+/*
 static void	execute(t_exec **execution)
 {
 	t_exec	*current;
@@ -154,6 +160,7 @@ static void	execute(t_exec **execution)
 	}
 }
 
+
 void	insert_execution_token(t_queu *queue, t_exec *new)
 {
 	t_exec	*head;
@@ -172,26 +179,25 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 		tail = (tail)->next;
 	}
 }
+*/
+
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-void	traverse_ast(t_shel **minishell, t_tree *ast, t_queu **queue)
+void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
-	t_exec	*new;
-
-	new = NULL;
 	if (ast)
 	{
-		traverse_ast(minishell, ast->left, queue);
+		traverse_ast(minishell, ast->left);
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
 			else
 			{
-				if (!get_command_and_env(minishell, ast, &new))
+				if (!get_command_and_env(minishell, ast))
 					return ;
-				insert_execution_token(queue, new);
+			//	insert_execution_token(queue, new);
 		/*
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
@@ -210,9 +216,10 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_queu **queue)
 			//	*/
 			}
 		}
-		traverse_ast(minishell, ast->right, head);
-		printf("%p\n", head);
-		if (!is_state_active(ast->tokens->type, PIPE) && head)
+		traverse_ast(minishell, ast->right);
+		/*
+		if (!is_state_active(ast->tokens->type, PIPE))
 			execute(head);	
+		*/
 	}
 }
