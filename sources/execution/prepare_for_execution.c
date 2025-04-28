@@ -90,7 +90,7 @@ static bool	quote_removal(t_tokn *list)
 
 	while (list)
 	{
-		tlen = strlen(list->value);		
+		tlen = strlen(list->value) + 1;
 		removed = (char *)calloc(tlen, sizeof(char));
 		if (!removed)
 			return (false);

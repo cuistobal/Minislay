@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structures.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 16:25:21 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
 
@@ -64,5 +76,15 @@ typedef struct parser
 	struct tokens	*tab[TTSIZE];
 	struct tree		**ast;
 }	t_pars;
+
+typedef struct exec
+{
+	pid_t		pid;
+	int			pipe[2];
+	char		**command;
+	char		**environ;
+	void		(*func)(char **, char **);
+	struct exec	*next;
+}	t_exec;
 
 #endif

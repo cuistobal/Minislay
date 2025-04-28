@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   redirection_queues.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:38:41 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/04/27 11:11:23 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/27 11:16:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-void	pwd(char *current_dir)
+void	redirection_queue(t_tokn *redirections)
 {
-	char	*current;
-	char	temp[BSIZE];
+	t_tokn	*in_head;
+	t_tokn	*in_tail;
+	t_tokn	*out_head;
+	t_tokn	*out_tail;
 
-	current = NULL;
-	memset(temp, 0, BSIZE);
-	if (getcwd(temp, BSIZE))
+	in_head = NULL;
+	in_tail = NULL;
+	out_head = NULL;
+	out_tail = NULL;
+	while (redirections)
 	{
-		current = strdup(temp);
-		write(1, current, strlen(current));
-		//mettre dans la struct;
+		if (is_state_active(redirections->type, IRED | ARED))
+		{
+			insert_token
+		}
+		else
+		{
+		}
 	}
-	write(1, current_dir, strlen(current_dir));
-	//APpend error code
 }

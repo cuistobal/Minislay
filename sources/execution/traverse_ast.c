@@ -1,7 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   traverse_ast.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/27 10:44:49 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
-//void	create_process()
-
+/*
+static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
+static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, unset};
+*/
+//
 void	execute_command(char **commands, char **env)
 {
 	char	*command;
@@ -9,42 +24,13 @@ void	execute_command(char **commands, char **env)
 
 	command = *commands;
 	arguments = commands + 1;
-	printf("%p\n", command);
-	printf("%p\n", arguments);
-	printf("%p\n", *arguments);
-	printf("%p\n", env);
-	printf("%p\n", *env);
-	/*
-	for (int i = 0; command[i]; i++)
-		printf("commands[i]	->	%s\n", command[i]);	
-	for (int i = 0; env[i]; i++)
-		printf("env[i]	->	%s\n", env[i]);
-	*/
-//	exit(execve(*command, command + 1, env));
-	exit(execve(command, arguments, env));
+//test
+	pid_t	pid = fork();
+	if (pid == 0)
+//
+		exit(execve(command, arguments, env));
 
-	//	if (execve(*command, command + 1, env) == -1)
-//		printf("exec failed\n");
-//	if (execve(*command, command + 1, env))
-//		exit(-1);
 }
-
-/*
-void    create_process(pid_t *new)
-{
-    *new = fork();
-    if (*new < 0)
-        return (false);
-    else if (*new > 0)
-    {
-		
-    }
-    else
-    {
-		execute_command()	
-    }
-}
-*/
 
 //
 static bool	join_env(char **joined, char *temp[3])
@@ -60,33 +46,25 @@ static bool	join_env(char **joined, char *temp[3])
 	return (*joined = merged, true);
 }
 
-/*
-//Moved to utils
-void	*resize_array(void *array, int array_type, int *size)
+
+//
+void	create_child_process(t_shel	*minishell, char **command, char **env)
 {
-	int		len;
-	void	*new;
+	int status;
 
-	len = *size;
-	*size = *size << 1;
-	new = realloc(array, array_type * *size);
-	if (!new)
-		return (NULL);
-	memset(new + (array_type * len), 0, (array_type * len));
-	return (new);
-}
-*/
-
-static void	reset_array(char **array, int start, int end)
-{
-	int	reset;
-
-	reset = 0;
-	if (!array)
+	if (!minishell)
 		return ;
-	while (reset < end - start )
-		array[start + reset++] = NULL;
+	pid_t pid = fork();
+	if (pid == 0)
+		execute_command(command, env);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			printf("%d\n", WEXITSTATUS(status));
+	}
 }
+
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
@@ -119,18 +97,96 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
-//Main travsersal function of the AST
-//
-//We need to implement the Operators logic.
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+/*
+t_exec	*create_execution_node(char **command, char **environ)
+{
+	t_exec	*new;
+	int		pipefd[2];
+
+	new = malloc(sizeof(t_exec));
+	if (!new)
+		return (NULL);
+	if (pipe(pipefd) < 0)
+		return (free(new), error_message(PIPE_FAILED), NULL);
+	new->command = command;
+	new->environ = environ;
+	new->pipe[0] = pipefd[0];
+	new->pipe[1] = pipefd[1];
+	new->func = NULL;
+	new->next = NULL;
+	return (new);
+}
+*/
+
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 {
 	int		size;
 	char	**env;
 	char	**command;
 
+	if (!minishell || !ast)
+		return (false);
 	size = 1;
-	env = NULL;
-	command = NULL;
+	command = prepare_for_exec(minishell, ast);
+	if (!command)
+		return (error_message(INV_COMMAND));
+	env = rebuild_env(*minishell, &size);	
+	if (!env)
+		return (free_array(env, size), error_message(INV_ENV));
+	execute_command(command, env);
+	return (true);
+}
+
+/*
+static void	execute(t_exec **execution)
+{
+	t_exec	*current;
+
+	current = NULL;
+	printf("%s\n", *(*execution)->command);	
+	while (*execution)
+	{
+		current = *execution;
+		(*execution)->pid = fork();
+		if ((*execution)->pid < 0)
+		{
+			error_message(FORK_FAILED);
+			return ;
+		}
+		else if (current->pid == 0)
+			execute_command((*execution)->command, (*execution)->environ);
+		*execution = (*execution)->next;
+	//	free_exec_node(current);
+	}
+}
+
+
+void	insert_execution_token(t_queu *queue, t_exec *new)
+{
+	t_exec	*head;
+	t_exec	*tail;
+
+	head = (t_exec *)queue->head;
+	tail = (t_exec *)queue->tail;
+	if (!head)
+	{
+		head = execution;
+		tail = execution;	
+	}
+	else
+	{
+		(tail)->next = execution;
+		tail = (tail)->next;
+	}
+}
+*/
+
+//Main travsersal function of the AST
+//
+//We need to implement the Operators logic.
+void	traverse_ast(t_shel **minishell, t_tree *ast)
+{
+
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
@@ -140,45 +196,31 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 				handle_subshell(*minishell, ast);
 			else
 			{
-			//	prepare_for_exec(minishell, ast);	
+				if (!get_command_and_env(minishell, ast))
+					return ;
+			//	insert_execution_token(queue, new);
+		/*
 				command = prepare_for_exec(minishell, ast);	
 				if (!command)
-				{
-					printf("command is NULL\n");
-					return ;
-				}
-		//Turn into a bool to check alloc failure (?)	
+					return (error_message("Command alloc failed.\n"));
 				env = rebuild_env(*minishell, &size);
-				
 				if (!env)
-					free_array(env, size);
-		//end	
-		
-				int status;
+					return (free_array(env, size), error_message("env alloc failed.\n"));
 
-				pid_t pid = fork();
-				if (pid == 0)
-					execute_command(command, env);
-				else
-				{
-					waitpid(pid, &status, 0);
-					if (WIFEXITED(status))
-						printf("%d\n", WEXITSTATUS(status));
-				}
-	
-				//	Append error code && return
+
+				if (!is_builtin(*command))
+					create_child_process(*minishell, command, env);
+		*/
 				/*
-				{
-					for (int  i = 0; command[i]; i++)
-						printf("%s ", command[i]);
-					printf("\n");
-				}
-				*/
-//				create_process();	
-//				execute(command);	
-			//	print_tokens(ast->tokens);
+				else
+					execute_builtin(command, env);
+			//	*/
 			}
 		}
 		traverse_ast(minishell, ast->right);
+		/*
+		if (!is_state_active(ast->tokens->type, PIPE))
+			execute(head);	
+		*/
 	}
 }

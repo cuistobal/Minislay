@@ -1,30 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   containers.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:38:41 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/04/26 16:22:14 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/26 16:29:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minislay.h"
+#ifndef CONTAINERS_H
+# define CONTAINERS_H
 
-void	pwd(char *current_dir)
+typedef struct queue
 {
-	char	*current;
-	char	temp[BSIZE];
+	void	*head;
+	void	*tail;
+}	t_queu;
 
-	current = NULL;
-	memset(temp, 0, BSIZE);
-	if (getcwd(temp, BSIZE))
-	{
-		current = strdup(temp);
-		write(1, current, strlen(current));
-		//mettre dans la struct;
-	}
-	write(1, current_dir, strlen(current_dir));
-	//APpend error code
-}
+bool	create_queue_node(t_queu **queue);
+
+typedef struct stack
+{
+	void	*top;
+	
+}	t_stck;
+
+typedef struct vector
+{
+	void	*size;
+	void	*head;
+	void	*tail;
+	void	(* resize)(void *, void *);
+}	t_vect;
+
+void	resize_vector(void *, void *);
+
+#endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/25 11:39:44 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 static bool	absolute_path(char *path)
@@ -7,7 +19,7 @@ static bool	absolute_path(char *path)
 
 // Modify the PWD && OLDPWD variables
 // If OLDPWD == CDPATH -> printf(PWD)
-bool	cd(t_shel *minishell, char *path)
+void	cd(t_shel *minishell, char *path)
 {
 	if (minishell)
 	{
@@ -15,7 +27,7 @@ bool	cd(t_shel *minishell, char *path)
 		{
 			if (absolute_path())
 			{
-
+					
 			}
 			else
 			{

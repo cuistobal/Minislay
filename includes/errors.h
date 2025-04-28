@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 08:47:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:38:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,12 @@
 # define PARSING "Failed to parse.\n"
 # define SYNTAX "Syntax error"
 # define UNEXPECTED "unexpected token :"
+# define PIPE_FAILED "Pipe failed.\n"
+# define MEMALLOC "Malloc failed.\n"
+# define DUP_FAILED "dup() failed.\n"
+# define RTRD "My brother in CHrist, you are r3t4rd3d.\n"
+# define FORK_FAILED "Fork failed\n."
+# define INV_COMMAND "Invalid command.\n"
+# define INV_ENV "Invalid env.\n"
 
 #endif

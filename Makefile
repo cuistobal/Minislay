@@ -32,6 +32,10 @@ SOURCES = \
 	utilities/avl_tree/avl_tree_utils2.c \
 	utilities/avl_tree/rotations.c \
 	sources/initialisation.c \
+	sources/builtins/echo/echo.c \
+	sources/builtins/env/env.c \
+	sources/builtins/exit/exit.c \
+	sources/builtins/pwd/pwd.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \
@@ -41,15 +45,16 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals.c \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
-	sources/execution/traverse_ast.c \
-	sources/execution/execution.c \
 	sources/execution/split_list.c \
+	sources/execution/traverse_ast.c \
 	sources/execution/expansions/expand.c \
+	sources/execution/prepare_for_execution.c \
 	sources/execution/expansions/key_management.c \
 	sources/execution/expansions/word_splitting.c \
 	sources/execution/expansions/bonus/globing.c \
 	sources/execution/expansions/bonus/match_pattern.c \
 	sources/execution/expansions/bonus/test_globing_patterns.c \
+	sources/execution/commands/command_types.c \
 	sources/execution/commands/retrieve_path.c \
 	sources/execution/commands/modify_token_types.c \
 	sources/execution/commands/get_command_and_arguments.c \

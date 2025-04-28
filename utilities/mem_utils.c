@@ -6,12 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:38:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 09:42:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:11:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 void	*resize_array(void *array, int array_type, int *size)
 {
 	int		len;
@@ -36,7 +37,7 @@ void	*resize_array(void *array, int array_type, int *size)
 	return (new);
 }
 
-/*
+//
 void	reset_array(char **array, int start, int end)
 {
 	int	reset;
@@ -47,4 +48,3 @@ void	reset_array(char **array, int start, int end)
 	while (reset < end - start )
 		array[start + reset++] = NULL;
 }
-*/
