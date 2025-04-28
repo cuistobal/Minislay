@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 10:44:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:06:00 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_command(char **commands, char **env)
 }
 
 //
-static bool	join_env(char **joined, char *temp[3])
+static bool	join_env(char **joined, char *temp[2])
 {
 	char	*merged;
 
