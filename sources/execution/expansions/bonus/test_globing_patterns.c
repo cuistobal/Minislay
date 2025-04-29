@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:11:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:43:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:12:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,6 @@ static char *handle_pattern(char *globing, int *index)
 	return (new);
 }
 
-//
-static bool	valid_pattern(const char globing, char ***patterns, int pindex)
-{
-	if (globing != '\0')
-		return (free_array(*patterns, pindex), false);
-	return (true);
-}
-
 //We use this function to identify the patterns within the the globing variable
 char	**identify_globing_patterns(char *globing)
 {
@@ -98,6 +90,7 @@ char	**identify_globing_patterns(char *globing)
 		if (!patterns[pindex - 1])
 			break ;
 	}
-	valid_pattern(globing[index], &patterns, pindex);
+	if (globing[index] != '\0')
+		return (free_array(patterns, pindex), NULL);
 	return (patterns);
 }
