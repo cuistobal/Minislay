@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:43:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:01:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_exec	*create_execution_node(char **command, char **environ)
 
 static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 {
-	pid_t	pid;
+//	pid_t	pid;
 	int		size;
 	char	**env;
 	char	**command;
@@ -139,7 +139,9 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 	if (!node)
 		return (free_array(command), free_array(env), false);
 */
-	create_child_process();
+
+//	create_child_process();
+
 	execute_command(command, env);
 	return (true);
 }
