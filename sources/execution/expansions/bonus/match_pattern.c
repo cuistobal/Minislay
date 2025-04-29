@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:13:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:15:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:32:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	match_pattern(char **patterns, char *current)
 {
 	char	*temp;
 
-	if (!patterns || !current)
+	if ((!patterns || !*patterns) || !current)
 		return (false);
 	temp = NULL;
 	if (*patterns)
@@ -32,5 +32,5 @@ bool	match_pattern(char **patterns, char *current)
 				return (match_pattern(patterns + 1, temp + strlen(temp)));	
 		}
 	}
-	return (false);
+	return (true);
 }

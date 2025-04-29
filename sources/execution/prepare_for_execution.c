@@ -154,6 +154,8 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 	split_list(ast->tokens, &assignations, &expansions);
 
 	command = initialise_execution(*minishell, &redirections, &expansions);
+	
+	print_tokens(expansions);
 
 	/*
 	 *	Do we treat basic assignations (ex: abc=def) ?
