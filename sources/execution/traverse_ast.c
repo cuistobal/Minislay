@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/28 11:06:00 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/29 09:20:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 	int		size;
 	char	**env;
 	char	**command;
-
+	
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
@@ -186,7 +186,6 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
-
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
