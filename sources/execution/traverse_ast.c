@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 10:44:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:01:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_command(char **commands, char **env)
 }
 
 //
-static bool	join_env(char **joined, char *temp[3])
+static bool	join_env(char **joined, char *temp[2])
 {
 	char	*merged;
 
@@ -120,6 +120,7 @@ t_exec	*create_execution_node(char **command, char **environ)
 
 static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 {
+//	pid_t	pid;
 	int		size;
 	char	**env;
 	char	**command;
@@ -133,6 +134,14 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 	env = rebuild_env(*minishell, &size);	
 	if (!env)
 		return (free_array(env, size), error_message(INV_ENV));
+/*
+	node = create_execution_node(command, environ);
+	if (!node)
+		return (free_array(command), free_array(env), false);
+*/
+
+//	create_child_process();
+
 	execute_command(command, env);
 	return (true);
 }
@@ -186,7 +195,6 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
-
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);

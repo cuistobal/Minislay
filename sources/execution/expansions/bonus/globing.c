@@ -1,6 +1,18 @@
-#include "minislay.h"
-//#include "globing.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   globing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/29 10:53:35 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minislay.h"
+
+//
 static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int *count)
 {
     t_tokn  *new;
@@ -8,72 +20,64 @@ static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int
 
     new = NULL;
 	value = strdup(filename);
-	if (value)
-	{
-        if (!*init)
-        {
-            free((*list)->value);
-            (*list)->value = value;
-            *init = true;
-            return (true);
-        }
-        else
-        {
-	        new = create_token_node(value, WORD);
-	        if (new)
-	        {
-				(*count)++;
-		        (*list)->next = new;
-                return (move_pointer(list));
-	        }
-	        free (value);
-	    }
+	if (!value)
+		return (false);
+	if (!*init)
+    {
+		free((*list)->value);
+		(*list)->value = value;
+		*init = true;
+		return (true);
     }
-	return (false);	
+	new = create_token_node(value, WORD);
+	if (!new)
+		return (free(value), false);
+	(*count)++;
+	(*list)->next = new;
+	return (move_pointer(list));
 }
 
-//static char	**globing_loop(char **patterns, DIR *stream, int *size)
+//
 static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count)
 {
+	int				i;
     bool            init;
 	t_tokn			*next;
 	struct dirent	*current;
 
+	i = 0;
     init = false;
 	current = NULL;
 	next = (*list)->next;
-	if (patterns && stream)
+	if (!patterns || !stream)
+		return (false);
+	current = readdir(stream);
+	while (current)
 	{
-		current = readdir(stream);
-		while (current)
+		if (match_pattern(patterns, current->d_name, &i))
 		{
-			if (match_pattern(patterns, current->d_name))
-			{
-        		if (!insert_globing_result(list, current->d_name, &init, count))
-                    break ;
-			}
-			current = readdir(stream);
+        	if (!insert_globing_result(list, current->d_name, &init, count))
+        		break ;
 		}
-		(*list)->next = next;
-	//	*list = next;
-        return (!current);
+		i = 0;
+		current = readdir(stream);
 	}
-	return (true);		//To be modified
+	(*list)->next = next;
+	return (!current);
 }
 
 //
 static bool	open_directory(const char *dir_path, DIR **dir_stream)
 {
-	if (!*dir_stream)
-	{
-		if (dir_path)
-			*dir_stream = opendir(dir_path);
+	if (!*dir_stream && dir_path)
+	{	
+		*dir_stream = opendir(dir_path);
 		return (*dir_stream);
 	}
 	return (false);
 }
 
-//char	**globing(const char *globing, const char *path, int *count)
+//
 bool	globing(t_tokn **list, const char *path, int *count) 
 {
 	char	**patterns;
@@ -81,18 +85,14 @@ bool	globing(t_tokn **list, const char *path, int *count)
 
 	patterns = NULL;
 	dir_stream = NULL;
-	if (*list)
-	{
-		if (open_directory(path, &dir_stream))
-		{
-			patterns = identify_globing_patterns((*list)->value);
-			if (patterns)
-			{
-				if (globing_loop(list ,patterns, dir_stream, count))
-					return (closedir(dir_stream), true);
-			}
-			closedir(dir_stream);
-		}
-	}
-	return (false);
+	if (!*list)
+		return (false);
+	if (!open_directory(path, &dir_stream))
+		return (false);
+	patterns = identify_globing_patterns((*list)->value);
+	if (!patterns)
+		return (false);
+	if (globing_loop(list, patterns, dir_stream, count))
+		return (closedir(dir_stream), true);
+	return (closedir(dir_stream), false);
 }

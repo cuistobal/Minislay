@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:32:51 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/28 09:56:14 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/29 09:11:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static bool	read_and_append(char **line, char *c, size_t *read_count, size_t *n)
 */
 
 //
-static void	handle_arrow_keys(t_rlhs **history, char **line, char c, char *prompt)
+static size_t	handle_arrow_keys(t_rlhs **history, char **line, char c, char *prompt)
 {
 	char	*temp;
 	char	seq[3];
@@ -71,11 +71,11 @@ static void	handle_arrow_keys(t_rlhs **history, char **line, char c, char *promp
 	temp = *line;
     if (c != '\033')
 		return ;
-	read(STDIN_FILENO, seq, 2);
 	if (strcmp(seq, ARROW_UP))
-		navigate_history(history, true);
+		navigate_history(history, true, line);
 	else if (strcmp(seq, ARROW_DN))
-        navigate_history(history, false);
+        navigate_history(history, false, line);
+	printf("%s%s", prompt, *line);
     if (*line)
         *line = temp;
 }
@@ -100,7 +100,7 @@ char	*my_readline(t_rlhs *history, char *prompt, size_t *n)
         if (read_count <= 0 || (c == '\n' || c == '\r'))
             break;
         else if (c == '\033')
-            handle_arrow_keys(&history, &line, c, prompt);
+            read_count += handle_arrow_keys(&history, &line, c, prompt);
         else
 		{
 			if (read_count >= *n)

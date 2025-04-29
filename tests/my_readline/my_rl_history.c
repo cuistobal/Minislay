@@ -6,12 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:10:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 15:52:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:12:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_readline.h"
-
+i
+//
 void	my_add_history(t_rlhs **history, char *line)
 {
 	t_hist	*new;
@@ -38,15 +39,23 @@ void	my_add_history(t_rlhs **history, char *line)
 	}
 }
 
-void	navigate_history(t_rlhs **history, bool uparrow)
+//
+void	navigate_history(t_rlhs **history, bool uparrow, char **line)
 {
+	char	*temp;
+
+	temp = NULL;
 	if (!(*history) || !(*history)->head)
 		return ;
 	if ((*history)->current)
 	{
 		if (uparrow)
 		{
+			temp = (*history)->current->line;
+			if (temp)
+			
 			write(1, (*history)->current->line, strlen((*history)->current->line));
+
 			(*history)->current = (*history)->current->prev;							
 		}
 		else
@@ -57,6 +66,7 @@ void	navigate_history(t_rlhs **history, bool uparrow)
 	}	
 }
 
+//
 t_rlhs	*create_history_node(void)
 {
 	t_rlhs	*history;

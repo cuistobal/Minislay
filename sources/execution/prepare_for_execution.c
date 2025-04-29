@@ -154,16 +154,14 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 	split_list(ast->tokens, &assignations, &expansions);
 
 	command = initialise_execution(*minishell, &redirections, &expansions);
+	
+	print_tokens(expansions);
 
-//	print_exec(assignations, expansions, redirections, command);
+	/*
+	 *	Do we treat basic assignations (ex: abc=def) ?
+	 *	If so, we need to handle their expansion && assignation here
+	 *
+	 */
 
-//	if (!expand(*minishell, &assignations))
-//		return (NULL);
-
-//	print_tokens(assignations);
-
-	//Identify type of command
-	//
-	//Turn the token list into redirs && char **exec
 	return (command);
 }

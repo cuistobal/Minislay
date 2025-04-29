@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test_globing_patterns.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/29 10:11:56 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/04/29 10:43:18 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //
@@ -13,21 +25,16 @@ static char	*handle_words(const char *globing, int *index)
 {
 	int	start;
 
-//	if (globing && globing[*index])
-	if (globing)
+	if (!globing)
+		return (NULL);
+	start = *index;
+	while (globing[*index])
 	{
-		start = *index;
-		while (globing[*index])
-		{
-			(*index)++;
-			if (!globing[*index] || globing[*index] == '*')
-				break ;
-		}
-		return (create_sub_string(globing + start, *index - start));
+		(*index)++;
+		if (!globing[*index] || globing[*index] == '*')
+			break ;
 	}
-	return (NULL);
-//	return (!globing[*index]);
-//	return (false);
+	return (create_sub_string(globing + start, *index - start));
 }
 
 //
@@ -35,19 +42,16 @@ static char	*handle_stars(const char *globing, int *index)
 {
 	int	start;
 
-	if (globing)
+	if (!globing)
+		return (NULL);
+	start = *index;
+	while (globing[*index])
 	{
-		start = *index;
-		while (globing[*index])
-		{
-			(*index)++;
-			if (!globing[*index] || globing[*index] != '*')
-				break ;
-		}
-		return (create_sub_string(globing + start, 1));
+		(*index)++;
+		if (!globing[*index] || globing[*index] != '*')
+			break ;
 	}
-	return (NULL);
-//	return (false);
+	return (create_sub_string(globing + start, 1));
 }
 
 //
@@ -67,10 +71,7 @@ static char *handle_pattern(char *globing, int *index)
 static bool	valid_pattern(const char globing, char ***patterns, int pindex)
 {
 	if (globing != '\0')
-	{
-		free_array(*patterns, pindex);
-		return (false);
-	}
+		return (free_array(*patterns, pindex), false);
 	return (true);
 }
 
@@ -82,62 +83,21 @@ char	**identify_globing_patterns(char *globing)
 	char	**patterns;
 	
 	patterns = NULL;
-	if (globing)
-	{
-		index = 0;	
-		pindex = 0;
-		while (globing[index])
-		{	
-			pindex++;
-			patterns = (char **)realloc(patterns, sizeof(char *) * (pindex + 1));
-			if (patterns)
-			{
-				patterns[pindex - 1] = handle_pattern(globing, &index);
-				patterns[pindex] = NULL;
-			/*
-				patterns[pindex] = NULL;
-				if (globing[index] == '*')
-					patterns[pindex - 1] = handle_stars(globing, &index);
-				else
-					patterns[pindex - 1] = handle_words(globing, &index);
-			*/
-				if (!patterns[pindex - 1])
-					break ;
-			}
-		}
-		valid_pattern(globing[index], &patterns, pindex);
+	if (!globing)
+		return (NULL);
+	index = 0;	
+	pindex = 0;
+	while (globing[index])
+	{	
+		pindex++;
+		patterns = (char **)realloc(patterns, sizeof(char *) * (pindex + 1));
+		if (!patterns)
+			return (NULL);
+		patterns[pindex - 1] = handle_pattern(globing, &index);
+		patterns[pindex] = NULL;
+		if (!patterns[pindex - 1])
+			break ;
 	}
-	//error -> invalid globing variable
+	valid_pattern(globing[index], &patterns, pindex);
 	return (patterns);
 }
-/*
-//TEST
-int	main(int argc, char **argv)
-{
-	char	*temp;
-	int		index;
-	int		pindex;
-	char	**patterns;
-
-	pindex = 1;
-	patterns = NULL;
-	if (argc == 2)
-	{
-		patterns = identify_globing_patterns((const char *)argv[1], &pindex);
-		if (patterns)
-		{
-			index = 0;
-			while (patterns[index])
-			{
-				printf("%s\n", patterns[index]);
-				index++;
-			}
-			free_array(patterns, pindex);
-		}
-		else
-			printf("patterns is NULL.\n");
-	}
-	else
-		printf("Invalid argc. Usage: ./a.out pattern\n");
-	return 0;
-}*/
