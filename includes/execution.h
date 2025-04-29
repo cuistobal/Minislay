@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 10:24:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:49:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	word_splitting(t_shel *minishell, t_tokn **current);
 
 //globing.c
 void	free_array(char **array, int count);
-bool	match_pattern(char **patterns, char *current);
+bool	match_pattern(char **patterns, char *current, int *i);
 char	**identify_globing_patterns(char *globing);
 bool	globing(t_tokn **list, const char *path, int *count);
 

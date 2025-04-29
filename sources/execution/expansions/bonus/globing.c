@@ -6,13 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:35:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:53:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-//#include "globing.h"
 
+//
 static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int *count)
 {
     t_tokn  *new;
@@ -37,13 +37,15 @@ static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int
 	return (move_pointer(list));
 }
 
-//static char	**globing_loop(char **patterns, DIR *stream, int *size)
+//
 static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count)
 {
+	int				i;
     bool            init;
 	t_tokn			*next;
 	struct dirent	*current;
 
+	i = 0;
     init = false;
 	current = NULL;
 	next = (*list)->next;
@@ -52,11 +54,12 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count
 	current = readdir(stream);
 	while (current)
 	{
-		if (match_pattern(patterns, current->d_name))
+		if (match_pattern(patterns, current->d_name, &i))
 		{
         	if (!insert_globing_result(list, current->d_name, &init, count))
         		break ;
 		}
+		i = 0;
 		current = readdir(stream);
 	}
 	(*list)->next = next;
@@ -74,7 +77,7 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 	return (false);
 }
 
-//char	**globing(const char *globing, const char *path, int *count)
+//
 bool	globing(t_tokn **list, const char *path, int *count) 
 {
 	char	**patterns;
