@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:01:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:57:43 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, 
 //
 void	execute_command(char **commands, char **env)
 {
+    int     status;
 	char	*command;
 	char	**arguments;
 
@@ -26,7 +27,9 @@ void	execute_command(char **commands, char **env)
 	arguments = commands + 1;
 //test
 	pid_t	pid = fork();
-	if (pid == 0)
+    if (pid > 0)
+        waitpid(pid, &status, WEXITED);
+    else if (pid == 0)
 //
 		exit(execve(command, arguments, env));
 
@@ -118,13 +121,14 @@ t_exec	*create_execution_node(char **command, char **environ)
 }
 */
 
-static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast, char **command, char **env)
 {
 //	pid_t	pid;
 	int		size;
+/*
 	char	**env;
 	char	**command;
-
+*/
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
@@ -140,9 +144,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 		return (free_array(command), free_array(env), false);
 */
 
-//	create_child_process();
-
-	execute_command(command, env);
+	create_child_process(*minishell, command, env);
 	return (true);
 }
 
@@ -195,6 +197,11 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
+    char    **env;
+    char    **command;
+
+    env = NULL;
+    command = NULL;
 	if (ast)
 	{
 		traverse_ast(minishell, ast->left);
@@ -204,8 +211,9 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 				handle_subshell(*minishell, ast);
 			else
 			{
-				if (!get_command_and_env(minishell, ast))
+				if (!get_command_and_env(minishell, ast, command, env))
 					return ;
+	            create_child_process(*minishell, command, env);
 			//	insert_execution_token(queue, new);
 		/*
 				command = prepare_for_exec(minishell, ast);	
