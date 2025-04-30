@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:28:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/04/30 07:34:05 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ int	get_minishelled(t_shel **minishell, char *input)
 	t_tree	*ast;
 	t_pars	*parser;
 	t_tokn	*tokens;
+    t_exec  *execution;
 
 	ast = NULL;
 	tokens = NULL;
 	parser = NULL;
+    execution = NULL;
 	if (!tokenize(&tokens, input, strlen(input)))
 		return (printf(TOKENIZATION), free_tokens(tokens), -1);
 	if (!get_stacked(NULL, NULL, 0))
@@ -44,7 +46,8 @@ int	get_minishelled(t_shel **minishell, char *input)
  	 */
 
 
-	traverse_ast(minishell, ast);
+	traverse_ast(minishell, ast, &execution);
+
 	return (free_tree(ast), 0);
 }
 

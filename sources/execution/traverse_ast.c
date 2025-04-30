@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/30 07:07:12 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/30 08:11:49 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,54 @@ static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, 
 //
 void	execute_command(char **commands, char **env)
 {
-    exit(execve(*commands,commands + 1 , env));
+    char    *cmd;
+    char    **args;
+
+    cmd = *commands;
+    args = commands + 1;
+/*
+    for (int  i = 0; commands[i]; i++)
+        printf("%s\n", commands[i]);
+
+    for (int  i = 0; env[i]; i++)
+        printf("%s\n", env[i]);
+    exit(execve(*commands, commands + 1 , env));
+    */ 
+    exit(execve(cmd, args , env));
+}
+
+//
+void	insert_execution_node(t_exec *head, t_exec *new)
+{
+    t_exec  *tail;
+
+    tail = NULL;
+	if (!head)
+		head = new;
+	else
+	{
+        tail = head;
+        while (tail)
+            tail = tail->next;
+		tail = new;
+	}
+}
+
+//
+t_exec  *create_execution_node()
+{
+    t_exec  *new;
+
+    new = malloc(sizeof(t_exec));
+    if (!new)
+        return (NULL);
+    new->pid = -1;
+    new->pipe[0] = -1;
+    new->pipe[1] = -1;
+    new->command = NULL;
+    new->environ = NULL;
+    new->next = NULL;
+    return (new);
 }
 
 //
@@ -38,17 +85,20 @@ static bool	join_env(char **joined, char *temp[2])
 
 
 //
-void	create_child_process(t_shel	*minishell, char **command, char **env)
+void	create_child_process(t_shel	*minishell, t_exec *list)
 {
-	int status;
+    pid_t   pid;
+	int     status;
 
-	if (!minishell)
+	if (!minishell || !list)
 		return ;
-	pid_t pid = fork();
+	pid = fork();
 	if (pid == 0)
-		execute_command(command, env);
+		execute_command(list->command, list->environ);
 	else
 	{
+       // list->pid = pid;
+//		waitpid(list->pid, &status, 0);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			printf("%d\n", WEXITSTATUS(status));
@@ -87,51 +137,39 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
-/*
-t_exec	*create_execution_node(char **command, char **environ)
+//
+static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 {
-	t_exec	*new;
-	int		pipefd[2];
-
-	new = malloc(sizeof(t_exec));
-	if (!new)
-		return (NULL);
-	if (pipe(pipefd) < 0)
-		return (free(new), error_message(PIPE_FAILED), NULL);
-	new->command = command;
-	new->environ = environ;
-	new->pipe[0] = pipefd[0];
-	new->pipe[1] = pipefd[1];
-	new->func = NULL;
-	new->next = NULL;
-	return (new);
-}
-*/
-
-static bool	get_command_and_env(t_shel **minishell, t_tree *ast, char **command, char **env)
-{
-//	pid_t	pid;
 	int		size;
-/*
-	char	**env;
-	char	**command;
-*/
+    t_exec  *new; 
+
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
-	command = prepare_for_exec(minishell, ast);
-	if (!command)
-		return (error_message(INV_COMMAND));
-	env = rebuild_env(*minishell, &size);	
-	if (!env)
-		return (free_array(env, size), error_message(INV_ENV));
-/*
-	node = create_execution_node(command, environ);
-	if (!node)
-		return (free_array(command), free_array(env), false);
-*/
+//  new = malloc(sizeof(t_exec));
+    new = create_execution_node();
+    if (!new)
+        return (false);
+    else
+    {
+	    new->command = prepare_for_exec(minishell, ast);
+	    if (!new->command)
+		    return (free(new), error_message(INV_COMMAND));
+	    new->environ = rebuild_env(*minishell, &size);
+	    if (!new->environ)
+		    return (free_array(new->command, size), free(new), error_message(INV_ENV));
+    }
+    /*
+     *
+     * Not a clean exit rn, we ened to free the new node as well. 
+     *
+     *
+     */
 
-	create_child_process(*minishell, command, env);
+    insert_execution_node(exec, new);
+
+	create_child_process(*minishell, new);
+
 	return (true);
 }
 
@@ -157,50 +195,27 @@ static void	execute(t_exec **execution)
 	//	free_exec_node(current);
 	}
 }
-
-
-void	insert_execution_token(t_queu *queue, t_exec *new)
-{
-	t_exec	*head;
-	t_exec	*tail;
-
-	head = (t_exec *)queue->head;
-	tail = (t_exec *)queue->tail;
-	if (!head)
-	{
-		head = execution;
-		tail = execution;	
-	}
-	else
-	{
-		(tail)->next = execution;
-		tail = (tail)->next;
-	}
-}
 */
 
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 {
-    char    **env;
-    char    **command;
-
-    env = NULL;
-    command = NULL;
 	if (ast)
 	{
-		traverse_ast(minishell, ast->left);
+		traverse_ast(minishell, ast->left, list);
 		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 		{
 			if (ast->tokens->type & OPAR)
 				handle_subshell(*minishell, ast);
 			else
 			{
-				if (!get_command_and_env(minishell, ast, command, env))
+				if (!get_command_and_env(minishell, ast, *list))
 					return ;
-	            create_child_process(*minishell, command, env);
+
+	            create_child_process(*minishell, *list);
+
 			//	insert_execution_token(queue, new);
 		/*
 				command = prepare_for_exec(minishell, ast);	
@@ -220,7 +235,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			//	*/
 			}
 		}
-		traverse_ast(minishell, ast->right);
+		traverse_ast(minishell, ast->right, list);
 		/*
 		if (!is_state_active(ast->tokens->type, PIPE))
 			execute(head);	
