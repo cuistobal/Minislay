@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 18:57:43 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/30 07:07:12 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,7 @@ static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, 
 //
 void	execute_command(char **commands, char **env)
 {
-    int     status;
-	char	*command;
-	char	**arguments;
-
-	command = *commands;
-	arguments = commands + 1;
-//test
-	pid_t	pid = fork();
-    if (pid > 0)
-        waitpid(pid, &status, WEXITED);
-    else if (pid == 0)
-//
-		exit(execve(command, arguments, env));
-
+    exit(execve(*commands,commands + 1 , env));
 }
 
 //
