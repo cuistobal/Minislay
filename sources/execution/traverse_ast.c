@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/30 08:11:49 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/30 08:22:03 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void	execute_command(char **commands, char **env)
 
     cmd = *commands;
     args = commands + 1;
+
+    //  Unknown issue -> ssomew arguments don't work rn, ex -> ls -la
+
 /*
     for (int  i = 0; commands[i]; i++)
         printf("%s\n", commands[i]);
@@ -53,7 +56,7 @@ void	insert_execution_node(t_exec *head, t_exec *new)
 }
 
 //
-t_exec  *create_execution_node()
+t_exec  *create_execution_node(char **command, char **env)
 {
     t_exec  *new;
 
@@ -63,8 +66,8 @@ t_exec  *create_execution_node()
     new->pid = -1;
     new->pipe[0] = -1;
     new->pipe[1] = -1;
-    new->command = NULL;
-    new->environ = NULL;
+    new->command = command;
+    new->environ = env;
     new->next = NULL;
     return (new);
 }
@@ -141,34 +144,28 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 {
 	int		size;
-    t_exec  *new; 
+    t_exec  *new;
+    char    **command;
+    char    **environ;
 
+    command = NULL;
+    environ = NULL;
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
-//  new = malloc(sizeof(t_exec));
-    new = create_execution_node();
+	environ = rebuild_env(*minishell, &size);
+	if (!environ)
+		return (error_message(INV_ENV));
+	command = prepare_for_exec(minishell, ast);
+	if (!command)
+	    return (free_array(environ, size), error_message(INV_COMMAND));
+    new = create_execution_node(command, environ);
     if (!new)
         return (false);
-    else
-    {
-	    new->command = prepare_for_exec(minishell, ast);
-	    if (!new->command)
-		    return (free(new), error_message(INV_COMMAND));
-	    new->environ = rebuild_env(*minishell, &size);
-	    if (!new->environ)
-		    return (free_array(new->command, size), free(new), error_message(INV_ENV));
-    }
-    /*
-     *
-     * Not a clean exit rn, we ened to free the new node as well. 
-     *
-     *
-     */
 
     insert_execution_node(exec, new);
 
-	create_child_process(*minishell, new);
+//	create_child_process(*minishell, new);
 
 	return (true);
 }
@@ -214,7 +211,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 				if (!get_command_and_env(minishell, ast, *list))
 					return ;
 
-	            create_child_process(*minishell, *list);
+	          //  create_child_process(*minishell, *list);
 
 			//	insert_execution_token(queue, new);
 		/*

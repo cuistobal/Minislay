@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:13:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/30 08:09:05 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/04/30 08:25:10 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ bool	match_pattern(char **patterns, char *current, int *i)
             return (false);
         if (strncmp(patterns[*i], current, plen) == 0)
 		    return ((*i)++ , match_pattern(patterns, current + plen, i));
-		return (match_pattern(patterns, current + 1, i));
+        else if (*i > 0 && patterns[*i + 1])
+	    	return (match_pattern(patterns, current + 1, i));
     }
     return (false);
 }
