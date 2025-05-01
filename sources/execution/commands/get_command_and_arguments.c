@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 09:04:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:08:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
 				if (!is_executable(list->value))
 				{
 					if (!retrieve_path(minishell, &list->value))
-						return (NULL);
+						return (free_array(commands, count), NULL);
 				}
 			}
 		}
 		commands[index++] = list->value;
 		move_pointer(&list);
 	}
-	commands[++index] = NULL;
+	commands[count] = NULL;
 	return (commands);
 }

@@ -134,3 +134,14 @@ void	print_exec(t_tokn *assignations, t_tokn *expansions, t_tokn *redirections, 
 	}
 	printf("\n");
 }
+
+void	print_execution_list(t_exec *execution)
+{
+	while (execution)
+	{
+		for (int i = 0; execution->command[i]; i++)		
+			printf("%s ", execution->command[i]);
+		printf("\n");
+		execution = execution->next;
+	}
+}

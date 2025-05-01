@@ -9,5 +9,6 @@ void	print_ast_BFS(t_tree *ast);
 void	print_ast_DFS(t_tree *ast, int lvl, char *c, char *s);
 void	print_parser(t_pars *parser);
 void	print_exec(t_tokn *assignations, t_tokn *expansions, t_tokn *redirections, char **execution);
+void	print_execution_list(t_exec *execution);
 
 #endif
