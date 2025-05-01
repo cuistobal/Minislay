@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 09:36:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:47:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,22 @@ static bool	join_env(char **joined, char *temp[2])
 	return (*joined = merged, true);
 }
 
-
 //
 void	create_child_process(t_shel	*minishell, t_exec *list)
 {
     pid_t   pid;
 	int     status;
+//	int		pipefd[2];
+//	int		redirections[2];
 
 	if (!minishell || !list)
 		return ;
+
 	pid = fork();
 	if (pid == 0)
 		execute_command(list->command, list->environ);
 	else
 	{
-       // list->pid = pid;
-//		waitpid(list->pid, &status, 0);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			printf("%d\n", WEXITSTATUS(status));
@@ -197,19 +197,26 @@ static void	execute(t_exec **execution)
 //We need to implement the Operators logic.
 void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 {
-	if (ast)
-	{
-		traverse_ast(minishell, ast->left, list);
-		if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
-		{
-			if (ast->tokens->type & OPAR)
-				handle_subshell(*minishell, ast);
-			else
-			{
-				if (!get_command_and_env(minishell, ast, *list))
-					return ;
 
-	          //  create_child_process(*minishell, *list);
+//	retrieve current erminal state
+
+	if (!ast)
+		return ;
+
+	traverse_ast(minishell, ast->left, list);
+
+	if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
+	{
+
+		if (ast->tokens->type & OPAR)
+			handle_subshell(*minishell, ast);
+
+		else
+		{
+			if (!get_command_and_env(minishell, ast, *list))
+				return ;	
+
+	        create_child_process(*minishell, *list);
 
 			//	insert_execution_token(queue, new);
 		/*
@@ -228,12 +235,15 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 				else
 					execute_builtin(command, env);
 			//	*/
-			}
 		}
+
 		traverse_ast(minishell, ast->right, list);
 		/*
 		if (!is_state_active(ast->tokens->type, PIPE))
 			execute(head);	
 		*/
 	}
+
+//	set terminal state back to initial
+
 }
