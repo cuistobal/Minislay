@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 10:47:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:52:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,30 +168,6 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 	return (true);
 }
 
-/*
-static void	execute(t_exec **execution)
-{
-	t_exec	*current;
-
-	current = NULL;
-	printf("%s\n", *(*execution)->command);	
-	while (*execution)
-	{
-		current = *execution;
-		(*execution)->pid = fork();
-		if ((*execution)->pid < 0)
-		{
-			error_message(FORK_FAILED);
-			return ;
-		}
-		else if (current->pid == 0)
-			execute_command((*execution)->command, (*execution)->environ);
-		*execution = (*execution)->next;
-	//	free_exec_node(current);
-	}
-}
-*/
-
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
@@ -213,11 +189,12 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 
 		else
 		{
+			/*
 			if (!get_command_and_env(minishell, ast, *list))
 				return ;	
 
 	        create_child_process(*minishell, *list);
-
+*/
 			//	insert_execution_token(queue, new);
 		/*
 				command = prepare_for_exec(minishell, ast);	
