@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/30 07:48:56 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/01 09:15:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,13 @@ typedef struct parser
 
 typedef struct exec
 {
-	pid_t		pid;
-	int			pipe[2];
-	char		**command;
-	char		**environ;
-//	void		(*func)(char **, char **);
-	struct exec	*next;
+	pid_t			pid;
+	int				pipe[2];
+	char			**command;
+	char			**environ;
+	void			(*func)(char **, char **);
+	struct termios	*initial;
+	struct exec		*next;
 }	t_exec;
 
 #endif

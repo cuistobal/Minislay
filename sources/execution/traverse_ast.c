@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/30 08:22:03 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/01 09:36:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,6 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
         return (false);
 
     insert_execution_node(exec, new);
-
-//	create_child_process(*minishell, new);
 
 	return (true);
 }
