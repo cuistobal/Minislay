@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:18:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:38:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static bool	append_specials(t_shel **minishell)
 			(*minishell)->special[index] = element;
 			index++;
 		}
+		(*minishell)->special[index] = NULL;
 	}
 	return (index == DKCT);
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/02 08:40:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:29:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 
 	//print_execution_list(execution);
 
-	return (free_tree(ast), 0);
+	return (my_exit(*minishell), 0);
 }
 
 //

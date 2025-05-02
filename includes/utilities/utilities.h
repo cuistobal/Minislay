@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/02 08:44:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:33:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_env_list(t_env *list);
-
+void	free_avlt(t_avlt *tree);
 #endif

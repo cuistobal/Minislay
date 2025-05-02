@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 09:15:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:39:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct shell
 	struct  env		*envp;
 	struct	env		*local;
 	struct	env		*command;
-	char			*special[10];
+	char			*special[11];
 }	t_shel;
 
 //Basic environement node
