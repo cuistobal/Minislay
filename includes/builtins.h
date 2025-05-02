@@ -14,7 +14,7 @@ void	env(t_shel *minishell);
 void	my_export(void);
 
 //exit.c
-void	my_exit(void);
+void	my_exit(t_shel *minishell);
 
 //pwd.c
 void	pwd(char *current_dir);

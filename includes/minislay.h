@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 16:26:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:46:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "utilities/utilities.h"
 # include "../minitester/utils/minislay_test.h"
 # include "parsing.h"
+# include "builtins.h"
 # include "execution.h"
 
 int	get_minishelled(t_shel **minishell, char *input);

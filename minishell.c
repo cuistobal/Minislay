@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 10:24:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:40:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	get_minishelled(t_shel **minishell, char *input)
 	 *
  	 */
 
+	free(parser);
+	parser = NULL;
 
 	traverse_ast(minishell, ast, &execution);
 

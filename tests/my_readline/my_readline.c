@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:32:51 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:11:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:33:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,16 @@ static size_t	handle_arrow_keys(t_rlhs **history, char **line, char c, char *pro
 
 	temp = *line;
     if (c != '\033')
-		return ;
+		return 0;
 	if (strcmp(seq, ARROW_UP))
-		navigate_history(history, true, line);
+		navigate_history(history, true);
+			//, line);
 	else if (strcmp(seq, ARROW_DN))
-        navigate_history(history, false, line);
-	printf("%s%s", prompt, *line);
-    if (*line)
-        *line = temp;
+        navigate_history(history, false);
+//	, line);
+//    if (*line)
+  //      *line = temp;
+	return (strlen(*line));
 }
 
 //

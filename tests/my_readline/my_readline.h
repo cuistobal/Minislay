@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:06:07 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:09:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:32:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ t_rlhs *create_history_node(void);
 
 void	my_add_history(t_rlhs **history, char *line);
 
-void	navigate_history(t_rlhs **history, bool uparrow, char **line);
+void	navigate_history(t_rlhs **history, bool uparrow);
+//	, char **line);
 
 ssize_t	my_rl_replace();
 

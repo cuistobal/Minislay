@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/01 10:52:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 08:46:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_exec  *create_execution_node(char **command, char **env)
     return (new);
 }
 
-//
+/*
 static bool	join_env(char **joined, char *temp[2])
 {
 	char	*merged;
@@ -85,6 +85,7 @@ static bool	join_env(char **joined, char *temp[2])
 		return (free(merged), merged = NULL,false);
 	return (*joined = merged, true);
 }
+*/
 
 //
 void	create_child_process(t_shel	*minishell, t_exec *list)
@@ -109,6 +110,7 @@ void	create_child_process(t_shel	*minishell, t_exec *list)
 }
 
 
+/*
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
 static char	**rebuild_env(t_shel *minishell, int *size)
@@ -140,7 +142,7 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	return (env);
 }
 
-//
+
 static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 {
 	int		size;
@@ -167,6 +169,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast, t_exec *exec)
 
 	return (true);
 }
+*/
 
 //Main travsersal function of the AST
 //
@@ -189,6 +192,8 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **list)
 
 		else
 		{
+			if (strncmp(ast->tokens->value, "exit", 4) == 0)
+				my_exit(*minishell);
 			/*
 			if (!get_command_and_env(minishell, ast, *list))
 				return ;	
