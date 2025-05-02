@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 08:42:05 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/02 10:28:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:45:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	free_env_list(t_env	*list)
 	while (list)
 	{
 		list = list->next;
+		free(prev->var[KEY]);
 		free(prev);
 		prev = list;
 	}
