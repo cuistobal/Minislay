@@ -22,32 +22,32 @@
 
 //Masks for terminal tokens
 
-# define INIT 0b0000000000000000
-# define OPAR 0b0000000000000001
-# define CPAR 0b0000000000000010
+# define INIT 0b0000000000000000	//	initailisation a 0
+# define OPAR 0b0000000000000001	//	parenthese ouvrante (
+# define CPAR 0b0000000000000010	//	parenthese femante )
 
-# define PIPE 0b0000000000000100
+# define PIPE 0b0000000000000100	//	operateur pipe |
 
-# define LAND 0b0000000000001000
-# define LORR 0b0000000000010000
+# define LAND 0b0000000000001000	//	operateur et &&
+# define LORR 0b0000000000010000	//	operateur ou ||
 
-# define WORD 0b0000000000100000
+# define WORD 0b0000000000100000	//	token de mot WORD
 
-# define IRED 0b0000000001000000
-# define HDOC 0b0000000010000000
-# define ORED 0b0000000100000000
-# define ARED 0b0000001000000000
+# define IRED 0b0000000001000000	//	token de redirection simple d'entree <
+# define HDOC 0b0000000010000000	//	token here_doc <<
+# define ORED 0b0000000100000000	//	token de redirection simple de sortie >
+# define ARED 0b0000001000000000	//	token de redirection append de sortie >>
 
-# define STAR 0b0000100000000000
-# define EQUL 0b0001000000000000
+# define STAR 0b0000100000000000	//	token d'expansion globing *
+# define EQUL 0b0001000000000000	//	token d'assignation de variable =
 
-# define DQTE 0b0010000000000000
+# define DQTE 0b0010000000000000	//	token d'apostrophe double "
 
-# define DOLL 0b0100000000000000
+# define DOLL 0b0100000000000000	//	token d'expansion dollar $
 
-# define SQTE 0b1000000000000000
+# define SQTE 0b1000000000000000	//	token d'apostrophe simple '
 
-# define XXXX 0b1000000000000000
+
 
 //Masks for the parser status
 
@@ -83,12 +83,12 @@
 # define STATE_ERROR 0b00100000
 
 //TT Stands for Token Tab and refers to the token_tab used within t_pars struct
-# define TTSIZE 4
+# define TTSIZE 4	//	taille du tableau de pointeur dans la structrue de parsing
 
-# define TTHEAD 0
-# define TTPREV 1
-# define TTCURR 2
-# define TTNEXT 3
+# define TTHEAD 0	//	tete de la liste chainee en cours de traitement
+# define TTPREV 1	//	adresse du noeud prev
+# define TTCURR 2	//	adress du noeud current
+# define TTNEXT 3	//	adress du noeud next
 
 
 //Those macrops refers to the function tab we use for builtins

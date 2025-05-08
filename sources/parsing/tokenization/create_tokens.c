@@ -55,7 +55,7 @@ void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
 //We use this function to keep track of closed && unclosed parenthesis.
 bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 {
-	static int	count;	
+	static int	count;
 
 	if (head && !*head)
 	{
