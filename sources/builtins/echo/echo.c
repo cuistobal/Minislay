@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:40:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:43:47 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,34 @@ void	echo(const char **arguments, bool flag)
 			printf("\n");
 		arguments++;
 	}
+	printf("%s\n", "leon test");
+}
+/*leon*/
+int builtin_echo(char **argv)
+{
+	int	i;
+	bool	newline;
+	int	j;
+
+	i = 1;
+	newline = true;
+	// gérer tous les -n/-nnn
+	while (argv[i] && strncmp(argv[i], "-n", 2) == 0) {
+		j = 2;
+		while (argv[i][j] == 'n') j++;
+		if (argv[i][j] != '\0')
+			break;
+		newline = false;
+		i++;
+	}
+	// afficher le reste
+	while (argv[i]) {
+		printf("%s", argv[i]);
+		if (argv[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
+	return (0); // succès = 0
 }

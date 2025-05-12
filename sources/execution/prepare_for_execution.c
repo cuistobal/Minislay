@@ -10,7 +10,7 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	t_tokn	*current;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
-	
+
 	exec = NULL;
 	expansions = NULL;
 	assignations = NULL;
@@ -18,10 +18,10 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	if (split_list(current, &assignations, &expansions))
 	{
 
-		//FIRST STEP	->	Expand the expansion list && indetify commands && 
-		//					arguments. All WORDS following a redirection 
+		//FIRST STEP	->	Expand the expansion list && indetify commands &&
+		//					arguments. All WORDS following a redirection
 		//					operator is a filename. We then handle redirections
-		
+
 		if (expand(expansions))
 		{
 			modify_token_types(&expansions, redirections, &count);
@@ -48,7 +48,7 @@ static void	execute_command(t_shel **minishell, char **command)
 	if (!command)
 		return ;
 	if (**command == '/')
-		pid = create_process();	
+		pid = create_process();
 }
 */
 
@@ -120,7 +120,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 
 	if (!quote_removal(*expansions))
 		return (NULL);
-	
+
 	handle_redirection_list(minishell, redirections);
 
 	return (get_command_and_arguments(minishell, *expansions, count));
@@ -129,7 +129,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //Entry point -> Needs some rework
 //
 //	Either:
-//	
+//
 //		-> 	Fix the misleading name
 //		->	Change the return type to char**
 //
@@ -148,14 +148,27 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 	if (!*minishell && !ast)
 		return (NULL);
 
-	if (!ast->tokens)	
+	if (!ast->tokens)
 		return (NULL);
 
 	split_list(ast->tokens, &assignations, &expansions);
 
 	command = initialise_execution(*minishell, &redirections, &expansions);
-	
-	print_tokens(expansions);
+	/*debug
+	if (command)
+	{
+		int i = 0;
+		printf("Contenu de command :\n");
+		while (command[i])
+		{
+			printf("command[%d] = %s\n", i, command[i]);
+			i++;
+		}
+	}
+	debug*/
+
+	//print_tokens(expansions);
+	//printf("leon dbg\n");
 
 	/*
 	 *	Do we treat basic assignations (ex: abc=def) ?

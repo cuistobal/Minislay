@@ -8,7 +8,8 @@ t_tree	*create_tree_node(t_tokn *tokens)
 	new_node = (t_tree *)malloc(sizeof(t_tree));
 	if (new_node)
 	{
-		print_tokens(tokens);
+		//print_tokens(tokens);
+		
 		new_node->tokens = tokens;
 		new_node->left = NULL;
 		new_node->right = NULL;
@@ -30,14 +31,14 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], PIPE, LORR)) 
+		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], PIPE, LORR))
 			//	is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
-			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);	
+			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
 			if (parse_script(parser))
 			{
-				reset_parser(*parser, save, TTHEAD, &branch->right);	
+				reset_parser(*parser, save, TTHEAD, &branch->right);
 				return (parse_script(parser));
 			}
 		//	return (false);
@@ -47,7 +48,7 @@ bool	build_ast(t_pars **parser)
 			branch->tokens = (*parser)->tab[TTHEAD];
 			return (true);
 		}
-		return (false);	
+		return (false);
 	}
 	return (branch);
 }

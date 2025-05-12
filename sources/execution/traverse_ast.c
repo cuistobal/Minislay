@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   traverse_ast.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:01:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:09:57 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	execute_command(char **commands, char **env)
 	arguments = commands + 1;
 //test
 	pid_t	pid = fork();
-	if (pid == 0)
-//
+	if (pid == 0) {
 		exit(execve(command, arguments, env));
+	}
 
 }
 
@@ -76,11 +76,11 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	t_env	*current;
 
 	index = 0;
-	current = minishell->envp;	
+	current = minishell->envp;
 	env = (char **)malloc(sizeof(char *) * *size);
 	if (!env)
 		return (NULL);
-	reset_array(env, 0, *size);	
+	reset_array(env, 0, *size);
 	while (current)
 	{
 		reset_array(temp, 0, 2);
@@ -131,7 +131,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 	command = prepare_for_exec(minishell, ast);
 	if (!command)
 		return (error_message(INV_COMMAND));
-	env = rebuild_env(*minishell, &size);	
+	env = rebuild_env(*minishell, &size);
 	if (!env)
 		return (free_array(env, size), error_message(INV_ENV));
 /*
@@ -141,7 +141,6 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 */
 
 //	create_child_process();
-
 	execute_command(command, env);
 	return (true);
 }
@@ -152,7 +151,7 @@ static void	execute(t_exec **execution)
 	t_exec	*current;
 
 	current = NULL;
-	printf("%s\n", *(*execution)->command);	
+	printf("%s\n", *(*execution)->command);
 	while (*execution)
 	{
 		current = *execution;
@@ -180,7 +179,7 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 	if (!head)
 	{
 		head = execution;
-		tail = execution;	
+		tail = execution;
 	}
 	else
 	{
@@ -193,7 +192,7 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 //Main travsersal function of the AST
 //
 //We need to implement the Operators logic.
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+/*void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
 	if (ast)
 	{
@@ -205,10 +204,10 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			else
 			{
 				if (!get_command_and_env(minishell, ast))
-					return ;
+					return ;*/
 			//	insert_execution_token(queue, new);
 		/*
-				command = prepare_for_exec(minishell, ast);	
+				command = prepare_for_exec(minishell, ast);
 				if (!command)
 					return (error_message("Command alloc failed.\n"));
 				env = rebuild_env(*minishell, &size);
@@ -223,12 +222,55 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 				else
 					execute_builtin(command, env);
 			//	*/
-			}
+			/*}
 		}
 		traverse_ast(minishell, ast->right);
-		/*
 		if (!is_state_active(ast->tokens->type, PIPE))
-			execute(head);	
+			execute(head);
 		*/
+	/*}
+}*/
+
+void	traverse_ast(t_shel **minishell, t_tree *ast)
+{
+	char	**command;
+	char	**env;
+	int		size;
+
+	if (!ast)
+		return ;
+	traverse_ast(minishell, ast->left);
+	if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
+	{
+		if (ast->tokens->type & OPAR)
+		{
+			handle_subshell(*minishell, ast);
+			return ;
+		}
+		size = 1;
+		command = prepare_for_exec(minishell, ast);
+		if (!command)
+		{
+			error_message(INV_COMMAND);
+			return ;
+		}
+		env = rebuild_env(*minishell, &size);
+		if (!env)
+		{
+			free_array(env, size);
+			error_message(INV_ENV);
+			return ;
+		}
+		if (is_builtin(command[0]) && !(ast->tokens->type & PIPE))
+		{
+			exec_builtin(command, *minishell);
+			free_array(command, -1);
+			free_array(env, size);
+			return ;
+		}
+		create_child_process(*minishell, command, env);
 	}
+	traverse_ast(minishell, ast->right);
 }
+
+

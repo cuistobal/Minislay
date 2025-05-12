@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:28:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:48:18 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	get_minishelled(t_shel **minishell, char *input)
 	 *	I forgot an important point here ->	redirections are handled first, then
 	 *	the tree is traversed for execution.
 	 *
-	 *	We need to make decision about this implementation. 
-	 *	IMO, we could handle it gracefully by splitting redirections and 
+	 *	We need to make decision about this implementation.
+	 *	IMO, we could handle it gracefully by splitting redirections and
 	 *	treating them first, hence we'd only have to perform the dup()'s while
 	 *	executing.
 	 *	Otherwise, we could choose to traverse the tree twice. First we'd check
@@ -52,7 +52,6 @@ int	get_minishelled(t_shel **minishell, char *input)
 int	mini_loop(t_shel **minishell)
 {
     char	*user_input;
-
     while (1)
 	{
         user_input = readline(MINISLAY);
@@ -69,20 +68,30 @@ int	mini_loop(t_shel **minishell)
 //
 static bool	mini_setup(t_shel **minishell, char **envp)
 {
-	*minishell = (t_shel *)malloc(sizeof(t_shel));
+	*minishell = malloc(sizeof(t_shel));
 	if (!*minishell)
 		return (false);
 	(*minishell)->envp = NULL;
 	(*minishell)->local = NULL;
 	(*minishell)->command = NULL;
 	(*minishell)->expt = NULL;
-    return (set_env(minishell, envp));
+	if (!set_env(minishell, envp))
+	return (false);
+	if (!append_specials(minishell))
+		return (false);
+	return true;
 }
 
 //
 int	main(int argc, char **argv, char **envp)
 {
 	t_shel	*minishell;
+
+	/*while (*envp)
+	{
+    	printf("%s\n", *envp);
+    	envp++;
+	}*/
 
 	(void)argv;
 	minishell = NULL;
@@ -94,4 +103,3 @@ int	main(int argc, char **argv, char **envp)
     return 0;
 	//return (error());
 }
-

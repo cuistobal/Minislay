@@ -21,5 +21,10 @@ void	pwd(char *current_dir);
 
 //unsset.v
 void	unset(void);
+/* réimplementation des builtin*/
+int is_builtin(char *cmd);
+//dispatcher unique qui route chaque commande vers sa fonction dedier
+int exec_builtin(char **argv, t_shel *minishell);
+int builtin_echo(char **argv);
 
 #endif
