@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:18:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:51:19 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,23 @@
 static const char *g_spec[DKCT] = {VSTR, VARO, VHAS, VEXT, VHYP, VPID, VCID, VNME, VLST, VIFS};
 
 //
-static bool	append_specials(t_shel **minishell)
+bool	append_specials(t_shel **minishell)
 {
 	int		index;
-	char	*element;
 
-	if (*minishell)
+	if (!*minishell)
+		return (false);
+	index = 0;
+	while (index < DKCT)
 	{
-		index = 0;
-		while (index < DKCT)
-		{
-			element = strdup(g_spec[index]);
-			if (!element)
-				break ;
-			(*minishell)->special[index] = element;
-			index++;
-		}
+		(*minishell)->special[index] = strdup(g_spec[index]);
+		if (!(*minishell)->special[index])
+			return (false);
+		index++;
 	}
-	return (index == DKCT);
+	return (true);
 }
+
 
 //
 static bool build_env(t_shel **minishell, char **envp)
@@ -50,7 +48,7 @@ static bool build_env(t_shel **minishell, char **envp)
 		while (*envp)
         {
         	new = create_env_node(strdup(*envp));
-			if (!new)	
+			if (!new)
 				return (false);
             insert_env_node(head, &tail, new);
 			insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
@@ -66,7 +64,7 @@ bool    set_env(t_shel **minishell, char **envp)
     if (!*minishell)
     	return (false);
     if (!build_env(minishell, envp))
-    	return (false);	
+    	return (false);
 	else
 		return (append_specials(minishell));
 }

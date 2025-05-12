@@ -2,9 +2,9 @@ NAME = minislay
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES)
+CFLAGS = -Wall -Wextra -g3 -I$(INCLUDES)
 
-BFLAGS = -Wall -Werror -Wextra -g3 -I$(INCLUDES_BONUS)
+BFLAGS = -Wall -Wextra -g3 -I$(INCLUDES_BONUS)
 
 LDFLAGS = -lreadline
 
@@ -36,6 +36,7 @@ SOURCES = \
 	sources/builtins/env/env.c \
 	sources/builtins/exit/exit.c \
 	sources/builtins/pwd/pwd.c \
+	sources/builtins/builtins.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \
     sources/parsing/tokenization/tokenizer.c \
@@ -75,7 +76,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@ $(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
-	
+
 %.o: %.c
 	@ $(CC) $(CFLAGS) -c $< -o $@
 

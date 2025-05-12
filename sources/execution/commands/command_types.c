@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_types.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:09:25 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 12:10:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:12:44 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
 
 //static bool	is_builtin(char *command)
-bool is_builtin(char *command)
+bool is_builtin_bool(char *command)
 {
 	int	index;
 

@@ -4,13 +4,13 @@
 //current most meaningfull grammar operator
 void	delete_links(t_pars *parser)
 {
-	if (parser && parser->tab)
-	{
+	//if (parser && parser->tab)
+	//{
 		if (parser->tab[TTPREV])
 			parser->tab[TTPREV]->next = NULL;
 		if (parser->tab[TTCURR])
 			parser->tab[TTCURR]->next = NULL;
-	}
+//	}
 }
 
 //This function saves the positions of current and sets it to ->next

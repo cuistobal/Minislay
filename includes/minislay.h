@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minislay.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 16:26:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/12 19:45:40 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../minitester/utils/minislay_test.h"
 # include "parsing.h"
 # include "execution.h"
+#include "builtins.h"
 
 int	get_minishelled(t_shel **minishell, char *input);
 int	mini_loop(t_shel **minishell);
@@ -32,5 +33,6 @@ int	main(int argc, char **argv, char **envp);
 
 //initialisation.c
 bool    set_env(t_shel **minishell, char **envp);
+bool	append_specials(t_shel **minishell);
 
 #endif
