@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 10:04:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:08:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 // Modify the PWD && OLDPWD variables
 // If OLDPWD == CDPATH -> printf(PWD)
-int	cd(t_shel *minishell, char *path)
+int	cd(t_shel *minishell, char **arguments)
 {
+	char	*path;
 	char	*value;
 	char	current_directory[BUFFER_SIZE];
 
@@ -24,6 +25,7 @@ int	cd(t_shel *minishell, char *path)
 	if (!minishell)
 		return (-1);
 
+	path = *arguments;
 	getcwd(current_directory, BUFFER_SIZE);
 
 	if (!path)

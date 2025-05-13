@@ -6,22 +6,19 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:27:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:42:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:06:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Prints the environement variables
-void	env(t_shel *minishell)
+int	env(t_shel *minishell, char **arguments)
 {
 	t_env	*current;
 
-	if (!minishell || !minishell->envp)
-	{
-		error_message("No env\n");
-		return ;
-	}
+	if (!minishell)
+		return (ERROR);
 	current = minishell->envp; 
 	while (current)
     {
@@ -31,4 +28,5 @@ void	env(t_shel *minishell)
 		write(1,"\n", 1);
         current = current->next;
     }
+	return (SUCCESS);
 }

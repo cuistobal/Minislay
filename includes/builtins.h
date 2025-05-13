@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 09:59:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:06:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define BUILTINS_H
 
 //cd.c
-int		cd(t_shel *minishell, char *path);
+int		cd(t_shel *minishell, char **arguments);
 
 //echo.c
 void	echo(const char **arguments, bool flag);
 
 //env.c
-void	env(t_shel *minishell);
+int		env(t_shel *minishell, char **arguments);
 
 //export.c
 void	my_export(void);

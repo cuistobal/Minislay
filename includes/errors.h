@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 15:38:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:03:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,10 @@
 # define FORK_FAILED "Fork failed\n."
 # define INV_COMMAND "Invalid command.\n"
 # define INV_ENV "Invalid env.\n"
+
+//Error codes
+
+# define SUCCESS 0
+# define ERROR 127
 
 #endif
