@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/13 09:57:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:57:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_builtin(char **argv, t_shel *minishell)
 	code = 1;
 	if (!strncmp(argv[0], "echo", 5))
 		code = builtin_echo(argv);
-	if (!strncmp(argv[0], "cd", 3))
+	if (!strncmp(cmd, "cd", 3))
 		code = cd(minishell, argv[1]);
 	temp = minishell->special[DEXTI];
 	minishell->special[DEXTI] = int_to_str(code);

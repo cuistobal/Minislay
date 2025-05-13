@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 17:43:47 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:56:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	echo(const char **arguments, bool flag)
 	}
 	printf("%s\n", "leon test");
 }
+
 /*leon*/
 int builtin_echo(char **argv)
 {
