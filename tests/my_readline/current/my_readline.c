@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:32:51 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:11:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:55:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static bool	read_and_append(char **line, char *c, size_t *read_count, size_t *n)
 */
 
 //
-static size_t	handle_arrow_keys(t_rlhs **history, char **line, char c, char *prompt)
+static void	handle_arrow_keys(t_rlhs **history, char **line, char c, char *prompt)
 {
 	char	*temp;
 	char	seq[3];
@@ -100,7 +100,7 @@ char	*my_readline(t_rlhs *history, char *prompt, size_t *n)
         if (read_count <= 0 || (c == '\n' || c == '\r'))
             break;
         else if (c == '\033')
-            read_count += handle_arrow_keys(&history, &line, c, prompt);
+			handle_arrow_keys(&history, &line, c, prompt);
         else
 		{
 			if (read_count >= *n)
@@ -109,5 +109,7 @@ char	*my_readline(t_rlhs *history, char *prompt, size_t *n)
 		}
 		c = '\0';
 	}
+	if (!history)
+		history = NULL;
     return (tcsetattr(STDIN_FILENO, TCSANOW, &old_attr), line);
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 10:07:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:05:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 		}
 		if (is_builtin(*command) && !(ast->tokens->type & PIPE))
 		{
-			exec_builtin(command, *minishell);
+			exec_builtin(command, env, *minishell);
 			free_array(command, csize);
 			free_array(env, esize);
 			return ;
