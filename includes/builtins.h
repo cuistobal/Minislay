@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 16:05:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:31:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	my_export(void);
 void	my_exit(t_shel *minishell);
 
 //pwd.c
-int		pwd(t_shel *minishell, char **arguments);
+int		pwd(t_shel *minishell);
 
 //unsset.v
 void	unset(void);

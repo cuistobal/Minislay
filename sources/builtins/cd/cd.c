@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 13:08:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:22:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	cd(t_shel *minishell, char **arguments)
 {
 	char	*path;
-	char	*value;
+//	char	*value;
 	char	current_directory[BUFFER_SIZE];
 
 //	memset(current_directory, 0, BUFFER_SIZE);

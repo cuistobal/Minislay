@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/13 16:08:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:31:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	exec_builtin(char **argv, char **envp, t_shel *minishell)
 	if (!strncmp(argv[0], "env", 4))
 		code = env(minishell, argv + 1);
 	if (!strncmp(argv[0], "pwd", 4))
-		code = pwd(minishell, argv + 1);
+		code = pwd(minishell);
 	if (!strncmp(argv[0], "exit", 5))
 	{
 		free_env(envp);
