@@ -6,12 +6,12 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:10:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 09:12:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:52:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "my_readline.h"
-i
+
 //
 void	my_add_history(t_rlhs **history, char *line)
 {
@@ -52,10 +52,8 @@ void	navigate_history(t_rlhs **history, bool uparrow, char **line)
 		if (uparrow)
 		{
 			temp = (*history)->current->line;
-			if (temp)
-			
+			if (temp)	
 			write(1, (*history)->current->line, strlen((*history)->current->line));
-
 			(*history)->current = (*history)->current->prev;							
 		}
 		else
@@ -63,7 +61,8 @@ void	navigate_history(t_rlhs **history, bool uparrow, char **line)
 			write(1, (*history)->current->line, strlen((*history)->current->line));
 			(*history)->current = (*history)->current->next;
 		}
-	}	
+	}
+	*line = temp;
 }
 
 //

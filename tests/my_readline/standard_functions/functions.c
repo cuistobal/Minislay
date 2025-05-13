@@ -52,10 +52,22 @@ int	main(int argc, char **argv)
 				printf("%u\n", window->ws_ypixel);
 			}
 		}
-		if (ioctl(0, TIOCSWINSZ, ptr) == 0)
+		struct winsize	resize;
+		resize.ws_row = 10;
+		resize.ws_col = 100;
+		resize.ws_xpixel = 0;
+		resize.ws_ypixel = 0;
+		ioctl(0, TIOCSWINSZ, &resize);
+		if (ioctl(0, TIOCGWINSZ, ptr) == 0)
 		{
-			struct winsize *resize = ptr;
-
+			struct winsize *window = ptr;
+			if (window)
+			{
+				printf("%u\n", window->ws_row);
+				printf("%u\n", window->ws_col);
+				printf("%u\n", window->ws_xpixel);
+				printf("%u\n", window->ws_ypixel);
+			}
 		}
 	}
 	return 0;

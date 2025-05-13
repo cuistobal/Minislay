@@ -22,3 +22,7 @@
 			->	bash-5.1$ (echo "bonjour" || cat >> test.txt) && cat test.txt
 			->	bonjour
 			->	cat: test.txt: No such file or directory
+
+Link to the ioctl() macros:
+
+https://github.com/torvalds/linux/blob/master/arch/mips/include/uapi/asm/ioctls.h

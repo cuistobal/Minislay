@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/13 13:06:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:08:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,33 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (!strncmp(cmd, "cd", 3))
 		return (1);
-	if (!strncmp(cmd, "env", 3))
+	if (!strncmp(cmd, "env", 4))
+		return (1);
+	if (!strncmp(cmd, "pwd", 4))
+		return (1);
+	if (!strncmp(cmd, "exit", 5))
 		return (1);
 	return (0);
 }
 
-int	exec_builtin(char **argv, t_shel *minishell)
+void	free_env(char **env)
+{
+	int	index;
+
+	index = 0;
+	if (!env || !*env)
+		return ;
+	while (env[index])
+	{
+		free(env[index]);
+		env[index] = NULL;
+		index++;
+	}
+	free(env);
+	env = NULL;
+}
+
+int	exec_builtin(char **argv, char **envp, t_shel *minishell)
 {
 	int		code;
 	char	*temp;
@@ -47,8 +68,15 @@ int	exec_builtin(char **argv, t_shel *minishell)
 		code = builtin_echo(argv);
 	if (!strncmp(argv[0], "cd", 3))
 		code = cd(minishell, argv + 1);
-	if (!strncmp(argv[0], "env", 3))
+	if (!strncmp(argv[0], "env", 4))
 		code = env(minishell, argv + 1);
+	if (!strncmp(argv[0], "pwd", 4))
+		code = pwd(minishell, argv + 1);
+	if (!strncmp(argv[0], "exit", 5))
+	{
+		free_env(envp);
+		my_exit(minishell);
+	}
 	temp = minishell->special[DEXTI];
 	minishell->special[DEXTI] = int_to_str(code);
 	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);
