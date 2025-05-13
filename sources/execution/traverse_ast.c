@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:09:57 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:35:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 	if (!minishell || !ast)
 		return (false);
 	size = 1;
-	command = prepare_for_exec(minishell, ast);
+	command = prepare_for_exec(minishell, ast, &size);
 	if (!command)
 		return (error_message(INV_COMMAND));
 	env = rebuild_env(*minishell, &size);
@@ -235,7 +235,8 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
 	char	**command;
 	char	**env;
-	int		size;
+	int		esize;
+	int		csize;
 
 	if (!ast)
 		return ;
@@ -247,25 +248,26 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			handle_subshell(*minishell, ast);
 			return ;
 		}
-		size = 1;
-		command = prepare_for_exec(minishell, ast);
+		csize = 1;
+		command = prepare_for_exec(minishell, ast, &csize);
 		if (!command)
 		{
 			error_message(INV_COMMAND);
 			return ;
 		}
-		env = rebuild_env(*minishell, &size);
+		esize = 1;
+		env = rebuild_env(*minishell, &esize);
 		if (!env)
 		{
-			free_array(env, size);
+			free_array(env, esize);
 			error_message(INV_ENV);
 			return ;
 		}
-		if (is_builtin(command[0]) && !(ast->tokens->type & PIPE))
+		if (is_builtin(*command) && !(ast->tokens->type & PIPE))
 		{
 			exec_builtin(command, *minishell);
-			free_array(command, -1);
-			free_array(env, size);
+			free_array(command, csize);
+			free_array(env, esize);
 			return ;
 		}
 		create_child_process(*minishell, command, env);

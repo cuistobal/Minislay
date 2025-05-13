@@ -103,7 +103,7 @@ static bool	quote_removal(t_tokn *list)
 	return (true);
 }
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
+static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions, int *size)
 {
 	int		count;
 	t_tokn	*copy;
@@ -123,6 +123,8 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 
 	handle_redirection_list(minishell, redirections);
 
+	*size = count;
+
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
@@ -134,7 +136,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //		->	Change the return type to char**
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
+char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size)
 {
 	char	**command;
 	t_tokn	*expansions;
@@ -153,7 +155,7 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast)
 
 	split_list(ast->tokens, &assignations, &expansions);
 
-	command = initialise_execution(*minishell, &redirections, &expansions);
+	command = initialise_execution(*minishell, &redirections, &expansions, size);
 	/*debug
 	if (command)
 	{
