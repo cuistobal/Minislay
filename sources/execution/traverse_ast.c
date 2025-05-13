@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 08:35:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:07:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_command(char **commands, char **env)
 	char	**arguments;
 
 	command = *commands;
-	arguments = commands + 1;
+	arguments = commands;
 //test
 	pid_t	pid = fork();
 	if (pid == 0) {

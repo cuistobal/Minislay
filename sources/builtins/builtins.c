@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/12 20:00:12 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:57:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	is_builtin(char *cmd)
 		return (0);
 	if (!strncmp(cmd, "echo", 5))
 		return (1);
+	if (!strncmp(cmd, "cd", 3))
+		return (1);
 	return (0);
 }
 
@@ -41,6 +43,8 @@ int	exec_builtin(char **argv, t_shel *minishell)
 	code = 1;
 	if (!strncmp(argv[0], "echo", 5))
 		code = builtin_echo(argv);
+	if (!strncmp(argv[0], "cd", 3))
+		code = cd(minishell, argv[1]);
 	temp = minishell->special[DEXTI];
 	minishell->special[DEXTI] = int_to_str(code);
 	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);

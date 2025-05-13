@@ -28,10 +28,12 @@ SOURCES = \
 	utilities/mem_utils.c \
 	utilities/misc.c \
 	utilities/find_key.c \
+	utilities/update_key_value.c \
 	utilities/avl_tree/avl_tree_utils1.c \
 	utilities/avl_tree/avl_tree_utils2.c \
 	utilities/avl_tree/rotations.c \
 	sources/initialisation.c \
+	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \
 	sources/builtins/env/env.c \
 	sources/builtins/exit/exit.c \

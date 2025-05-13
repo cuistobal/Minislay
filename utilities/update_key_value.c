@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   messages.c                                         :+:      :+:    :+:   */
+/*   update_key_value.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 09:47:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 09:49:11 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/05/13 09:27:30 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/13 10:09:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-bool	error_message(char *message)
+void	update_key_value(t_shel *minishell, char *key, char *new_value)
 {
-	return (write(2, message, strlen(message)), false);
+	char	*value;
+
+	find_key(minishell, &value, key);
+	/*
+	if (*value)
+		free(value);
+	*/
+	value = new_value;
 }

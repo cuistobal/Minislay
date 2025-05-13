@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/13 09:59:05 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
 //cd.c
-void	cd(t_shel *minishell, char *path);
+int		cd(t_shel *minishell, char *path);
 
 //echo.c
 void	echo(const char **arguments, bool flag);

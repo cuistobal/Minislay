@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 09:33:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 08:54:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@
 # define REDIAPD 0b01000000 
 */
 
-# define BSIZE 1024
+# define BUFFER_SIZE 1024
 //Shifting operator from token type to exec type
 # define CONVERT 3
 
