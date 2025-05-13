@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 09:12:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/13 09:44:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,8 @@ bool	error_message(char *message);
 
 //tests
 void	free_tree(t_tree *ast);
+
+//update_key_value.c
+void	update_key_value(t_shel *minishel, char *key, char *new_value);
 
 #endif
