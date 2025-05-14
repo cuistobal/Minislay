@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 13:56:26 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/05/14 13:17:49 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/14 13:17:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minislay.h"
+#ifndef LIBFT_H
+# define LIBFT_H
 
-void	my_exit(t_shel *minishell, t_exec *execution)
-{
-	if (minishell)
-		free_minishell(minishell);
-	if (execution)
-		free_execution_node(execution);
-	exit(0);
-}
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+# include <stddef.h>
+
+char	*itoa(int num);
+
+#endif

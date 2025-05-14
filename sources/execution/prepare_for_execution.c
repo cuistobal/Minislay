@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prepare_for_execution.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/14 14:04:58 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 /*			OLD VERSION
@@ -136,7 +148,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //		->	Change the return type to char**
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size)
+char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size)
 {
 	char	**command;
 	t_tokn	*expansions;
@@ -147,7 +159,7 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size)
 	expansions = NULL;
 	redirections = NULL;
 	assignations = NULL;
-	if (!*minishell && !ast)
+	if (!minishell && !ast)
 		return (NULL);
 
 	if (!ast->tokens)
@@ -155,7 +167,7 @@ char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size)
 
 	split_list(ast->tokens, &assignations, &expansions);
 
-	command = initialise_execution(*minishell, &redirections, &expansions, size);
+	command = initialise_execution(minishell, &redirections, &expansions, size);
 	/*debug
 	if (command)
 	{

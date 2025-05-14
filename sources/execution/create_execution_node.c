@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 11:22:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:03:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,33 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 }
 
 //
-t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
+void	create_execution_node(t_shel *minishell, t_tree *ast, t_exec *node)
 {
 	int		esize;
 	int		csize;
-	t_exec	*new_node;
 
 	if (!minishell || !ast)
-		return (NULL);
-	
-	new_node = (t_exec *)malloc(sizeof(t_exec));
-	if (!new_node)
-		return (NULL);
-
+		return ;	
+	node = (t_exec *)malloc(sizeof(t_exec));
+	if (!node)
+		return ;
 	csize = 1;
-	new_node->command = prepare_for_exec(minishell, ast, &csize);
-	if (!new_node->command)
-		return (error_message(INV_COMMAND), NULL);
+	node->command = prepare_for_exec(minishell, ast, &csize);
+	if (!node->command)
+	{
+		error_message(INV_COMMAND);
+		return ;
+	}
 	esize = 1;
-	new_node->environ = rebuild_env(*minishell, &esize);
-	if (!new_node->environ)
-		return (free_array(new_node->command, csize), error_message(INV_ENV), NULL);
-	new_node->pid = -1;
-	pipe(new_node->pipe);
-	new_node->redirections[0] = 0;
-	new_node->redirections[1] = 1;
-	return (new_node);
+	node->environ = rebuild_env(minishell, &esize);
+	if (!node->environ)
+	{
+		free_array(node->command, csize);
+		error_message(INV_ENV);
+		return ;
+	}
+	node->pid = -1;
+	pipe(node->pipe);
+	node->redirections[0] = 0;
+	node->redirections[1] = 1;
 }

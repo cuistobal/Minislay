@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 10:50:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:07:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size);
+char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
 
 //traverse_ast.c
-void	traverse_ast(t_shel **minishell, t_tree *ast);
+void	traverse_ast(t_shel *minishell, t_tree *ast);
 
 //subshells.c
 bool    handle_subshell(t_shel *minishell, t_tree *ast);
@@ -67,8 +67,8 @@ void	execute_command(char **command, char **envp);
 void	execute_builtin(t_shel *minishell, char **command, char **envp);
 
 
-t_exec	*create_execution_node(t_shel **minishell, t_tree *ast);
+void	create_execution_node(t_shel *minishell, t_tree *ast, t_exec *node);
 
-int	create_child_process(t_shel *minishell, t_exec **execution);
+int		create_child_process(t_shel *minishell, t_exec *execution);
 
 #endif

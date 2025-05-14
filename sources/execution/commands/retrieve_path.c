@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:36:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:09:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ bool	retrieve_path(t_shel *minishell, char **command)
 
 	path = NULL;
 	if (!minishell || !*command)
-	//	|| !**command))
 		return (false);
 	if (find_key(minishell, &path, PATH))
 		return (try_path(command, path));

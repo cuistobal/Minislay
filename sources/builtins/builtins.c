@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/14 10:16:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:58:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,28 @@ void	free_env(char **env)
 }
 
 //int	exec_builtin(char **argv, char **envp, t_shel **minishell)
-int	exec_builtin(t_shel **minishell, t_exec **execution)
+int	exec_builtin(t_shel *minishell, t_exec *execution)
 {
 	int		code;
 	char	*temp;
 	char	**argv;
 
-	argv = (*execution)->command;
+	argv = (execution)->command;
 	if (!argv || !argv[0] || !minishell)
 		return (1);
 	code = 1;
 	if (!strncmp(argv[0], "echo", 5))
 		code = builtin_echo(argv);
 	if (!strncmp(argv[0], "cd", 3))
-		code = cd(*minishell, argv + 1);
+		code = cd(minishell, argv + 1);
 	if (!strncmp(argv[0], "env", 4))
-		code = env(*minishell, argv + 1);
+		code = env(minishell, argv + 1);
 	if (!strncmp(argv[0], "pwd", 4))
-		code = pwd(*minishell);
+		code = pwd(minishell);
 	if (!strncmp(argv[0], "exit", 5))
 		my_exit(minishell, execution);
-	temp = (*minishell)->special[DEXTI];
-	(*minishell)->special[DEXTI] = int_to_str(code);
+	temp = (minishell)->special[DEXTI];
+	(minishell)->special[DEXTI] = int_to_str(code);
 	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);
 	return (code);
 }

@@ -6,15 +6,34 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:48:18 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:02:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
+void	build_rl_prompt(char *rl_prompt, char *tname)
+{
+	int	index;
+
+	index = 0;
+	if (*tname == '.')
+	{
+		tname++;
+		tname++;
+		index = -2;
+	}
+	strcpy(rl_prompt, tname);
+	index =+ strlen(tname);
+	rl_prompt[index] = ' ';
+	rl_prompt[++index] = '>';
+	rl_prompt[++index] = 0;
+}
+
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
-int	get_minishelled(t_shel **minishell, char *input)
+int	get_minishelled(t_shel *minishell, char *input)
 {
 	t_tree	*ast;
 	t_pars	*parser;
@@ -49,57 +68,63 @@ int	get_minishelled(t_shel **minishell, char *input)
 }
 
 //
-int	mini_loop(t_shel **minishell)
+bool	build_env(t_shel **minishell, char **envp)
 {
-    char	*user_input;
-    while (1)
+    t_env	*new;
+    t_env	*tail;
+    t_env	*head;
+	t_avlt	*root;
+
+    if (!*minishell)
+		return (false);
+	new = NULL;
+    tail = NULL;
+	head = (*minishell)->envp;
+	while (*envp)
 	{
-        user_input = readline(MINISLAY);
-        if (user_input)
-        {
-            add_history(user_input);
-			get_minishelled(minishell,user_input);
-            free(user_input);
-        }
-    }
-    return 0;
+		new = create_env_node(strdup(*envp));
+		if (!new)
+			return (false);
+        insert_env_node(&head, &tail, new);
+		envp++;
+	}
+	(*minishell)->envp = head;
+	root = (*minishell)->expt;
+	while(head)
+	{
+		insert_avlt_node(&root, head, strlen(head->var[KEY]));
+		head = head->next;
+	}
+	(*minishell)->expt = root;
+	return (head = tail->next);
 }
 
-//
-static bool	mini_setup(t_shel **minishell, char **envp)
-{
-	*minishell = malloc(sizeof(t_shel));
-	if (!*minishell)
-		return (false);
-	(*minishell)->envp = NULL;
-	(*minishell)->local = NULL;
-	(*minishell)->command = NULL;
-	(*minishell)->expt = NULL;
-	if (!set_env(minishell, envp))
-	return (false);
-	if (!append_specials(minishell))
-		return (false);
-	return true;
-}
 
 //
 int	main(int argc, char **argv, char **envp)
 {
-	t_shel	*minishell;
+	t_shel			*minishell;
+	struct termios	tty_status;
+    char			*user_input;
+	char			rl_prompt[BUFFER_SIZE];
 
-	/*while (*envp)
+	minishell = (t_shel *)malloc(sizeof(t_shel));
+	if (!minishell)
+		return 1;
+	if (!build_env(&minishell, envp))
+		return 1;
+	build_rl_prompt(rl_prompt, argv[0]);
+    while (1)
 	{
-    	printf("%s\n", *envp);
-    	envp++;
-	}*/
-
-	(void)argv;
-	minishell = NULL;
-	if (argc == 1)
-	{
-		if (mini_setup(&minishell, envp))
-			return (mini_loop(&minishell));
-	}
-    return 0;
-	//return (error());
+        user_input = readline(rl_prompt);
+        if (user_input)
+        {
+			tcgetattr(STDIN_FILENO, &tty_status);
+            add_history(user_input);	
+			get_minishelled(minishell,user_input);
+            free(user_input);
+			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+        }
+    }
+	return 0;
 }

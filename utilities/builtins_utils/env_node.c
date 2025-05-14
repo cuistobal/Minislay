@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 09:37:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:45:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 {
-	if (!new)
+	if (!new || !head)
 		return (false);
 	if (!*head)
 	{

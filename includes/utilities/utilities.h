@@ -6,14 +6,12 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 10:01:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:42:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITIES_H
 # define UTILITIES_H
-
-# include "avl_tree.h"
 
 //tokenizer_bools_1.c:
 bool	is_amp_pipe(char c);
@@ -81,10 +79,35 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
-void	free_minishell(t_shel **minishell);	
-void	free_execution_node(t_exec **execution);
+void	free_minishell(t_shel *minishell);	
+void	free_execution_node(t_exec *execution);
 
 //update_key_value.c
 void	update_key_value(t_shel *minishel, char *key, char *new_value);
+
+char	*ft_itoa(int num);
+
+//
+typedef struct	avltree
+{
+	int				height;
+	struct env		*env;
+	struct avltree	*left;
+	struct avltree	*right;
+}	t_avlt;
+
+//avl_utils.c:
+int		height(t_avlt *node);
+int		my_max(const int a, const int b);
+void	pre_order_display(t_avlt *root);
+bool	create_avlt_node(t_avlt **new, t_env *node);
+bool	insert_avlt_node(t_avlt **node, t_env *env, int len);
+void	free_avlt_tree(t_avlt *root);
+bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
+
+//rotations.c:
+bool	balance_tree(t_avlt **node, char *key, int len);
+
+//
 
 #endif
