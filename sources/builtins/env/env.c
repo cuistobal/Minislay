@@ -3,29 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:27:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 13:06:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 04:17:34 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//Prints the environement variables
 int	env(t_shel *minishell, char **arguments)
 {
 	t_env	*current;
 
 	if (!minishell)
 		return (ERROR);
+	if (arguments && arguments[0])
+	{
+		write(2, "env: '", 6);
+		write(2, arguments[0], strlen(arguments[0]));
+		write(2, "': No such file or directory\n", 30);
+		return (ERROR);
+	}
 	current = minishell->envp; 
 	while (current)
     {
-		write(1, current->var[0], strlen(current->var[0]));
-		write(1,"=", 1);
-		write(1, current->var[1], strlen(current->var[1]));
-		write(1,"\n", 1);
+		if (current->var[0] && current->var[1])
+		{
+			write(1, current->var[0], strlen(current->var[0]));
+			write(1,"=", 1);
+			write(1, current->var[1], strlen(current->var[1]));
+			write(1,"\n", 1);
+		}
         current = current->next;
     }
 	return (SUCCESS);

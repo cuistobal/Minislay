@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 15:52:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 05:47:17 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ void	free_array(char **array, int count);
 void	free_minishell(t_shel *minishell);	
 
 //update_key_value.c
-void	update_key_value(t_shel *minishel, char *key, char *new_value);
+int	update_key_value(t_shel *minishell, char *key, char *new_value);
 
 #endif

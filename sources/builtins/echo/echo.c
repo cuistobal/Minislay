@@ -6,25 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 09:56:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 05:49:57 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//Echo built-in. Prints the argument followed by a new_line unless the flag is
-//spefied.
-void	echo(const char **arguments, bool flag)
-{
-	while (*arguments)
-	{
-		printf("%s", *arguments);
-		if (!flag)
-			printf("\n");
-		arguments++;
-	}
-	printf("%s\n", "leon test");
-}
 
 /*leon*/
 int builtin_echo(char **argv)

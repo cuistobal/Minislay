@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 20:55:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 05:49:27 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	echo(const char **arguments, bool flag);
 int		env(t_shel *minishell, char **arguments);
 
 //export.c
-void	my_export(void);
+int	export(t_shel *minishell, char **args);
 
 //exit.c
-void	my_exit(t_shel *minishell);
+int	my_exit(t_shel *minishell, char **args);
 
 //pwd.c
 int		pwd(t_shel *minishell);
 
 //unsset.v
-void	unset(void);
+int	unset(t_shel *minishell, char **args);
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier
