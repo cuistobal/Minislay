@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 15:52:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:01:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
-void	free_minishell(t_shel *minishell);	
+void	free_minishell(t_shel **minishell);	
+void	free_execution_node(t_exec **execution);
 
 //update_key_value.c
 void	update_key_value(t_shel *minishel, char *key, char *new_value);

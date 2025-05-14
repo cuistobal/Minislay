@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 15:56:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:20:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,63 @@ void	free_tree(t_tree *ast)
 	}
 }
 
-void	free_minishell(t_shel *minishell)
+void	free_execution_node(t_exec **execution)
+{
+	int	index;
+
+	if (!*execution)
+		return ;
+	if ((*execution)->environ);
+	{
+		index = 0;
+		while ((*execution)->environ[index])
+		{
+			free((*execution)->environ[index]);
+			index++;
+		}
+		free((*execution)->environ);
+	}
+	if ((*execution)->command);
+	{
+		index = 0;
+		while ((*execution)->command[index])
+		{
+			free((*execution)->command[index]);
+			index++;
+		}
+		free((*execution)->command);
+	}
+	free(*execution);
+	*execution = NULL;
+}
+
+//
+void	free_minishell(t_shel **minishell)
 {
 	int		index;
+	t_avlt	*branch;
 	t_env	*current;
 
 	index = 0;
 	if (!minishell)
 		return ;
-	current = minishell->envp;
+	current = (*minishell)->envp;
 	while (current)
 	{
-		minishell->envp = minishell->envp->next;
+		(*minishell)->envp = (*minishell)->envp->next;
 		free(current);
-		current = minishell->envp;
+		current = (*minishell)->envp;
 	}
-	while (minishell->special[index])
+	branch = (*minishell)->expt;
+	if (branch)
+		free_avlt_tree(branch);
+/*
+	while ((*minishell)->special[index])
 	{
-		free(minishell->special[index]);
+		free((*minishell)->special[index]);
 		index++;
 	}
-	free(minishell->special[index]);
+*/
+//	free((*minishell)->special[index]);
+	free((*minishell)->special);
 }
