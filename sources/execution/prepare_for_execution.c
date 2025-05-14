@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:04:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:22:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,6 @@ static char	**initialise_execution(t_shel **minishell, t_tree *ast, t_tokn **red
 	return (exec);
 }*/
 
-/*
-static void	execute_command(t_shel **minishell, char **command)
-{
-	pid_t	pid;
-
-	if (!command)
-		return ;
-	if (**command == '/')
-		pid = create_process();
-}
-*/
 
 //
 static void	quote_removal_helper(char *token, char *removed)
@@ -115,7 +104,7 @@ static bool	quote_removal(t_tokn *list)
 	return (true);
 }
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions, int *size)
+static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
 {
 	int		count;
 	t_tokn	*copy;
@@ -135,11 +124,13 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 
 	handle_redirection_list(minishell, redirections);
 
-	*size = count;
-
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
+
+/*			OLD VERSION
+ *
+ *
 //Entry point -> Needs some rework
 //
 //	Either:
@@ -167,7 +158,39 @@ char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size)
 
 	split_list(ast->tokens, &assignations, &expansions);
 
-	command = initialise_execution(minishell, &redirections, &expansions, size);
+
+
+	//print_tokens(expansions);
+
+	return (command);
+}
+
+*/
+
+t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast)
+{
+	t_exec	*node;
+	t_tokn	*expansions;
+	t_tokn	*redirections;
+	t_tokn	*assignations;
+
+	expansions = NULL;
+	redirections = NULL;
+	assignations = NULL;
+	if (!minishell || !ast || !node)
+		return (NULL);
+
+	if (!ast->tokens)
+		return (NULL);
+
+
+	node = (t_exec *)malloc(sizeof(t_exec));
+	if (!node)
+		return (NULL);
+
+	split_list(ast->tokens, &assignations, &expansions);
+
+	node->command = initialise_execution(minishell, &redirections, &expansions);
 	/*debug
 	if (command)
 	{
@@ -190,5 +213,5 @@ char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size)
 	 *
 	 */
 
-	return (command);
+	return (node);
 }

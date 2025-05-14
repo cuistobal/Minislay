@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:54:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:24:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,30 @@ t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
 	t_exec	*node;
 
 	node = NULL;
+
 	if (!minishell || !ast)
 		return (NULL);	
+
+	/*
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
+	*/
+
+	node = prepare_for_exec(minishell, ast);
+	if (!node)
+		return (NULL);
+
 	csize = 1;
 	node->command = prepare_for_exec(minishell, ast, &csize);
 	if (!node->command)
 		return (error_message(INV_COMMAND), NULL);
+
 	esize = 1;
 	node->environ = rebuild_env(minishell, &esize);
 	if (!node->environ)
 		return (free_array(node->command, csize), error_message(INV_ENV), NULL);
+
 	node->pid = -1;
 	pipe(node->pipe);
 	node->redirections[0] = 0;
