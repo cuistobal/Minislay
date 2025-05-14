@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:30:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:42:04 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 	{
 		error_message(PIPE_FAILED);
 		minishell->special[DEXTI] = ft_itoa(GENERAL_ERROR);
-	}		
-
+	}
 	(execution)->pid = fork();
 	if ((execution)->pid < 0)
 		return (error_message(FORK_FAILED), -1);
@@ -99,5 +98,5 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 			return (WEXITSTATUS(status));
 		}
 	}
-	return (0);
+	return (-1);
 }

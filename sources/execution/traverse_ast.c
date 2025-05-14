@@ -6,37 +6,36 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 20:38:23 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/14 20:42:52 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static void	execute_branch(t_shel *minishell, t_exec *node, int ctype)
+static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 {
+    int             exit_code;
 	struct termios	tty_status;
 
+    exit_code = -1;
 	if (is_builtin(*node->command) && !(ctype & PIPE))
 	//		exec_builtin(node->command, node->environ, minishell);
-		exec_builtin(minishell, node);
+		return (exec_builtin(minishell, node));
 	else
 	{
 		//save tty's params
-
-			tcgetattr(STDIN_FILENO, &tty_status);
-	//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
-
-			create_child_process(minishell, node);
-
-			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+		tcgetattr(STDIN_FILENO, &tty_status);
+		exit_code = create_child_process(minishell, node);
+		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
 	}
+    return (exit_code);
 }
 
 //
 void	traverse_ast(t_shel *minishell, t_tree *ast)
 {
-	t_exec			*node;
+	t_exec  *node;
 
 	node = NULL;
 	if (!ast)

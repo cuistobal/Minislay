@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 13:59:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:45:56 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void	free_minishell(t_shel *minishell)
 	branch = (minishell)->expt;
 	if (branch)
 		free_avlt_tree(branch);
-/*
-	while ((*minishell)->special[index])
+	while (index < DKCT)
 	{
-		free((*minishell)->special[index]);
+        if (minishell->special[index])
+	    	free((minishell)->special[index]);
 		index++;
 	}
-*/
+
 //	free((*minishell)->special[index]);
-	free((minishell)->special);
+//	free((minishell)->special);
 }

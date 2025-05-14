@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:02:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:49:42 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,11 @@ t_env	*build_environement(char **envp)
 //
 bool	build_env(t_shel **minishell, char **envp)
 {
+    int     index;
     t_env	*head;
 	t_avlt	*root;
 
+    index = 0;
     if (!*minishell)
 		return (false);
 	root = NULL;
@@ -92,7 +94,6 @@ bool	build_env(t_shel **minishell, char **envp)
 		head = head->next;
 	}
 	(*minishell)->expt = root;
-	
 	return (true);
 }
 
