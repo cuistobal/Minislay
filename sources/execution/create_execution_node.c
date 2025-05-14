@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 09:51:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:22:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
 		return (free_array(new_node->command, csize), error_message(INV_ENV), NULL);
 	new_node->pid = -1;
 	pipe(new_node->pipe);
+	new_node->redirections[0] = 0;
+	new_node->redirections[1] = 1;
 	return (new_node);
 }

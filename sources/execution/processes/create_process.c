@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 11:05:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:50:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,17 @@
 //
 bool	handle_communication_in_child(t_exec **node)
 {
-	if (dup2(STDIN_FILENO, (*node)->pipe[0]) != 0)
+	if (dup2((*node)->pipe[0], STDIN_FILENO) != 0)
 		return (false);
 	close((*node)->pipe[1]);
-	/*
-	if (dup2((*node)->pipe[1], STDOUT_FILENO) != 0)
-		return (false);
-	return (true);
-	*/
 }
 
 //
 bool	handle_communication_in_parent(t_exec **node)
 {
-	if (dup2(STDOUT_FILENO, (*node)->pipe[1]) != 0)
+	if (dup2((*node)->pipe[1], STDOUT_FILENO) != 0)
 		return (false);
+
 	close((*node)->pipe[0]);
 }
 //

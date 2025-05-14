@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 10:51:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:35:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	execute_command(char **commands, char **env)
 //
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
-	t_exec	*node;
+	t_exec			*node;
+	struct termios	tty_status;
 
 	if (!ast)
 		return ;
@@ -50,7 +51,17 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	//		exec_builtin(node->command, node->environ, minishell);
 			exec_builtin(minishell, &node);
 		else
+		{
+			//save tty's params
+
+			tcgetattr(STDIN_FILENO, &tty_status);
+
 			create_child_process(*minishell, &node);
+
+			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+
+			//restore tty's params
+		}
 		free_execution_node(&node);
 	}
 	traverse_ast(minishell, ast->right);
