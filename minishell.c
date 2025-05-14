@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:43:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:02:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	get_minishelled(t_shel *minishell, char *input)
 	 *	redirections and ssecond execute commands.
 	 *
  	 */
-
 
 	traverse_ast(minishell, ast);
 	return (free_tree(ast), 0);
