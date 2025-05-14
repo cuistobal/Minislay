@@ -6,30 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:41:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:43:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//
-void	build_rl_prompt(char *rl_prompt, char *tname)
-{
-	int	index;
-
-	index = 0;
-	if (*tname == '.')
-	{
-		tname++;
-		tname++;
-		index = -2;
-	}
-	strcpy(rl_prompt, tname);
-	index =+ strlen(tname);
-	rl_prompt[index] = ' ';
-	rl_prompt[++index] = '>';
-	rl_prompt[++index] = 0;
-}
 
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
@@ -112,7 +93,7 @@ bool	build_env(t_shel **minishell, char **envp)
 		head = head->next;
 	}
 	(*minishell)->expt = root;
-	pre_order_display(root);
+	
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:05:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:52:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void	execute_command(char **commands, char **env)
 //
 void	traverse_ast(t_shel *minishell, t_tree *ast)
 {
-	t_exec			node;
+	t_exec			*node;
 	struct termios	tty_status;
 
+	node = NULL;
 	if (!ast)
 		return ;
 	traverse_ast(minishell, ast->left);
@@ -45,12 +46,10 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 			handle_subshell(minishell, ast);
 			return ;
 		}
-
-		create_execution_node(minishell, ast, &node);
-
-		if (is_builtin(*node.command) && !(ast->tokens->type & PIPE))
+		node = create_execution_node(minishell, ast);
+		if (is_builtin(*node->command) && !(ast->tokens->type & PIPE))
 	//		exec_builtin(node->command, node->environ, minishell);
-			exec_builtin(minishell, &node);
+			exec_builtin(minishell, node);
 		else
 		{
 			//save tty's params
@@ -58,13 +57,13 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 			tcgetattr(STDIN_FILENO, &tty_status);
 	//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
 
-			create_child_process(minishell, &node);
+			create_child_process(minishell, node);
 
 			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
 
 			//restore tty's params
 		}
-		free_execution_node(&node);
+		free_execution_node(node);
 	}
 	traverse_ast(minishell, ast->right);
 }

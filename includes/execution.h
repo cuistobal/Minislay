@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:07:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:54:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_command(char **command, char **envp);
 void	execute_builtin(t_shel *minishell, char **command, char **envp);
 
 
-void	create_execution_node(t_shel *minishell, t_tree *ast, t_exec *node);
+t_exec	*create_execution_node(t_shel *minishell, t_tree *ast);
 
 int		create_child_process(t_shel *minishell, t_exec *execution);
 

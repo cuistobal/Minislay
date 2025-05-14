@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:03:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:54:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,33 +58,29 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 }
 
 //
-void	create_execution_node(t_shel *minishell, t_tree *ast, t_exec *node)
+t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
 {
 	int		esize;
 	int		csize;
+	t_exec	*node;
 
+	node = NULL;
 	if (!minishell || !ast)
-		return ;	
+		return (NULL);	
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
-		return ;
+		return (NULL);
 	csize = 1;
 	node->command = prepare_for_exec(minishell, ast, &csize);
 	if (!node->command)
-	{
-		error_message(INV_COMMAND);
-		return ;
-	}
+		return (error_message(INV_COMMAND), NULL);
 	esize = 1;
 	node->environ = rebuild_env(minishell, &esize);
 	if (!node->environ)
-	{
-		free_array(node->command, csize);
-		error_message(INV_ENV);
-		return ;
-	}
+		return (free_array(node->command, csize), error_message(INV_ENV), NULL);
 	node->pid = -1;
 	pipe(node->pipe);
 	node->redirections[0] = 0;
 	node->redirections[1] = 1;
+	return (node);
 }

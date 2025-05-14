@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:44:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:50:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 }
 
 //
-bool	append_specials(t_shel *minishell)
+static bool	append_specials(t_shel **minishell)
 {
 	int		index;
 
-	if (!minishell)
+	if (!*minishell)
 		return (false);
 	index = 0;
 	while (index < DKCT)
 	{
-		(minishell)->special[index] = strdup(g_spec[index]);
-		if (!(minishell)->special[index])
+		(*minishell)->special[index] = strdup(g_spec[index]);
+		if (!(*minishell)->special[index])
 			return (false);
 		index++;
 	}
@@ -67,36 +67,52 @@ bool	insert_env_in_avlt(t_shel *minishell)
 	return (!copy);
 }
 
-//
-bool	build_env(t_shel *minishell, char **envp)
+/*
+t_env	*build_environement(char **envp)
 {
     t_env	*new;
     t_env	*tail;
     t_env	*head;
 
-    if (!minishell)
-		return (false);
-	new = NULL;
-    tail = NULL;
-	head = minishell->envp;
+	head = NULL;
 	while (*envp)
-	{
-		new = create_env_node(strdup(*envp));
-		if (!new)
-			return (false);
-        insert_env_node(&head, &tail, new);
+	{	
+		if (!head)
+		{
+			new = create_env_node(&head, strdup(*envp));
+			if (!new)
+				return (false);
+			tail = head;
+		}
+		else
+		{
+			new = create_env_node(&tail, strdup(*envp));
+			if (!new)
+				return (false);
+		}
 		envp++;
 	}
-	return (insert_env_in_avlt(minishell));
+	return (head);	
 }
 
-/*
-bool    set_env(t_shel *minishell, char **envp)
+//
+bool	build_env(t_shel **minishell, char **envp)
 {
-    if (!minishell)
-    	return (false);
-    if (!build_env(minishell, envp))
-    	return (false);
-	return (append_specials(minishell));
+    t_env	*head;
+	t_avlt	*root;
+
+    if (!*minishell)
+		return (false);
+	root = NULL;
+	(*minishell)->envp = build_environement(envp);
+	head = (*minishell)->envp;
+	while (head)
+	{
+		insert_avlt_node(&root, head, strlen(head->var[KEY]));
+		head = head->next;
+	}
+	(*minishell)->expt = root;
+	append_specials(minishell);	
+	return (true);
 }
 */
