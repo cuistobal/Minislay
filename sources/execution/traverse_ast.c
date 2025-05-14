@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:15:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 20:38:23 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	execute_branch(t_shel *minishell, t_exec *node, int ctype)
 void	traverse_ast(t_shel *minishell, t_tree *ast)
 {
 	t_exec			*node;
-	struct termios	tty_status;
 
 	node = NULL;
 	if (!ast)
@@ -50,13 +49,10 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 			handle_subshell(minishell, ast);
 			return ;
 		}
-
 		node = create_execution_node(minishell, ast);
 		if (!node)
 			return ;
-
 		execute_branch(minishell, node, ast->tokens->type);
-
 		free_execution_node(node);
 	}
 	traverse_ast(minishell, ast->right);
