@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 16:25:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:09:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ typedef struct exec
 {
 	pid_t		pid;
 	int			pipe[2];
+	int			redirections[2];
 	char		**command;
 	char		**environ;
-	void		(*func)(char **, char **);
 	struct exec	*next;
 }	t_exec;
 

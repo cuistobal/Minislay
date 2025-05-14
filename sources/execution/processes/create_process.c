@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:17 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:03:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,22 @@
 	}
 }
 */
+
+bool	handle_redir_in_child(int fd_in, int fd_out);
+{
+	if (dup2(fd_in, STDIN_FILENO) != 0)
+		return (false);
+	if (dup2(fd_out, STDOUT_FILENO) != 0)
+		return (false);
+	return (true);
+}
+
 void	create_child_process(t_shel *minishell, char **command, char **env)
 {
 	pid_t	pid;
-	int		status;
 	char	*temp;
+	int		status;
+	int		pipefd[2];
 
 	pid = fork();
 	if (pid < 0)
@@ -60,10 +71,9 @@ void	create_child_process(t_shel *minishell, char **command, char **env)
 	}
 	if (pid == 0)
 	{
-		if (is_builtin(command[0]))
-			exit(exec_builtin(command, minishell));
-		else
-			execute_command(command, env);
+		if (!handle_redir_in_child())
+			exit(REDIRECTION_ERROR);
+		execute_command(command, env);
 	}
 	else
 	{
@@ -76,5 +86,3 @@ void	create_child_process(t_shel *minishell, char **command, char **env)
 		}
 	}
 }
-
-

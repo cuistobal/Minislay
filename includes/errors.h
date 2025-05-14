@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 13:03:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:01:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@
 
 # define SUCCESS 0
 # define ERROR 127
-
+# define REDIRECTION_ERROR -1
 #endif
