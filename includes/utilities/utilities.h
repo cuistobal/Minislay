@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:42:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:15:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens);
 
 //env_node.c
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new);
-t_env	*create_env_node(char *value);
+t_env	*create_env_node(t_env **prev, char *value);
 
 //ft_strjoin.c
 char	*ft_strjoin(const char *s1, const char *s2);

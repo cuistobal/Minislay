@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:02:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:41:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,35 +68,52 @@ int	get_minishelled(t_shel *minishell, char *input)
 }
 
 //
-bool	build_env(t_shel **minishell, char **envp)
+t_env	*build_environement(char **envp)
 {
     t_env	*new;
     t_env	*tail;
+    t_env	*head;
+
+	head = NULL;
+	while (*envp)
+	{	
+		if (!head)
+		{
+			new = create_env_node(&head, strdup(*envp));
+			if (!new)
+				return (false);
+			tail = head;
+		}
+		else
+		{
+			new = create_env_node(&tail, strdup(*envp));
+			if (!new)
+				return (false);
+		}
+		envp++;
+	}
+	return (head);	
+}
+
+//
+bool	build_env(t_shel **minishell, char **envp)
+{
     t_env	*head;
 	t_avlt	*root;
 
     if (!*minishell)
 		return (false);
-	new = NULL;
-    tail = NULL;
+	root = NULL;
+	(*minishell)->envp = build_environement(envp);
 	head = (*minishell)->envp;
-	while (*envp)
-	{
-		new = create_env_node(strdup(*envp));
-		if (!new)
-			return (false);
-        insert_env_node(&head, &tail, new);
-		envp++;
-	}
-	(*minishell)->envp = head;
-	root = (*minishell)->expt;
-	while(head)
+	while (head)
 	{
 		insert_avlt_node(&root, head, strlen(head->var[KEY]));
 		head = head->next;
 	}
 	(*minishell)->expt = root;
-	return (head = tail->next);
+	pre_order_display(root);
+	return (true);
 }
 
 
