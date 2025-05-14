@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:22:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:34:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,17 +167,15 @@ char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size)
 
 */
 
-t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast)
+t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;
 	t_tokn	*expansions;
-	t_tokn	*redirections;
 	t_tokn	*assignations;
 
 	expansions = NULL;
-	redirections = NULL;
 	assignations = NULL;
-	if (!minishell || !ast || !node)
+	if (!minishell || !ast)
 		return (NULL);
 
 	if (!ast->tokens)
@@ -190,22 +188,8 @@ t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast)
 
 	split_list(ast->tokens, &assignations, &expansions);
 
-	node->command = initialise_execution(minishell, &redirections, &expansions);
-	/*debug
-	if (command)
-	{
-		int i = 0;
-		printf("Contenu de command :\n");
-		while (command[i])
-		{
-			printf("command[%d] = %s\n", i, command[i]);
-			i++;
-		}
-	}
-	debug*/
+	node->command = initialise_execution(minishell, redirections, &expansions);
 
-	//print_tokens(expansions);
-	//printf("leon dbg\n");
 
 	/*
 	 *	Do we treat basic assignations (ex: abc=def) ?

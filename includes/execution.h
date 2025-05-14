@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:54:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:29:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
-char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
+//char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
+t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections);
 
 //traverse_ast.c
 void	traverse_ast(t_shel *minishell, t_tree *ast);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:06:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:30:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 	{
 	//	if (!handle_communication_in_child(execution))
 	//		exit(REDIRECTION_ERROR);
-		execute_command((execution)->command, (execution)->environ);
+	//	execute_command((execution)->command, (execution)->environ);
 	}
 	else
 	{
@@ -92,7 +92,6 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 		if (WIFEXITED(status))
 		{
 			//handle_communication_in_parent(execution);
-			printf("Je suis un arbre\n");
 		//	temp = minishell->special[DEXTI];
 			minishell->special[DEXTI] = ft_itoa(WEXITSTATUS(status));
 		//	dup2((*execution)->pipe[1], STDOUT_FILENO);
