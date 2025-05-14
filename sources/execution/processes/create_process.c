@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 10:54:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:05:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,23 @@
 //
 bool	handle_communication_in_child(t_exec **node)
 {
-	if (dup2((*node)->pipe[0], STDIN_FILENO) != 0)
+	if (dup2(STDIN_FILENO, (*node)->pipe[0]) != 0)
 		return (false);
+	close((*node)->pipe[1]);
+	/*
 	if (dup2((*node)->pipe[1], STDOUT_FILENO) != 0)
 		return (false);
 	return (true);
+	*/
 }
 
+//
+bool	handle_communication_in_parent(t_exec **node)
+{
+	if (dup2(STDOUT_FILENO, (*node)->pipe[1]) != 0)
+		return (false);
+	close((*node)->pipe[0]);
+}
 //
 int	create_child_process(t_shel *minishell, t_exec **execution)
 {
@@ -81,11 +91,12 @@ int	create_child_process(t_shel *minishell, t_exec **execution)
 		waitpid((*execution)->pid, &status, 0);
 		if (WIFEXITED(status))
 		{
-			temp = minishell->special[DEXTI];
+			handle_communication_in_parent(execution);
+		//	temp = minishell->special[DEXTI];
 			minishell->special[DEXTI] = "Rien pour linstant";
 		//		ft_itoa(WEXITSTATUS(status));
 		//	dup2((*execution)->pipe[1], STDOUT_FILENO);
-			free(temp);
+		//	free(temp);
 		}
 	}
 }
