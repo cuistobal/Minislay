@@ -49,6 +49,7 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
 	sources/execution/split_list.c \
+	sources/execution/create_execution_node.c \
 	sources/execution/traverse_ast.c \
 	sources/execution/expansions/expand.c \
 	sources/execution/prepare_for_execution.c \

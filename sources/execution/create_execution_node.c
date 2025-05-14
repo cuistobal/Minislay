@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 09:27:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:51:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
 {
 	int		esize;
 	int		csize;
-	char	**env;
-	char	**command;
 	t_exec	*new_node;
 
 	if (!minishell || !ast)
@@ -75,12 +73,12 @@ t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
 
 	csize = 1;
 	new_node->command = prepare_for_exec(minishell, ast, &csize);
-	if (!command)
+	if (!new_node->command)
 		return (error_message(INV_COMMAND), NULL);
 	esize = 1;
-	new_node->env = rebuild_env(*minishell, &esize);
-	if (!env)
-		return (free_array(env, esize), error_message(INV_ENV), NULL);
+	new_node->environ = rebuild_env(*minishell, &esize);
+	if (!new_node->environ)
+		return (free_array(new_node->command, csize), error_message(INV_ENV), NULL);
 	new_node->pid = -1;
 	pipe(new_node->pipe);
 	return (new_node);

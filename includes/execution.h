@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 08:32:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:39:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,8 @@ bool	handle_here_doc(t_shel *minishell, t_tokn **redirections);
 
 void	execute_command(char **command, char **envp);
 void	execute_builtin(t_shel *minishell, char **command, char **envp);
+
+
+t_exec	*create_execution_node(t_shel **minishell, t_tree *ast);
 
 #endif

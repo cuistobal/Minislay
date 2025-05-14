@@ -27,6 +27,7 @@ void	execution(char **command, char **env)
 	execve(*command, command + 1, env);
 }
 
+/*
 t_exec	*create_execution_node(char **command, char **envp)
 {
 	t_exec	*new;
@@ -44,7 +45,7 @@ t_exec	*create_execution_node(char **command, char **envp)
 	new->next = NULL;
 	return (new);
 }
-
+*/
 int	main(int argc, char **argv, char **envp)
 {
 	int		i;

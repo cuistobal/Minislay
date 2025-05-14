@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 09:28:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:47:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static bool	join_env(char **joined, char *temp[2])
 
 
 //
-void	create_child_process(t_shel	*minishell, char **command, char **env)
+void	create_child_process(t_shel	*minishell, t_exec *node) 
+//		char **command, char **env)
 {
 	int status;
 
@@ -56,7 +57,7 @@ void	create_child_process(t_shel	*minishell, char **command, char **env)
 		return ;
 	pid_t pid = fork();
 	if (pid == 0)
-		execute_command(command, env);
+		execute_command(node->command, node->environ);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -96,26 +97,6 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 	}
 	return (env);
 }
-
-
-t_exec	*create_execution_node(char **command, char **environ)
-{
-	t_exec	*new;
-	int		pipefd[2];
-
-	new = malloc(sizeof(t_exec));
-	if (!new)
-		return (NULL);
-	if (pipe(pipefd) < 0)
-		return (free(new), error_message(PIPE_FAILED), NULL);
-	new->command = command;
-	new->environ = environ;
-	new->pipe[0] = pipefd[0];
-	new->pipe[1] = pipefd[1];
-	new->next = NULL;
-	return (new);
-}
-
 
 static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
 {
@@ -230,43 +211,10 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 	/*}
 }*/
 
-void	create_execution_node(t_shel *minishell, t_tree *ast)		
-{
-	int		esize;
-	int		csize;
-	char	**env;
-	char	**command;
-	t_exec	*execution_node;
-
-	if (!minishell || !ast)
-		return (NULL);
-	
-		csize = 1;
-		command = prepare_for_exec(minishell, ast, &csize);
-		if (!command)
-		{
-			error_message(INV_COMMAND);
-			return ;
-		}
-		esize = 1;
-		env = rebuild_env(*minishell, &esize);
-		if (!env)
-		{
-			free_array(env, esize);
-			error_message(INV_ENV);
-			return ;
-		}
-}
-
-
-
+//
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
-	int		esize;
-	int		csize;
-	char	**env;
-	char	**command;
-	t_exec	*execution_node;
+	t_exec	*node;
 
 	if (!ast)
 		return ;
@@ -279,17 +227,19 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 			return ;
 		}
 
-		execution_node = create_execution_node(minishell, ast);
+		node = create_execution_node(minishell, ast);
 
-		if (is_builtin(*command) && !(ast->tokens->type & PIPE))
+		printf("%s\n", *node->command);
+
+		if (is_builtin(*node->command) && !(ast->tokens->type & PIPE))
 		{
-			exec_builtin(command, env, *minishell);
-			free_array(command, csize);
-			free_array(env, esize);
+			exec_builtin(node->command, node->environ, *minishell);
+	//		free_array(command, csize);
+	//		free_array(env, esize);
 			return ;
 		}
 		else
-			create_child_process(*minishell, command, env);	
+			create_child_process(*minishell, node);	
 	}
 	traverse_ast(minishell, ast->right);
 }
