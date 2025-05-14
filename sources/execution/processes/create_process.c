@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 09:03:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:54:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,41 +47,44 @@
 }
 */
 
-bool	handle_redir_in_child(int fd_in, int fd_out);
+//
+bool	handle_communication_in_child(t_exec **node)
 {
-	if (dup2(fd_in, STDIN_FILENO) != 0)
+	if (dup2((*node)->pipe[0], STDIN_FILENO) != 0)
 		return (false);
-	if (dup2(fd_out, STDOUT_FILENO) != 0)
+	if (dup2((*node)->pipe[1], STDOUT_FILENO) != 0)
 		return (false);
 	return (true);
 }
 
-void	create_child_process(t_shel *minishell, char **command, char **env)
+//
+int	create_child_process(t_shel *minishell, t_exec **execution)
 {
-	pid_t	pid;
 	char	*temp;
 	int		status;
 	int		pipefd[2];
 
-	pid = fork();
-	if (pid < 0)
+	if (pipe(pipefd) != 0)
+		return (error_message(PIPE_FAILED), -1);	
+		
+	(*execution)->pid = fork();
+	if ((*execution)->pid < 0)
+		return (error_message(FORK_FAILED), -1);
+	if ((*execution)->pid == 0)
 	{
-		error_message(FORK_FAILED);
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (!handle_redir_in_child())
+		if (!handle_communication_in_child(execution))
 			exit(REDIRECTION_ERROR);
-		execute_command(command, env);
+		execute_command((*execution)->command, (*execution)->environ);
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
+		waitpid((*execution)->pid, &status, 0);
 		if (WIFEXITED(status))
 		{
 			temp = minishell->special[DEXTI];
-			minishell->special[DEXTI] = ft_itoa(WEXITSTATUS(status));
+			minishell->special[DEXTI] = "Rien pour linstant";
+		//		ft_itoa(WEXITSTATUS(status));
+		//	dup2((*execution)->pipe[1], STDOUT_FILENO);
 			free(temp);
 		}
 	}
