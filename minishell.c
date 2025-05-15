@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 10:22:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:01:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	get_minishelled(t_shel **minishell, char *input)
 		return (printf(TOKENIZATION), free_tokens(tokens), -1);
 	if (!get_stacked(NULL, NULL, 0))
 		return (printf("%s unmatched '('\n", SYNTAX), -1);
+	
+	print_tokens(tokens);
+
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), -1);
 	/*
@@ -46,7 +49,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 
 	traverse_ast(minishell, ast, &code);
 
-	if (code == EXIT_STATUS)
+	if (is_state_active(code, EXIT_STATUS))
 		return (free_tree(ast), EXIT_STATUS);
 
 	return (free_tree(ast), 0);

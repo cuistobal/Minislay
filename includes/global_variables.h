@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 10:06:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:58:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,6 @@
 # define CMD_INPUT 0
 # define CMD_OUTPUT 1
 
-# define EXIT_STATUS 28
+# define EXIT_STATUS 32
 
 #endif
