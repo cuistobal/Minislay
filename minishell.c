@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:55:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:49:52 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,18 @@ int	get_minishelled(t_shel **minishell, char *input)
 //
 int	mini_loop(t_shel **minishell, char *terminal_name)
 {
+    int             retcode;
     char			*user_input;
 
     while (1)
-	{
+    {
         user_input = readline(terminal_name);
         add_history(user_input);
-		get_minishelled(minishell,user_input);
+        retcode = get_minishelled(minishell,user_input);
         free(user_input);
+        user_input = NULL;
     }
-    return 0;
+    return (retcode);
 }
 
 //
@@ -123,9 +125,9 @@ bool	build_env(t_shel **minishell, char **envp)
 //
 int	main(int argc, char **argv, char **envp)
 {
-	t_shel			*minishell;
-    char			*user_input;
-	char			rl_prompt[BUFFER_SIZE];
+	t_shel	*minishell;
+    char	*user_input;
+	char	rl_prompt[BUFFER_SIZE];
 
 	minishell = (t_shel *)malloc(sizeof(t_shel));
 	if (!minishell)
@@ -133,5 +135,5 @@ int	main(int argc, char **argv, char **envp)
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
-	return (mini_loop(&minishell, rl_prompt));
+    return (mini_loop(&minishell, rl_prompt));
 }
