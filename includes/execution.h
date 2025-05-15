@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:42:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:22:13 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ int		wait_module(t_exec *execution, bool flag);
 //ipc_module.c
 int		handle_communication_in_child(t_exec **node, bool flag);
 int		handle_communication_in_parent(t_exec **node, bool flag);
-int		handle_redirections(t_exec *execution);
+int		handle_redirections(t_exec *execution, int original_stds[2]);
 
 #endif

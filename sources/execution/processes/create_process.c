@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 16:51:51 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/15 17:24:17 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,22 @@ int	execute_command_in_child(char **command, char **env)
 	return (SUCCESS);
 }
 
+static void restore_stds(int original_stds[2])
+{
+    dup2(original_stds[0], STDIN_FILENO);
+    dup2(original_stds[1], STDOUT_FILENO);
+}
+
 //Flag is triggered only if we're within a pipe
 int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 {
-	int				status;
-	int				pipefd[2];
+	int	status;
+	int	pipefd[2];
+    int original_stds[2];
 
 	if (pipe(pipefd) != 0)
 		return (error_message(PIPE_FAILED), GENERAL_ERROR);
-	handle_redirections(execution);
+	handle_redirections(execution, original_stds);
 	execution->pid = fork();
 	if ((execution)->pid < 0)
 		return (error_message(FORK_FAILED), GENERAL_ERROR);
@@ -44,6 +51,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 	else
 	{
 		status = wait_module(execution, flag);
+        restore_stds(original_stds);
 		return (status);
 	}
 }
