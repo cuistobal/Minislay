@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   subshells.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/15 13:25:04 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 static bool append_prompt(char **prompt, t_tokn *current)
@@ -30,38 +42,34 @@ static bool	prompt(char **prompt, t_tree *branch)
 {
     t_tokn  *current;
 
-    if (branch)
+    if (!branch)
+		return (false);
+    current = branch->tokens;
+    while (current)
     {
-        current = branch->tokens;
-        while (current)
-        {
-            current = current->next;
-			if (current && current->type != CPAR)
-			{
-            	if (!append_prompt(prompt, current))
-                	return (false);
-			}
-           // current = current->next;
-        }
+    	current = current->next;
+		if (current && current->type != CPAR)
+		{
+    		if (!append_prompt(prompt, current))
+    	    	return (false);
+		}
     }
-	return (branch);
+	return (true);
 }
 
 bool	handle_subshell(t_shel *minishell, t_tree *ast)
 {
-	t_shel	*copy;
 	char	*subshell_command;
 
-	copy = minishell;
 	subshell_command = NULL;
 	if (prompt(&subshell_command, ast))
 	{
 		printf("SUBSHELL COMMAND	->	%s\n", subshell_command);
-		if (get_minishelled(copy, subshell_command))
+		if (get_minishelled(&minishell, subshell_command))
 		{
 			free(subshell_command);
-			return true;
+			return (true);
 		}
 	}
-	return false;
+	return (false);
 }
