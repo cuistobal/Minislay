@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:09:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:48:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ int	get_minishelled(t_shel **minishell, char *input)
 //
 int	mini_loop(t_shel **minishell, char *terminal_name)
 {
-    char	*user_input;
+	struct termios	initial;
+    char			*user_input;
 
+	tcgetattr(STDIN_FILENO, &initial);
     while (1)
 	{
         user_input = readline(terminal_name);
-        if (user_input)
-        {
-            add_history(user_input);
-			get_minishelled(minishell,user_input);
-            free(user_input);
-        }
+        add_history(user_input);
+		get_minishelled(minishell,user_input);
+   //     free(user_input);
+		tcsetattr(STDIN_FILENO, TCSADRAIN, &initial);
     }
     return 0;
 }

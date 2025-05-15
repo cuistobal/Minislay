@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:55:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:30:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ int	execute_command_in_child(char **command, char **env)
 	{
 		free_array(command, 0);
 		free_array(env, 0);
+		return (GENERAL_ERROR);
 	}
-	return (GENERAL_ERROR);
+	return (SUCCESS);
 }
 
 
 //Flag is triggered only if we're within a pipe
 int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 {
-	int		status;
-	int		pipefd[2];
+	int				status;
+	int				pipefd[2];
+	struct termios	tty_status;
 
+	tcgetattr(STDIN_FILENO, &tty_status);
 	if (pipe(pipefd) != 0)
 		return (error_message(PIPE_FAILED), GENERAL_ERROR);
 	handle_redirections(execution);
@@ -41,7 +44,10 @@ int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 			exit(GENERAL_ERROR);
 		return (execute_command_in_child((execution)->command, (execution)->environ));
 	}
-//	else
-	return (wait_module(execution, flag));
-//	return (GENERAL_ERROR);
+	else
+	{
+		status = wait_module(execution, flag);
+		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+		return (status);
+	}
 }
