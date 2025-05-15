@@ -6,11 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:32:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 07:53:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+static void	open_redirections(t_exec **node, t_tokn *redirections)
+{
+	t_tokn	*input;
+	t_tokn	*output;
+
+	input = NULL;
+	output = NULL;
+	while (redirections)
+	{
+		
+		consume_token(&redirections);
+	}
+	(*node)->redirections[CMD_INPUT] = input->type;
+	(*node)->redirections[CMD_OUTPUT] = output->type;
+}
 
 //
 static bool	join_env(char **joined, char *temp[2])
@@ -94,11 +111,11 @@ t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
 	esize = 1;
 	node->environ = rebuild_env(minishell, &esize);
 	if (!node->environ)
-		return (free_array(node->command, csize), error_message(INV_ENV), NULL);
-
+//		return (free_array(node->command, csize), error_message(INV_ENV), NULL);
+		return (NULL);
 	node->pid = -1;
 	pipe(node->pipe);
-	node->redirections[0] = 0;
-	node->redirections[1] = 1;
+	node->redirections[CMD_INPUT] = 0;
+	node->redirections[CMD_OUTPUT] = 1;
 	return (node);
 }
