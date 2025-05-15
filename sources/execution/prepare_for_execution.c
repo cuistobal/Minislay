@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 18:34:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:21:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,18 @@ static bool	quote_removal(t_tokn *list)
 
 	while (list)
 	{
-		tlen = strlen(list->value) + 1;
-		removed = (char *)calloc(tlen, sizeof(char));
-		if (!removed)
-			return (false);
-		memset(removed, 0, tlen);
-		quote_removal_helper(list->value, removed);
-		free(list->value);
-		list->value = removed;
-		list = list->next;
+		if (list->value)
+		{
+			tlen = strlen(list->value) + 1;
+			removed = (char *)calloc(tlen, sizeof(char));
+			if (!removed)
+				return (false);
+			//memset(removed, 0, tlen);
+			quote_removal_helper(list->value, removed);
+			free(list->value);
+			list->value = removed;
+		}
+		move_pointer(&list);
 	}
 	return (true);
 }

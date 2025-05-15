@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:57:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:17:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 }
 
 //
-static bool	append_specials(t_shel **minishell)
+bool	append_specials(t_shel **minishell)
 {
 	int		index;
 

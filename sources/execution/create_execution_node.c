@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 07:53:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:14:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@ static void	open_redirections(t_exec **node, t_tokn *redirections)
 	input = NULL;
 	output = NULL;
 	while (redirections)
-	{
-		
-		consume_token(&redirections);
+	{	
+		if (*redirections->value == '<')
+			input = redirections;
+		else
+			output = redirections;
+		move_pointer(&redirections);
 	}
-	(*node)->redirections[CMD_INPUT] = input->type;
-	(*node)->redirections[CMD_OUTPUT] = output->type;
+	if (input)
+		(*node)->redirections[CMD_INPUT] = input->type;
+	if (output)
+		(*node)->redirections[CMD_OUTPUT] = output->type;
 }
 
 //
