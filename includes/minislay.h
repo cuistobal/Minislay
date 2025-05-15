@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 10:15:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:07:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 //minnishell.c
 int		get_minishelled(t_shel **minishell, char *input);
-int		mini_loop(t_shel *minishell, char *terminal_name);
+int		mini_loop(t_shel **minishell, char *terminal_name);
 int		main(int argc, char **argv, char **envp);
 
 //initialisation.c

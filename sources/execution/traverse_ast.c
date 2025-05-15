@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:57:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:10:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execute_command(char **commands, char **env)
 static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 {
     int             exit_code;
-	struct termios	tty_status;
+//	struct termios	tty_status;
 
     exit_code = -1;
 	if (is_builtin(*node->command) && !(ctype & PIPE))
@@ -37,9 +37,9 @@ static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 	else
 	{
 		//save tty's params
-		tcgetattr(STDIN_FILENO, &tty_status);
+//		tcgetattr(STDIN_FILENO, &tty_status);
 		exit_code = create_child_process(minishell, node, ctype & PIPE);
-		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
 	}
     return (exit_code);
 }

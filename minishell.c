@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:03:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:09:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,24 @@ int	get_minishelled(t_shel **minishell, char *input)
 	if (is_state_active(code, EXIT_STATUS))
 		return (free_tree(ast), EXIT_STATUS);
 	return (free_tree(ast), 0);
+}
+
+//
+int	mini_loop(t_shel **minishell, char *terminal_name)
+{
+    char	*user_input;
+
+    while (1)
+	{
+        user_input = readline(terminal_name);
+        if (user_input)
+        {
+            add_history(user_input);
+			get_minishelled(minishell,user_input);
+            free(user_input);
+        }
+    }
+    return 0;
 }
 
 //
@@ -105,7 +123,6 @@ bool	build_env(t_shel **minishell, char **envp)
 	return (true);
 }
 
-
 //
 int	main(int argc, char **argv, char **envp)
 {
@@ -120,6 +137,10 @@ int	main(int argc, char **argv, char **envp)
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
+	return (mini_loop(&minishell, rl_prompt));
+//	return (SUCCESS);
+}
+/*
     while (1)
 	{
 //		tcgetattr(STDIN_FILENO, &tty_status);
@@ -132,4 +153,4 @@ int	main(int argc, char **argv, char **envp)
 //		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
     }
 	return (SUCCESS);
-}
+}*/
