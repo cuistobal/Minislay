@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:14:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:26:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static void	open_redirections(t_exec **node, t_tokn *redirections)
+static void	assign_redirections(t_exec **node, t_tokn *redirections)
 {
 	t_tokn	*input;
 	t_tokn	*output;
@@ -30,8 +30,12 @@ static void	open_redirections(t_exec **node, t_tokn *redirections)
 	}
 	if (input)
 		(*node)->redirections[CMD_INPUT] = input->type;
+	else
+		(*node)->redirections[CMD_INPUT] = STDIN_FILENO;
 	if (output)
 		(*node)->redirections[CMD_OUTPUT] = output->type;
+	else
+		(*node)->redirections[CMD_OUTPUT] = STDOUT_FILENO;
 }
 
 //
@@ -90,37 +94,17 @@ t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
 	node = NULL;
 	redirections = NULL;
 	if (!minishell || !ast)
-		return (NULL);	
-
-	/*
-	node = (t_exec *)malloc(sizeof(t_exec));
-	if (!node)
 		return (NULL);
-	*/
-
 	node = prepare_for_exec(minishell, ast, &redirections);
 	if (!node)
 		return (NULL);
-
-	//
 	print_tokens(redirections);
-	//
-
-/*
-	csize = 1;
-	node->command = prepare_for_exec(minishell, ast, &csize);
-	if (!node->command)
-		return (error_message(INV_COMMAND), NULL);
-*/
-
 	esize = 1;
 	node->environ = rebuild_env(minishell, &esize);
 	if (!node->environ)
-//		return (free_array(node->command, csize), error_message(INV_ENV), NULL);
 		return (NULL);
 	node->pid = -1;
 	pipe(node->pipe);
-	node->redirections[CMD_INPUT] = 0;
-	node->redirections[CMD_OUTPUT] = 1;
+	assign_redirections(&node, redirections);
 	return (node);
 }

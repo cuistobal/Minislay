@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 20:42:52 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/15 08:23:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	traverse_ast(t_shel *minishell, t_tree *ast)
 			return ;
 		}
 		node = create_execution_node(minishell, ast);
-		if (!node)
+		if (!node || !node->command)
 			return ;
 		execute_branch(minishell, node, ast->tokens->type);
 		free_execution_node(node);
