@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 20:42:04 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/15 09:30:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 	{
 	//	if (!handle_communication_in_child(execution))
 	//		exit(REDIRECTION_ERROR);
-	//	execute_command((execution)->command, (execution)->environ);
+		execute_command((execution)->command, (execution)->environ);
 	}
 	else
 	{

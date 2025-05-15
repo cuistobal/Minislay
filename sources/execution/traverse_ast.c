@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:23:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:29:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 
     exit_code = -1;
 	if (is_builtin(*node->command) && !(ctype & PIPE))
-	//		exec_builtin(node->command, node->environ, minishell);
 		return (exec_builtin(minishell, node));
 	else
 	{
