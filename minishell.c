@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:48:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:55:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,14 @@ int	get_minishelled(t_shel **minishell, char *input)
 //
 int	mini_loop(t_shel **minishell, char *terminal_name)
 {
-	struct termios	initial;
     char			*user_input;
 
-	tcgetattr(STDIN_FILENO, &initial);
     while (1)
 	{
         user_input = readline(terminal_name);
         add_history(user_input);
 		get_minishelled(minishell,user_input);
-   //     free(user_input);
-		tcsetattr(STDIN_FILENO, TCSADRAIN, &initial);
+        free(user_input);
     }
     return 0;
 }
@@ -127,7 +124,6 @@ bool	build_env(t_shel **minishell, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shel			*minishell;
-	struct termios	tty_status;
     char			*user_input;
 	char			rl_prompt[BUFFER_SIZE];
 
@@ -138,19 +134,4 @@ int	main(int argc, char **argv, char **envp)
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
 	return (mini_loop(&minishell, rl_prompt));
-//	return (SUCCESS);
 }
-/*
-    while (1)
-	{
-//		tcgetattr(STDIN_FILENO, &tty_status);
-        user_input = readline(rl_prompt);
-        add_history(user_input);	
-		if (get_minishelled(&minishell,user_input) == EXIT_STATUS)
-			return (free(user_input), free_minishell(minishell), 1);
-        free(user_input);
-		user_input = NULL;
-//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
-    }
-	return (SUCCESS);
-}*/

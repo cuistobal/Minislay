@@ -6,24 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:41:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:52:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//
-void	execute_command(char **commands, char **env)
-{
-	char	*command;
-	char	**arguments;
-
-	command = *commands;
-	arguments = commands;
-	pid_t	pid = fork();
-	if (pid == 0)
-		exit(execve(command, arguments, env));
-}
 
 //
 static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
