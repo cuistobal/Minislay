@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 09:44:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:22:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
 int	get_minishelled(t_shel **minishell, char *input)
 {
+	int		code;
 	t_tree	*ast;
 	t_pars	*parser;
 	t_tokn	*tokens;
@@ -43,7 +44,11 @@ int	get_minishelled(t_shel **minishell, char *input)
 	 *
  	 */
 
-	traverse_ast(minishell, ast);
+	traverse_ast(minishell, ast, &code);
+
+	if (code == EXIT_STATUS)
+		return (free_tree(ast), EXIT_STATUS);
+
 	return (free_tree(ast), 0);
 }
 
@@ -116,14 +121,14 @@ int	main(int argc, char **argv, char **envp)
     while (1)
 	{
         user_input = readline(rl_prompt);
-        if (user_input)
-        {
-			tcgetattr(STDIN_FILENO, &tty_status);
-            add_history(user_input);	
-			get_minishelled(&minishell,user_input);
-            free(user_input);
-			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
-        }
+		if (!user_input)
+			return (-1);
+		tcgetattr(STDIN_FILENO, &tty_status);
+        add_history(user_input);	
+		if (get_minishelled(&minishell,user_input) == EXIT_STATUS)
+			return (free(user_input), free_minishell(minishell), 1);
+        free(user_input);
+		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
     }
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 09:58:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:17:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 }
 
 //
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+void	traverse_ast(t_shel **minishell, t_tree *ast, int *code)
 {
 	t_exec  *node;
 
 	node = NULL;
 	if (!ast)
 		return ;
-	traverse_ast(minishell, ast->left);
+	traverse_ast(minishell, ast->left, code);
 	if (ast->tokens && !is_amp_pipe(*ast->tokens->value))
 	{
 		if (ast->tokens->type & OPAR)
@@ -63,14 +63,19 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 		node = create_execution_node(minishell, ast);
 		if (!node || !node->command)
 			return ;
-//		printf("r value -> %d\n", execute_branch(minishell, node, ast->tokens->type));
-//
+
 	//	(*minishell)->special[DPIDI] = ft_itoa(execute_branch(*minishell, node, ast->tokens->type));
 
-		set_error_code(minishell, execute_branch(*minishell, node, ast->tokens->type));
+		*code = execute_branch(*minishell, node, ast->tokens->type);
 
-	//	printf("%s\n", (*minishell)->special[DPIDI]);
+		if (*code == EXIT_STATUS)
+			return ;
+		/*	This function needs to be renamed	*/
+			set_error_code(minishell, *code);
+
+		/*										*/
+
 		free_execution_node(node);
 	}
-	traverse_ast(minishell, ast->right);
+	traverse_ast(minishell, ast->right, code);
 }

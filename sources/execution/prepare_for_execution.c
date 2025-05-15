@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:21:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:26:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,3 +202,4 @@ t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections)
 
 	return (node);
 }
+

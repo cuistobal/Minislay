@@ -53,8 +53,8 @@ SOURCES = \
 	sources/execution/split_list.c \
 	sources/execution/create_execution_node.c \
 	sources/execution/traverse_ast.c \
-	sources/execution/expansions/expand.c \
 	sources/execution/prepare_for_execution.c \
+	sources/execution/expansions/expand.c \
 	sources/execution/expansions/key_management.c \
 	sources/execution/expansions/word_splitting.c \
 	sources/execution/expansions/bonus/globing.c \
