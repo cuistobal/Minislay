@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:17:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:44:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
-int	get_minishelled(t_shel *minishell, char *input)
+int	get_minishelled(t_shel **minishell, char *input)
 {
 	t_tree	*ast;
 	t_pars	*parser;
@@ -120,7 +120,7 @@ int	main(int argc, char **argv, char **envp)
         {
 			tcgetattr(STDIN_FILENO, &tty_status);
             add_history(user_input);	
-			get_minishelled(minishell,user_input);
+			get_minishelled(&minishell,user_input);
             free(user_input);
 			tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
         }

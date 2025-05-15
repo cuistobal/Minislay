@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:26:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:53:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 }
 
 //
-t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
+t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
 {
 	int		esize;
 	int		csize;
@@ -95,14 +95,14 @@ t_exec	*create_execution_node(t_shel *minishell, t_tree *ast)
 	redirections = NULL;
 	if (!minishell || !ast)
 		return (NULL);
-	node = prepare_for_exec(minishell, ast, &redirections);
+	node = prepare_for_exec(*minishell, ast, &redirections);
 	if (!node)
-		return (NULL);
+		return (set_error_code(minishell, GENERAL_ERROR), NULL);
 	print_tokens(redirections);
 	esize = 1;
-	node->environ = rebuild_env(minishell, &esize);
+	node->environ = rebuild_env(*minishell, &esize);
 	if (!node->environ)
-		return (NULL);
+		return (set_error_code(minishell, GENERAL_ERROR), NULL);
 	node->pid = -1;
 	pipe(node->pipe);
 	assign_redirections(&node, redirections);

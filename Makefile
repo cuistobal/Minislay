@@ -33,6 +33,7 @@ SOURCES = \
 	utilities/avl_tree/avl_tree_utils2.c \
 	utilities/avl_tree/rotations.c \
 	utilities/Libft/ft_itoa.c \
+	utilities/inline_utilities.c \
 	sources/initialisation.c\
 	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \

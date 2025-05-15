@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:15:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:55:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
 //rotations.c:
 bool	balance_tree(t_avlt **node, char *key, int len);
 
-//
+//inline_utilities.c
+void	set_error_code(t_shel **minishell, int error_code);
 
 #endif

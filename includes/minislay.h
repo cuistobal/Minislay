@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:49:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 09:45:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include "builtins.h"
 
 //minnishell.c
-int		get_minishelled(t_shel *minishell, char *input);
+int		get_minishelled(t_shel **minishell, char *input);
 int		mini_loop(t_shel *minishell, char *terminal_name);
 int		main(int argc, char **argv, char **envp);
 
