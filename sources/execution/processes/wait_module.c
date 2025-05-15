@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:31:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:55:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int	wait_module(t_exec *execution, bool flag)
 			return (GENERAL_ERROR);
 		return (WEXITSTATUS(status));
 	}
-	return (GENERAL_ERROR);
+//	return (GENERAL_ERROR);
 }

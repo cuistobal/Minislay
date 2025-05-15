@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 11:21:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:57:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 	{
 		if (ast->tokens->type & OPAR)
 		{
+			//This function might need the int *code variable.
+			//Also, we need to find a way to retrieve the subshell's content
+			//int the parent.
 			handle_subshell(*minishell, ast);
 			return ;
 		}

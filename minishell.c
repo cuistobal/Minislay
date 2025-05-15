@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:44:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:03:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ int	get_minishelled(t_shel **minishell, char *input)
 	ast = NULL;
 	tokens = NULL;
 	parser = NULL;
+	if (!input)
+		return (GENERAL_ERROR);
 	if (!tokenize(&tokens, input, strlen(input)))
-		return (printf(TOKENIZATION), free_tokens(tokens), -1);
+		return (printf(TOKENIZATION), free_tokens(tokens), GENERAL_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
-		return (printf("%s unmatched '('\n", SYNTAX), -1);
+		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
-		return (printf(PARSING), free_tokens(tokens), free_tree(ast), -1);
+		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
 	/*
  	 *
 	 *	I forgot an important point here ->	redirections are handled first, then
@@ -114,21 +116,20 @@ int	main(int argc, char **argv, char **envp)
 
 	minishell = (t_shel *)malloc(sizeof(t_shel));
 	if (!minishell)
-		return 1;
+		return (GENERAL_ERROR);
 	if (!build_env(&minishell, envp))
-		return 1;
+		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
     while (1)
 	{
+//		tcgetattr(STDIN_FILENO, &tty_status);
         user_input = readline(rl_prompt);
-		if (!user_input)
-			return (-1);
-		tcgetattr(STDIN_FILENO, &tty_status);
         add_history(user_input);	
 		if (get_minishelled(&minishell,user_input) == EXIT_STATUS)
 			return (free(user_input), free_minishell(minishell), 1);
         free(user_input);
-		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
+		user_input = NULL;
+//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
     }
-	return 0;
+	return (SUCCESS);
 }

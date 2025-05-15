@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:50:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:55:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 			exit(GENERAL_ERROR);
 		return (execute_command_in_child((execution)->command, (execution)->environ));
 	}
-	else
-		return (wait_module(execution, flag));
-	return (GENERAL_ERROR);
+//	else
+	return (wait_module(execution, flag));
+//	return (GENERAL_ERROR);
 }
