@@ -6,12 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:25:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:25:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static bool append_prompt(char **prompt, t_tokn *current)
 {
     char    *joined;
@@ -57,6 +58,7 @@ static bool	prompt(char **prompt, t_tree *branch)
 	return (true);
 }
 
+//
 bool	handle_subshell(t_shel *minishell, t_tree *ast)
 {
 	char	*subshell_command;

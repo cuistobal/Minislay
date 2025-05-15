@@ -67,6 +67,8 @@ SOURCES = \
 	sources/execution/redirections/handle_redirections.c \
 	sources/execution/redirections/handle_here_doc.c \
 	sources/execution/processes/create_process.c \
+	sources/execution/processes/ipc_module.c \
+	sources/execution/processes/wait_module.c \
 	minishell.c \
     minitester/utils/minislays_test_utils.c
 

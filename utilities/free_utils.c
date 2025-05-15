@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 20:45:56 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/15 13:48:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,27 @@
 //
 void	free_array(char **array, int count)
 {
+	int	index;
+
+	index = 0;
 	if (array)
 	{
-		while (count--)
+		if (count > 0)
 		{
-			free(array[count]);
-			array[count] = NULL;
+			while (count--)
+			{
+				free(array[count]);
+				array[count] = NULL;
+			}
+		}
+		else
+		{
+			while (array[index])
+			{
+				free(array[index]);
+				array[index] = NULL;
+				index++;
+			}
 		}
 		free(array);
 		array = NULL;
@@ -38,6 +53,7 @@ void	free_tree(t_tree *ast)
 	}
 }
 
+//
 void	free_execution_node(t_exec *execution)
 {
 	int	index;

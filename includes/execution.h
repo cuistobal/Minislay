@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 11:51:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:42:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,17 @@ void	execute_builtin(t_shel *minishell, char **command, char **envp);
 t_exec	*create_execution_node(t_shel **minishell, t_tree *ast);
 
 int		create_child_process(t_shel *minishell, t_exec *execution, bool flag);
+
+//create_process.c
+int		execute_command_in_child(char **command, char **env);
+int		create_child_process(t_shel *minishell, t_exec *execution, bool flag);
+
+//wait_module.c
+int		wait_module(t_exec *execution, bool flag);
+
+//ipc_module.c
+int		handle_communication_in_child(t_exec **node, bool flag);
+int		handle_communication_in_parent(t_exec **node, bool flag);
+int		handle_redirections(t_exec *execution);
 
 #endif

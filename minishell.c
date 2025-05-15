@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 11:52:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:44:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	get_minishelled(t_shel **minishell, char *input)
 
 	if (is_state_active(code, EXIT_STATUS))
 		return (free_tree(ast), EXIT_STATUS);
-
 	return (free_tree(ast), 0);
 }
 
