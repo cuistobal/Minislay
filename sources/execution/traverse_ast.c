@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:24:49 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/15 17:29:48 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
             original_std[0] = dup(STDIN_FILENO);
             original_std[1] = dup(STDOUT_FILENO);
         }
+        else
+        {
+		    set_state(pipe, INIT);
+            dup2(STDIN_FILENO, original_std[0]);  
+            dup2(STDOUT_FILENO, original_std[0]);  
+        }
 	}
 
 	traverse_ast(minishell, ast->left, code, pipe);
@@ -87,6 +93,5 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 
 		free_execution_node(node);
 	}
-   // restore_stds(original_std);
 	traverse_ast(minishell, ast->right, code, pipe);
 }
