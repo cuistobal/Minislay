@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 05:11:37 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/14 05:12:00 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	remove_from_env(t_env **env, const char *key)
 	}
 }
 
-int	unset(t_shel *minishell, char **args)
+int	unset(t_shell *minishell, char **args)
 {
 	int	i;
 

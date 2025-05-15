@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 05:00:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_numeric(char *str)
 	return (1);
 }
 
-int	my_exit(t_shel *minishell, char **args)
+int	my_exit(t_shell *minishell, char **args)
 {
 	long	code;
 

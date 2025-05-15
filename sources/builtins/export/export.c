@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 05:45:13 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:26:11 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static int	is_valid_identifier(const char *s)
 {
 	int	i;
 
-	if (!s || !*s || (s[0] != '_' && !((s[0] >= 'A' && s[0] <= 'Z')
-		&& (s[0] >= 'a' && s[0] <= 'z'))))
+	if (!s || !*s || (s[0] != '_' && (s[0] < 'A' || s[0] > 'Z')
+		&& (s[0] < 'a' || s[0] > 'z')))
 		return (0);
 	i = 1;
 	while (s[i] && s[i] != '=')
 	{
-		if (s[i] != '_' && !((s[i] >= 'A' && s[i] <= 'Z')
-			|| (s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9')))
+		if (s[i] != '_' && (s[i] < 'A' || s[i] > 'Z')
+			&& (s[i] < 'a' || s[i] > 'z') && (s[i] < '0' || s[i] > '9'))
 			return (0);
 		i++;
 	}
@@ -50,10 +50,11 @@ static void	print_export(t_env *env)
 	}
 }
 
-int	export(t_shel *minishell, char **args)
+int	export(t_shell *minishell, char **args)
 {
 	int		i;
 	char	*equal;
+	char	*key;
 
 	if (!args || !args[0])
 		return (print_export(minishell->envp), SUCCESS);
@@ -61,14 +62,25 @@ int	export(t_shel *minishell, char **args)
 	while (args[i])
 	{
 		equal = strchr(args[i], '=');
-		if (!is_valid_identifier(args[i]))
+		if (equal)
+		{
+			key = strndup(args[i], equal - args[i]);
+			if (!is_valid_identifier(key))
+			{
+				write(2, "minislay: export: `", 20);
+				write(2, args[i], strlen(args[i]));
+				write(2, "': not a valid identifier\n", 27);
+			}
+			else
+				update_key_value(minishell, key, equal + 1);
+			free(key);
+		}
+		else if (!is_valid_identifier(args[i]))
 		{
 			write(2, "minislay: export: `", 20);
 			write(2, args[i], strlen(args[i]));
 			write(2, "': not a valid identifier\n", 27);
 		}
-		else if (equal)
-			update_key_value(minishell, args[i], equal + 1);
 		else
 			update_key_value(minishell, args[i], NULL);
 		i++;

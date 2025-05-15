@@ -6,13 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:27:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 04:17:34 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-int	env(t_shel *minishell, char **arguments)
+int	env(t_shell *minishell, char **arguments)
 {
 	t_env	*current;
 

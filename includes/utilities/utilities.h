@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 05:47:17 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	move_env_pointer(t_env **pointer);
 bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 
 //find_key.c
-bool    find_key(t_shel *minishell, char **value, char *key);
+bool    find_key(t_shell *minishell, char **value, char *key);
 
 //get_merged.c
 bool	get_merged(char **merged, char **temp, char **expanded);
@@ -81,9 +81,9 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
-void	free_minishell(t_shel *minishell);	
+void	free_minishell(t_shell *minishell);	
 
 //update_key_value.c
-int	update_key_value(t_shel *minishell, char *key, char *new_value);
+int	update_key_value(t_shell *minishell, char *key, char *new_value);
 
 #endif

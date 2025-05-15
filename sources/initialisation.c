@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:51:19 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static const char *g_spec[DKCT] = {VSTR, VARO, VHAS, VEXT, VHYP, VPID, VCID, VNME, VLST, VIFS};
 
 //
-bool	append_specials(t_shel **minishell)
+bool	append_specials(t_shell **minishell)
 {
 	int		index;
 
@@ -34,7 +34,7 @@ bool	append_specials(t_shel **minishell)
 
 
 //
-static bool build_env(t_shel **minishell, char **envp)
+static bool build_env(t_shell **minishell, char **envp)
 {
     t_env	*new;
     t_env	*tail;
@@ -59,7 +59,7 @@ static bool build_env(t_shel **minishell, char **envp)
 }
 
 //
-bool    set_env(t_shel **minishell, char **envp)
+bool    set_env(t_shell **minishell, char **envp)
 {
     if (!*minishell)
     	return (false);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 04:40:39 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*get_env_value(t_env *env, char *key)
 	return (NULL);
 }
 
-int	cd(t_shel *minishell, char **args)
+int	cd(t_shell *minishell, char **args)
 {
 	char	cwd[BUFFER_SIZE];
 	char	*target;

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/14 15:16:30 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:46:06 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_env(char **env)
 	env = NULL;
 }
 
-int	exec_builtin(char **argv, char **envp, t_shel *minishell)
+int	exec_builtin(char **argv, char **envp, t_shell *minishell)
 {
 	int		code;
 	char	*temp;
@@ -75,7 +75,7 @@ int	exec_builtin(char **argv, char **envp, t_shel *minishell)
 	else if (!strncmp(argv[0], "env", 4))
 		code = env(minishell, argv + 1);
 	else if (!strncmp(argv[0], "pwd", 4))
-		code = pwd(minishell);
+	code = pwd(minishell);
 	else if (!strncmp(argv[0], "exit", 5))
 		code = my_exit(minishell, argv + 1);
 	else if (!strncmp(argv[0], "export", 7))
