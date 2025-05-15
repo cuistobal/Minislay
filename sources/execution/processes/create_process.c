@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:53:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:51:51 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 {
 	int				status;
 	int				pipefd[2];
-//	struct termios	tty_status;
 
-//	tcgetattr(STDIN_FILENO, &tty_status);
 	if (pipe(pipefd) != 0)
 		return (error_message(PIPE_FAILED), GENERAL_ERROR);
 	handle_redirections(execution);
@@ -46,7 +44,6 @@ int	create_child_process(t_shel *minishell, t_exec *execution, bool flag)
 	else
 	{
 		status = wait_module(execution, flag);
-//		tcsetattr(STDIN_FILENO, TCSANOW, &tty_status);
 		return (status);
 	}
 }

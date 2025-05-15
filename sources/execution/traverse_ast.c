@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:52:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:13:22 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,30 @@ static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
     return (exit_code);
 }
 
+void    restore_stds(int original_std[2])
+{
+    dup2(STDIN_FILENO, original_std[0]);
+    dup2(STDOUT_FILENO, original_std[1]);
+}
+
 //
 void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 {
-	t_exec  *node;
+	t_exec      *node;
+    static int  original_std[2];
 
 	node = NULL;
 	if (!ast)
 		return ;
-
 	if (is_amp_pipe(*ast->tokens->value))
 	{
 		set_state(pipe, INIT);
 		if (is_state_active(ast->tokens->type, PIPE))
-			set_state(pipe, PIPE);
+        {
+            set_state(pipe, PIPE);
+            original_std[0] = dup(STDIN_FILENO);
+            original_std[1] = dup(STDOUT_FILENO);
+        }
 	}
 
 	traverse_ast(minishell, ast->left, code, pipe);
@@ -75,5 +85,6 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 
 		free_execution_node(node);
 	}
+    restore_stds(original_std);
 	traverse_ast(minishell, ast->right, code, pipe);
 }
