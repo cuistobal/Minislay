@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_command_and_arguments.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 08:36:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //Utility to create the char **tab required for execution.
-char	**get_command_and_arguments(t_shel *minishell, t_tokn *list, int count)
+char	**get_command_and_arguments(t_shell *minishell, t_tokn *list, int count)
 {
 	int		index;
 	char	**commands;

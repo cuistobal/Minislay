@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_key.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:35:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	find_key_in_command(t_env *command, char **value, char *key)
 
 //Looking for the $KEY, so we can acess its value. If $KEY isn't found, we 
 //return false;
-bool	find_key(t_shel *minishell, char **value, char *key)
+bool	find_key(t_shell *minishell, char **value, char *key)
 {
 	t_avlt	*root;
 	t_env	*head;

@@ -37,7 +37,7 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 }
 
 //
-bool	append_specials(t_shel **minishell)
+bool	append_specials(t_shell **minishell)
 {
 	int		index;
 
@@ -69,53 +69,3 @@ bool	insert_env_in_avlt(t_shel *minishell)
 	}
 	return (!copy);
 }
-
-/*
-t_env	*build_environement(char **envp)
-{
-    t_env	*new;
-    t_env	*tail;
-    t_env	*head;
-
-	head = NULL;
-	while (*envp)
-	{	
-		if (!head)
-		{
-			new = create_env_node(&head, strdup(*envp));
-			if (!new)
-				return (false);
-			tail = head;
-		}
-		else
-		{
-			new = create_env_node(&tail, strdup(*envp));
-			if (!new)
-				return (false);
-		}
-		envp++;
-	}
-	return (head);	
-}
-
-//
-bool	build_env(t_shel **minishell, char **envp)
-{
-    t_env	*head;
-	t_avlt	*root;
-
-    if (!*minishell)
-		return (false);
-	root = NULL;
-	(*minishell)->envp = build_environement(envp);
-	head = (*minishell)->envp;
-	while (head)
-	{
-		insert_avlt_node(&root, head, strlen(head->var[KEY]));
-		head = head->next;
-	}
-	(*minishell)->expt = root;
-	append_specials(minishell);	
-	return (true);
-}
-*/

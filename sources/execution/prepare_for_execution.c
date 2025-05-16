@@ -84,6 +84,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 }
 
 //
+
 t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;

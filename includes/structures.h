@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
 /*   Updated: 2025/05/14 09:09:50 by chrleroy         ###   ########.fr       */
@@ -33,25 +33,32 @@ typedef struct shell
 	struct	env		*local;
 	struct	env		*command;
 	char			*special[10];
-}	t_shel;
+}	t_shell;
 
 //Basic environement node
 typedef struct env
+{/*
+46
+//AVL Tree's structuroe
+47
+typedef struct  avltree
+48
 {
+49
+  int       height;
+50
+  char      *data[2];
+51
+  struct avltree  *left;
+52
+  struct avltree  *right;
+53
+} t_avlt;
+54
+*/
 	char		*var[2];
 	struct  env *next;
 }   t_env;
-
-/*
-//AVL Tree's structuroe
-typedef struct	avltree
-{
-	int				height;
-	char			*data[2];
-	struct avltree	*left;
-	struct avltree	*right;
-}	t_avlt;
-*/
 
 //Tokens structure
 typedef struct tokens

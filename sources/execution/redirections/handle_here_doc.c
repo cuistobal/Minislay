@@ -1,7 +1,7 @@
 #include "minislay.h"
 
 //
-static char	*expand_line(t_shel *minishell, char *line, bool expansions)
+static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 {
 	int		index;
 	char	*temp;
@@ -72,7 +72,7 @@ static bool	append_heredoc(char *expanded, int fd)
 
 //This utility creates a temporary file and fills it with the user's input. If
 //the limiter is an unquoted token, lines get expanded.
-bool	handle_here_doc(t_shel *minishell, t_tokn **redirections)
+bool	handle_here_doc(t_shell *minishell, t_tokn **redirections)
 {
 	int		fd;
 	char	*line;

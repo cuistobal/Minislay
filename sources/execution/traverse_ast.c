@@ -78,7 +78,6 @@ void	execute_pipeline(t_shel **minishell, t_exec *execution, int ccount)
 	wait_module(execution);
 }
 
-
 //
 void	traverse_ast(t_shel **minishell, t_tree *ast)
 {

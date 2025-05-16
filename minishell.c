@@ -14,7 +14,7 @@
 
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
-int	get_minishelled(t_shel **minishell, char *input)
+int	get_minishelled(t_shell **minishell, char *input)
 {
 	t_tree	*ast;
 	t_pars	*parser;
@@ -53,7 +53,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 //
 int	mini_loop(t_shel **minishell, char *terminal_name)
 {
-    int             retcode;
+    int       retcode;
     char			*user_input;
 
     while (1)

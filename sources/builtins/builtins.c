@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/15 10:17:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:46:06 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (!strncmp(cmd, "exit", 5))
 		return (1);
+	if (!strncmp(cmd, "unset", 6))
+		return (1);
+	if (!strncmp(cmd, "export", 7))
+		return (1);
 	return (0);
 }
 
@@ -56,8 +60,7 @@ void	free_env(char **env)
 	env = NULL;
 }
 
-//int	exec_builtin(char **argv, char **envp, t_shel **minishell)
-int	exec_builtin(t_shel *minishell, t_exec *execution)
+int	exec_builtin(char **argv, char **envp, t_shell *minishell)
 {
 	int		code;
 	char	*temp;
@@ -69,16 +72,19 @@ int	exec_builtin(t_shel *minishell, t_exec *execution)
 	code = 1;
 	if (!strncmp(argv[0], "echo", 5))
 		code = builtin_echo(argv);
-	if (!strncmp(argv[0], "cd", 3))
+	else if (!strncmp(argv[0], "cd", 3))
 		code = cd(minishell, argv + 1);
-	if (!strncmp(argv[0], "env", 4))
+	else if (!strncmp(argv[0], "env", 4))
 		code = env(minishell, argv + 1);
-	if (!strncmp(argv[0], "pwd", 4))
-		code = pwd(minishell);
-	if (!strncmp(argv[0], "exit", 5))
-		code = my_exit(minishell, execution);
-	temp = (minishell)->special[DEXTI];
-	(minishell)->special[DEXTI] = int_to_str(code);
-	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);
+	else if (!strncmp(argv[0], "pwd", 4))
+	code = pwd(minishell);
+	else if (!strncmp(argv[0], "exit", 5))
+		code = my_exit(minishell, argv + 1);
+	else if (!strncmp(argv[0], "export", 7))
+		code = export(minishell, argv + 1);
+	else if (!strncmp(argv[0], "unset", 6))
+		code = unset(minishell, argv + 1);
+	temp = minishell->special[DEXTI];
+	minishell->special[DEXTI] = int_to_str(code);
 	return (code);
 }

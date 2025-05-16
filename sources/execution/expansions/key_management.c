@@ -3,7 +3,7 @@
 static const char *g_keys[DKCT] = {DSTR, DARO, DHAS, DEXT, DHYP, DPID, DCID, DNME, DLST, DIFS};
 
 //
-static bool	is_standard_key(t_shel *minishell, char **value, char *key)
+static bool	is_standard_key(t_shell *minishell, char **value, char *key)
 {
 	int	index;
 
@@ -122,7 +122,7 @@ static char	*retrieve_expansions(char *token, int *index)
 
 //We use this function to determine if the key is a standard key or an env/user
 //defined key.
-static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
+static bool	retrieve_keys_value(t_shell *minishell, char *key, char **value)
 {
 	if (key)
 	{
@@ -143,7 +143,7 @@ static bool	retrieve_keys_value(t_shel *minishell, char *key, char **value)
 }
 
 //
-bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
+bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 {
 	char	*key;
 
