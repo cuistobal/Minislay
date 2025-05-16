@@ -5,7 +5,7 @@
 //The code currently expands the '$PATH' variable iif it is preceeded with a
 //double quoted or unquoted $ token.
 //
-static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
+static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 {
 	int		index;
 	char	*temp;
@@ -33,7 +33,7 @@ static bool	expand_in_quotes(t_shel *minishell, t_tokn **list)
 }
 
 //if multiple dollars, split the list into subtokens
-static bool expand_no_quotes(t_shel *minishell, t_tokn **list, int *count)
+static bool expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 {
 	int		index;
 	char	*temp;
@@ -62,7 +62,7 @@ static bool expand_no_quotes(t_shel *minishell, t_tokn **list, int *count)
 }
 
 //Entry point of the expansion module
-bool    expand(t_shel *minishell, t_tokn **list, int *count)
+bool    expand(t_shell *minishell, t_tokn **list, int *count)
 {
 	while (*list)
 	{

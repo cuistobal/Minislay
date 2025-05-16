@@ -1,6 +1,6 @@
 #include "minislay.h"
 
-static bool find_key_in_local(t_shel **minishell, char *key, char *value)
+static bool find_key_in_local(t_shell **minishell, char *key, char *value)
 {
     t_env   *new;
 
@@ -32,7 +32,7 @@ static bool find_key_in_local(t_shel **minishell, char *key, char *value)
 }
 
 //Retrouve la clef et passe a la suivante
-static bool	find_key_in_env(t_shel **minishell, char *key, char *value)
+static bool	find_key_in_env(t_shell **minishell, char *key, char *value)
 {
 	if (*minishell)
 	{
@@ -49,7 +49,7 @@ static bool	find_key_in_env(t_shel **minishell, char *key, char *value)
 }
 
 //Trier la liste && implementer uen queue
-static void	find_matching_key(t_shel **minishell, char *key, char *value)
+static void	find_matching_key(t_shell **minishell, char *key, char *value)
 {
 	if (minishell)
 	{
@@ -92,7 +92,7 @@ static bool check_key(char *key)
 //Envoyer une liste d'assignations.
 //
 //LEFT TO RIGHT PRIORITY
-bool	handle_assignations(t_shel **minishell, t_tokn *token)
+bool	handle_assignations(t_shell **minishell, t_tokn *token)
 {
 	char	*key;
 	char	*value;

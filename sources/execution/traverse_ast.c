@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 20:58:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static bool	join_env(char **joined, char *temp[2])
 
 
 //
-void	create_child_process(t_shel	*minishell, char **command, char **env)
+void	create_child_process(t_shell	*minishell, char **command, char **env)
 {
 	int status;
 
@@ -68,7 +68,7 @@ void	create_child_process(t_shel	*minishell, char **command, char **env)
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
-static char	**rebuild_env(t_shel *minishell, int *size)
+static char	**rebuild_env(t_shell *minishell, int *size)
 {
 	int		index;
 	char	**env;
@@ -118,7 +118,7 @@ t_exec	*create_execution_node(char **command, char **environ)
 }
 */
 
-static bool	get_command_and_env(t_shel **minishell, t_tree *ast)
+static bool	get_command_and_env(t_shell **minishell, t_tree *ast)
 {
 //	pid_t	pid;
 	int		size;
@@ -210,9 +210,7 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 				command = prepare_for_exec(minishell, ast);
 				if (!command)
 					return (error_message("Command alloc failed.\n"));
-				env = rebuild_env(*minishell, &size);
-				if (!env)
-					return (free_array(env, size), error_message("env alloc failed.\n"));
+				env = rebuild_env268_array(env, size), error_message("env alloc failed.\n"));
 
 
 				if (!is_builtin(*command))
@@ -231,7 +229,7 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 	/*}
 }*/
 
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	char	**command;
 	char	**env;
@@ -274,5 +272,3 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	}
 	traverse_ast(minishell, ast->right);
 }
-
-

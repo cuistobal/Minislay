@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/13 20:55:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 22:46:15 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 # define BUILTINS_H
 
 //cd.c
-int		cd(t_shel *minishell, char **arguments);
+int		cd(t_shell *minishell, char **arguments);
 
 //echo.c
 void	echo(const char **arguments, bool flag);
 
 //env.c
-int		env(t_shel *minishell, char **arguments);
+int		env(t_shell *minishell, char **arguments);
 
 //export.c
-void	my_export(void);
+int	export(t_shell *minishell, char **args);
 
 //exit.c
-void	my_exit(t_shel *minishell);
+int	my_exit(t_shell *minishell, char **args);
 
 //pwd.c
-int		pwd(t_shel *minishell);
+int		pwd(t_shell *minishell);
 
 //unsset.v
-void	unset(void);
+int	unset(t_shell *minishell, char **args);
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier
-int		exec_builtin(char **argv, char **env, t_shel *minishell);
+int		exec_builtin(char **argv, char **env, t_shell *minishell);
 int		builtin_echo(char **argv);
 
 #endif

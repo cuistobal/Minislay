@@ -103,7 +103,7 @@ static bool	quote_removal(t_tokn *list)
 	return (true);
 }
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions, int *size)
+static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_tokn **expansions, int *size)
 {
 	int		count;
 	t_tokn	*copy;
@@ -136,7 +136,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 //		->	Change the return type to char**
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast)
-char	**prepare_for_exec(t_shel **minishell, t_tree *ast, int *size)
+char	**prepare_for_exec(t_shell **minishell, t_tree *ast, int *size)
 {
 	char	**command;
 	t_tokn	*expansions;

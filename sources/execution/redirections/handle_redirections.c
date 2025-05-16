@@ -27,7 +27,7 @@ static bool open_outfile_append(t_tokn **redirections)
 }
 
 // Function to open a here-document
-static bool open_here_doc(t_shel *minishell, t_tokn **redirections)
+static bool open_here_doc(t_shell *minishell, t_tokn **redirections)
 {
 	if (*redirections)
 	{
@@ -115,7 +115,7 @@ static bool open_infile(t_tokn **redirections)
 }
 
 // Function to handle redirections
-bool	handle_redirection_list(t_shel *minishell, t_tokn **list)
+bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
 {
 	t_tokn	*redirections;
 

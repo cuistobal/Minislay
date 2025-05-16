@@ -31,7 +31,7 @@ static bool words(t_tokn **current, char *delimiter)
 }
 
 //We use this module to split tokens after their expansion.
-bool	word_splitting(t_shel *minishell, t_tokn **current)
+bool	word_splitting(t_shell *minishell, t_tokn **current)
 {
 	char	*delimiter;
 

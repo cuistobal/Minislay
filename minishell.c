@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:48:18 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
-int	get_minishelled(t_shel **minishell, char *input)
+int	get_minishelled(t_shell **minishell, char *input)
 {
 	t_tree	*ast;
 	t_pars	*parser;
@@ -49,7 +49,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 }
 
 //
-int	mini_loop(t_shel **minishell)
+int	mini_loop(t_shell **minishell)
 {
     char	*user_input;
     while (1)
@@ -66,9 +66,9 @@ int	mini_loop(t_shel **minishell)
 }
 
 //
-static bool	mini_setup(t_shel **minishell, char **envp)
+static bool	setup_minishell(t_shell **minishell, char **envp)
 {
-	*minishell = malloc(sizeof(t_shel));
+	*minishell = malloc(sizeof(t_shell));
 	if (!*minishell)
 		return (false);
 	(*minishell)->envp = NULL;
@@ -85,7 +85,7 @@ static bool	mini_setup(t_shel **minishell, char **envp)
 //
 int	main(int argc, char **argv, char **envp)
 {
-	t_shel	*minishell;
+	t_shell	*minishell;
 
 	/*while (*envp)
 	{
@@ -97,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	minishell = NULL;
 	if (argc == 1)
 	{
-		if (mini_setup(&minishell, envp))
+		if (setup_minishell(&minishell, envp))
 			return (mini_loop(&minishell));
 	}
     return 0;

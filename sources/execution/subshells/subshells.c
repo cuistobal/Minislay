@@ -47,9 +47,9 @@ static bool	prompt(char **prompt, t_tree *branch)
 	return (branch);
 }
 
-bool	handle_subshell(t_shel *minishell, t_tree *ast)
+bool	handle_subshell(t_shell *minishell, t_tree *ast)
 {
-	t_shel	*copy;
+	t_shell	*copy;
 	char	*subshell_command;
 
 	copy = minishell;
