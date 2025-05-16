@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:29:48 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/16 08:14:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 	node = NULL;
 	if (!ast)
 		return ;
+
+	
+
+
+	// PIPE ? 
+	// AND ?
+	// OR ?
+
 	if (is_amp_pipe(*ast->tokens->value))
 	{
 		set_state(pipe, INIT);
