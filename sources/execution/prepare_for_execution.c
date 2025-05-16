@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:13:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:16:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 }
 
 //
-t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections)
+t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;
 	t_tokn	*expansions;
@@ -101,7 +101,7 @@ t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections)
 	if (!node)
 		return (NULL);
 	split_list(ast->tokens, &assignations, &expansions);
-	node->command = initialise_execution(minishell, redirections, &expansions);
+	node->command = initialise_execution(*minishell, redirections, &expansions);
 
 	/*
 	 *	Do we treat basic assignations (ex: abc=def) ?

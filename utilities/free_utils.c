@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 14:24:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:15:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_execution_node(t_exec *execution)
 
 	if (!execution)
 		return ;
-	if ((execution)->environ)
+	if (execution->environ)
 	{
 		index = 0;
 		while ((execution)->environ[index])
@@ -70,7 +70,7 @@ void	free_execution_node(t_exec *execution)
 		}
 		free((execution)->environ);
 	}
-	if ((execution)->command)
+	if (execution->command)
 	{
 		index = 0;
 		while ((execution)->command[index])

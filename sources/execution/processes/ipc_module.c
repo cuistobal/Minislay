@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:21:49 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/16 15:28:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-int	handle_communication_in_child(t_exec **node, bool flag)
+int	handle_communication_in_child(t_exec **node)
 {
 	if (dup2((*node)->pipe[0], STDIN_FILENO) != 0)
 		return (GENERAL_ERROR);
@@ -22,7 +22,7 @@ int	handle_communication_in_child(t_exec **node, bool flag)
 }
 
 //
-int	handle_communication_in_parent(t_exec **node, bool flag)
+int	handle_communication_in_parent(t_exec **node)
 {
 	if (dup2((*node)->pipe[1], STDIN_FILENO) != 0)
 		return (GENERAL_ERROR);

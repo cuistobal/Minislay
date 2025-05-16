@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:38:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:29:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
 //char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
-t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections);
+t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections);
 
 //traverse_ast.c
 void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe);
@@ -70,22 +70,22 @@ void	execute_builtin(t_shel *minishell, char **command, char **envp);
 
 t_exec	*create_execution_node(t_shel **minishell, t_tree *ast);
 
-int		create_child_process(t_shel *minishell, t_exec *execution, bool flag);
+int		create_child_process(t_shel *minishell, t_exec *execution);
 
 //create_process.c
 int		execute_command_in_child(char **command, char **env);
-int		create_child_process(t_shel *minishell, t_exec *execution, bool flag);
+int		create_child_process(t_shel *minishell, t_exec *execution);
 
 //wait_module.c
-int		wait_module(t_exec *execution, bool flag);
+int		wait_module(t_exec *execution);
 
 //ipc_module.c
-int		handle_communication_in_child(t_exec **node, bool flag);
-int		handle_communication_in_parent(t_exec **node, bool flag);
+int		handle_communication_in_child(t_exec **node);
+int		handle_communication_in_parent(t_exec **node);
 int		handle_redirections(t_exec *execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*handle_pipeline(t_shel *minishell, t_tree *ast);
+t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast);
 
 #endif

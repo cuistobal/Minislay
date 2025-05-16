@@ -6,23 +6,19 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:38:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:30:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
+static int  execute_branch(t_shel *minishell, t_exec *node)
 {
-    int	exit_code;
-
-    exit_code = -1;
-	if (is_builtin(*node->command) && !(ctype & PIPE))
+	if (is_builtin(*node->command))
 		return (exec_builtin(minishell, node));
 	else
-		exit_code = create_child_process(minishell, node, ctype & PIPE);
-    return (exit_code);
+		return (create_child_process(minishell, node));
 }
 
 //
@@ -60,6 +56,27 @@ static bool	is_pipeline(t_tokn *list)
 	return (false);
 }
 
+void	execute_pipeline(t_shel **minishell, t_exec *execution)
+{
+	t_exec	*current;
+	int		original_stds[2];
+
+	current = execution;
+	original_stds[0] = dup(STDIN_FILENO);
+	original_stds[0] = dup(STDOUT_FILENO);	
+	while (current)
+	{
+		if (!current->next)
+		{
+			execute_branch(*minishell, current);
+			dup2(STDOUT_FILENO, original_stds[1]);
+			dup2(STDIN_FILENO, original_stds[0]);
+		}
+	}
+	
+}
+
+
 //
 void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 {
@@ -74,17 +91,23 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 		node = handle_operators(minishell, ast);
 */
 	else if (is_pipeline(ast->tokens))
-		node = handle_pipeline(minishell, ast);
+		execute_pipeline(minishell, handle_pipeline(minishell, ast));
 	else
 	{
 		node = create_execution_node(minishell, ast);
-		execute_branch(*minishell, node, 0);
+		execute_branch(*minishell, node);
 		free_execution_node(node);
 	}
+
+	traverse_ast(minishell, ast->left, code, pipe);
+	traverse_ast(minishell, ast->right, code, pipe);
+
+/*
 	while (node)
 	{
 		for (int i = 0; node->command[i]; i++)	
 			printf("%s\n", node->command[i]);
 		node = node->next;
 	}
+*/
 }
