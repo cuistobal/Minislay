@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 16:25:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:27:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 	node->next = NULL;
 	node->redirections[INFILE] = STDIN_FILENO;
 	node->redirections[OUTFILE] = STDOUT_FILENO;
+	node->pid = -1;
 	if (pipe(node->pipe) != 0)
 		return (free_execution_node(node), NULL);
 	return (node);
