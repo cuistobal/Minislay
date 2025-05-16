@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 17:33:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:55:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections);
 
 //traverse_ast.c
+void	execute_pipeline(t_shel **minishell, t_exec *execute, int ccount);
 void	traverse_ast(t_shel **minishell, t_tree *ast);
 
 //subshells.c
@@ -74,7 +75,7 @@ t_exec	*create_execution_node(t_shel **minishell, t_tree *ast);
 
 //create_process.c
 int		execute_command_in_child(char **command, char **env);
-int		create_child_process(t_shel *minishell, t_exec **execution);
+int		create_child_process(t_shel *minishell, t_exec **execution, t_exec *prev);
 
 //wait_module.c
 int		wait_module(t_exec *execution);
@@ -82,10 +83,10 @@ int		wait_module(t_exec *execution);
 //ipc_module.c
 int		handle_communication_in_child(t_exec **node);
 int		handle_communication_in_parent(t_exec **node);
-int		handle_redirections(t_exec *execution, int original_stds[2]);
+int		handle_redirections(t_exec **execution, t_exec *prev, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast);
+t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast, int *ccount);
 
 #endif

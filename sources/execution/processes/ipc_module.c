@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:28:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:01:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_communication_in_parent(t_exec **node)
 }
 
 //
-int	handle_redirections(t_exec *execution, int original_stds[2])
+int	handle_redirections(t_exec **execution, t_exec *prev, int original_stds[2])
 {
     original_stds[0] = dup(STDIN_FILENO);
     if (original_stds[0] == -1)
@@ -39,14 +39,16 @@ int	handle_redirections(t_exec *execution, int original_stds[2])
     original_stds[1] = dup(STDOUT_FILENO);
     if (original_stds[1] == -1)
 		return (GENERAL_ERROR);
-	if (execution->redirections[INFILE] != STDIN_FILENO)
+	if ((*execution)->redirections[INFILE] != STDIN_FILENO)
 	{
-		if (dup2(execution->redirections[INFILE], STDIN_FILENO) != 0)
+		if (dup2((*execution)->redirections[INFILE], STDIN_FILENO) != 0)
 			return (GENERAL_ERROR);
 	}
-	if (execution->redirections[OUTFILE] != STDOUT_FILENO)
+	else if (prev)
+		dup2((*execution)->redirections[INFILE], prev->redirections[OUTFILE]);
+	if ((*execution)->redirections[OUTFILE] != STDOUT_FILENO)
 	{
-		if (dup2(execution->redirections[OUTFILE], STDOUT_FILENO) != 0)
+		if (dup2((*execution)->redirections[OUTFILE], STDOUT_FILENO) != 0)
 			return (GENERAL_ERROR);
 	}
 	return (SUCCESS);

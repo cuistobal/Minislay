@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:28:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:02:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	wait_module(t_exec *execution)
 {
 	int	status;
-
+	
 	waitpid((execution)->pid, &status, 0);
 	if (WIFEXITED(status))
 	{

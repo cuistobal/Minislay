@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:52:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:49:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_exec	*insert_execution_node(t_exec *head, t_exec *new)
 }
 
 //
-t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast)
+t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast, int *ccount)
 {
 	t_exec	*new;
 	t_exec	*head;
@@ -78,6 +78,7 @@ t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast)
 			return (free_execution_node(head), NULL);
 		head = insert_execution_node(head, new);
 		ast->tokens = save;
+		(*ccount)++;
 	}
 	return (head);
 }
