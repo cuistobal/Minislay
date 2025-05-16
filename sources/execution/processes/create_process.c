@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 16:20:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:35:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,45 +19,36 @@ int	execute_command_in_child(char **command, char **env)
 	{
 		free_array(command, 0);
 		free_array(env, 0);
-		return (GENERAL_ERROR);
+		exit(GENERAL_ERROR);
+	//	return(GENERAL_ERROR);
 	}
-	return (SUCCESS);
-}
-
-//
-static void restore_stds(int original_stds[2])
-{
-    dup2(original_stds[0], STDIN_FILENO);
-    dup2(original_stds[1], STDOUT_FILENO);
+	exit(SUCCESS);
+//	return (SUCCESS);
 }
 
 //Flag is triggered only if we're within a pipe
-int	create_child_process(t_shel *minishell, t_exec *execution)
+int	create_child_process(t_shel *minishell, t_exec **execution)
 {
-	int	status;
-	int	pipefd[2];
-    int original_stds[2];
+	char	**cmd;
+	char	**env;
+	int		status;
 
 	if (!minishell || !execution)
 		return (GENERAL_ERROR);
-	original_stds[0] = STDIN_FILENO;
-	original_stds[1] = STDOUT_FILENO;
-	if (pipe(pipefd) != 0)
-		return (error_message(PIPE_FAILED), GENERAL_ERROR);
-	handle_redirections(execution, original_stds);
-	execution->pid = fork();
-	if ((execution)->pid < 0)
+	(*execution)->pid = fork();
+	if ((*execution)->pid < 0)
 		return (error_message(FORK_FAILED), GENERAL_ERROR);
-	if ((execution)->pid == 0)
+	if ((*execution)->pid == 0)
 	{
-		if (handle_communication_in_child(&execution) == GENERAL_ERROR)
+		env = (*execution)->environ;
+		cmd = (*execution)->command;
+		if (handle_communication_in_child(execution) == GENERAL_ERROR)
 			exit(GENERAL_ERROR);
-		return (execute_command_in_child((execution)->command, (execution)->environ));
+		return (execute_command_in_child(cmd, env));
 	}
 	else
 	{
-		status = wait_module(execution);
-        restore_stds(original_stds);
+		status = wait_module(*execution);
 		return (status);
 	}
 }
