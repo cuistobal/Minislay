@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 18:01:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:14:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_communication_in_parent(t_exec **node)
 }
 
 //
-int	handle_redirections(t_exec **execution, t_exec *prev, int original_stds[2])
+int	handle_redirections(t_exec **execution, int original_stds[2])
 {
     original_stds[0] = dup(STDIN_FILENO);
     if (original_stds[0] == -1)
@@ -44,8 +44,6 @@ int	handle_redirections(t_exec **execution, t_exec *prev, int original_stds[2])
 		if (dup2((*execution)->redirections[INFILE], STDIN_FILENO) != 0)
 			return (GENERAL_ERROR);
 	}
-	else if (prev)
-		dup2((*execution)->redirections[INFILE], prev->redirections[OUTFILE]);
 	if ((*execution)->redirections[OUTFILE] != STDOUT_FILENO)
 	{
 		if (dup2((*execution)->redirections[OUTFILE], STDOUT_FILENO) != 0)

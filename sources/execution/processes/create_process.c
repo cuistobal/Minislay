@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 17:54:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:15:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,19 @@ static void restore_stds(int original_stds[2])
 }
 
 //Flag is triggered only if we're within a pipe
-int	create_child_process(t_shel *minishell, t_exec **execution, t_exec *prev)
+int	create_child_process(t_shel *minishell, t_exec **execution)
 {
 	int		status;
     int 	original_stds[2];
 
 	if (!minishell || !*execution)
 		return (GENERAL_ERROR);
+
 	original_stds[0] = STDIN_FILENO;
 	original_stds[1] = STDOUT_FILENO;
+
 	handle_redirections(execution, prev, original_stds);
+
 	(*execution)->pid = fork();
 	if ((*execution)->pid < 0)
 		return (error_message(FORK_FAILED), GENERAL_ERROR);
