@@ -1,0 +1,15 @@
+echo "J'aime les pommes" | wc -l
+ls -l && ((ls -la || fre -asa) && khk -ddd) > outfile.txt | grep pommes > result << "EOF" | | grep $VAR
+echo "coucou 'les loulous' je suis une $VAR"&&(ech"o" $VAR)>outfile.txt && ="abc" || var="$var"
+echo coucou >outfile outfile grep coucou wc -l
+>> outfile cat coucou les louslous bilous << EOF wc -l > file WWW cat echo weweeeeeweeeeeeee
+coucou outfile grep coucou wc -l
+echo coucou >outfile $PATH
+>> outfile echo weeeeeeeeee > outfile | wc && echo wlr
+(echo >test "jaime els pommes") && echo success
+cat test test test test test test test test test test test test test test test test test test test test | grep "pommes" | wc -l
+echo coucou les loulous | wc -l >outfile| ls | grep *.c|wc-l >>outfile
+abc='' && << $abc | wc -l
+abc="" && << $abc | wc -l
+abc='' && << '$abc' | wc -l
+abc="" && << "$abc" | wc -l
