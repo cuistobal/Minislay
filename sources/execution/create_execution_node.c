@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 14:12:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:15:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
 	redirections = NULL;
 	if (!minishell || !ast)
 		return (NULL);
-	node = prepare_for_exec(*minishell, ast, &redirections);
+	node = prepare_for_exec(minishell, ast, &redirections);
 	if (!node)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
 	esize = 1;

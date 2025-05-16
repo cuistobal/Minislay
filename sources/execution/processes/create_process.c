@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:58:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:20:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ int	create_child_process(t_shel *minishell, t_exec *execution)
 	int	pipefd[2];
     int original_stds[2];
 
+	if (!minishell || !execution)
+		return (GENERAL_ERROR);
+	original_stds[0] = STDIN_FILENO;
+	original_stds[1] = STDOUT_FILENO;
 	if (pipe(pipefd) != 0)
 		return (error_message(PIPE_FAILED), GENERAL_ERROR);
 	handle_redirections(execution, original_stds);

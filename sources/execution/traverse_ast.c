@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:57:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:13:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	execute_pipeline(t_shel **minishell, t_exec *execution)
 	while (current)
 	{
 		execute_branch(*minishell, current);
-		if (!current->next)
+		if (current->next)
 		{
 			dup2(original_stds[1], STDOUT_FILENO);
 			dup2(original_stds[0], STDIN_FILENO);
@@ -81,7 +81,11 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	else if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
 		handle_operators(minishell, ast);
 	else if (is_pipeline(ast->tokens))
-		execute_pipeline(minishell, handle_pipeline(minishell, ast));
+	{
+		node = handle_pipeline(minishell, ast);
+		execute_pipeline(minishell, node);
+		free_execution_node(node);
+	}
 	else
 	{
 		node = create_execution_node(minishell, ast);

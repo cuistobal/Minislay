@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:39:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:25:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	count = 0;
 	modify_token_types(expansions, redirections, &count);
 	copy = *expansions;
-	//Inserer la modification de count pour le globing
 	if (!expand(minishell, &copy, &count))
 		return (NULL);
 	if (!quote_removal(*expansions))
@@ -94,30 +93,19 @@ t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections)
 	expansions = NULL;
 	assignations = NULL;
 	if (!minishell || !ast)
-	{
-		printf("minishell || ast\n");
 		return (NULL);
-	}
-
 	if (!ast->tokens)
-	{
-		printf("ast->tokens\n");
 		return (NULL);
-	}
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
-	{
-		printf("Node\n");
 		return (NULL);
-	}
 	split_list(ast->tokens, &assignations, &expansions);
 	node->command = initialise_execution(*minishell, redirections, &expansions);
-
-	/*
-	 *	Do we treat basic assignations (ex: abc=def) ?
-	 *	If so, we need to handle their expansion && assignation here
-	 *
-	 */
-
+	node->environ = NULL;
+	node->next = NULL;
+	node->redirections[INFILE] = STDIN_FILENO;
+	node->redirections[OUTFILE] = STDOUT_FILENO;
+	if (pipe(node->pipe) != 0)
+		return (free_execution_node(node), NULL);
 	return (node);
 }
