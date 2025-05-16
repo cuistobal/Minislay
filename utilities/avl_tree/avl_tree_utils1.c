@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:11 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:42:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:02:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,12 @@ void	pre_order_display(t_avlt *root)
 //
 bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
 {
-	if (tree)
+	if (tree && tree->env)
 	{
 		if (tree->env->var[KEY])
 		{
 			if (strcmp(key, tree->env->var[KEY]) == 0)
-			{
-				*node = tree;
-				return (true);
-			}
+				return (*node = tree, true);
 			else
 			{
 				if (strcmp(key, tree->env->var[KEY]) < 0)

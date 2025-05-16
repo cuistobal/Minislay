@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:28:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:58:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 int	execute_command_in_child(char **command, char **env)
 {
 	if (execve(*command, command, env) != 0)
@@ -23,6 +24,7 @@ int	execute_command_in_child(char **command, char **env)
 	return (SUCCESS);
 }
 
+//
 static void restore_stds(int original_stds[2])
 {
     dup2(original_stds[0], STDIN_FILENO);
