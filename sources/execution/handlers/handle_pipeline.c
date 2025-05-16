@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:16:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:52:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,17 @@ t_exec	*insert_execution_node(t_exec *head, t_exec *new)
 {
 	t_exec	*current;
 
-	current = head;
 	if (!new)
 		return (NULL);
-	if (!head)
+	else if (!head)
 		return (new);
-	while (current->next)
-		current = current->next;
-	current->next = new;
+	else
+	{
+		current = head;
+		while (current->next)
+			current = current->next;
+		current->next = new;
+	}
 	return (head);
 }
 
@@ -56,23 +59,25 @@ t_exec	*handle_pipeline(t_shel **minishell, t_tree *ast)
 {
 	t_exec	*new;
 	t_exec	*head;
+	t_tokn	*save;
 	t_tokn	*modified;
 	t_tokn	*redirections;
 
 	new = NULL;
+	save = NULL;
 	head = NULL;
 	modified = NULL;
 	redirections = NULL;
 	while (ast->tokens)
 	{
 		modified = split_token_list_if(&ast->tokens, PIPE);
+		save = ast->tokens;
+		ast->tokens = modified;
 		new = prepare_for_exec(minishell, ast, &redirections);
 		if (!new)
-		{
-			free_execution_node(head);
-			return (NULL);
-		}
-		head = insert_execution_node(head, new);	
+			return (free_execution_node(head), NULL);
+		head = insert_execution_node(head, new);
+		ast->tokens = save;
 	}
 	return (head);
 }

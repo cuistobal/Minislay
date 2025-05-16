@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 15:30:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 15:52:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ static int  execute_branch(t_shel *minishell, t_exec *node)
 //
 
 
-
-/*
 t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 {
 	t_exec	*node;
 
 	node = NULL;
+/*
 	if (is_state_active(ast->tokens->type, PIPE))	
 		node = do_pipe(minishell, ast);
 
@@ -38,10 +37,9 @@ t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 		node = do_and();
 	else if (is_state_active(ast->tokens->type, LORR))	
 		node =do_or();
-
+*/
 	return (node);
 }
-*/
 
 //
 static bool	is_pipeline(t_tokn *list)
@@ -66,30 +64,27 @@ void	execute_pipeline(t_shel **minishell, t_exec *execution)
 	original_stds[0] = dup(STDOUT_FILENO);	
 	while (current)
 	{
+		execute_branch(*minishell, current);
 		if (!current->next)
 		{
-			execute_branch(*minishell, current);
-			dup2(STDOUT_FILENO, original_stds[1]);
-			dup2(STDIN_FILENO, original_stds[0]);
+			dup2(original_stds[1], STDOUT_FILENO);
+			dup2(original_stds[0], STDIN_FILENO);
 		}
-	}
-	
+		current = current->next;
+	}	
 }
 
 
 //
-void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
+void	traverse_ast(t_shel **minishell, t_tree *ast)
 {
 	t_exec      *node;
-    static int  original_std[2];
 
 	node = NULL;
 	if (!ast)
 		return ;
-/*	
-	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))	
+	else if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))	
 		node = handle_operators(minishell, ast);
-*/
 	else if (is_pipeline(ast->tokens))
 		execute_pipeline(minishell, handle_pipeline(minishell, ast));
 	else
@@ -98,16 +93,6 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 		execute_branch(*minishell, node);
 		free_execution_node(node);
 	}
-
-	traverse_ast(minishell, ast->left, code, pipe);
-	traverse_ast(minishell, ast->right, code, pipe);
-
-/*
-	while (node)
-	{
-		for (int i = 0; node->command[i]; i++)	
-			printf("%s\n", node->command[i]);
-		node = node->next;
-	}
-*/
+	traverse_ast(minishell, ast->left);
+	traverse_ast(minishell, ast->right);
 }
