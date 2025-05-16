@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 18:15:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:43:48 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	traverse_ast(t_shel **minishell, t_tree *ast)
 	else
 	{
 		node = create_execution_node(minishell, ast);
-		execute_branch(*minishell, &node, NULL);
+		execute_branch(*minishell, &node);
 		free_execution_node(node);
 	}
 	traverse_ast(minishell, ast->left);
