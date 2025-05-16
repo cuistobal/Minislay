@@ -12,15 +12,8 @@ bool	parse_assignment(t_tokn **current, t_pars *parser)
 // Argument → WORD
 bool	parse_argument(t_tokn **current, t_pars *parser)
 {
-	if ((*current) && (*current)->type & WORD)
-	{
-//		if (!valid_lexeme(*current, IRED, ARED | OPAR))
-//		{
-			if (is_state_active((*current)->type, EQUL))
-				unset_state(&(*current)->type, EQUL);
-			return (consume_token(current, parser));
-//		}
-	}
+    if ((*current) && (*current)->type & WORD)
+		return (consume_token(current, parser));
 	return (false);
 }
 

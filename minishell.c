@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 11:22:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:55:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	get_minishelled(t_shel **minishell, char *input)
 	 *	redirections and ssecond execute commands.
 	 *
  	 */
-
-	print_ast_DFS(ast, 0, "root", "root");
 
 	traverse_ast(minishell, ast, &code, &pipe);
 

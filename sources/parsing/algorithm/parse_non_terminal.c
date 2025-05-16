@@ -17,28 +17,30 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
+
 		if ((*current)->type & PIPE)	
 		{
-			if ((*current)->type != PIPE)
-			{
-				set_state(&parser->state, PIPELIN);
-				consume_token(current, parser);
-				if (*current)
-					return (parse_command(current, parser)); 	
-				printf("Invalid syntax, expected token after PIPE token.\n");		
-				return (false);
-			}
-			// Invalid syntax
-			return ((*current)->next);
-		}
-		//return (!((*current)->type & LAND) && !((*current)->type & LORR));
-    
-		return (!valid_lexeme(*current, IRED, ARED));
 
-		//return (true); //A retravailler -> previous version
+			set_state(&parser->state, PIPELIN);
+
+			consume_token(current, parser);
+			
+			if (*current)
+
+				return (parse_command(current, parser)); 
+			
+			printf("Invalid syntax, expected token after PIPE token.\n");	
+			
+			return (false);
+		
+		}
+
+        return (true); //A retravailler
 
 	}
+
 	return (!*current);
+
 }
 
 //We can return false -> It's the last sub funciton that aprse command goes
@@ -49,13 +51,10 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 	{
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
-		if (!((*current)->type & LAND) && !((*current)->type & LORR))
+		if (parse_command_list(current, parser))
 		{
-			if (parse_command_list(current, parser))
-			{
-				if ((*current) && (*current)->type & CPAR)
-					return (consume_token(current, parser));
-			}
+			if ((*current) && (*current)->type & CPAR)
+				return (consume_token(current, parser));
 		}
 	}
 	return (false);
