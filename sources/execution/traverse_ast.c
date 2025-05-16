@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 08:14:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 09:33:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,53 @@ void    restore_stds(int original_std[2])
 */
 
 //
-void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
+void	handle_operators(t_shel **minishell, t_tree *ast, t_exec **node)
 {
-	t_exec      *node;
-    static int  original_std[2];
+	if (is_state_active(ast->tokens->type, PIPE))
+		do_pipe(minishell, ast, node);
+/*
+	if (is_state_active(ast->tokens->type, PIPE | LAND | LORR))
 
-	node = NULL;
+	if (is_state_active(ast->tokens->type, PIPE | LAND | LORR))
+*/
+}
+
+//
+void	handle_simple_commands()
+{
+
+}
+
+//
+void	traverse_ast(t_shel **minishell, t_tree *ast, t_exec **node)
+{
+//    static int  original_std[2];
+	t_exec	*head;
+
 	if (!ast)
 		return ;
 
-	
+	//Are we dealing with an operator ?
+	if (is_state_active(ast->tokens->type, PIPE | LAND | LORR))
+		handle_operators(minishell, ast, node);
+	else
+	{
+		if (!*node)
+			*node = create_execution_node(minishell, ast);
+	//	else
+			//Execute the current block;
+	}
 
-
-	// PIPE ? 
-	// AND ?
-	// OR ?
+	*node ? printf("%s\n", *(*node)->command) : printf("NULL\n");
+/*	
+	//If not, are we dealing with a subshell ?
+	else if (is_state_active(ast->tokens->type, OPAR))
+		handle_subshell();
+	//Simple command
+	else
+		handle_simple_command();
+*/
+/*
 
 	if (is_amp_pipe(*ast->tokens->value))
 	{
@@ -95,11 +127,12 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 		if (*code == EXIT_STATUS)
 			return ;
 
-		/*	This function needs to be renamed	*/
+
 		set_error_code(minishell, *code);
-		/*										*/
+
 
 		free_execution_node(node);
 	}
 	traverse_ast(minishell, ast->right, code, pipe);
+*/
 }

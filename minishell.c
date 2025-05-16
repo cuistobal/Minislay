@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 16:49:52 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/16 08:38:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
 int	get_minishelled(t_shel **minishell, char *input)
 {
-	int		code;
-	int		pipe;
 	t_tree	*ast;
 	t_pars	*parser;
 	t_tokn	*tokens;
+	t_exec	*execution;
 
 	ast = NULL;
 	tokens = NULL;
-	parser = NULL;
+	parser = NULL;	
+	execution = NULL;
 	if (!input)
 		return (GENERAL_ERROR);
 	if (!tokenize(&tokens, input, strlen(input)))
@@ -47,10 +47,12 @@ int	get_minishelled(t_shel **minishell, char *input)
 	 *
  	 */
 
-	traverse_ast(minishell, ast, &code, &pipe);
+	traverse_ast(minishell, ast, &execution);
 
+/*
 	if (is_state_active(code, EXIT_STATUS))
 		return (free_tree(ast), EXIT_STATUS);
+*/
 	return (free_tree(ast), 0);
 }
 
