@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 10:32:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:13:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
+//
 t_exec	*prepare_for_exec(t_shel *minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;

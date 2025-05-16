@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:22:13 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/16 14:38:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,9 @@ int		wait_module(t_exec *execution, bool flag);
 int		handle_communication_in_child(t_exec **node, bool flag);
 int		handle_communication_in_parent(t_exec **node, bool flag);
 int		handle_redirections(t_exec *execution, int original_stds[2]);
+
+
+//handle_pipeline.c
+t_exec	*handle_pipeline(t_shel *minishell, t_tree *ast);
 
 #endif

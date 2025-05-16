@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 11:20:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:38:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,10 @@ static int  execute_branch(t_shel *minishell, t_exec *node, int ctype)
 }
 
 //
-t_exec	*do_pipe(t_shel **minishell, t_tree *ast)
-{
-	if (!ast->left && !ast->right)
-		return (create_execution_node(minishell, ast));	
-	else
-	{
-		do_pipe(minishell, ast->left);		
-		do_pipe(minishell, ast->right);
-	}
-/*
-	else if (ast->left && is_state_active(ast->left->tokens->type, PIPE))
-		return (do_pipe(minishell, ast->left));		
-	else if (ast->right && is_state_active(ast->right->tokens->type, PIPE))
-		return (do_pipe(minishell, ast->right));
-	return (NULL);
-*/
-}
 
-//
+
+
+/*
 t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 {
 	t_exec	*node;
@@ -52,13 +37,27 @@ t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 	node = NULL;
 	if (is_state_active(ast->tokens->type, PIPE))	
 		node = do_pipe(minishell, ast);
-/*
+
 	else if (is_state_active(ast->tokens->type, LAND))	
 		node = do_and();
 	else if (is_state_active(ast->tokens->type, LORR))	
 		node =do_or();
-*/
+
 	return (node);
+}
+*/
+
+//
+static bool	is_pipeline(t_tokn *list)
+{
+	while (list)
+	{
+		if (is_state_active(list->type, PIPE))
+			return (true);
+		else
+			list = list->next;
+	}
+	return (false);
 }
 
 //
@@ -70,24 +69,22 @@ void	traverse_ast(t_shel **minishell, t_tree *ast, int *code, int *pipe)
 	node = NULL;
 	if (!ast)
 		return ;
-
-	if (is_state_active(ast->tokens->type, PIPE | LAND | LORR))	
+/*	
+	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))	
 		node = handle_operators(minishell, ast);
-/*
-	else if (is_state_active(ast->tokens->type, OPAR))	
-		node = handle_subshell(*minishell, ast);
 */
+	else if (is_pipeline(ast->tokens))
+		node = handle_pipeline(minishell, ast);
 	else
 	{
 		node = create_execution_node(minishell, ast);
 		execute_branch(*minishell, node, 0);
 		free_execution_node(node);
-		return ;
 	}
 	while (node)
 	{
-		printf("%s\n", *node->command);
+		for (int i = 0; node->command[i]; i++)	
+			printf("%s\n", node->command[i]);
 		node = node->next;
 	}
-	//execute_command_line(node);
 }
