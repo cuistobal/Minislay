@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:19:54 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:18:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static bool	quote_removal(t_tokn *list)
 			removed = (char *)calloc(tlen, sizeof(char));
 			if (!removed)
 				return (false);
-			//memset(removed, 0, tlen);
 			quote_removal_helper(list->value, removed);
 			free(list->value);
 			list->value = removed;
@@ -106,7 +105,5 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 	node->redirections[INFILE] = STDIN_FILENO;
 	node->redirections[OUTFILE] = STDOUT_FILENO;
 	node->pid = -1;
-	if (pipe(node->pipe) != 0)
-		return (free_execution_node(node), NULL);
 	return (node);
 }

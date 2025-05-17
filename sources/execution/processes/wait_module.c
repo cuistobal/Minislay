@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 18:02:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:21:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	wait_module(t_exec *execution)
 	waitpid((execution)->pid, &status, 0);
 	if (WIFEXITED(status))
 	{
-		if (handle_communication_in_parent(&execution) == GENERAL_ERROR)
-			return (GENERAL_ERROR);
+//		if (handle_communication_in_parent(&execution) == GENERAL_ERROR)
+//			return (GENERAL_ERROR);
 		return (WEXITSTATUS(status));
 	}
 	return (GENERAL_ERROR);

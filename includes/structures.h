@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:10:26 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:18:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,6 @@ typedef struct env
 	struct  env *next;
 }   t_env;
 
-/*
-//AVL Tree's structuroe
-typedef struct	avltree
-{
-	int				height;
-	char			*data[2];
-	struct avltree	*left;
-	struct avltree	*right;
-}	t_avlt;
-*/
-
 //Tokens structure
 typedef struct tokens
 {
@@ -80,7 +69,6 @@ typedef struct parser
 typedef struct exec
 {
 	pid_t		pid;
-	int			pipe[2];
 	int			redirections[2];
 	char		**command;
 	char		**environ;

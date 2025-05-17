@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:16:28 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:21:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,13 @@ static void restore_stds(int original_stds[2])
 int	create_child_process(t_shell *minishell, t_exec **execution)
 {
 	int		status;
+	int		pipefd[2];
     int 	original_stds[2];
 
 	if (!minishell || !*execution)
+		return (GENERAL_ERROR);
+
+	if (pipe(pipefd) != 0)
 		return (GENERAL_ERROR);
 
 	original_stds[0] = STDIN_FILENO;
@@ -50,8 +54,8 @@ int	create_child_process(t_shell *minishell, t_exec **execution)
 		return (error_message(FORK_FAILED), GENERAL_ERROR);
 	if ((*execution)->pid == 0)
 	{
-		if (handle_communication_in_child(execution) == GENERAL_ERROR)
-			exit(GENERAL_ERROR);
+//		if (handle_communication_in_child(execution) == GENERAL_ERROR)
+//			exit(GENERAL_ERROR);
 		return (execute_command_in_child((*execution)->command, \
 					(*execution)->environ));
 	}
