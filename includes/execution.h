@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:06:22 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:57:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *ccount);
+t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast);
 
 #endif

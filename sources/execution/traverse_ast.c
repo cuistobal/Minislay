@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 16:56:50 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:57:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 //
 static int  execute_branch(t_shell *minishell, t_exec **node)
 {
+	int	pipefd[2];
+
 	if (is_builtin(*(*node)->command))
 		return (exec_builtin((*node)->command, (*node)->environ, minishell));
 	return (create_child_process(minishell, node));
@@ -34,6 +36,7 @@ t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 */
 	return (node);
 }
+
 //
 static bool	is_pipeline(t_tokn *list)
 {
@@ -48,7 +51,7 @@ static bool	is_pipeline(t_tokn *list)
 }
 
 //
-void	execute_pipeline(t_shell **minishell, t_exec *execution, int ccount)
+void	execute_pipeline(t_shell **minishell, t_exec *execution)
 {
 	t_exec	*current;
 	int		original_stds[2];
@@ -66,8 +69,10 @@ void	execute_pipeline(t_shell **minishell, t_exec *execution, int ccount)
 		execute_branch(*minishell, &current);
 		if (!current->next)
 		{
+/*
 			dup2(original_stds[0], STDIN_FILENO);
 			dup2(original_stds[1], STDOUT_FILENO);	
+*/
 		}
 		current = current->next;
 	}
@@ -82,9 +87,7 @@ void	execute_pipeline(t_shell **minishell, t_exec *execution, int ccount)
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	t_exec      *node;
-	int			ccount;
 
-	ccount = 0;
 	node = NULL;
 	if (!ast)
 		return ;
@@ -92,8 +95,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		handle_operators(minishell, ast);
 	else if (is_pipeline(ast->tokens))
 	{
-		node = handle_pipeline(minishell, ast, &ccount);
-		execute_pipeline(minishell, node, ccount);
+		node = handle_pipeline(minishell, ast);
+		execute_pipeline(minishell, node);
 		free_execution_node(node);
 	}
 	else

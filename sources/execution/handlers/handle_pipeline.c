@@ -6,13 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:27:55 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:59:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
+//This function splits the token list if the current node is a PIPE
 t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 {
 	t_tokn	*head;
@@ -54,8 +54,9 @@ t_exec	*insert_execution_node(t_exec *head, t_exec *new)
 	return (head);
 }
 
-//
-t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *ccount)
+//This function splits the current's branch token into a list of command 
+//separated by pipes.
+t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast)
 {
 	t_exec	*new;
 	t_exec	*head;
@@ -78,7 +79,6 @@ t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *ccount)
 			return (free_execution_node(head), NULL);
 		head = insert_execution_node(head, new);
 		ast->tokens = save;
-		(*ccount)++;
 	}
 	return (head);
 }
