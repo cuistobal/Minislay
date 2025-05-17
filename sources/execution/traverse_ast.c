@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/16 23:17:28 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static const void (*g_f[BCNT])(void) = {cd, echo, env, my_export, my_exit, pwd, 
 //
 void	execute_command(char **commands, char **env)
 {
-	char	*command;
+	/*char	*command;
 	char	**arguments;
 
 	command = *commands;
@@ -28,8 +28,13 @@ void	execute_command(char **commands, char **env)
 	pid_t	pid = fork();
 	if (pid == 0) {
 		exit(execve(command, arguments, env));
-	}
+	}*/
 
+	//leon
+	char *command = *commands;
+	execve(command, commands, env);
+	perror("minislay: execve");
+	exit(127);
 }
 
 //
@@ -229,6 +234,15 @@ void	insert_execution_token(t_queu *queue, t_exec *new)
 	/*}
 }*/
 
+bool	should_fork_builtin(t_tree *ast)
+{
+	if (!ast || !ast->tokens)
+		return (true);
+	if (ast->tokens->type & (PIPE | IRED | ORED | ARED | HDOC))
+		return (true);
+	return (false);
+}
+
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	char	**command;
@@ -261,7 +275,7 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 			error_message(INV_ENV);
 			return ;
 		}
-		if (is_builtin(*command) && !(ast->tokens->type & PIPE))
+		if (is_builtin(*command) && !should_fork_builtin(ast))
 		{
 			exec_builtin(command, env, *minishell);
 			free_array(command, csize);

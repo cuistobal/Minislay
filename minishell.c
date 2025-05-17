@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/16 22:24:19 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 }
 
 //
-int	mini_loop(t_shell **minishell)
+int	start_process(t_shell **minishell)
 {
     char	*user_input;
     while (1)
@@ -98,7 +98,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc == 1)
 	{
 		if (setup_minishell(&minishell, envp))
-			return (mini_loop(&minishell));
+			return (start_process(&minishell));
 	}
     return 0;
 	//return (error());
