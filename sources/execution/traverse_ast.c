@@ -20,6 +20,18 @@ static int  execute_branch(t_shell *minishell, t_exec **node)
 	return (create_child_process(minishell, node));
 }
 
+/*
+static int	do_and()
+{
+
+}
+
+static int	do_or()
+{
+
+}
+*/
+
 //
 t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 {
@@ -30,7 +42,7 @@ t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 	if (is_state_active(ast->tokens->type, LAND))	
 		node = do_and();
 	else if (is_state_active(ast->tokens->type, LORR))	
-		node =do_or();
+		node  = do_or();
 */
 	return (node);
 }
@@ -63,6 +75,7 @@ void	execute_pipeline(t_shell **minishell, t_exec *execution, int ccount)
 	//Create all child processes
 	while (current)
 	{
+
 		execute_branch(*minishell, &current);
 		if (!current->next)
 		{

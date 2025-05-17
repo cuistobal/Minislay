@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:16:28 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:36:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,15 @@ int	create_child_process(t_shell *minishell, t_exec **execution)
 	if (!minishell || !*execution)
 		return (GENERAL_ERROR);
 
-	original_stds[0] = STDIN_FILENO;
-	original_stds[1] = STDOUT_FILENO;
+
+	original_stds[0] = dup(STDIN_FILENO);
+	original_stds[1] = dup(STDOUT_FILENO);
 
 	handle_redirections(execution, original_stds);
+
+    if (pipe((*execution)->pipe) != 0)
+        return (GENERAL_ERROR);
+
 
 	(*execution)->pid = fork();
 	if ((*execution)->pid < 0)
