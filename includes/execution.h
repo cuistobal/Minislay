@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 18:57:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:36:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections);
 
 //traverse_ast.c
-void	execute_pipeline(t_shell **minishell, t_exec *execute, int ccount);
+void	execute_pipeline(t_shell **minishell, t_exec *execute);
 void	traverse_ast(t_shell **minishell, t_tree *ast);
 
 //subshells.c
@@ -88,5 +88,7 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 //handle_pipeline.c
 t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast);
+
+int	execute_pipelines(t_shell **minishell, t_exec *execution);
 
 #endif

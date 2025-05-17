@@ -70,6 +70,7 @@ SOURCES = \
 	sources/execution/redirections/handle_here_doc.c \
 	sources/execution/processes/create_process.c \
 	sources/execution/processes/ipc_module.c \
+	sources/execution/processes/execute_pipelines.c \
 	sources/execution/processes/wait_module.c \
 	sources/execution/handlers/handle_pipeline.c \
 	minishell.c \

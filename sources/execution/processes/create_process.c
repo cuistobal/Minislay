@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 18:44:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:30:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	setup_redirections_in_child(t_exec **node, int pipefd[2])
 		close((*node)->redirections[INFILE]);
 	}
 
-	/*
 	//if there is an out redirection
 	if ((*node)->redirections[OUTFILE] != STDOUT_FILENO)
 	{
@@ -51,16 +50,13 @@ static int	setup_redirections_in_child(t_exec **node, int pipefd[2])
 		close((*node)->redirections[OUTFILE]);
 	}
 	else if ((*node)->next)
-*/
-	if ((*node)->next)
 	{
 		//redirect command in pipe
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 			return (REDIRECTION_ERROR);
 		close(pipefd[1]);
 	}
-
-//	close(pipefd[0]);
+	close(pipefd[0]);
 	return (SUCCESS);
 }
 
