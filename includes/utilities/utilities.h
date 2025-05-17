@@ -6,11 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/15 09:55:38 by chrleroy         ###   ########.fr       */
->>>>>>> feat/pipe2
+/*   Updated: 2025/05/17 17:01:25 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +79,8 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
-<<<<<<< HEAD
-void	free_minishell(t_shell *minishell);	
-=======
-void	free_minishell(t_shel *minishell);	
+void	free_minishell(t_shell *minishell);
 void	free_execution_node(t_exec *execution);
->>>>>>> feat/pipe2
 
 //update_key_value.c
 int	update_key_value(t_shell *minishell, char *key, char *new_value);
@@ -117,6 +109,6 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
 bool	balance_tree(t_avlt **node, char *key, int len);
 
 //inline_utilities.c
-void	set_error_code(t_shel **minishell, int error_code);
+void	set_error_code(t_shell **minishell, int error_code);
 
 #endif
