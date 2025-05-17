@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:29:36 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:58:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
 //
 t_env	*build_environement(char **envp)
 {
-    t_env	*new;
     t_env	*tail;
     t_env	*head;
 
@@ -79,16 +78,17 @@ t_env	*build_environement(char **envp)
 	{	
 		if (!head)
 		{
-			new = create_env_node(strdup(*envp));
-			if (!new)
-				return (false);
+			head = create_env_node(strdup(*envp));
+			if (!head)
+				return (NULL);
 			tail = head;
 		}
 		else
 		{
-			new = create_env_node(strdup(*envp));
-			if (!new)
-				return (false);
+			tail->next = create_env_node(strdup(*envp));
+			if (!tail->next)
+				return (NULL);
+			tail = tail->next;
 		}
 		envp++;
 	}
