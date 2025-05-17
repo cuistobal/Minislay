@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 16:40:53 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:29:36 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ t_env	*build_environement(char **envp)
 	{	
 		if (!head)
 		{
-			new = create_env_node(&head, strdup(*envp));
+			new = create_env_node(strdup(*envp));
 			if (!new)
 				return (false);
 			tail = head;
 		}
 		else
 		{
-			new = create_env_node(&tail, strdup(*envp));
+			new = create_env_node(strdup(*envp));
 			if (!new)
 				return (false);
 		}
@@ -131,5 +131,5 @@ int	main(int argc, char **argv, char **envp)
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
-    return (mini_loop(&minishell, rl_prompt));
+    return (start_process(&minishell, rl_prompt));
 }

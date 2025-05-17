@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:10:01 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:17:05 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	build_rl_prompt(char *rl_prompt, char *tname);
 //bool 	build_env(t_shel *minishell, char **envp);
 //bool 	build_env(t_shell **minishell, char **envp);
 bool	append_specials(t_shell **minishell);
-t_env	*create_env_node(t_env **prev, char *value);
+t_env *create_env_node(char *line);
 
 bool    set_env(t_shell *minishell, char **envp);
 

@@ -6,11 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/16 15:15:15 by chrleroy         ###   ########.fr       */
->>>>>>> feat/pipe2
+/*   Updated: 2025/05/17 17:20:43 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +53,6 @@ void	free_tree(t_tree *ast)
 	}
 }
 
-<<<<<<< HEAD
-void	free_minishell(t_shell *minishell)
-=======
 //
 void	free_execution_node(t_exec *execution)
 {
@@ -92,8 +85,7 @@ void	free_execution_node(t_exec *execution)
 }
 
 //
-void	free_minishell(t_shel *minishell)
->>>>>>> feat/pipe2
+void	free_minishell(t_shell *minishell)
 {
 	int		index;
 	t_avlt	*branch;
