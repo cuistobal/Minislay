@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 09:09:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:18:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,6 @@ typedef struct env
 	char		*var[2];
 	struct  env *next;
 }   t_env;
-
-/*
-//AVL Tree's structuroe
-typedef struct	avltree
-{
-	int				height;
-	char			*data[2];
-	struct avltree	*left;
-	struct avltree	*right;
-}	t_avlt;
-*/
 
 //Tokens structure
 typedef struct tokens

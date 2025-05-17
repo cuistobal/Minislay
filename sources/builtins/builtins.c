@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/15 10:17:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 13:35:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int	exec_builtin(t_shel *minishell, t_exec *execution)
 		code = my_exit(minishell, execution);
 	temp = (minishell)->special[DEXTI];
 	(minishell)->special[DEXTI] = int_to_str(code);
-	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);
+//	printf("→ DEXTI value: %s at %p\n", temp, (void *)temp);
 	return (code);
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 20:43:48 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/17 13:34:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ static int  execute_branch(t_shel *minishell, t_exec **node)
 	return (create_child_process(minishell, node));
 }
 
+/*
+static int	do_and()
+{
+
+}
+
+static int	do_or()
+{
+
+}
+*/
+
 //
 t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 {
@@ -30,7 +42,7 @@ t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 	if (is_state_active(ast->tokens->type, LAND))	
 		node = do_and();
 	else if (is_state_active(ast->tokens->type, LORR))	
-		node =do_or();
+		node  = do_or();
 */
 	return (node);
 }
@@ -64,6 +76,7 @@ void	execute_pipeline(t_shel **minishell, t_exec *execution, int ccount)
 	//Create all child processes
 	while (current)
 	{
+
 		execute_branch(*minishell, &current);
 		if (!current->next)
 		{
