@@ -6,17 +6,17 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 13:34:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:56:50 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static int  execute_branch(t_shel *minishell, t_exec **node)
+static int  execute_branch(t_shell *minishell, t_exec **node)
 {
 	if (is_builtin(*(*node)->command))
-		return (exec_builtin(minishell, *node));
+		return (exec_builtin((*node)->command, (*node)->environ, minishell));
 	return (create_child_process(minishell, node));
 }
 
@@ -33,7 +33,7 @@ static int	do_or()
 */
 
 //
-t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
+t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 {
 	t_exec	*node;
 
@@ -46,7 +46,6 @@ t_exec	*handle_operators(t_shel **minishell, t_tree *ast)
 */
 	return (node);
 }
-
 //
 static bool	is_pipeline(t_tokn *list)
 {
@@ -61,7 +60,7 @@ static bool	is_pipeline(t_tokn *list)
 }
 
 //
-void	execute_pipeline(t_shel **minishell, t_exec *execution, int ccount)
+void	execute_pipeline(t_shell **minishell, t_exec *execution, int ccount)
 {
 	t_exec	*current;
 	int		original_stds[2];
@@ -93,7 +92,7 @@ void	execute_pipeline(t_shel **minishell, t_exec *execution, int ccount)
 
 
 //
-void	traverse_ast(t_shel **minishell, t_tree *ast)
+void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	t_exec      *node;
 	int			ccount;

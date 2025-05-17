@@ -32,7 +32,7 @@ static void restore_stds(int original_stds[2])
 }
 
 //Flag is triggered only if we're within a pipe
-int	create_child_process(t_shel *minishell, t_exec **execution)
+int	create_child_process(t_shell *minishell, t_exec **execution)
 {
 	int		status;
     int 	original_stds[2];

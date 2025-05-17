@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_for_execution.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 16:27:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:19:54 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static bool	quote_removal(t_tokn *list)
 }
 
 //
-static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_tokn **expansions)
+static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_tokn **expansions)
 {
 	int		count;
 	t_tokn	*copy;
@@ -84,7 +84,7 @@ static char	**initialise_execution(t_shel *minishell, t_tokn **redirections, t_t
 }
 
 //
-t_exec	*prepare_for_exec(t_shel **minishell, t_tree *ast, t_tokn **redirections)
+t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;
 	t_tokn	*expansions;

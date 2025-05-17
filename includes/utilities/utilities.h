@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilities.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 09:55:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:18:17 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens);
 
 //env_node.c
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new);
-t_env	*create_env_node(t_env **prev, char *value);
 
 //ft_strjoin.c
 char	*ft_strjoin(const char *s1, const char *s2);
@@ -64,7 +63,7 @@ bool	move_env_pointer(t_env **pointer);
 bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 
 //find_key.c
-bool    find_key(t_shel *minishell, char **value, char *key);
+bool    find_key(t_shell *minishell, char **value, char *key);
 
 //get_merged.c
 bool	get_merged(char **merged, char **temp, char **expanded);
@@ -79,11 +78,11 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
-void	free_minishell(t_shel *minishell);	
+void	free_minishell(t_shell *minishell);
 void	free_execution_node(t_exec *execution);
 
 //update_key_value.c
-void	update_key_value(t_shel *minishel, char *key, char *new_value);
+int	update_key_value(t_shell *minishell, char *key, char *new_value);
 
 char	*ft_itoa(int num);
 
@@ -109,6 +108,6 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
 bool	balance_tree(t_avlt **node, char *key, int len);
 
 //inline_utilities.c
-void	set_error_code(t_shel **minishell, int error_code);
+void	set_error_code(t_shell **minishell, int error_code);
 
 #endif

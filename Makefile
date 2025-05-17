@@ -40,6 +40,8 @@ SOURCES = \
 	sources/builtins/env/env.c \
 	sources/builtins/exit/exit.c \
 	sources/builtins/pwd/pwd.c \
+	sources/builtins/export/export.c \
+	sources/builtins/unset/unset.c \
 	sources/builtins/builtins.c \
     sources/parsing/tokenization/handle_special_chars.c \
     sources/parsing/tokenization/create_tokens.c \

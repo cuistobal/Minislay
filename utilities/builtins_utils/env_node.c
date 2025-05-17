@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_node.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:14:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:41:54 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,38 @@ bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 	return (true);
 }
 
-//
-t_env	*create_env_node(t_env **prev, char *value)
+
+t_env	*create_env_node(char *line)
 {
 	t_env	*new;
+	char	*equal;
+	char	*key;
+	char	*value;
 
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
+	equal = strchr(line, '=');
+	if (!equal)
 		return (NULL);
-	new->var[KEY] = strtok_r(value, "=", &value);
+	*equal = '\0';
+	key = strdup(line);
+	value = strdup(equal + 1);
+	*equal = '=';
+
+	if (!key || !value)
+		return (free(key), free(value), NULL);
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (free(key), free(value), NULL);
+	new->var[KEY] = key;
 	new->var[VALUE] = value;
-	new->next = NULL;
+	new->next = NULL;/*
 	if (!*prev)
 		*prev = new;
 	else
 	{
 		(*prev)->next = new;
 		*prev = (*prev)->next;
-	}
+	}*/
 	return (new);
 }
+

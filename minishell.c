@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 16:06:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:58:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //Needs rename -> it's currently the entrey to lexing && parsing
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
-int	get_minishelled(t_shel **minishell, char *input)
+int	get_minishelled(t_shell **minishell, char *input)
 {
 	t_tree	*ast;
 	t_pars	*parser;
@@ -51,7 +51,7 @@ int	get_minishelled(t_shel **minishell, char *input)
 }
 
 //
-int	mini_loop(t_shel **minishell, char *terminal_name)
+int	start_process(t_shell **minishell, char *terminal_name)
 {
     int             retcode;
     char			*user_input;
@@ -70,7 +70,6 @@ int	mini_loop(t_shel **minishell, char *terminal_name)
 //
 t_env	*build_environement(char **envp)
 {
-    t_env	*new;
     t_env	*tail;
     t_env	*head;
 
@@ -79,16 +78,17 @@ t_env	*build_environement(char **envp)
 	{	
 		if (!head)
 		{
-			new = create_env_node(&head, strdup(*envp));
-			if (!new)
-				return (false);
+			head = create_env_node(strdup(*envp));
+			if (!head)
+				return (NULL);
 			tail = head;
 		}
 		else
 		{
-			new = create_env_node(&tail, strdup(*envp));
-			if (!new)
-				return (false);
+			tail->next = create_env_node(strdup(*envp));
+			if (!tail->next)
+				return (NULL);
+			tail = tail->next;
 		}
 		envp++;
 	}
@@ -96,7 +96,7 @@ t_env	*build_environement(char **envp)
 }
 
 //
-bool	build_env(t_shel **minishell, char **envp)
+bool	build_env(t_shell **minishell, char **envp)
 {
     int     index;
     t_env	*head;
@@ -121,15 +121,15 @@ bool	build_env(t_shel **minishell, char **envp)
 //
 int	main(int argc, char **argv, char **envp)
 {
-	t_shel	*minishell;
+	t_shell	*minishell;
     char	*user_input;
 	char	rl_prompt[BUFFER_SIZE];
 
-	minishell = (t_shel *)malloc(sizeof(t_shel));
+	minishell = (t_shell *)malloc(sizeof(t_shell));
 	if (!minishell)
 		return (GENERAL_ERROR);
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
-    return (mini_loop(&minishell, rl_prompt));
+    return (start_process(&minishell, rl_prompt));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 13:07:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:23:15 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define SUCCESS 0
 # define GENERAL_ERROR 1
+# define ERROR 1
 # define BUILTINS 2
 # define COMMAND_EXEC 126
 # define COMMAND_NOT_FOUND 127

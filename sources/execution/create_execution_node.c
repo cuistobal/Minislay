@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_execution_node.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 16:27:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:27:26 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static bool	join_env(char **joined, char *temp[2])
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
-static char	**rebuild_env(t_shel *minishell, int *size)
+static char	**rebuild_env(t_shell *minishell, int *size)
 {
 	int		index;
 	char	**env;
@@ -84,7 +84,7 @@ static char	**rebuild_env(t_shel *minishell, int *size)
 }
 
 //
-t_exec	*create_execution_node(t_shel **minishell, t_tree *ast)
+t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 {
 	int		esize;
 	int		csize;

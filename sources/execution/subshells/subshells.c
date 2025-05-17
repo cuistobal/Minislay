@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshells.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 13:25:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:17:39 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ static bool	prompt(char **prompt, t_tree *branch)
 	return (true);
 }
 
-//
-bool	handle_subshell(t_shel *minishell, t_tree *ast)
+bool	handle_subshell(t_shell *minishell, t_tree *ast)
 {
 	char	*subshell_command;
 

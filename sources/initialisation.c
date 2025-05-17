@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 08:17:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:57:06 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static const char *g_spec[DKCT] = {VSTR, VARO, VHAS, VEXT, VHYP, VPID, VCID, VNME, VLST, VIFS};
 
-//
 void	build_rl_prompt(char *rl_prompt, char *tname)
 {
 	int	index;
@@ -35,9 +34,8 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 	rl_prompt[++index] = ' ';
 	rl_prompt[++index] = 0;
 }
-
 //
-bool	append_specials(t_shel **minishell)
+bool	append_specials(t_shell **minishell)
 {
 	int		index;
 
@@ -54,8 +52,9 @@ bool	append_specials(t_shel **minishell)
 	return (true);
 }
 
+
 //
-bool	insert_env_in_avlt(t_shel *minishell)
+bool	insert_env_in_avlt(t_shell *minishell)
 {
 	t_env	*copy;
 	t_avlt	*root;
@@ -99,7 +98,7 @@ t_env	*build_environement(char **envp)
 }
 
 //
-bool	build_env(t_shel **minishell, char **envp)
+bool    set_env(t_shel **minishell, char **envp)
 {
     t_env	*head;
 	t_avlt	*root;

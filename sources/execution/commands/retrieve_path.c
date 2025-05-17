@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   retrieve_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:09:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:15:13 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static bool	try_path(char **command, char *path)
 }
 
 //We use this function to retrieve the PATH env variable.
-bool	retrieve_path(t_shel *minishell, char **command)
+bool	retrieve_path(t_shell *minishell, char **command)
 {
 	char	*path;
 
