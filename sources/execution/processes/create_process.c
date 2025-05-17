@@ -6,75 +6,55 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:16:28 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-/*bool	create_child_process(t_shel	*minishell, char **command, char **env)
+//
+int	execute_command_in_child(char **command, char **env)
 {
-	pid_t	pid;
-	int 	status;
-	int		pipefd[2];
-	printf("test :\n");
-
-	if (command)
+	if (execve(*command, command, env) < 0)
 	{
-		int i = 0;
-		printf("Contenu de command :\n");
-		while (command[i])
-		{
-			printf("command[%d] = %s\n", i, command[i]);
-			i++;
-		}
+		free_array(command, 0);
+		free_array(env, 0);
+		exit(GENERAL_ERROR);
 	}
-
-
-	if (pipe(pipefd) != 0)
-		return (error_message(PIPE_FAILED));
-	pid = fork();
-	if (pid < 0)
-		return (error_message(FORK_FAILED));
-	else if (pid == 0)
-		execute_command(command, env);
-	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			printf("%d\n", WEXITSTATUS(status));
-	}
+	exit(SUCCESS);
 }
-*/
-void	create_child_process(t_shell *minishell, char **command, char **env)
+
+//
+static void restore_stds(int original_stds[2])
 {
-	pid_t	pid;
+    dup2(original_stds[0], STDIN_FILENO);
+    dup2(original_stds[1], STDOUT_FILENO);
+}
+
+//Flag is triggered only if we're within a pipe
+int	create_child_process(t_shell *minishell, t_exec **execution)
+{
 	int		status;
-	char	*temp;
+    int 	original_stds[2];
 
-	pid = fork();
-	if (pid < 0)
+	if (!minishell || !*execution)
+		return (GENERAL_ERROR);
+
+	original_stds[0] = STDIN_FILENO;
+	original_stds[1] = STDOUT_FILENO;
+
+	handle_redirections(execution, original_stds);
+
+	(*execution)->pid = fork();
+	if ((*execution)->pid < 0)
+		return (error_message(FORK_FAILED), GENERAL_ERROR);
+	if ((*execution)->pid == 0)
 	{
-		error_message(FORK_FAILED);
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (is_builtin(command[0]))
-			exit(exec_builtin(command, minishell));
-		else
-			execute_command(command, env);
+		if (handle_communication_in_child(execution) == GENERAL_ERROR)
+			exit(GENERAL_ERROR);
+		return (execute_command_in_child((*execution)->command, \
+					(*execution)->environ));
 	}
 	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-		{
-			temp = minishell->special[DEXTI];
-			minishell->special[DEXTI] = ft_itoa(WEXITSTATUS(status));
-			free(temp);
-		}
-	}
+		return (wait_module(*execution), restore_stds(original_stds), status);
 }
-
-

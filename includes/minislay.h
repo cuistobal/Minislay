@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 22:24:19 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 14:10:01 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,19 @@
 # include "execution.h"
 #include "builtins.h"
 
-int	get_minishelled(t_shell **minishell, char *input);
-int	start_process(t_shell **minishell);
-//int	minishell(char *input);
-int	main(int argc, char **argv, char **envp);
-//int	main(void);
+//minnishell.c
+int		get_minishelled(t_shell **minishell, char *input);
+int		start_process(t_shell **minishell, char *terminal_name);
+int		main(int argc, char **argv, char **envp);
 
 //initialisation.c
-bool    set_env(t_shell **minishell, char **envp);
+bool	insert_env_in_avlt(t_shell *minishell);
+void	build_rl_prompt(char *rl_prompt, char *tname);
+//bool 	build_env(t_shel *minishell, char **envp);
+//bool 	build_env(t_shell **minishell, char **envp);
 bool	append_specials(t_shell **minishell);
+t_env	*create_env_node(t_env **prev, char *value);
+
+bool    set_env(t_shell *minishell, char **envp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/16 22:24:19 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:40:53 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ int	get_minishelled(t_shell **minishell, char *input)
 	ast = NULL;
 	tokens = NULL;
 	parser = NULL;
+	if (!input)
+		return (GENERAL_ERROR);
 	if (!tokenize(&tokens, input, strlen(input)))
-		return (printf(TOKENIZATION), free_tokens(tokens), -1);
+		return (printf(TOKENIZATION), free_tokens(tokens), GENERAL_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
-		return (printf("%s unmatched '('\n", SYNTAX), -1);
+		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
-		return (printf(PARSING), free_tokens(tokens), free_tree(ast), -1);
+		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
 	/*
  	 *
 	 *	I forgot an important point here ->	redirections are handled first, then
@@ -43,63 +45,91 @@ int	get_minishelled(t_shell **minishell, char *input)
 	 *
  	 */
 
-
 	traverse_ast(minishell, ast);
+
 	return (free_tree(ast), 0);
 }
 
 //
-int	start_process(t_shell **minishell)
+int	start_process(t_shell **minishell, char *terminal_name)
 {
-    char	*user_input;
+    int             retcode;
+    char			*user_input;
+
     while (1)
-	{
-        user_input = readline(MINISLAY);
-        if (user_input)
-        {
-            add_history(user_input);
-			get_minishelled(minishell,user_input);
-            free(user_input);
-        }
+    {
+        user_input = readline(terminal_name);
+        add_history(user_input);
+        retcode = get_minishelled(minishell,user_input);
+        free(user_input);
+        user_input = NULL;
     }
-    return 0;
+    return (retcode);
 }
 
 //
-static bool	setup_minishell(t_shell **minishell, char **envp)
+t_env	*build_environement(char **envp)
 {
-	*minishell = malloc(sizeof(t_shell));
-	if (!*minishell)
+    t_env	*new;
+    t_env	*tail;
+    t_env	*head;
+
+	head = NULL;
+	while (*envp)
+	{	
+		if (!head)
+		{
+			new = create_env_node(&head, strdup(*envp));
+			if (!new)
+				return (false);
+			tail = head;
+		}
+		else
+		{
+			new = create_env_node(&tail, strdup(*envp));
+			if (!new)
+				return (false);
+		}
+		envp++;
+	}
+	return (head);	
+}
+
+//
+bool	build_env(t_shell **minishell, char **envp)
+{
+    int     index;
+    t_env	*head;
+	t_avlt	*root;
+
+    index = 0;
+    if (!*minishell)
 		return (false);
-	(*minishell)->envp = NULL;
-	(*minishell)->local = NULL;
-	(*minishell)->command = NULL;
-	(*minishell)->expt = NULL;
-	if (!set_env(minishell, envp))
-	return (false);
-	if (!append_specials(minishell))
-		return (false);
-	return true;
+	root = NULL;
+	(*minishell)->envp = build_environement(envp);
+	head = (*minishell)->envp;
+	while (head)
+	{
+		insert_avlt_node(&root, head, strlen(head->var[KEY]));
+		head = head->next;
+	}
+	(*minishell)->expt = root;
+	append_specials(minishell);
+	return (true);
 }
 
 //
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*minishell;
+    char	*user_input;
+	char	rl_prompt[BUFFER_SIZE];
 
-	/*while (*envp)
-	{
-    	printf("%s\n", *envp);
-    	envp++;
-	}*/
-
-	(void)argv;
-	minishell = NULL;
-	if (argc == 1)
-	{
-		if (setup_minishell(&minishell, envp))
-			return (start_process(&minishell));
-	}
-    return 0;
-	//return (error());
+	minishell = (t_shell *)malloc(sizeof(t_shell));
+	if (!minishell)
+		return (GENERAL_ERROR);
+	if (!build_env(&minishell, envp))
+		return (GENERAL_ERROR);
+	build_rl_prompt(rl_prompt, argv[0]);
+    return (mini_loop(&minishell, rl_prompt));
 }

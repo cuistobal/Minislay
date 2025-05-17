@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_redirections.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/15 08:28:19 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 // Function to open an output file in append mode
@@ -68,7 +80,7 @@ static bool open_outfile(t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 			{
-				fd = open((*redirections)->value, O_WRONLY | O_CREAT | O_TRUNC);
+				fd = open((*redirections)->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				if (fd == -1)
 				{
 					printf("Unable to open %s\n", (*redirections)->value);

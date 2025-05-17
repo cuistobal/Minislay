@@ -4,7 +4,6 @@ static bool	ignore_nested_operators(t_tokn **current, t_pars *parser)
 {
 	if ((*current) && valid_lexeme(*current, LAND, LORR | OPAR))
 	{
-		//printf("%s	%s\n", __func__, (*current)->value);
 		if ((*current)->type & OPAR)
 		{
 			consume_token(current, parser);
@@ -12,8 +11,6 @@ static bool	ignore_nested_operators(t_tokn **current, t_pars *parser)
 		}
 		else
 		{
-		//	printf("%s	%s	%s\n", __func__, (*current)->value, parser->tab[TTCURR]->value);
-		//	printf("%d	%d\n", (*current)->type, LAND);
 			set_state(&parser->state, ROOTEDD);
 			return ((*current)->next);
 		}
@@ -21,33 +18,7 @@ static bool	ignore_nested_operators(t_tokn **current, t_pars *parser)
 	return (*current);
 }
 
-static void	handle_subshells(t_tokn **current, t_pars *parser)
-{
-	t_tokn	*temp;
-	t_tokn	*subshell;
-
-	temp = NULL;
-	subshell = NULL;
-	while ((*current) && (*current)->type & CPAR)
-	{
-		if ((*current)->next)
-		{
-			if (!((*current)->next->type & CPAR) && (*current)->next->type >= WORD)
-			{
-				subshell = create_token_node(strdup(SUBSHELL), LAND);
-				if (subshell)
-				{
-					temp = (*current)->next;
-					(*current)->next = subshell;
-					subshell->next = temp;
-				}
-			}
-		}
-		consume_token(current, parser);
-	}
-}
-
-//This function identifies command blocks that will later be the AST'S elements 
+//
 bool	parse_command_list(t_tokn **current, t_pars *parser)
 {
 	if (*current)
@@ -56,7 +27,8 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 		{
 			if (*current)
 			{
-				handle_subshells(current, parser);
+				while ((*current) && (*current)->type & CPAR)
+					consume_token(current, parser);
 				return (ignore_nested_operators(current, parser));
 			}
 		}

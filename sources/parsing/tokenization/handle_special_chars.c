@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/02/19 14:07:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:43:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*handle_logical_operators(const char *input, int *pos, int *type)
 }
 
 // Handle redirections: >>, <<, >, <
-static char	*handle_redirections(const char *input, int *pos, int *type)
+static char	*handle_redirection_tokens(const char *input, int *pos, int *type)
 {
 	char	*token;
 
@@ -93,7 +93,7 @@ char	*handle_special_chars(const char *input, int *pos, int *type)
     token = handle_logical_operators(input, pos, type);
     if (!token)
 	{
-    	token = handle_redirections(input, pos, type);
+    	token = handle_redirection_tokens(input, pos, type);
     	if (!token)
 			return (handle_single_identifier(input, pos, type));
 	}

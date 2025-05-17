@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/15 21:55:13 by ynyamets         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/14 17:14:43 by chrleroy         ###   ########.fr       */
+>>>>>>> feat/pipe2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +19,7 @@
 //
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 {
-	if (!new)
+	if (!new || !head)
 		return (false);
 	if (!*head)
 	{
@@ -31,11 +35,15 @@ bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 }
 
 //
+<<<<<<< HEAD
 #include "minislay.h"
 #include <string.h>
 #include <stdlib.h>
 
 t_env	*create_env_node(char *line)
+=======
+t_env	*create_env_node(t_env **prev, char *value)
+>>>>>>> feat/pipe2
 {
 	t_env	*new;
 	char	*equal;
@@ -59,6 +67,13 @@ t_env	*create_env_node(char *line)
 	new->var[KEY] = key;
 	new->var[VALUE] = value;
 	new->next = NULL;
+	if (!*prev)
+		*prev = new;
+	else
+	{
+		(*prev)->next = new;
+		*prev = (*prev)->next;
+	}
 	return (new);
 }
 

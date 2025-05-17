@@ -6,14 +6,16 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/15 09:55:38 by chrleroy         ###   ########.fr       */
+>>>>>>> feat/pipe2
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILITIES_H
 # define UTILITIES_H
-
-# include "avl_tree.h"
 
 //tokenizer_bools_1.c:
 bool	is_amp_pipe(char c);
@@ -55,7 +57,7 @@ bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens);
 
 //env_node.c
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new);
-t_env	*create_env_node(char *value);
+t_env	*create_env_node(t_env **prev, char *value);
 
 //ft_strjoin.c
 char	*ft_strjoin(const char *s1, const char *s2);
@@ -81,9 +83,40 @@ bool	error_message(char *message);
 //tests
 void	free_tree(t_tree *ast);
 void	free_array(char **array, int count);
+<<<<<<< HEAD
 void	free_minishell(t_shell *minishell);	
+=======
+void	free_minishell(t_shel *minishell);	
+void	free_execution_node(t_exec *execution);
+>>>>>>> feat/pipe2
 
 //update_key_value.c
 int	update_key_value(t_shell *minishell, char *key, char *new_value);
+
+char	*ft_itoa(int num);
+
+//
+typedef struct	avltree
+{
+	int				height;
+	struct env		*env;
+	struct avltree	*left;
+	struct avltree	*right;
+}	t_avlt;
+
+//avl_utils.c:
+int		height(t_avlt *node);
+int		my_max(const int a, const int b);
+void	pre_order_display(t_avlt *root);
+bool	create_avlt_node(t_avlt **new, t_env *node);
+bool	insert_avlt_node(t_avlt **node, t_env *env, int len);
+void	free_avlt_tree(t_avlt *root);
+bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
+
+//rotations.c:
+bool	balance_tree(t_avlt **node, char *key, int len);
+
+//inline_utilities.c
+void	set_error_code(t_shel **minishell, int error_code);
 
 #endif

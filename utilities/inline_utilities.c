@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   standard_streams.c                                 :+:      :+:    :+:   */
+/*   inline_utilities.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/27 11:07:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/27 11:10:12 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/05/15 09:50:45 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/15 09:55:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
-void	create_pipeline(int fd[2])
+//Updates the $? variable to the value of the last exit code.
+void	set_error_code(t_shel **minishell, int error_code)
 {
-	pipe(fd);
-}
-
-//
-void	redirect_std(int std, int fd)
-{
-	dup2(std, fd);
+	(*minishell)->special[DCIDI] = ft_itoa(error_code);
 }

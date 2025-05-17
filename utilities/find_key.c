@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/14 16:35:16 by chrleroy         ###   ########.fr       */
+>>>>>>> feat/pipe2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +22,12 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 	t_avlt	*node;
 
 	node = NULL;
-	if (tree)
-	{
-		find_element(tree, &node, key, *value);
-		if (node)
-		{
-			*value = node->env->var[VALUE];
-			return (true);
-		}
-	}
-	return (false);
+	if (!tree)
+		return (false);
+	find_element(tree, &node, key, *value);
+	if (node)
+		*value = node->env->var[VALUE];
+	return (true);
 }
 
 //
@@ -64,13 +64,19 @@ static bool	find_key_in_command(t_env *command, char **value, char *key)
 //return false;
 bool	find_key(t_shell *minishell, char **value, char *key)
 {
+	t_avlt	*root;
+	t_env	*head;
+
 	if (!minishell)
 		return (false);
-	if (find_key_in_avlt(minishell->expt, value, key))
+	root = minishell->expt;
+	if (find_key_in_avlt(root, value, key))
 		return (*value);
-	if (find_key_in_local(minishell->local, value, key))
+	head = minishell->local;
+	if (find_key_in_local(head, value, key))
 		return (*value);
-	if (find_key_in_command(minishell->command, value, key))
+	head = minishell->command;
+	if (find_key_in_command(head, value, key))
 		return (*value);
 	return (false);
 }

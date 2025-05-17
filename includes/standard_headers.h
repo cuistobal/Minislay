@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:22:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/23 16:20:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:30:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdint.h>
 # include <dirent.h>
 # include <stdbool.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>

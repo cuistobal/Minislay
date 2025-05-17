@@ -32,7 +32,9 @@ SOURCES = \
 	utilities/avl_tree/avl_tree_utils1.c \
 	utilities/avl_tree/avl_tree_utils2.c \
 	utilities/avl_tree/rotations.c \
-	sources/initialisation.c \
+	utilities/Libft/ft_itoa.c \
+	utilities/inline_utilities.c \
+	sources/initialisation.c\
 	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \
 	sources/builtins/env/env.c \
@@ -51,9 +53,10 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
 	sources/execution/split_list.c \
+	sources/execution/create_execution_node.c \
 	sources/execution/traverse_ast.c \
-	sources/execution/expansions/expand.c \
 	sources/execution/prepare_for_execution.c \
+	sources/execution/expansions/expand.c \
 	sources/execution/expansions/key_management.c \
 	sources/execution/expansions/word_splitting.c \
 	sources/execution/expansions/bonus/globing.c \
@@ -65,6 +68,10 @@ SOURCES = \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/redirections/handle_redirections.c \
 	sources/execution/redirections/handle_here_doc.c \
+	sources/execution/processes/create_process.c \
+	sources/execution/processes/ipc_module.c \
+	sources/execution/processes/wait_module.c \
+	sources/execution/handlers/handle_pipeline.c \
 	minishell.c \
     minitester/utils/minislays_test_utils.c
 
