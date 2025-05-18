@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:34:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:52:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,55 @@ void	free_tree_node(t_tree *node)
 	node = NULL;
 }
 */
+
+static void	open_heredocs(t_tokn **heredocs)
+{
+	t_tokn	*copy;
+
+	copy = *heredocs;	
+	while (copy)
+	{
+//open here_doc();
+		copy = copy->next;
+	}
+}
+
+static void	open_heredocsopen_all_redirections(t_tokn **heredocs, t_exec *node)
+{
+	int		index;
+	t_tokn	*htail;
+	t_tokn	*redirections;
+
+	index = 0;
+	htail = NULL;
+	while (node)
+	{
+		redirections = node->redirections[INFILE];
+		while (redirections)
+		{
+			if (redirections->type & HDOC)
+				insert_heredoc_in_list(heredocs, &htail, redirections);		
+			else
+			{
+					
+			}		
+		}
+		node = node->next;
+		index++;	
+	}
+}
+
 //
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	int			count;
 //	int			std[2];
 	t_exec      *node;
+	t_tokn		*heredocs;
 
 	count = 0;
 	node = NULL;
-
+	heredocs = NULL;
 	if (!ast)
 		return ;
 
@@ -86,7 +125,11 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	else	
 	{
 		node = build_command_node(minishell, ast, &count);
-		open_heredocs();	
+//Split redirections form heredocs
+//OPen all heredocs
+		open_all_redirections(node, &heredocs);		
+		open_heredocs(&heredocs);
+
 		execute_commands(minishell, node, &count);
 		free_execution_node(node);
 	}
