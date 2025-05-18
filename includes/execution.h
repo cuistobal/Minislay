@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 11:40:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:37:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count);
 
 int		execute_commands(t_shell **minishell, t_exec *execution, int *count);
+
+int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd);
 
 #endif

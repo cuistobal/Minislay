@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:35:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:27:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ static bool open_infile(t_tokn **redirections)
     return (!*redirections);
 }
 
-
-/*
 // Function to handle redirections
 bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
 {
@@ -151,4 +149,3 @@ bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
    	}
     return (true);
 }
-*/

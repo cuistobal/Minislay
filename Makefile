@@ -71,7 +71,8 @@ SOURCES = \
 	sources/execution/processes/inter_process_communications.c \
 	sources/execution/processes/execute_commands.c \
 	sources/execution/processes/wait_module.c \
-	sources/execution/processes/handle_pipeline.c \
+	sources/execution/processes/build_command_nodes.c \
+	sources/execution/processes/setup_redirections_in_child.c \
 	minishell.c \
     minitester/utils/minislays_test_utils.c
 

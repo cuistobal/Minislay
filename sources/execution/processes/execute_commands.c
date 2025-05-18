@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:05:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:36:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,6 @@ int	execute_command_in_child(char **command, char **envp)
 	return (SUCCESS);
 }
 
-//This function handles redirections
-static int	setup_redirections_in_child(int pipefd[][2], int command, int count)
-{
-
-	//test version
-	if (command > 0)
-	{
-		dup2(pipefd[command - 1][0], STDIN_FILENO);
-		close(pipefd[command - 1][1]);
-	}
-	if (command < count - 1)
-	{
-		dup2(pipefd[command][1], STDOUT_FILENO);
-        close(pipefd[command][0]);
-	}
-
-/*
-	//if there is an input redirection
-	if ((*node)->redirections[INFILE] != STDIN_FILENO)
-	{
-		if (dup2((*node)->redirections[INFILE], STDIN_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close((*node)->redirections[INFILE]);
-	}
-
-	//if there is an out redirection
-	if ((*node)->redirections[OUTFILE] != STDOUT_FILENO)
-	{
-		if (dup2((*node)->redirections[OUTFILE], STDOUT_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close((*node)->redirections[OUTFILE]);
-	}
-	else if ((*node)->next)
-	{
-		//redirect command in pipe
-		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close(pipefd[1]);
-	}
-	close(pipefd[0]);
-	return (SUCCESS);
-*/
-}
-
 //
 static void	close_unused_pipes(t_exec **node, int pipefd[2])
 {
@@ -78,7 +34,7 @@ static void	close_unused_pipes(t_exec **node, int pipefd[2])
 }
 
 //
-pid_t	create_and_execute_child(t_exec **node, int pipefd[][2], int index, int count)
+pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][2], int index)
 {
 	pid_t	child;
 
@@ -87,7 +43,7 @@ pid_t	create_and_execute_child(t_exec **node, int pipefd[][2], int index, int co
 		return (-1);
 	else if (child == 0)
 	{
-		setup_redirections_in_child(pipefd, index, count);
+		setup_redirections_in_child(minishell, node, pipefd, index);
 		execute_command_in_child((*node)->command, (*node)->environ);
 	}
 	return (child);
@@ -104,8 +60,6 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 
 	//Introduce the difference between pipelines and simple commands here
 
-
-
 	if (*count >= BUFFER_SIZE)
 		return printf("Malveillance max\n");
 
@@ -118,7 +72,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 			if (pipe(pipefd[index]) < 0)
 				return (GENERAL_ERROR);
 		}
-		pids[index] = create_and_execute_child(&current, pipefd, index, *count);
+		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
 		close_unused_pipes(&current, pipefd[index]);
@@ -126,5 +80,4 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 		index++;
 	}
 	return (wait_module(pids, *count));
-	//return (wait_module(node));
 }
