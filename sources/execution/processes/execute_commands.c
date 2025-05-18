@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:36:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:58:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ static void	close_unused_pipes(t_exec **node, int pipefd[2])
 	if (!(*node)->next)
 		return ;
 	close(pipefd[1]);
+/*
 	if ((*node)->redirections[INFILE] == STDIN_FILENO)
 		(*node)->redirections[INFILE] = pipefd[0];
+		*/
+	if ((*node)->redirections[INFILE])	
+		close(pipefd[0]);
 }
 
 //
@@ -57,12 +61,8 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 	pid_t	pids[BUFFER_SIZE];
 	int		pipefd[BUFFER_SIZE][2];
 
-
-	//Introduce the difference between pipelines and simple commands here
-
 	if (*count >= BUFFER_SIZE)
 		return printf("Malveillance max\n");
-
 	index = 0;
 	current = node;
 	while (current)

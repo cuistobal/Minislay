@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:27:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:52:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static bool open_outfile_append(t_tokn **redirections)
 				if (fd == -1)
 					return (printf("Unable to open %s\n", (*redirections)->value), false);
 				(*redirections)->type = fd; 
+				if ((*redirections)->next)
+					close((*redirections)->type);
         		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
@@ -82,11 +84,10 @@ static bool open_outfile(t_tokn **redirections)
 			{
 				fd = open((*redirections)->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				if (fd == -1)
-				{
-					printf("Unable to open %s\n", (*redirections)->value);
-					return (false);
-				}
+					return (printf("Unable to open %s\n", (*redirections)->value), false);
 				(*redirections)->type = fd; 
+				if ((*redirections)->next)
+					close((*redirections)->type);
         		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax
@@ -111,11 +112,10 @@ static bool open_infile(t_tokn **redirections)
 			{
 				fd = open((*redirections)->value, O_RDONLY);
 				if (fd == -1)
-				{
-					printf("Unable to open %s\n", (*redirections)->value);
-					return (false);
-				}
+					return (printf("Unable to open %s\n", (*redirections)->value), false);
 				(*redirections)->type = fd; 
+				if ((*redirections)->next)
+					close((*redirections)->type);
         		return (move_pointer(redirections));
 			}
 			//Error message -> Ambiguous syntax

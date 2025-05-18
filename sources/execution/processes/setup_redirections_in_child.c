@@ -6,11 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:37:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:49:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+
+// Il faut gerer les here_doc en amont
 
 //
 int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd)
