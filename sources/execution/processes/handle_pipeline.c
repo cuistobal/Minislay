@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 10:38:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:41:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_exec	*insert_execution_node(t_exec *head, t_exec *new)
 
 //This function splits the current's branch token into a list of command 
 //separated by pipes.
-t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *count)
+t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count)
 {
 	t_exec	*new;
 	t_exec	*head;

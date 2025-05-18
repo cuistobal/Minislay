@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 10:38:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:37:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		handle_operators(minishell, ast);
 	else	
 	{
-		node = handle_pipeline(minishell, ast, &count);
-		execute_pipelines(minishell, node, &count);
+		node = build_command_node(minishell, ast, &count);
+		execute_commands(minishell, node, &count);
 		free_execution_node(node);
 	}
 

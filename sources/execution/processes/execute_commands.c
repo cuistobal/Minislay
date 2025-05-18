@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 10:41:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:39:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,21 @@ pid_t	create_and_execute_child(t_exec **node, int pipefd[][2], int index, int co
 }
 
 //
-int	execute_pipelines(t_shell **minishell, t_exec *node, int *count)
+int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 {
 	int		index;
 	t_exec	*current;
 	pid_t	pids[BUFFER_SIZE];
 	int		pipefd[BUFFER_SIZE][2];
 
+
+	//Introduce the difference between pipelines and simple commands here
+
+
+
 	if (*count >= BUFFER_SIZE)
 		return printf("Malveillance max\n");
-//	else if (*count == 1)
-		
+
 	index = 0;
 	current = node;
 	while (current)

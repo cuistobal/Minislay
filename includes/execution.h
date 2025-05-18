@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:08:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:40:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *count);
+t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count);
 
-int		execute_pipelines(t_shell **minishell, t_exec *execution, int *count);
+int		execute_commands(t_shell **minishell, t_exec *execution, int *count);
 
 #endif
