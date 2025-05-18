@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:46:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:11:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,14 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 
 	count = 0;
 	modify_token_types(expansions, redirections, &count);
+	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
 	copy = *expansions;
 	if (!expand(minishell, &copy, &count))
 		return (NULL);
 	if (!quote_removal(*expansions))
 		return (NULL);
 	handle_redirection_list(minishell, redirections);
+	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
@@ -92,31 +94,20 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 
 	expansions = NULL;
 	assignations = NULL;
-
 	if (!minishell || !ast || !ast->tokens)
 		return (NULL);
-
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
 
-	initialise_execution(*minishell, redirections, &expansions);
-
-//	split_redirections(*redirections, &infile_redirections, &outfile_redirections);
-
 	node->command = initialise_execution(*minishell, redirections, &expansions);
 
+	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
+
 	node->environ = NULL;
-
 	node->redirections[HERE_DOC] = *redirections;
-//	node->redirections[INFILE] = infile_redirections;
-//	node->redirections[OUTFILE] = outfile_redirections;
-
 	node->redirections[INFILE] = NULL;
 	node->redirections[OUTFILE] = NULL;
-
-	print_tokens(*redirections);
 	node->next = NULL;
-
 	return (node);
 }

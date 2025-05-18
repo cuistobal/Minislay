@@ -1,4 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   modify_token_types.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/18 17:08:24 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
+
+
+// gros probleme avec ce fichier
 
 //A retravailler
 static void	append_redirections(t_tokn **head, t_tokn **tail, t_tokn **current)
@@ -35,6 +50,7 @@ static void	append_token_type(t_tokn **expanded, t_tokn **current, t_tokn **prev
 //
 void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 {
+	t_tokn	*rtail;
 	t_tokn	*current;
 	t_tokn	*previous;
 	t_tokn	*redir_list;

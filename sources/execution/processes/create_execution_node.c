@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:44:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:58:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,11 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 	node = prepare_for_exec(minishell, ast, &redirections);
 	if (!node)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
+	redirections ? print_tokens(redirections) : printf("%s\n", __func__);
 	esize = 1;
 	node->environ = rebuild_env(*minishell, &esize);
 	if (!node->environ)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-	print_tokens(redirections);
 //	node->redirections[HERE_DOC] = redirections;
 //	node->redirections[HERE_DOC] = NULL;
 //	node->redirections[INFILE] = NULL;

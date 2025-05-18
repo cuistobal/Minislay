@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:39:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:10:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,12 @@ bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
 	t_tokn	*redirections;
 
 	redirections = *list;
+	print_tokens(redirections);
+/*
    	while (redirections)
    	{
-	//	open_file(&redirections);
-		///*
+//		open_file(&redirections);
+		
        	if (!valid_lexeme(redirections, IRED, ARED))
 			return (printf("Error: Unexpected token %s\n", redirections->value), false);
 		if (redirections->type == IRED)
@@ -193,7 +195,8 @@ bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
 		else if (redirections->type == HDOC)
 			open_here_doc(minishell, &redirections);
        	move_pointer(&redirections);
-		//*/
+
    	}
+*/
     return (true);
 }

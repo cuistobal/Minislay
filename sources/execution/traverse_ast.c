@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:42:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:56:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *min
 	print_tokens(save);
 	while (current)
 	{
-		//redirections = node->redirections[INFILE];
+		redirections = (*node)->redirections[HERE_DOC];
 		//redirections = redir;
 		while (redirections)
 		{
@@ -132,8 +132,9 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	else	
 	{
 		node = build_command_node(minishell, ast, &count);
-//Split redirections form heredocs
-//OPen all heredocs
+		//Split redirections form heredocs
+		//OPen all heredocs
+		//
 		open_all_redirections(&heredocs, &node, *minishell);		
 		open_heredocs(&heredocs);
 
