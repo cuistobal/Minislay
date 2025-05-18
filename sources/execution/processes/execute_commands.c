@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:58:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 13:09:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][
 	else if (child == 0)
 	{
 		setup_redirections_in_child(minishell, node, pipefd, index);
+		if (is_builtin(*(*node)->command))
+			exec_builtin((*node)->command, (*node)->environ, *minishell);	
 		execute_command_in_child((*node)->command, (*node)->environ);
 	}
 	return (child);
@@ -67,12 +69,17 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 	current = node;
 	while (current)
 	{
+/*
 		if (current->next)
 		{
 			if (pipe(pipefd[index]) < 0)
 				return (GENERAL_ERROR);
 		}
-		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
+*/
+		if (current->next && pipe(pipefd[index]) < 0)
+			return (GENERAL_ERROR);
+		if (!is_builtin(*current->command))
+			pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
 		close_unused_pipes(&current, pipefd[index]);

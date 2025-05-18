@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/17 17:26:01 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/18 13:05:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	free_env(char **env)
 	env = NULL;
 }
 
+//Il faut passser en t_shell **minishell pour que les modfis soient permanentes
 int	exec_builtin(char **argv, char **envp, t_shell *minishell)
 {
 	int		code;
