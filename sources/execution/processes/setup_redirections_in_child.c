@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:33:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:41:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	append_heredoc_queue(t_tokn **head, t_tokn **tail, t_tokn *new)
 		*tail = (*tail)->next;
 	}
 }
-//
+
+/*
 static bool	redirections_queue(t_shell *minishell, t_tokn **list, t_tokn **heredocs, int redir[])
 {
 	t_tokn	*tail;
@@ -58,14 +59,17 @@ static bool	redirections_queue(t_shell *minishell, t_tokn **list, t_tokn **hered
 	if (tail)
 		tail->next = NULL;
 }
+*/
 //
-int	setup_redirections_in_child(t_shell *minishell, t_exec **node, int pipe[][2], int cmd)
+int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd)
 {
 	int		redir[2];	
 	t_tokn	*heredocs;
 
+/*
 	if (!redirections_queue(minishell, (*node)->redirections, &heredocs, redir))
 		return (GENERAL_ERROR);
+*/
 	if (cmd > 0)
 	{
 		dup2(pipe[cmd - 1][0], STDIN_FILENO);

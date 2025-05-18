@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_pipeline.c                                  :+:      :+:    :+:   */
+/*   build_command_nodes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 11:41:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:31:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,11 @@ t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count)
 	t_exec	*head;
 	t_tokn	*save;
 	t_tokn	*modified;
-	t_tokn	*redirections;
 
 	new = NULL;
 	save = NULL;
 	head = NULL;
 	modified = NULL;
-	redirections = NULL;
 	while (ast->tokens)
 	{
 		modified = split_token_list_if(&ast->tokens, PIPE);

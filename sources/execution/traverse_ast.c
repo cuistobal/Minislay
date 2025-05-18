@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:52:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:42:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,27 +78,38 @@ static void	open_heredocs(t_tokn **heredocs)
 	}
 }
 
-static void	open_heredocsopen_all_redirections(t_tokn **heredocs, t_exec *node)
+
+
+static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *minishell)
 {
 	int		index;
+	t_tokn	*save;
 	t_tokn	*htail;
+	t_exec	*current;
 	t_tokn	*redirections;
 
 	index = 0;
 	htail = NULL;
-	while (node)
+	current = *node;
+	save = current->redirections[HERE_DOC];
+	print_tokens(save);
+	while (current)
 	{
-		redirections = node->redirections[INFILE];
+		//redirections = node->redirections[INFILE];
+		//redirections = redir;
 		while (redirections)
 		{
 			if (redirections->type & HDOC)
 				insert_heredoc_in_list(heredocs, &htail, redirections);		
-			else
-			{
-					
-			}		
+			else if (redirections->type & IRED)
+				open_infile(&redirections);
+			else if (redirections->type & ORED)
+				open_outfile(&redirections);
+			else if (redirections->type & ARED)
+				open_outfile_append(&redirections);
+
 		}
-		node = node->next;
+		current = current->next;
 		index++;	
 	}
 }
@@ -107,7 +118,6 @@ static void	open_heredocsopen_all_redirections(t_tokn **heredocs, t_exec *node)
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	int			count;
-//	int			std[2];
 	t_exec      *node;
 	t_tokn		*heredocs;
 
@@ -117,9 +127,6 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	if (!ast)
 		return ;
 
-//	std[0] = dup(STDIN_FILENO);
-//	std[1] = dup(STDOUT_FILENO);
-
 	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
 		handle_operators(minishell, ast);
 	else	
@@ -127,15 +134,12 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		node = build_command_node(minishell, ast, &count);
 //Split redirections form heredocs
 //OPen all heredocs
-		open_all_redirections(node, &heredocs);		
+		open_all_redirections(&heredocs, &node, *minishell);		
 		open_heredocs(&heredocs);
 
 		execute_commands(minishell, node, &count);
 		free_execution_node(node);
 	}
-
-//	dup2(std[0], STDIN_FILENO);
-//	dup2(std[1], STDOUT_FILENO);
 
 	traverse_ast(minishell, ast->left);
 	traverse_ast(minishell, ast->right);

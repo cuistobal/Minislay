@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_here_doc.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/18 16:14:55 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/18 16:18:31 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //
@@ -112,4 +124,23 @@ bool	handle_here_doc(t_shell *minishell, t_tokn **redirections)
 		}
 	}
 	return (printf("Unable to open heredoc with %s\n", (*redirections)->value), false);
+}
+
+//
+void	insert_heredoc_in_list(t_tokn **head, t_tokn **tail, t_tokn *current)
+{
+	if (!current)
+		return ;
+	if (!*head)
+	{
+		*head = current;
+		*tail = current->next;
+	}
+	else
+	{
+		(*tail)->next = current;
+		//*tail = (*tail)->next;
+		move_pointer(tail);
+		move_pointer(tail);
+	}
 }

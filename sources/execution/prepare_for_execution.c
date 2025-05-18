@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 15:39:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:46:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 		return (NULL);
 	if (!quote_removal(*expansions))
 		return (NULL);
-	//handle_redirection_list(minishell, redirections);
+	handle_redirection_list(minishell, redirections);
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
@@ -89,13 +89,9 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 	t_exec	*node;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
-//	t_tokn	*infile_redirections;
-//	t_tokn	*outfile_redirections;
 
 	expansions = NULL;
 	assignations = NULL;
-//	infile_redirections = NULL;
-//	outfile_redirections = NULL;
 
 	if (!minishell || !ast || !ast->tokens)
 		return (NULL);
@@ -103,8 +99,6 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
-
-//	split_list(ast->tokens, &assignations, &expansions);
 
 	initialise_execution(*minishell, redirections, &expansions);
 
@@ -114,10 +108,14 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 
 	node->environ = NULL;
 
-	node->redirections[INFILE] = *redirections;
+	node->redirections[HERE_DOC] = *redirections;
 //	node->redirections[INFILE] = infile_redirections;
 //	node->redirections[OUTFILE] = outfile_redirections;
 
+	node->redirections[INFILE] = NULL;
+	node->redirections[OUTFILE] = NULL;
+
+	print_tokens(*redirections);
 	node->next = NULL;
 
 	return (node);

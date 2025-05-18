@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 14:59:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:39:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 // Function to open an output file in append mode
-static bool open_outfile_append(t_tokn **redirections)
+bool open_outfile_append(t_tokn **redirections)
 {
 	int	fd;
 
@@ -41,7 +41,7 @@ static bool open_outfile_append(t_tokn **redirections)
 }
 
 // Function to open a here-document
-static bool open_here_doc(t_shell *minishell, t_tokn **redirections)
+bool open_here_doc(t_shell *minishell, t_tokn **redirections)
 {
 	if (*redirections)
 	{
@@ -69,7 +69,7 @@ static bool open_here_doc(t_shell *minishell, t_tokn **redirections)
 }
 
 // Function to open an output file in overwrite mode
-static bool open_outfile(t_tokn **redirections)
+bool open_outfile(t_tokn **redirections)
 {
 	int	fd;
 
@@ -127,7 +127,7 @@ static bool open_infile(t_tokn **redirections)
 */
 
 // Function to open an input file
-static bool open_infile(t_tokn **redirections)
+bool open_infile(t_tokn **redirections)
 {
 	int	fd;
 
