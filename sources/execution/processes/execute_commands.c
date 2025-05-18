@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pipelines.c                                :+:      :+:    :+:   */
+/*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 11:39:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:05:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//This function handles redirections
+int	execute_command_in_child(char **command, char **envp)
+{
+	if (execve(*command, command, envp) < 0)
+	{
+		free_array(command, 0);
+		free_array(command, 0);
+		exit(GENERAL_ERROR);
+	}
+	return (SUCCESS);
+}
 
+//This function handles redirections
 static int	setup_redirections_in_child(int pipefd[][2], int command, int count)
 {
 

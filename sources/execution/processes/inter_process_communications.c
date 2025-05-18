@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ipc_module.c                                       :+:      :+:    :+:   */
+/*   inter_process_communications.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 18:19:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:01:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	handle_redirections(t_exec **execution, int original_stds[2])
 		return (GENERAL_ERROR);
 
 	//If we have a in redirection ->
-
+/*
 	if ((*execution)->redirections[INFILE] != STDIN_FILENO)
 	{
 		if (dup2((*execution)->redirections[INFILE], STDIN_FILENO) != 0)
@@ -72,4 +72,5 @@ int	handle_redirections(t_exec **execution, int original_stds[2])
 		close((*execution)->redirections[OUTFILE]);
 	}
 	return (SUCCESS);
+*/
 }
