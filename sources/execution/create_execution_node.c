@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:27:26 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:01:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,6 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 	node->environ = rebuild_env(*minishell, &esize);
 	if (!node->environ)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-	node->pid = -1;
-/*
-	if (pipe(node->pipe) != 0)
-		return (free_execution_node(node), NULL);
-*/
 	assign_redirections(&node, redirections);
 	return (node);
 }

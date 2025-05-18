@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 19:36:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:08:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		execute_command_in_child(char **command, char **env);
 int		create_child_process(t_shell *minishell, t_exec **execution);
 
 //wait_module.c
-int		wait_module(t_exec *execution);
+int		wait_module(pid_t *pids, int count);
 
 //ipc_module.c
 int		handle_communication_in_child(t_exec **node);
@@ -87,8 +87,8 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast);
+t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *count);
 
-int	execute_pipelines(t_shell **minishell, t_exec *execution);
+int		execute_pipelines(t_shell **minishell, t_exec *execution, int *count);
 
 #endif

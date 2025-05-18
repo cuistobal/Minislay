@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 18:18:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:01:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,5 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 	node->next = NULL;
 	node->redirections[INFILE] = STDIN_FILENO;
 	node->redirections[OUTFILE] = STDOUT_FILENO;
-	node->pid = -1;
 	return (node);
 }

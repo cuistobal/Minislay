@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:16:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 19:30:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:10:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,12 @@ static void	close_unused_pipes(t_exec **node, int pipefd[2])
 
 }
 
+
+/*
 //Flag is triggered only if we're within a pipe
 int	create_child_process(t_shell *minishell, t_exec **execution)
 {
+	pid_t	pid;
 	int		status;
 	int		pipefd[2];
     int 	original_stds[2];
@@ -91,10 +94,10 @@ int	create_child_process(t_shell *minishell, t_exec **execution)
 
 //	handle_redirections(execution, original_stds);
 
-	(*execution)->pid = fork();
-	if ((*execution)->pid < 0)
+	pid = fork();
+	if (pid < 0)
 		return (error_message(FORK_FAILED), GENERAL_ERROR);
-	if ((*execution)->pid == 0)
+	if (pid == 0)
 	{
 		setup_redirections_in_child(execution, pipefd);
 
@@ -111,3 +114,4 @@ int	create_child_process(t_shell *minishell, t_exec **execution)
 
 	restore_stds(original_stds);
 }
+*/
