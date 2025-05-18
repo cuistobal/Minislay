@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 08:16:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:38:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_exec	*handle_pipeline(t_shell **minishell, t_tree *ast, int *count)
 		modified = split_token_list_if(&ast->tokens, PIPE);
 		save = ast->tokens;
 		ast->tokens = modified;
-		new = prepare_for_exec(minishell, ast, &redirections);
+		new = create_execution_node(minishell, ast);
 		if (!new)
 			return (free_execution_node(head), NULL);
 		head = insert_execution_node(head, new);

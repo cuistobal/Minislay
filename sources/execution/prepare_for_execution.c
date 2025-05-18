@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:01:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:11:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,31 +78,51 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 		return (NULL);
 	if (!quote_removal(*expansions))
 		return (NULL);
-	handle_redirection_list(minishell, redirections);
+	//handle_redirection_list(minishell, redirections);
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
+/*
+static void	split_redirections(t_tokn *redirections, t_tokn **in, t_tokn **out)
+{
+
+}
+*/
 //
 t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
+	t_tokn	*infile_redirections;
+	t_tokn	*outfile_redirections;
 
 	expansions = NULL;
 	assignations = NULL;
-	if (!minishell || !ast)
+	infile_redirections = NULL;
+	outfile_redirections = NULL;
+
+	if (!minishell || !ast || !ast->tokens)
 		return (NULL);
-	if (!ast->tokens)
-		return (NULL);
+
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
+
 	split_list(ast->tokens, &assignations, &expansions);
+
+	initialise_execution(*minishell, redirections, &expansions);
+
+//	split_redirections(*redirections, &infile_redirections, &outfile_redirections);
+
 	node->command = initialise_execution(*minishell, redirections, &expansions);
+
 	node->environ = NULL;
+
+	node->redirections[INFILE] = infile_redirections;
+	node->redirections[OUTFILE] = outfile_redirections;
+
 	node->next = NULL;
-	node->redirections[INFILE] = STDIN_FILENO;
-	node->redirections[OUTFILE] = STDOUT_FILENO;
+
 	return (node);
 }

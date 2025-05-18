@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:00:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 09:30:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ typedef struct parser
 
 typedef struct exec
 {
-	int			redirections[2];
+//	int			redirections[2];
 	char		**command;
 	char		**environ;
+	t_tokn		*redirections[2];
 	struct exec	*next;
 }	t_exec;
 

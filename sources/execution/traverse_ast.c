@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:12:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:38:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,16 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	node = NULL;
 	if (!ast)
 		return ;
-
 	else if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
 		handle_operators(minishell, ast);
-
-	else if (is_pipeline(ast->tokens))
+	else	
 	{
 		node = handle_pipeline(minishell, ast, &count);
 		execute_pipelines(minishell, node, &count);
 		free_execution_node(node);
 	}
 
-/*
-	else
-	{
-		node = create_execution_node(minishell, ast);
-		execute_branch(*minishell, &node);
-		free_execution_node(node);
-	}
-*/
-
 	traverse_ast(minishell, ast->left);
 	traverse_ast(minishell, ast->right);
-
 //	free_tree_node(ast);
 }

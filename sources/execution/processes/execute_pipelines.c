@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:25:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:41:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ int	execute_pipelines(t_shell **minishell, t_exec *node, int *count)
 
 	if (*count >= BUFFER_SIZE)
 		return printf("Malveillance max\n");
-
+//	else if (*count == 1)
+		
 	index = 0;
 	current = node;
 	while (current)

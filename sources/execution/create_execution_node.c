@@ -6,36 +6,49 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 09:01:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:32:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
-static void	assign_redirections(t_exec **node, t_tokn *redirections)
+static void	modify_token_list(t_tokn **head, t_tokn **tail, t_tokn *new)
 {
-	t_tokn	*input;
-	t_tokn	*output;
+	if (!*head)
+	{
+		*head = new;
+		*tail = new->next;
+	}
+	else
+	{
+		(*tail)->next = new;
+		move_pointer(tail);
+		move_pointer(tail);
+	}
+}
+//
+static void	assign_redirections(t_tokn *redirections, t_tokn **infile, t_tokn **outfile)
+{
+	t_tokn	*temp;
+	t_tokn	*otail;
+	t_tokn	*itail;
 
-	input = NULL;
-	output = NULL;
+	itail = NULL;
+	otail = NULL;
 	while (redirections)
-	{	
+	{
+		temp = redirections;
 		if (*redirections->value == '<')
-			input = redirections;
+			modify_token_list(infile, &itail, temp);
 		else
-			output = redirections;
+			modify_token_list(outfile, &otail, temp);
+		move_pointer(&redirections);
 		move_pointer(&redirections);
 	}
-	if (input)
-		(*node)->redirections[CMD_INPUT] = input->type;
-	else
-		(*node)->redirections[CMD_INPUT] = STDIN_FILENO;
-	if (output)
-		(*node)->redirections[CMD_OUTPUT] = output->type;
-	else
-		(*node)->redirections[CMD_OUTPUT] = STDOUT_FILENO;
+	if (itail)
+		itail->next = NULL;
+	if (otail)
+		otail->next = NULL;
 }
 
 //
@@ -87,11 +100,14 @@ static char	**rebuild_env(t_shell *minishell, int *size)
 t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 {
 	int		esize;
-	int		csize;
 	t_exec	*node;
+	t_tokn	*infile;
+	t_tokn	*outfile;
 	t_tokn	*redirections;
 
 	node = NULL;
+	infile = NULL;
+	outfile = NULL;
 	redirections = NULL;
 	if (!minishell || !ast)
 		return (NULL);
@@ -102,6 +118,8 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 	node->environ = rebuild_env(*minishell, &esize);
 	if (!node->environ)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-	assign_redirections(&node, redirections);
+	assign_redirections(redirections, &infile, &outfile);
+	node->redirections[INFILE] = infile;
+	node->redirections[OUTFILE] = outfile;
 	return (node);
 }
