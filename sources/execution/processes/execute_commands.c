@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 14:16:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:33:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	execute_commands(t_shell **minishell, t_exec *node, int *count)
 */
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
-//		if (!is_builtin(*current->command))
 		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);

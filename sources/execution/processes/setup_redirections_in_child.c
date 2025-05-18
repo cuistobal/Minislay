@@ -6,65 +6,77 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:49:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/18 15:33:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-
-// Il faut gerer les here_doc en amont
-
-//
-int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd)
+static void	append_heredoc_queue(t_tokn **head, t_tokn **tail, t_tokn *new)
 {
-	if ((*node)->redirections[INFILE])
+	if (!new)
+		return ;
+	if (!*head)
 	{
-		handle_redirection_list(minishell, &(*node)->redirections[INFILE]);
+		*head = new;
+		*tail = new->next;
 	}
-	else if (cmd > 0)
-//		if (command > 0)
-		//&& !(*node)->redirections[INFILE])
+	else
+	{
+		(*tail)->next = new;
+		*tail = (*tail)->next;
+	}
+}
+//
+static bool	redirections_queue(t_shell *minishell, t_tokn **list, t_tokn **heredocs, int redir[])
+{
+	t_tokn	*tail;
+	t_tokn	*prev;
+	t_tokn	*current;
+
+	tail = NULL;
+	current = *list;
+	while (current)
+	{
+		prev = current;
+		move_pointer(&current);
+		if (!current)
+			return (printf("ERROR\n"), false);
+		if (is_state_active(prev->type, HDOC))
+			append_heredoc_queue(heredocs, &tail, current);
+
+//Open the file, we'll close it if its not the last one of its family 
+
+		else if (is_state_active(prev->type, IRED))
+	//		open()
+		else if (is_state_active(prev->type, ORED))
+	//		.
+		else if (is_state_active(prev->type, ARED))
+	//		.
+		move_pointer(&current);
+	}
+	if (tail)
+		tail->next = NULL;
+}
+//
+int	setup_redirections_in_child(t_shell *minishell, t_exec **node, int pipe[][2], int cmd)
+{
+	int		redir[2];	
+	t_tokn	*heredocs;
+
+	if (!redirections_queue(minishell, (*node)->redirections, &heredocs, redir))
+		return (GENERAL_ERROR);
+	if (cmd > 0)
 	{
 		dup2(pipe[cmd - 1][0], STDIN_FILENO);
 		close(pipe[cmd - 1][1]);
 	}
 
-
-	if ((*node)->redirections[OUTFILE])
-		handle_redirection_list(minishell, &(*node)->redirections[OUTFILE]);
 	else if ((*node)->next)
-//	if (command < count - 1)
 	{
 		dup2(pipe[cmd][1], STDOUT_FILENO);
         close(pipe[cmd][0]);
 	}
 
-/*
-	//if there is an input redirection
-	if ((*node)->redirections[INFILE] != STDIN_FILENO)
-	{
-		if (dup2((*node)->redirections[INFILE], STDIN_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close((*node)->redirections[INFILE]);
-	}
-
-	//if there is an out redirection
-	if ((*node)->redirections[OUTFILE] != STDOUT_FILENO)
-	{
-		if (dup2((*node)->redirections[OUTFILE], STDOUT_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close((*node)->redirections[OUTFILE]);
-	}
-	else if ((*node)->next)
-	{
-		//redirect command in pipe
-		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-			return (REDIRECTION_ERROR);
-		close(pipefd[1]);
-	}
-	close(pipefd[0]);
-*/
 	return (SUCCESS);
-
 }
