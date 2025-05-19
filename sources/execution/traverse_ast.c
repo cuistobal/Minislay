@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 16:01:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:05:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,11 @@ static void	initialise_execution(t_shell **minishell, t_tokn **tokens)
 	current = *tokens;
 	while (current)
 	{
+		if (valid_lexeme(current, IRED, ARED))
+			append_redirections()		
+		else if (is_state_active(current, EQUL))
+
+		else
 
 		current = current->next;
 	}
