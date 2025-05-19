@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:44:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:51:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,9 @@ static bool	join_env(char **joined, char *temp[2])
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
-static char	**rebuild_env(t_shell *minishell, int *size)
+static char	**rebuild_env(t_shell *minishell)
 {
+	int		size;
 	int		index;
 	char	**env;
 	char	*temp[2];
@@ -76,21 +77,21 @@ static char	**rebuild_env(t_shell *minishell, int *size)
 
 	index = 0;
 	current = minishell->envp;
-	env = (char **)malloc(sizeof(char *) * *size);
+	env = (char **)malloc(sizeof(char *) * size);
 	if (!env)
 		return (NULL);
-	reset_array(env, 0, *size);
+	reset_array(env, 0, size);
 	while (current)
 	{
 		reset_array(temp, 0, 2);
-		if (index == *size - 1)
-			env = (char **)resize_array(env, sizeof(char *), size);
+		if (index == size - 1)
+			env = (char **)resize_array(env, sizeof(char *), &size);
 		if (!env)
 			return (NULL);
 		temp[0] = current->var[0];
 		temp[1] = current->var[1];
 		if (!join_env(&env[index++], temp))
-			return (free_array(env, *size), NULL);
+			return (free_array(env, size), NULL);
 		current = current->next;
 	}
 	return (env);
@@ -99,24 +100,30 @@ static char	**rebuild_env(t_shell *minishell, int *size)
 //
 t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 {
-	int		esize;
 	t_exec	*node;
+	t_tokn	*arguments;
 	t_tokn	*redirections;
 
 	node = NULL;
+	arguments = NULL;
 	redirections = NULL;
 	if (!minishell || !ast)
 		return (NULL);
-	node = prepare_for_exec(minishell, ast, &redirections);
+	node = malloc(sizeof(t_exec));
+	//	prepare_for_exec(minishell, ast, &redirections);
 	if (!node)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-	esize = 1;
-	node->environ = rebuild_env(*minishell, &esize);
+
+
+
+	node->command = get_command_and_arguments(minishell, arguments);
+	if (!node->command)
+		return (free_execution_node(node), set_error_code(minishell, GENERAL_ERROR), NULL);
+	node->environ = rebuild_env(*minishell);
 	if (!node->environ)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-//	node->redirections[HERE_DOC] = redirections;
-//	node->redirections[HERE_DOC] = NULL;
-//	node->redirections[INFILE] = NULL;
-//	node->redirections[OUTFILE] = NULL;
+	node->redirections[HERE_DOC] = redirections;
+	node->redirections[INFILE] = NULL;
+	node->redirections[OUTFILE] = NULL;
 	return (node);
 }

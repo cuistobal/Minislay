@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 11:58:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:01:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	free_tree_node(t_tree *node)
 }
 */
 
+//
 static void	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 {
 	int	i;
@@ -111,20 +112,21 @@ static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
 }
 
 
-/*
+
 //Ouvrir toutes els redirections
 //Les loger dans le bon index
 //POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
-static void	open_all_redirections(t_tokn **heredocs, t_shell *minishell)
+static void	open_all_redirections(t_shell *minishell, t_tokn **heredocs, t_exec **node)
 {
 	int		index;
 	t_tokn	*save;
 	t_tokn	*htail;
+	t_exec	*current;
 	t_tokn	*redirections;
 
 	index = 0;
 	htail = NULL;
-	
+	current = *node;
 	while (current)
 	{
 		redirections = (*node)->redirections[HERE_DOC];
@@ -144,18 +146,89 @@ static void	open_all_redirections(t_tokn **heredocs, t_shell *minishell)
 	}
 	open_heredocs(minishell, node, heredocs);
 }
-*/
 
-//
-void	traverse_ast(t_shell **minishell, t_tree *ast)
+
+static void	handle_command_list(t_tokn **copy)
 {
-	int			count;
-	t_exec      *node;
-	t_tokn		*heredocs;
+	int		count;
+	t_exec	*node;
+	t_tokn	*copy;
+	t_tokn	*heredocs;
+	t_tokn	*redirections;
 
 	count = 0;
 	node = NULL;
 	heredocs = NULL;
+	redirections = NULL;
+
+	copy = ast->tokens;
+	modify_token_types(&copy, &redirections, &count);
+
+	print_tokens(ast->tokens);
+
+//		expand(*minishell, &ast->tokens, &count);
+	expand(*minishell, &copy, &count);
+	count = 0;
+	expand(*minishell, &redirections, &count);
+	print_tokens(ast->tokens);
+	open_all_redirections(*minishell, &heredocs, &node);
+
+	node = build_command_node(minishell, ast, &count);
+
+		//Split redirections form heredocs
+		//OPen all heredocs
+
+	//	open_all_redirections(&heredocs, &node, *minishell);
+
+	execute_commands(minishell, node, &count);
+	free_execution_node(node);
+}
+
+static void	find_redirections(t_exec **node, t_tokn **redirs, t_tokn **hd)
+{
+	t_exec	*copy;
+
+	copy = *node;	
+	while (copy)
+	{
+			
+
+		copy = copy->next;
+	}
+
+}
+
+static void	initialise_execution(t_shell **minishell, t_tokn **tokens)
+{
+	t_tokn	*current;
+	t_tokn	*arguments;
+	t_tokn	*assignations;
+	t_tokn	*redirections;
+
+	arguments = NULL;
+	assignations = NULL;
+	redirections = NULL;
+	current = *tokens;
+	while (current)
+	{
+
+		current = current->next;
+	}
+}
+
+//
+void	traverse_ast(t_shell **minishell, t_tree *ast)
+{
+	int		count;
+	t_exec	*node;
+	t_tokn	*copy;
+	t_tokn	*heredocs;
+	t_tokn	*redirections;
+
+	count = 0;
+	node = NULL;
+	heredocs = NULL;
+	redirections = NULL;
 	if (!ast)
 		return ;
 
@@ -163,21 +236,15 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		handle_operators(minishell, ast);
 	else	
 	{
-		print_tokens(ast->tokens);
-
-		expand(*minishell, &ast->tokens, &count);
-
-		print_tokens(ast->tokens);
-
-//		open_all_redirections(&heredocs, &node, *minishell);
-
+		initialise_execution(minishell, &ast->tokens);			
+		// Here, we create the execution lsit, regardless of the token types
 		node = build_command_node(minishell, ast, &count);
 
-		//Split redirections form heredocs
-		//OPen all heredocs
+		// Now we need to get the redirection lists && open them
+		find_redirections(&node, &redirection, &heredocs);
 
-	//	open_all_redirections(&heredocs, &node, *minishell);
 
+		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node, &count);
 		free_execution_node(node);
 	}

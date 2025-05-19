@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:47:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:19:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,8 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 		else
 			append_token_type(expanded, &current, &previous, count);
 	}
+	printf("%s\n", __func__);
+	print_tokens(*expanded);
+	print_tokens(*redirections);
+	printf("\n");
 }
