@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:36:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:46:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ static void	append_redirections(t_tokn **head, t_tokn **tail, t_tokn **current)
 {
 	if (*head)
 	{
+		*tail = *current;
+/*
 		(*tail)->next = *current;
 		move_pointer(tail);
+*/
 	}
 	else
 	{
@@ -64,15 +67,8 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 	previous = NULL;
 	current = *expanded;
 	rhead = *redirections;
-	int i =0;
-
-	*expanded ? print_tokens(*expanded) : printf("No expanded\n");
-
 	while (current)
 	{
-		printf("%d	->	", i);
-		print_tokens(current);
-		printf("\n");
 		if (valid_lexeme(current, IRED, ARED))
 		{
 			append_redirections(&rhead, &rtail, &current);
@@ -82,23 +78,6 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
 				*expanded = current;
 		}
 		else
-		{
-			/*
-			previous = current;
-			if (command)
-				set_state(&(*expanded)->type, ARGUMNT);
-			else
-			{
-				command = true;
-				set_state(&(*expanded)->type, COMMAND);
-			}
-			(*count)++;
-			move_pointer(&current);
-			*/
 			append_token_type(expanded, &current, &previous, count);
-		}
-		i++;
 	}
-	*redirections = rhead;
-	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
 }
