@@ -64,17 +64,20 @@ static bool expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 //Entry point of the expansion module
 bool    expand(t_shell *minishell, t_tokn **list, int *count)
 {
-	while (*list)
+	t_tokn	*copy;
+
+	copy = *list;
+	while (copy)
 	{
 	//	if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
-		if (((*list)->type & DOLL || (*list)->type & STAR))
+		if (((copy)->type & DOLL || (copy)->type & STAR))
 		{
-			if (!((*list)->type & DQTE) && (!expand_no_quotes(minishell, list, count)))
+			if (!((copy)->type & DQTE) && (!expand_no_quotes(minishell, &copy, count)))
 				return (false);
-			else if ((*list)->type & DQTE && !expand_in_quotes(minishell, list))
+			else if ((copy)->type & DQTE && !expand_in_quotes(minishell, &copy))
 				return (false);
 		}
-        move_pointer(list);
+        move_pointer(&copy);
     }
-    return (!*list);
+    return (!copy);
 }
