@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 10:12:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:27:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,20 @@ static void	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 		printf("Tu forces frere\n");
 }
 
-static void	open_heredocs(t_tokn **heredocs)
+static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
 {
+	t_exec	*head;
 	t_tokn	*copy;
 	char	name_buffer[BUFFER_SIZE];
 
+	head = *node;
 	copy = *heredocs;	
 	while (copy)
-	{
+	{	
+		//if is_last heredoc for current node && is_last redire_in for current node 
+		//	Use heredoc as input
+		//else
+		//	Unlink(heredoc) after appending content
 		set_heredoc_name(name_buffer, copy->next->value);
 		printf("%s ", name_buffer);
 		move_pointer(&copy);
@@ -134,11 +140,11 @@ static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *min
 				open_outfile(&redirections);
 			else if (redirections->type & ARED)
 				open_outfile_append(&redirections);
-
 		}
 		current = current->next;
 		index++;	
 	}
+	open_heredocs(minishell, node, heredocs);
 }
 
 //
@@ -164,8 +170,7 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		//Split redirections form heredocs
 		//OPen all heredocs
 
-		open_all_redirections(&heredocs, &node, *minishell);		
-		open_heredocs(&heredocs);
+		open_all_redirections(&heredocs, &node, *minishell);
 
 		execute_commands(minishell, node, &count);
 		free_execution_node(node);
