@@ -6,14 +6,15 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:26:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:50:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+/*
 // Function to open an output file in append mode
-bool open_outfile_append(t_tokn **redirections)
+bool	open_outfile_append(t_tokn **redirections)
 {
 	int	fd;
 
@@ -39,9 +40,35 @@ bool open_outfile_append(t_tokn **redirections)
 	}
     return (!*redirections);
 }
+*/
+
+// Function to open an output file in append mode
+bool	open_outfile_append(t_tokn **redirections)
+{
+	int	fd;
+
+	if (!*redirections)
+		return (false);
+    move_pointer(redirections);
+	if (!*redirections)
+		return (printf("Invalid redirection: no filename provided\n"), false);
+	else if ((*redirections)->next && is_state_active((*redirections)->next->type, WORD))
+		return(printf("Ambiguous syntax\n"), false);
+	else
+	{
+		fd = open((*redirections)->value, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (fd == -1)
+			return (printf("Unable to open %s\n", (*redirections)->value), false);
+		(*redirections)->type = fd; 
+		if ((*redirections)->next)
+			close((*redirections)->type);
+		return (move_pointer(redirections));
+	}
+}
+
 
 // Function to open a here-document
-bool open_here_doc(t_shell *minishell, t_tokn **redirections)
+bool	open_here_doc(t_shell *minishell, t_tokn **redirections)
 {
 	if (*redirections)
 	{
@@ -69,7 +96,7 @@ bool open_here_doc(t_shell *minishell, t_tokn **redirections)
 }
 
 // Function to open an output file in overwrite mode
-bool open_outfile(t_tokn **redirections)
+bool	open_outfile(t_tokn **redirections)
 {
 	int	fd;
 
@@ -127,7 +154,7 @@ static bool open_infile(t_tokn **redirections)
 */
 
 // Function to open an input file
-bool open_infile(t_tokn **redirections)
+bool	open_infile(t_tokn **redirections)
 {
 	int	fd;
 

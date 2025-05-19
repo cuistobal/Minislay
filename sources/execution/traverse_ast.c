@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 10:27:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:58:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,22 +111,20 @@ static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
 }
 
 
-//
+/*
 //Ouvrir toutes els redirections
 //Les loger dans le bon index
 //POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
-static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *minishell)
+static void	open_all_redirections(t_tokn **heredocs, t_shell *minishell)
 {
 	int		index;
 	t_tokn	*save;
 	t_tokn	*htail;
-	t_exec	*current;
 	t_tokn	*redirections;
 
 	index = 0;
 	htail = NULL;
-	current = *node;
-	save = current->redirections[HERE_DOC];
+	
 	while (current)
 	{
 		redirections = (*node)->redirections[HERE_DOC];
@@ -146,6 +144,7 @@ static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *min
 	}
 	open_heredocs(minishell, node, heredocs);
 }
+*/
 
 //
 void	traverse_ast(t_shell **minishell, t_tree *ast)
@@ -165,12 +164,19 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	else	
 	{
 		print_tokens(ast->tokens);
+
+		expand(*minishell, &ast->tokens, &count);
+
+		print_tokens(ast->tokens);
+
+//		open_all_redirections(&heredocs, &node, *minishell);
+
 		node = build_command_node(minishell, ast, &count);
 
 		//Split redirections form heredocs
 		//OPen all heredocs
 
-		open_all_redirections(&heredocs, &node, *minishell);
+	//	open_all_redirections(&heredocs, &node, *minishell);
 
 		execute_commands(minishell, node, &count);
 		free_execution_node(node);
