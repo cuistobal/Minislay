@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:56:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:32:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,12 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		handle_operators(minishell, ast);
 	else	
 	{
+		print_tokens(ast->tokens);
 		node = build_command_node(minishell, ast, &count);
+
 		//Split redirections form heredocs
 		//OPen all heredocs
-		//
+
 		open_all_redirections(&heredocs, &node, *minishell);		
 		open_heredocs(&heredocs);
 

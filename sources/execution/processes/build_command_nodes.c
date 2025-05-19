@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:31:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:15:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,15 @@ t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count)
 		modified = split_token_list_if(&ast->tokens, PIPE);
 		save = ast->tokens;
 		ast->tokens = modified;
+
+		//Jusqu ici tout va bien
+
 		new = create_execution_node(minishell, ast);
 		if (!new)
 			return (free_execution_node(head), NULL);
+
+		// et la je mange les tokens
+
 		head = insert_execution_node(head, new);
 		ast->tokens = save;
 		(*count)++;

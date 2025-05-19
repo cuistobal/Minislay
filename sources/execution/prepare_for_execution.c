@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 17:11:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:37:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,17 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 	t_tokn	*copy;
 
 	count = 0;
+
 	modify_token_types(expansions, redirections, &count);
-	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
+
 	copy = *expansions;
 	if (!expand(minishell, &copy, &count))
 		return (NULL);
 	if (!quote_removal(*expansions))
 		return (NULL);
+
 	handle_redirection_list(minishell, redirections);
-	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
+
 	return (get_command_and_arguments(minishell, *expansions, count));
 }
 
@@ -102,7 +104,7 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections
 
 	node->command = initialise_execution(*minishell, redirections, &expansions);
 
-	*redirections ? print_tokens(*redirections) : printf("%s\n", __func__);
+	print_tokens(expansions);
 
 	node->environ = NULL;
 	node->redirections[HERE_DOC] = *redirections;

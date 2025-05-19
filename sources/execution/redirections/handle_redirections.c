@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 17:10:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:26:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,6 @@ bool	handle_redirection_list(t_shell *minishell, t_tokn **list)
 	t_tokn	*redirections;
 
 	redirections = *list;
-	print_tokens(redirections);
 /*
    	while (redirections)
    	{
