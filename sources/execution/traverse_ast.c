@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:32:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:12:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,49 @@ void	free_tree_node(t_tree *node)
 }
 */
 
+static void	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
+{
+	int	i;
+	int	index;
+	int	limlen;
+	
+	i = 0;
+	memset(buffer, 0, BUFFER_SIZE);
+	index = strlen(HEREDOC);
+	strncpy(buffer, HEREDOC, index);
+	limlen = strlen(limiter);
+	strncpy(buffer + index, limiter, limlen);
+	index += limlen;
+	while (access(buffer, F_OK) == 0 && i < 10)
+	{
+		buffer[index + 1] = 47 + i;
+		i++;
+	}
+	if (i == 10)
+		printf("Tu forces frere\n");
+}
+
 static void	open_heredocs(t_tokn **heredocs)
 {
 	t_tokn	*copy;
+	char	name_buffer[BUFFER_SIZE];
 
 	copy = *heredocs;	
 	while (copy)
 	{
-//open here_doc();
-		copy = copy->next;
+		set_heredoc_name(name_buffer, copy->next->value);
+		printf("%s ", name_buffer);
+		move_pointer(&copy);
+		move_pointer(&copy);
 	}
+	printf("\n");
 }
 
 
-
+//
+//Ouvrir toutes els redirections
+//Les loger dans le bon index
+//POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
 static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *minishell)
 {
 	int		index;
@@ -92,11 +121,9 @@ static void	open_all_redirections(t_tokn **heredocs, t_exec **node, t_shell *min
 	htail = NULL;
 	current = *node;
 	save = current->redirections[HERE_DOC];
-	print_tokens(save);
 	while (current)
 	{
 		redirections = (*node)->redirections[HERE_DOC];
-		//redirections = redir;
 		while (redirections)
 		{
 			if (redirections->type & HDOC)

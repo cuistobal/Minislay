@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:46:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 09:47:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	append_redirections(t_tokn **head, t_tokn **tail, t_tokn **current)
 	}
 }
 
+//
 static void	append_token_type(t_tokn **expanded, t_tokn **current, t_tokn **previous, int *count)	
 {
 	*previous = *current;

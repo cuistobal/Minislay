@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 14:33:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:19:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	execute_command_in_child(char **command, char **envp)
 {
 	int	code;
 
+	if (!command || !*command || !env || !*env)
+		return (GENERAL_ERROR);
 	if (is_builtin(*command))
 	{
 		code = exec_builtin(command, envp, NULL);
