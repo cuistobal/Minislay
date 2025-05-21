@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 15:38:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:55:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,20 @@ static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 	temp = NULL;
 	value = NULL;
 	expanded = NULL;
-	if (line)
+	if (!line)
+		return (NULL);
+	if (!expansions)
+		expanded = strdup(line);
+	else
 	{
-		if (!expansions)
-			expanded = strdup(line);
-		else
+		index = 0;
+		while (line[index])
 		{
-			index = 0;
-			while (line[index])
-			{
-				if (!get_expanded(minishell, line, &value, &index))
-					return (NULL);
-				temp = expanded;
-				if (!get_merged(&expanded, &temp, &value))
-					return (NULL);
-			}
+			if (!get_expanded(minishell, line, &value, &index))
+				return (NULL);
+			temp = expanded;
+			if (!get_merged(&expanded, &temp, &value))
+				return (NULL);
 		}
 	}
 	return (expanded);
