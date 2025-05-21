@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:39:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 08:39:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:38:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ static bool check_key(char *key)
     return (!*key);
 }
 
+/*
 //Si assignation && commande -> assignation juste pour la commande
 //Sinon, assignation permanente dans l'environement || les variables locales.
 //
@@ -125,3 +126,4 @@ bool	handle_assignations(t_shell **minishell, t_tokn *token)
 	}
     return (false);
 }
+*/

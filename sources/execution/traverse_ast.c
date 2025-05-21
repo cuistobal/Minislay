@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 12:37:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:52:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,15 @@ static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 {
 	t_tokn	*copy;
+	t_tokn	*prev;
 	char	name_buffer[BUFFER_SIZE];
 
+	prev = NULL;
 	copy = *heredocs;	
 	while (copy)
-	{	
+	{
+		if (!copy->next)
+			return (GENERAL_ERROR);
 		//if is_last heredoc for current node && is_last redire_in for current node 
 		//	Use heredoc as input
 		//else
@@ -108,10 +112,9 @@ static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 			return (GENERAL_ERROR);
 		copy->value = name_buffer;
 		open_here_doc(minishell, &copy);
-/*
+		prev = copy;
 		move_pointer(&copy);
 		move_pointer(&copy);
-*/
 	}
 }
 
@@ -154,10 +157,13 @@ static void	split_redirections_and_heredocs(t_tokn **redirections, t_tokn **here
 		prev = copy;
 		move_pointer(&copy);
 	}
+
+/*
 	if (htail)
 		htail->next = NULL;
 	if (ctail)
 		ctail->next = NULL;
+*/
 }
 
 //Ouvrir toutes els redirections
@@ -165,35 +171,30 @@ static void	split_redirections_and_heredocs(t_tokn **redirections, t_tokn **here
 //POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
 static int	open_all_redirections(t_shell *minishell, t_tokn **redirections)
 {
+	t_tokn	*copy;
 	t_tokn	*simple;
 	t_tokn	*heredoc;
 
 	simple = NULL;
 	heredoc = NULL;
+	copy = *redirections;
 
-	print_tokens(*redirections);
-
-	split_redirections_and_heredocs(redirections, &heredoc, &simple);
+	split_redirections_and_heredocs(&copy, &heredoc, &simple);
 
 	print_tokens(heredoc);
-	print_tokens(simple);
-
-	print_tokens(*redirections);
 
 	open_heredocs(minishell, &heredoc);
 	return (open_redirections(minishell, &simple));
 }
 
 
-static void	split_redirections_and_commands(t_tokn	**src, t_tokn **cmd, t_tokn **r)
+static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn **r)
 {
-	t_tokn	*copy;
 	t_tokn	*rtail;
 	t_tokn	*ctail;
 
 	rtail = NULL;	
 	ctail = NULL;
-	copy = *src;
 	while (copy)
 	{
 		if (valid_lexeme(copy, HDOC, ARED | OPAR))
@@ -206,10 +207,12 @@ static void	split_redirections_and_commands(t_tokn	**src, t_tokn **cmd, t_tokn *
 			append_token_list(cmd, &ctail, copy);
 		move_pointer(&copy);
 	}
+/*
 	if (rtail)
 		rtail->next = NULL;
 	if (ctail)
 		ctail->next = NULL;
+*/
 }
 
 //
@@ -217,7 +220,7 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	int		count;
 	t_exec	*node;
-	t_tokn	*copy;
+	t_tokn	*expands;
 	t_tokn	*command;
 	t_tokn	*redirections;
 
@@ -234,19 +237,26 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		//First, we handle redirections and return a token list containing only
 		//commands and redirections
 
-		copy = handle_assignations(minishell, &ast->tokens);
+		expands = handle_assignations(minishell, &ast->tokens);
+
+		
 
 		//Then, we split this list into 2 sublists
-		split_redirections_and_commands(&ast->tokens, &command, &redirections);
+		split_redirections_and_commands(expands, &command, &redirections);
 
 		//Now, we expand those lists according to bash's priorities
 		expand(*minishell, &command);
 		expand(*minishell, &redirections);
 
 
+		print_tokens(ast->tokens);
+		print_tokens(ast->tokens);
 		//We open all redirections and retrieve the heredocs content;
+		
 
 		open_all_redirections(*minishell, &redirections);
+
+		print_tokens(ast->tokens);
 
 		// Now we can create all the execution nodes and append their redirections
 		node = build_command_node(minishell, ast, &count);
