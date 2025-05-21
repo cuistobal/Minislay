@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:47:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:48:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,7 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 	//	prepare_for_exec(minishell, ast, &redirections);
 	if (!node)
 		return (set_error_code(minishell, GENERAL_ERROR), NULL);
-
-
-
-	node->command = get_command_and_arguments(minishell, arguments);
+	node->command = get_command_and_arguments(*minishell, arguments);
 	if (!node->command)
 		return (free_execution_node(node), set_error_code(minishell, GENERAL_ERROR), NULL);
 	node->environ = rebuild_env(*minishell);

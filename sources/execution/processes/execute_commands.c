@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:07:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:51:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,10 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 	pid_t	pids[BUFFER_SIZE];
 	int		pipefd[BUFFER_SIZE][2];
 
-	if (BUFFER_SIZE)
-		return printf("Malveillance max\n");
 	index = 0;
 	current = node;
 	while (current)
 	{
-/*
-		if (current->next)
-		{
-			if (pipe(pipefd[index]) < 0)
-				return (GENERAL_ERROR);
-		}
-*/
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
 		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
@@ -93,6 +84,10 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		close_unused_pipes(&current, pipefd[index]);
 		current = current->next;
 		index++;
+		if (index == BUFFER_SIZE)
+			break ;
 	}
+	if (index == BUFFER_SIZE)
+			return (free_execution_node(node), GENERAL_ERROR);
 	return (wait_module(pids, index));
 }
