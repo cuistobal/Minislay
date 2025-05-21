@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:45:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:55:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 */
 }
 
-static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
+static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
 {
 	t_tokn	*copy;
 	t_tokn	*prev;
 	char	name_buffer[BUFFER_SIZE];
 
 	prev = NULL;
-	copy = *heredocs;	
+	copy = heredocs;	
 	while (copy)
 	{
 		if (!copy->next)
@@ -111,7 +111,7 @@ static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 		if (!set_heredoc_name(name_buffer, copy->next->value))
 			return (GENERAL_ERROR);
 		copy->value = name_buffer;
-		handle_here_doc(minishell, &copy);
+		handle_here_doc(minishell, copy);
 		prev = copy;
 		move_pointer(&copy);
 		move_pointer(&copy);
@@ -178,7 +178,10 @@ static int	open_all_redirections(t_shell *minishell, t_tokn **redirections)
 
 	split_redirections_and_heredocs(copy, &heredoc, &simple);
 
-	open_heredocs(minishell, &heredoc);
+	open_heredocs(minishell, heredoc);
+
+	print_tokens(heredoc);	
+
 	return (open_redirections(minishell, &simple));
 }
 
