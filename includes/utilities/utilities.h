@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 08:53:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:42:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,7 @@ void	set_error_code(t_shell **minishell, int error_code);
 
 //linked_lists_utils.c
 void	append_token_list(t_tokn **head, t_tokn **tail, t_tokn *new);
+
+bool	handle_here_doc(t_shell *minishell, t_tokn **redirections);
 
 #endif

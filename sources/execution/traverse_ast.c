@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 10:28:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:51:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,28 +123,32 @@ static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 static int	open_all_redirections(t_shell *minishell, t_tokn **heredocs, t_tokn **redirections)
 {
 	int		index;
+	t_tokn	*prev;
 	t_tokn	*save;
 	t_tokn	*htail;
 	t_tokn	*current;
 
 	index = 0;
 	htail = NULL;
+	prev = NULL;
 	current = *redirections;
 	while (current)
-	{
-		if (current->type & HDOC)
-			insert_heredoc_in_list(heredocs, &htail, current);		
-		else if (current->type & IRED)
+	{	
+		if (is_state_active(current->type, HDOC) || is_state_active(prev->type, HDOC))
+			append_token_list(heredocs, &htail, current);
+		else if (is_state_active(current->type, IRED) || is_state_active(prev->type, IRED))
 			open_infile(&current);
-		else if (current->type & ORED)
+		else if (is_state_active(current->type, ORED) || is_state_active(prev->type, ORED))
 			open_outfile(&current);
-		else if (current->type & ARED)
+		else if (is_state_active(current->type, ARED) || is_state_active(prev->type, ARED))
 			open_outfile_append(&current);
-		move_pointer(&current);
+		prev = current;
 		move_pointer(&current);
 	}
 	if (htail)
 		htail->next = NULL;
+	print_tokens(*heredocs);
+	print_tokens(*redirections);
 	return (open_heredocs(minishell, heredocs));
 }
 
