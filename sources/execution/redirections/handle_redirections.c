@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:33:52 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 10:50:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:39:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	open_outfile_append(t_tokn **redirections)
     return (!*redirections);
 }
 */
-
+/*
 // Function to open an output file in append mode
 bool	open_outfile_append(t_tokn **redirections)
 {
@@ -65,8 +65,8 @@ bool	open_outfile_append(t_tokn **redirections)
 		return (move_pointer(redirections));
 	}
 }
-
-
+*/
+/*
 // Function to open a here-document
 bool	open_here_doc(t_shell *minishell, t_tokn **redirections)
 {
@@ -77,7 +77,7 @@ bool	open_here_doc(t_shell *minishell, t_tokn **redirections)
 		{
 			if (!(*redirections)->next || is_state_active((*redirections)->next->type, WORD))			
 				return (handle_here_doc(minishell, redirections));
-				/*
+
 				fd = open((*redirections)->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 				if (fd == -1)
 				{
@@ -86,7 +86,7 @@ bool	open_here_doc(t_shell *minishell, t_tokn **redirections)
 				}
 				(*redirections)->type = fd; 
         		return (move_pointer(redirections));
-				*/
+
 			//Error message -> Ambiguous syntax
 			printf("Ambiguous syntax\n");
 			return (false);	
@@ -94,7 +94,7 @@ bool	open_here_doc(t_shell *minishell, t_tokn **redirections)
 	}
     return (!*redirections);
 }
-
+*/
 // Function to open an output file in overwrite mode
 bool	open_outfile(t_tokn **redirections)
 {

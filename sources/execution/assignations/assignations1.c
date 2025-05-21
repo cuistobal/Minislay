@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:40:10 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 13:52:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:24:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,21 @@ void	add_key_to_local(t_shell **minishell, t_tokn *assignations)
 }
 
 // This function sends the assignation token to the local env list.
-t_tokn	*handle_assignations(t_shell **minishell, t_tokn **source)
+void	handle_assignations(t_shell **minishell, t_tokn *source, t_tokn **assignation, t_tokn **expansions)
 {
 	t_tokn	*copy;
-	t_tokn	*tail;
-	t_tokn	*expansions;
+	t_tokn	*etail;
+	t_tokn	*atail;
 
-	tail = NULL;
-	copy = *source;
-	expansions = NULL;
+	atail = NULL;
+	etail = NULL;
+	copy = source;
 	while (copy)
 	{
-		if (!is_state_active(copy->type, EQUL))
-			append_token_list(&expansions, &tail, copy);	
-		else
-			add_key_to_local(minishell, copy);
+		if (is_state_active(copy->type, EQUL))
+			append_token_list(assignation, &etail, copy);	
+		else	
+			append_token_list(expansions, &atail, copy);	
 		copy = copy->next;
 	}
-	print_tokens(expansions);
-	return (expansions);
 }

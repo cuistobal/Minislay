@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 13:52:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:45:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 		if (!set_heredoc_name(name_buffer, copy->next->value))
 			return (GENERAL_ERROR);
 		copy->value = name_buffer;
-		open_here_doc(minishell, &copy);
+		handle_here_doc(minishell, &copy);
 		prev = copy;
 		move_pointer(&copy);
 		move_pointer(&copy);
@@ -137,7 +137,7 @@ static int	open_redirections(t_shell *minishell, t_tokn **redirections)
 }
 
 
-static void	split_redirections_and_heredocs(t_tokn **redirections, t_tokn **heredoc, t_tokn **classic)
+static void	split_redirections_and_heredocs(t_tokn *redirections, t_tokn **heredoc, t_tokn **classic)
 {
 	t_tokn	*prev;
 	t_tokn	*copy;
@@ -147,7 +147,7 @@ static void	split_redirections_and_heredocs(t_tokn **redirections, t_tokn **here
 	prev = NULL;
 	ctail = NULL;
 	htail = NULL;
-	copy = *redirections;
+	copy = redirections;
 	while (copy)
 	{
 		if (is_state_active(copy->type, HDOC) || (prev && is_state_active(prev->type, HDOC)))
@@ -157,13 +157,10 @@ static void	split_redirections_and_heredocs(t_tokn **redirections, t_tokn **here
 		prev = copy;
 		move_pointer(&copy);
 	}
-
-/*
 	if (htail)
 		htail->next = NULL;
 	if (ctail)
 		ctail->next = NULL;
-*/
 }
 
 //Ouvrir toutes els redirections
@@ -179,9 +176,7 @@ static int	open_all_redirections(t_shell *minishell, t_tokn **redirections)
 	heredoc = NULL;
 	copy = *redirections;
 
-	split_redirections_and_heredocs(&copy, &heredoc, &simple);
-
-	print_tokens(heredoc);
+	split_redirections_and_heredocs(copy, &heredoc, &simple);
 
 	open_heredocs(minishell, &heredoc);
 	return (open_redirections(minishell, &simple));
@@ -207,26 +202,26 @@ static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn *
 			append_token_list(cmd, &ctail, copy);
 		move_pointer(&copy);
 	}
-/*
 	if (rtail)
 		rtail->next = NULL;
 	if (ctail)
 		ctail->next = NULL;
-*/
 }
 
 //
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
-	int		count;
 	t_exec	*node;
 	t_tokn	*expands;
 	t_tokn	*command;
+	t_tokn	*assignations;
 	t_tokn	*redirections;
 
 	node = NULL;
+	expands = NULL;
 	command = NULL;
 	redirections = NULL;
+	assignations = NULL;
 	if (!ast)
 		return ;
 
@@ -237,32 +232,34 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		//First, we handle redirections and return a token list containing only
 		//commands and redirections
 
-		expands = handle_assignations(minishell, &ast->tokens);
+		handle_assignations(minishell, ast->tokens, &assignations, &expands);
 
-		
+		printf("assignations	->	");
+		print_tokens(assignations);
+		printf("expansions	->	");
+		print_tokens(expands);		
 
 		//Then, we split this list into 2 sublists
 		split_redirections_and_commands(expands, &command, &redirections);
+
+		printf("command		->	");
+		print_tokens(command);
+		printf("redirections	->	");
+		print_tokens(redirections);
 
 		//Now, we expand those lists according to bash's priorities
 		expand(*minishell, &command);
 		expand(*minishell, &redirections);
 
-
-		print_tokens(ast->tokens);
-		print_tokens(ast->tokens);
 		//We open all redirections and retrieve the heredocs content;
 		
-
 		open_all_redirections(*minishell, &redirections);
 
-		print_tokens(ast->tokens);
-
 		// Now we can create all the execution nodes and append their redirections
-		node = build_command_node(minishell, ast, &count);
+		node = build_command_node(minishell, ast);
 
 		// Finally, we execute the commands and free the nodes
-		execute_commands(minishell, node, &count);
+		execute_commands(minishell, node);
 		free_execution_node(node);
 	}
 

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 10:41:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:44:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,10 @@ bool	handle_here_doc(t_shell *minishell, t_tokn **redirections)
 
 	expanded = NULL;
 	expansions = true;
+	if (*redirections)
+		return (printf("false\n"), false);
+	else
+		printf("%s\n", (*redirections)->value);
 	limiter = limiter_handler((*redirections)->value, &expansions);
 	if (limiter)
 	{

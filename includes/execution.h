@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 10:29:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:23:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count);
+t_exec	*build_command_node(t_shell **minishell, t_tree *ast);
 
-int		execute_commands(t_shell **minishell, t_exec *execution, int *count);
+int		execute_commands(t_shell **minishell, t_exec *executiondle_assn);
 
 int		setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd);
 
@@ -99,7 +99,7 @@ bool	open_infile(t_tokn **redirections);
 bool	open_outfile(t_tokn **redirections);
 bool	open_outfile_append(t_tokn **redirections);
 
-t_tokn	*handle_assignations(t_shell **minishell, t_tokn **source);
+void	handle_assignations(t_shell **minishell, t_tokn *source, t_tokn **assignations, t_tokn **expansions);
 
 bool	open_here_doc(t_shell *minishell, t_tokn **source);
 
