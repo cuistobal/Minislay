@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 09:48:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:28:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,12 @@ static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 		if (!set_heredoc_name(name_buffer, copy->next->value))
 			return (GENERAL_ERROR);
 		copy->value = name_buffer;
-		open_heredocs(minishell, &copy);
+		open_here_doc(minishell, &copy);
 /*
 		move_pointer(&copy);
 		move_pointer(&copy);
 */
 	}
-	printf("\n");
 }
 
 
