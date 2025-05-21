@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 15:08:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:14:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,18 @@ static bool expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 }
 
 //Entry point of the expansion module
-bool    expand(t_shell *minishell, t_tokn **list, int *count)
+bool    expand(t_shell *minishell, t_tokn **list)
 {
+	int		count;
 	t_tokn	*copy;
 
+	count = 0;
 	copy = *list;
 	while (copy)
 	{
-	//	if (is_state_active((*list)->type, DOLL) || is_state_active((*list)->type, STAR))
-		if (((copy)->type & DOLL || (copy)->type & STAR))
+		if (copy->type & DOLL || copy->type & STAR)
 		{
-			if (!((copy)->type & DQTE) && (!expand_no_quotes(minishell, &copy, count)))
+			if (!((copy)->type & DQTE) && (!expand_no_quotes(minishell, &copy, &count)))
 				return (false);
 			else if ((copy)->type & DQTE && !expand_in_quotes(minishell, &copy))
 				return (false);

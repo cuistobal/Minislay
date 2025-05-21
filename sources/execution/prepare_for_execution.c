@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 08:17:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:09:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 	modify_token_types(expansions, redirections, &count);
 
 	copy = *expansions;
-	if (!expand(minishell, &copy, &count))
+	if (!expand(minishell, &copy))
+//	if (!expand(minishell, &copy, &count))
 		return (NULL);
 	if (!quote_removal(*expansions))
 		return (NULL);
