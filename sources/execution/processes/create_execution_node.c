@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 09:15:42 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 15:51:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:47:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static char	**rebuild_env(t_shell *minishell)
 	t_env	*current;
 
 	index = 0;
+	size = 50;
 	current = minishell->envp;
 	env = (char **)malloc(sizeof(char *) * size);
 	if (!env)
@@ -125,5 +126,6 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast)
 	node->redirections[HERE_DOC] = redirections;
 	node->redirections[INFILE] = NULL;
 	node->redirections[OUTFILE] = NULL;
+	node->next = NULL;
 	return (node);
 }

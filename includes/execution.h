@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:53:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:35:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ bool	open_infile(t_tokn **redirections);
 bool	open_outfile(t_tokn **redirections);
 bool	open_outfile_append(t_tokn **redirections);
 
-void	handle_assignations(t_shell **minishell, t_tokn *source, t_tokn **assignations, t_tokn **expansions);
+void	handle_assignations(t_shell **minishell, t_tokn **source);
 
 bool	open_here_doc(t_shell *minishell, t_tokn **source);
 

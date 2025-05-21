@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 15:26:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:41:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,22 +166,17 @@ static void	split_redirections_and_heredocs(t_tokn *redirections, t_tokn **hered
 //POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
 static int	open_all_redirections(t_shell *minishell, t_tokn *redirections)
 {
-//	t_tokn	*copy;
 	t_tokn	*simple;
 	t_tokn	*heredoc;
 
 	simple = NULL;
 	heredoc = NULL;
-//	copy = *redirections;
 
-	//split_redirections_and_heredocs(copy, &heredoc, &simple);
 	split_redirections_and_heredocs(redirections, &heredoc, &simple);
 
 	print_tokens(heredoc);	
 
 	open_heredocs(minishell, heredoc);
-
-//	print_tokens(heredoc);	
 
 	return (open_redirections(minishell, &simple));
 }
@@ -213,19 +208,40 @@ static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn *
 }
 
 //
+t_tokn	*duplicate_token_list(t_tokn *source)
+{
+	t_tokn	*dup;
+	t_tokn	*head;
+	t_tokn	*tail;
+
+	head = NULL;
+	tail = NULL;
+	while (source)
+	{
+		dup = malloc(sizeof(t_tokn));
+		if (!dup)
+			return (free_tokens(dup), NULL);
+		dup->type = source->type;
+		dup->value = source->value;
+		dup->next = NULL;
+		append_token_list(&head, &tail, dup);
+		source = source->next;
+	}
+	return (head);
+}
+
+//
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	t_exec	*node;
 	t_tokn	*expands;
 	t_tokn	*command;
-	t_tokn	*assignations;
 	t_tokn	*redirections;
 
 	node = NULL;
 	expands = NULL;
 	command = NULL;
 	redirections = NULL;
-	assignations = NULL;
 	if (!ast)
 		return ;
 
@@ -236,20 +252,29 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		//First, we handle redirections and return a token list containing only
 		//commands and redirections
 
-		handle_assignations(minishell, ast->tokens, &assignations, &expands);
+		expands = duplicate_token_list(ast->tokens);
+		if (!expands)
+			return ;
+		//memalloc failed
 
+		handle_assignations(minishell, &expands);
+
+		/*
 		printf("assignations	->	");
 		print_tokens(assignations);
 		printf("expansions	->	");
 		print_tokens(expands);		
+		*/
 
 		//Then, we split this list into 2 sublists
 		split_redirections_and_commands(expands, &command, &redirections);
 
+		/*
 		printf("command		->	");
 		print_tokens(command);
 		printf("redirections	->	");
 		print_tokens(redirections);
+		*/
 
 		//Now, we expand those lists according to bash's priorities
 		expand(*minishell, &command);
@@ -259,14 +284,13 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		
 		open_all_redirections(*minishell, redirections);
 
-		print_tokens(redirections);
-
 		// Now we can create all the execution nodes and append their redirections
 		node = build_command_node(minishell, ast);
 
 		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node);
 		free_execution_node(node);
+
 	}
 
 	traverse_ast(minishell, ast->left);
