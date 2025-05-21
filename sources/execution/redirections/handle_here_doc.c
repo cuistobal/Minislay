@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:54:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:38:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,28 @@ static bool	append_heredoc(char *expanded, int fd)
 	return (write(fd, "\n", 1));
 }
 
+static char	*init_heredoc(t_tokn *redirections, bool *expansions)
+{
+	int		fd;
+	char	*limiter;
+
+	limiter = NULL;
+	if (!redirections || !redirections->next)
+		return (NULL);
+	limiter = limiter_handler(redirections->next->value, expansions);
+	if (!limiter)
+		return (NULL);
+	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	if (fd <  0)
+		return (free(limiter), NULL);
+	redirections->type = fd;
+	return (limiter);
+}
+
 //This utility creates a temporary file and fills it with the user's input. If
 //the limiter is an unquoted token, lines get expanded.
 bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 {
-	int		fd;
 	char	*line;
 	char	*limiter;
 	char	*expanded;
@@ -94,36 +111,35 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 
 	expanded = NULL;
 	expansions = true;
-	if (redirections || redirections->next)
+
+/*
+	if (!redirections || !redirections->next)
 		return (false);
 	limiter = limiter_handler(redirections->next->value, &expansions);
-	if (limiter)
+	if (!limiter)
+		return (false);
+	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	if (fd <  0)
+		return (false);
+*/
+
+	limiter = init_heredoc(redirections, &expansions);
+	if (!limiter)
+		return (false);
+	line = readline(HERE);
+	rl_on_new_line();
+	while (line)
 	{
-	//	free((*redirections)->value);
-	//	(*redirections)->value = limiter;
-		fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
-		if (fd >= 0)
-		{
-			redirections->type = fd;
-			line = readline(HERE);
-			rl_on_new_line();
-			while (line)
-			{
-				if (!strncmp(line, limiter, strlen(line)))
-				{
-					if (strlen(line) > 0)
-						break ;
-				}
-				expanded = expand_line(minishell, line, expansions);
-				append_heredoc(expanded, fd);
-				if (expanded)
-					free(expanded);
-				free(line);
-				line = readline(HERE);
-				rl_on_new_line();
-			}
-			return (free(line), close(fd), true);
-		}
+		if (!strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
+			break ;
+		expanded = expand_line(minishell, line, expansions);
+		if (!expanded)
+			return (free(line), close(redirections->type), false);
+		append_heredoc(expanded, redirections->type);
+		free(expanded);
+		free(line);
+		line = readline(HERE);
+		rl_on_new_line();
 	}
-	return (printf("Unable to open heredoc with %s\n", redirections->value), false);
+	return (free(line), close(redirections->type), true);
 }
