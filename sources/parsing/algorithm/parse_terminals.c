@@ -22,7 +22,8 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-    	if ((*current)->type >= IRED && (*current)->type <= (ARED | OPAR))
+  //  	if ((*current)->type >= IRED && (*current)->type <= (ARED | OPAR))
+    	if (valid_lexeme(*current, HDOC, ARED | OPAR))
 		{
 
 			consume_token(current, parser);

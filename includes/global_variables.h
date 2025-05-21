@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:30:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:26:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 
 # define WORD 0b0000000000100000	//	token de mot WORD
 
-# define IRED 0b0000000001000000	//	token de redirection simple d'entree <
-# define HDOC 0b0000000010000000	//	token here_doc <<
+# define HDOC 0b0000000001000000	//	token here_doc <<
+# define IRED 0b0000000010000000	//	token de redirection simple d'entree <
 # define ORED 0b0000000100000000	//	token de redirection simple de sortie >
 # define ARED 0b0000001000000000	//	token de redirection append de sortie >>
 
