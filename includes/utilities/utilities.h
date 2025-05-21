@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:18:17 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/21 08:53:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,8 @@ bool	balance_tree(t_avlt **node, char *key, int len);
 
 //inline_utilities.c
 void	set_error_code(t_shell **minishell, int error_code);
+
+//linked_lists_utils.c
+void	append_token_list(t_tokn **head, t_tokn **tail, t_tokn *new);
 
 #endif

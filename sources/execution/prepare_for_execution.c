@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 09:44:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 08:17:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 
 	//handle_redirection_list(minishell, redirections);
 
-	return (get_command_and_arguments(minishell, *expansions, count));
+	return (get_command_and_arguments(minishell, *expansions));
 }
 
 
@@ -91,6 +91,7 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
 {
 	t_exec	*node;
+	t_tokn	*commands;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
 

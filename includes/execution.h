@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:31:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 08:56:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	is_executable(char *command);
 bool	retrieve_path(t_shell *minishell, char **command);
 
 //get_command_and_arguments.c
-char    **get_command_and_arguments(t_shell *minishell, t_tokn *list, int count);
+char    **get_command_and_arguments(t_shell *minishell, t_tokn *list);
 
 //is_builtin.c
 //bool    is_builtin(char *command);
@@ -91,12 +91,14 @@ t_exec	*build_command_node(t_shell **minishell, t_tree *ast, int *count);
 
 int		execute_commands(t_shell **minishell, t_exec *execution, int *count);
 
-int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd);
+int		setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd);
 
 void	insert_heredoc_in_list(t_tokn **head, t_tokn **tail, t_tokn *current);
 
 bool	open_infile(t_tokn **redirections);
 bool	open_outfile(t_tokn **redirections);
 bool	open_outfile_append(t_tokn **redirections);
+
+t_tokn	*handle_assignations(t_shell **minishell, t_tokn **source);
 
 #endif

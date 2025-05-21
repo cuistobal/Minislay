@@ -34,6 +34,7 @@ SOURCES = \
 	utilities/avl_tree/rotations.c \
 	utilities/Libft/ft_itoa.c \
 	utilities/inline_utilities.c \
+	utilities/linked_lists_utils.c \
 	sources/initialisation.c\
 	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \
@@ -55,6 +56,7 @@ SOURCES = \
 	sources/execution/split_list.c \
 	sources/execution/traverse_ast.c \
 	sources/execution/prepare_for_execution.c \
+	sources/execution/assignations/assignations1.c \
 	sources/execution/expansions/expand.c \
 	sources/execution/expansions/key_management.c \
 	sources/execution/expansions/word_splitting.c \

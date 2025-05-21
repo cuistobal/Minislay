@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 16:05:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:02:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,77 +148,31 @@ static void	open_all_redirections(t_shell *minishell, t_tokn **heredocs, t_exec 
 }
 
 
-static void	handle_command_list(t_tokn **copy)
+void	split_redirections_and_commands(t_tokn	**src, t_tokn **cmd, t_tokn **r)
 {
-	int		count;
-	t_exec	*node;
 	t_tokn	*copy;
-	t_tokn	*heredocs;
-	t_tokn	*redirections;
+	t_tokn	*rtail;
+	t_tokn	*ctail;
 
-	count = 0;
-	node = NULL;
-	heredocs = NULL;
-	redirections = NULL;
-
-	copy = ast->tokens;
-	modify_token_types(&copy, &redirections, &count);
-
-	print_tokens(ast->tokens);
-
-//		expand(*minishell, &ast->tokens, &count);
-	expand(*minishell, &copy, &count);
-	count = 0;
-	expand(*minishell, &redirections, &count);
-	print_tokens(ast->tokens);
-	open_all_redirections(*minishell, &heredocs, &node);
-
-	node = build_command_node(minishell, ast, &count);
-
-		//Split redirections form heredocs
-		//OPen all heredocs
-
-	//	open_all_redirections(&heredocs, &node, *minishell);
-
-	execute_commands(minishell, node, &count);
-	free_execution_node(node);
-}
-
-static void	find_redirections(t_exec **node, t_tokn **redirs, t_tokn **hd)
-{
-	t_exec	*copy;
-
-	copy = *node;	
+	rtail = NULL;	
+	ctail = NULL;
+	copy = *src;
 	while (copy)
 	{
-			
-
-		copy = copy->next;
-	}
-
-}
-
-static void	initialise_execution(t_shell **minishell, t_tokn **tokens)
-{
-	t_tokn	*current;
-	t_tokn	*arguments;
-	t_tokn	*assignations;
-	t_tokn	*redirections;
-
-	arguments = NULL;
-	assignations = NULL;
-	redirections = NULL;
-	current = *tokens;
-	while (current)
-	{
-		if (valid_lexeme(current, IRED, ARED))
-			append_redirections()		
-		else if (is_state_active(current, EQUL))
-
+		if (valid_lexeme(copy, IRED, ARED))
+		{
+			append_token_list(r, &rtail, copy);
+			move_pointer(&copy);
+			append_token_list(r, &rtail, copy);
+		}
 		else
-
-		current = current->next;
+			append_token_list(cmd, &ctail, copy);
+		move_pointer(&copy);
 	}
+	if (rtail)
+		rtail->next = NULL;
+	if (ctail)
+		ctail->next = NULL;
 }
 
 //
@@ -227,13 +181,14 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	int		count;
 	t_exec	*node;
 	t_tokn	*copy;
+	t_tokn	*command;
+	t_tokn	*redirections;	
 	t_tokn	*heredocs;
-	t_tokn	*redirections;
 
-	count = 0;
 	node = NULL;
-	heredocs = NULL;
+	command = NULL;
 	redirections = NULL;
+	heredocs = NULL;
 	if (!ast)
 		return ;
 
@@ -241,12 +196,17 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		handle_operators(minishell, ast);
 	else	
 	{
-		initialise_execution(minishell, &ast->tokens);			
+
+		copy = handle_assignations(minishell, &ast->tokens);
+
+		split_redirections_and_commands(&ast->tokens, &command, &redirections);
 		// Here, we create the execution lsit, regardless of the token types
 		node = build_command_node(minishell, ast, &count);
 
+
+		print_tokens(redirections);
+print_tokens(command);
 		// Now we need to get the redirection lists && open them
-		find_redirections(&node, &redirection, &heredocs);
 
 
 		// Finally, we execute the commands and free the nodes
