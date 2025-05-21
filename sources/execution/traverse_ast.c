@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 09:19:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:48:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	free_tree_node(t_tree *node)
 */
 
 //
-static void	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
+static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 {
 	int	i;
 	int	index;
@@ -82,20 +82,21 @@ static void	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 	index += limlen;
 	while (access(buffer, F_OK) == 0 && i < 10)
 	{
-		buffer[index + 1] = 47 + i;
+		buffer[index] = 48 + i;
 		i++;
 	}
+	return (i < 10);
+/*
 	if (i == 10)
 		printf("Tu forces frere\n");
+*/
 }
 
-static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
+static int open_heredocs(t_shell *minishell, t_tokn **heredocs)
 {
-	t_exec	*head;
 	t_tokn	*copy;
 	char	name_buffer[BUFFER_SIZE];
 
-	head = *node;
 	copy = *heredocs;	
 	while (copy)
 	{	
@@ -103,10 +104,14 @@ static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
 		//	Use heredoc as input
 		//else
 		//	Unlink(heredoc) after appending content
-		set_heredoc_name(name_buffer, copy->next->value);
-		printf("%s ", name_buffer);
+		if (!set_heredoc_name(name_buffer, copy->next->value))
+			return (GENERAL_ERROR);
+		copy->value = name_buffer;
+		open_heredocs(minishell, &copy);
+/*
 		move_pointer(&copy);
 		move_pointer(&copy);
+*/
 	}
 	printf("\n");
 }
@@ -116,39 +121,36 @@ static void	open_heredocs(t_shell *minishell, t_exec **node, t_tokn **heredocs)
 //Ouvrir toutes els redirections
 //Les loger dans le bon index
 //POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
-static void	open_all_redirections(t_shell *minishell, t_tokn **heredocs, t_exec **node)
+static int	open_all_redirections(t_shell *minishell, t_tokn **heredocs, t_tokn **redirections)
 {
 	int		index;
 	t_tokn	*save;
 	t_tokn	*htail;
-	t_exec	*current;
-	t_tokn	*redirections;
+	t_tokn	*current;
 
 	index = 0;
 	htail = NULL;
-	current = *node;
+	current = *redirections;
 	while (current)
 	{
-		redirections = (*node)->redirections[HERE_DOC];
-		while (redirections)
-		{
-			if (redirections->type & HDOC)
-				insert_heredoc_in_list(heredocs, &htail, redirections);		
-			else if (redirections->type & IRED)
-				open_infile(&redirections);
-			else if (redirections->type & ORED)
-				open_outfile(&redirections);
-			else if (redirections->type & ARED)
-				open_outfile_append(&redirections);
-		}
-		current = current->next;
-		index++;	
+		if (current->type & HDOC)
+			insert_heredoc_in_list(heredocs, &htail, current);		
+		else if (current->type & IRED)
+			open_infile(&current);
+		else if (current->type & ORED)
+			open_outfile(&current);
+		else if (current->type & ARED)
+			open_outfile_append(&current);
+		move_pointer(&current);
+		move_pointer(&current);
 	}
-	open_heredocs(minishell, node, heredocs);
+	if (htail)
+		htail->next = NULL;
+	return (open_heredocs(minishell, heredocs));
 }
 
 
-void	split_redirections_and_commands(t_tokn	**src, t_tokn **cmd, t_tokn **r)
+static void	split_redirections_and_commands(t_tokn	**src, t_tokn **cmd, t_tokn **r)
 {
 	t_tokn	*copy;
 	t_tokn	*rtail;
@@ -211,7 +213,7 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		//We open all redirections and retrieve the heredocs content;
 
-		open_all_redirections();
+		open_all_redirections(*minishell, &heredocs, &redirections);
 
 		// Now we can create all the execution nodes and append their redirections
 		node = build_command_node(minishell, ast, &count);
