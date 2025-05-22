@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 12:01:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:15:43 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	handle_redirections(t_exec **execution, int original_stds[2])
 
 	//If we have a in redirection ->
 /*
+=======
+>>>>>>> main:sources/execution/processes/ipc_module.c
 	if ((*execution)->redirections[INFILE] != STDIN_FILENO)
 	{
 		if (dup2((*execution)->redirections[INFILE], STDIN_FILENO) != 0)

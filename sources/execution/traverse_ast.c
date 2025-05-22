@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:41:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:16:20 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ static int  execute_branch(t_shell *minishell, t_exec **node)
 }
 */
 
+/*
+static int	do_and()
+{
+
+}
+
+static int	do_or()
+{
+
+}
+*/
+
 //
 t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 {
@@ -31,7 +43,7 @@ t_exec	*handle_operators(t_shell **minishell, t_tree *ast)
 	if (is_state_active(ast->tokens->type, LAND))	
 		node = do_and();
 	else if (is_state_active(ast->tokens->type, LORR))	
-		node =do_or();
+		node  = do_or();
 */
 	return (node);
 }
@@ -49,22 +61,6 @@ static bool	is_pipeline(t_tokn *list)
 	return (false);
 }
 
-/*
-void	free_tree_node(t_tree *node)
-{
-	if (!node)
-		return ;
-	if (node->tokens)
-	{
-		free_tokens(node->tokens);
-		node->tokens = NULL;
-	}
-	node->left = NULL;
-	node->right = NULL;
-	free(node);
-	node = NULL;
-}
-*/
 
 //
 static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
