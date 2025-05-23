@@ -56,7 +56,8 @@ SOURCES = \
 	sources/execution/subshells/subshells.c \
 	sources/execution/split_list.c \
 	sources/execution/traverse_ast.c \
-	sources/execution/prepare_for_execution.c \
+	sources/execution/prepare_for_execution/prepare_for_execution.c \
+	sources/execution/prepare_for_execution/get_env.c \
 	sources/execution/assignations/assignations1.c \
 	sources/execution/expansions/expand.c \
 	sources/execution/expansions/key_management.c \

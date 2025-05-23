@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:22:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:40:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,57 @@ static t_tokn	*get_execution_bloc_redirs(t_tokn **tokens, t_tokn **redirs)
 	return (node_redirs);
 }
 
+static char	**get_env(t_shell *minishell)
+{
+	int		size;
+	int		index;
+	char	**env;
+	char	*temp[2];
+	t_env	*current;
+
+	index = 0;
+	size = 50;
+	current = minishell->envp;
+	env = (char **)malloc(sizeof(char *) * size);
+	if (!env)
+		return (NULL);
+	reset_array(env, 0, size);
+	while (current)
+	{
+		reset_array(temp, 0, 2);
+		if (index == size - 1)
+			env = (char **)resize_array(env, sizeof(char *), &size);
+		if (!env)
+			return (NULL);
+		temp[0] = current->var[0];
+		temp[1] = current->var[1];
+		if (!join_env(&env[index++], temp))
+			return (free_array(env, size), NULL);
+		current = current->next;
+	}
+	return (env);
+}
+
 //
-//t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
-t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirections)
+t_exec	*prepare_for_exec(t_shell **m, t_tokn *tokens, t_tokn **redirections)
 {
 	t_exec	*node;
-	t_tokn	*node_redirs;	
+	t_tokn	*deep_copy;
+	t_tokn	*node_redirs;
 
-	if (!minishell || !tokens)
+	if (!m || !tokens)
 		return (NULL);
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
-
 	node_redirs = get_execution_bloc_redirs(&tokens, redirections);
-
-	node->command = get_command_and_arguments(*minishell, tokens);
-	node->environ = NULL;
-	node->redirections[HERE_DOC] = create_token_sub_list(&tokens, HDOC);
-	node->redirections[INFILE] = create_token_sub_list(&tokens, IRED);
-	node->redirections[OUTFILE] = create_token_sub_list(&tokens, ORED | ARED); 
+	if (node_redirs)
+		deep_copy = duplicate_token_list(node_redirs);
+	node->command = get_command_and_arguments(*m, tokens);
+	node->environ = get_env(*m);
+	node->redirections[HERE_DOC] = create_token_sub_list(&deep_copy, HDOC);
+	node->redirections[INFILE] = create_token_sub_list(&deep_copy, IRED);
+	node->redirections[OUTFILE] = create_token_sub_list(&deep_copy, ORED | ARED); 
 	node->next = NULL;
-	
-	printf("node_redirs		->	");
-	print_tokens(node_redirs);
-
 	return (node);
 }

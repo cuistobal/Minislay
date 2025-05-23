@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:21:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:36:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,28 +203,6 @@ static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn *
 }
 
 //
-t_tokn	*duplicate_token_list(t_tokn *source)
-{
-	t_tokn	*dup;
-	t_tokn	*head;
-	t_tokn	*tail;
-
-	head = NULL;
-	tail = NULL;
-	while (source)
-	{
-		dup = malloc(sizeof(t_tokn));
-		if (!dup)
-			return (free_tokens(dup), NULL);
-		dup->type = source->type;
-		dup->value = source->value;
-		dup->next = NULL;
-		append_token_list(&head, &tail, dup);
-		source = source->next;
-	}
-	return (head);
-}
-
 void	modify_redirections_nodes(t_tokn **source)
 {
 	t_tokn	*prev;
@@ -303,17 +281,15 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		modify_redirections_nodes(&expands);
 
-		node = build_command_node(minishell, expands, &redirections);
-
-		printf("redirections	->	");
-		print_tokens(redirections);
-
 		expand(*minishell, &expands);
 		expand(*minishell, &redirections);
 
-		//open_all_redirections(*minishell, redirections);	
+		node = build_command_node(minishell, expands, &redirections);
 
-		print_tokens(expands);
+//		expand(*minishell, &expands);
+//		expand(*minishell, &redirections);
+
+		//open_all_redirections(*minishell, redirections);
 
 		while (node)
 		{
