@@ -6,11 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 17:17:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:38:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+void	pointer_update(t_tokn **node, t_tokn **new, t_tokn **pointer)
+{
+			
+}
+
+void	matchmaking(t_exec **node, t_tokn *redirections, t_tokn *heredocs)
+{
+	t_exec	*current;
+	t_tokn	*last_in;
+	t_tokn	*last_out;
+
+	while (current)
+	{
+
+	}
+}
 
 void	open_all_redirections(t_shell *minishell, t_tokn **redirections, t_tokn **heredocs)
 {
