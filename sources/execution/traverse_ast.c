@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/22 13:16:20 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/23 10:17:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
 	}
 }
 
-
+//Needs a proper implementation
 static int	open_redirections(t_shell *minishell, t_tokn **redirections)
 {
 	int		flag;
@@ -123,14 +123,14 @@ static int	open_redirections(t_shell *minishell, t_tokn **redirections)
 	current = *redirections;
 	while (current)
 	{
-		
+		printf("%s\n", current->value);	
 		prev = current;	
 		move_pointer(&current);
 	}
 	return SUCCESS;
 }
 
-
+//
 static void	split_redirections_and_heredocs(t_tokn *redirections, t_tokn **heredoc, t_tokn **classic)
 {
 	t_tokn	*prev;
@@ -170,14 +170,13 @@ static int	open_all_redirections(t_shell *minishell, t_tokn *redirections)
 
 	split_redirections_and_heredocs(redirections, &heredoc, &simple);
 
-	print_tokens(heredoc);	
-
 	open_heredocs(minishell, heredoc);
+
 
 	return (open_redirections(minishell, &simple));
 }
 
-
+//
 static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn **r)
 {
 	t_tokn	*rtail;
@@ -232,11 +231,13 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	t_exec	*node;
 	t_tokn	*expands;
 	t_tokn	*command;
+	t_tokn	*heredocs;
 	t_tokn	*redirections;
 
 	node = NULL;
 	expands = NULL;
 	command = NULL;
+	heredocs = NULL;
 	redirections = NULL;
 	if (!ast)
 		return ;
@@ -249,39 +250,67 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		//commands and redirections
 
 		expands = duplicate_token_list(ast->tokens);
+
 		if (!expands)
 			return ;
 		//memalloc failed
 
+/*
+
+		printf("source		->	");
+		print_tokens(ast->tokens);
+
+		printf("copy		->	");
+		print_tokens(expands);
+
+
 		handle_assignations(minishell, &expands);
 
-		/*
+
 		printf("assignations	->	");
 		print_tokens(assignations);
 		printf("expansions	->	");
 		print_tokens(expands);		
-		*/
+
 
 		//Then, we split this list into 2 sublists
 		split_redirections_and_commands(expands, &command, &redirections);
 
-		/*
+
 		printf("command		->	");
 		print_tokens(command);
 		printf("redirections	->	");
 		print_tokens(redirections);
-		*/
+
 
 		//Now, we expand those lists according to bash's priorities
 		expand(*minishell, &command);
 		expand(*minishell, &redirections);
 
-		//We open all redirections and retrieve the heredocs content;
-		
-		open_all_redirections(*minishell, redirections);
 
+		printf("command		->	");
+		print_tokens(command);
+		printf("redirections	->	");
+		print_tokens(redirections);
+
+		printf("source		->	");
+		print_tokens(ast->tokens);
+
+		//We open all redirections and retrieve the heredocs content;
+
+		open_all_redirections(*minishell, redirections);
+*/
 		// Now we can create all the execution nodes and append their redirections
-		node = build_command_node(minishell, ast);
+
+//		node = build_command_node(minishell, ast);
+		node = build_command_node(minishell, expands, &redirections);
+
+		while (node)
+		{
+			print_tokens(node->redirections[HERE_DOC]);
+			printf("\n");
+			node = node->next;
+		}
 
 		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node);

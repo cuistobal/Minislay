@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 09:09:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 11:57:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool	quote_removal(t_tokn *list)
 			if (!removed)
 				return (false);
 			quote_removal_helper(list->value, removed);
-			free(list->value);
+			//free(list->value);
 			list->value = removed;
 		}
 		move_pointer(&list);
@@ -73,7 +73,7 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 
 	count = 0;
 
-	modify_token_types(expansions, redirections, &count);
+	modify_token_types(expansions, redirections);
 
 	copy = *expansions;
 	if (!expand(minishell, &copy))
@@ -89,26 +89,28 @@ static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_
 
 
 //
-t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
+//t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
+t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirections)
 {
 	t_exec	*node;
-	t_tokn	*commands;
 	t_tokn	*expansions;
 	t_tokn	*assignations;
 
 	expansions = NULL;
 	assignations = NULL;
-	if (!minishell || !ast || !ast->tokens)
+	if (!minishell || !tokens)
 		return (NULL);
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
 
-	split_list(ast->tokens, &assignations, &expansions);
+	split_list(tokens, &assignations, &expansions);
 
 	node->command = initialise_execution(*minishell, redirections, &expansions);
 
 	node->environ = NULL;
+	//rebuild_env;
+
 	node->redirections[HERE_DOC] = *redirections;
 	node->redirections[INFILE] = NULL;
 	node->redirections[OUTFILE] = NULL;

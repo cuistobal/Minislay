@@ -6,11 +6,22 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 12:06:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:03:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+/*
+static void	append_token_type(t_tokn *expanded, t_tokn *current, t_tokn *previous)	
+{
+	if (*current == *expanded)
+		set_state(&(*expanded)->type, ARGUMNT);
+	else
+		set_state(&(*expanded)->type, COMMAND);
+	move_pointer(current);
+}
+*/
 
 //
 static bool	redir_list(t_tokn **red, t_tokn *prev, t_tokn **rtail, t_tokn *cur)
@@ -25,13 +36,13 @@ static bool	redir_list(t_tokn **red, t_tokn *prev, t_tokn **rtail, t_tokn *cur)
 }
 
 //
-static bool	command_list(t_tokn **chead, t_tokn **ctail, t_tokn *current)
+static bool	command_list()
 {
-	if (*chead)
+	if (chead)
 		set_state(&current->type, ARGUMNT);
 	else
 		set_state(&current->type, COMMAND);
-	append_token_list(chead, ctail, current);	
+	append_token_list(&chead, &ctail, current);	
 }
 
 //
@@ -51,7 +62,7 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections)
 	while (current)
 	{
 		if (!redir_list(redirections, prev, &rtail, current))
-			command_list(&chead, &ctail, current);
+			command_list();
 
 /*
 		if (valid_lexeme(current, IRED, ARED) || valid_lexeme(prev, IRED, ARED))
