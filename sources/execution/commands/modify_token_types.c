@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 12:06:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:43:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static bool	redir_list(t_tokn **red, t_tokn *prev, t_tokn **rtail, t_tokn *cur)
 {
 	if (valid_lexeme(cur, IRED, ARED) || valid_lexeme(prev, IRED, ARED))
 	{
+		if (!valid_lexeme(cur, IRED, ARED))
+			set_state(&cur->type, FILENAM);
 		if (*red && !rtail)
 			*rtail = get_tail_node(red);
 		append_token_list(red, rtail, cur);
@@ -31,7 +33,7 @@ static bool	command_list(t_tokn **chead, t_tokn **ctail, t_tokn *current)
 		set_state(&current->type, ARGUMNT);
 	else
 		set_state(&current->type, COMMAND);
-	append_token_list(chead, ctail, current);	
+	append_token_list(chead, ctail, current);
 }
 
 //

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 11:56:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:01:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,44 +35,6 @@ t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 	return (head);
 }
 
-/*
-static t_exec	*create_execution_node()
-{
-	t_exec	*new;
-
-	new = malloc(sizeof(t_exec));
-	if (!new)
-		return (NULL);
-	new->command = NULL;
-	new->environ  = NULL;
-	new->next = NULL;
-	return (new);
-}
-*/
-
-void	modify_redirections_list(t_tokn **redirs)
-{
-	t_tokn	*copy;
-	t_tokn	*dummy;
-	t_tokn	*tail;
-
-	tail = NULL;
-	copy = *redirs;
-	dummy = malloc(sizeof(t_tokn));
-	if (!dummy)
-		return ;
-	//undefined behaviour
-	dummy->value = strdup("dummy");
-	dummy->type	= INIT;
-	dummy->next = NULL;
-	while (copy)
-	{
-		tail = copy;	
-		move_pointer(&copy);	
-	}
-	append_token_list(redirs, &tail, dummy);
-}
-
 //This function splits the current's branch token into a list of command 
 //separated by pipes.
 //t_exec	*build_command_node(t_shell **minishell, t_tree *ast)
@@ -98,7 +60,6 @@ t_exec	*build_command_node(t_shell **minishell, t_tokn	*tokens, t_tokn **redirs)
 		if (!new)
 			return (free_execution_node(head), NULL);
 		append_exec_list(&head, &tail, new);
-		modify_redirections_list(redirs);
 		tokens = save;
 	}
 	return (head);

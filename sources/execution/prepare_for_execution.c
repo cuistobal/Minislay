@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 11:57:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:04:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,54 +66,42 @@ static bool	quote_removal(t_tokn *list)
 }
 
 //
-static char	**initialise_execution(t_shell *minishell, t_tokn **redirections, t_tokn **expansions)
+static t_tokn	*get_execution_bloc_redirs(t_tokn **tokens, t_tokn **redirs)
 {
-	int		count;
-	t_tokn	*copy;
+	t_tokn	*tail;
+	t_tokn	*node_redirs;
 
-	count = 0;
-
-	modify_token_types(expansions, redirections);
-
-	copy = *expansions;
-	if (!expand(minishell, &copy))
-//	if (!expand(minishell, &copy, &count))
-		return (NULL);
-	if (!quote_removal(*expansions))
-		return (NULL);
-
-	//handle_redirection_list(minishell, redirections);
-
-	return (get_command_and_arguments(minishell, *expansions));
+	node_redirs = create_token_sub_list(tokens, HDOC | IRED | ORED | ARED);
+	tail = get_tail_node(redirs);
+	if (tail)
+		tail->next = node_redirs;
+	else
+		*redirs = node_redirs;
+	return (node_redirs);
 }
-
 
 //
 //t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections)
 t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirections)
 {
 	t_exec	*node;
-	t_tokn	*expansions;
-	t_tokn	*assignations;
+	t_tokn	*node_redirs;	
 
-	expansions = NULL;
-	assignations = NULL;
 	if (!minishell || !tokens)
 		return (NULL);
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
-
-	split_list(tokens, &assignations, &expansions);
-
-	node->command = initialise_execution(*minishell, redirections, &expansions);
-
+	node_redirs = get_execution_bloc_redirs(&tokens, redirections);
+	node->command = get_command_and_arguments(*minishell, tokens);
 	node->environ = NULL;
-	//rebuild_env;
-
-	node->redirections[HERE_DOC] = *redirections;
-	node->redirections[INFILE] = NULL;
-	node->redirections[OUTFILE] = NULL;
+	node->redirections[HERE_DOC] = create_token_sub_list(&tokens, HDOC);
+	node->redirections[INFILE] = create_token_sub_list(&tokens, IRED);
+	node->redirections[OUTFILE] = create_token_sub_list(&tokens, ORED | ARED); 
 	node->next = NULL;
+	
+	printf("node_redirs		->	");
+	print_tokens(node_redirs);
+
 	return (node);
 }

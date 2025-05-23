@@ -6,11 +6,12 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 11:56:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:05:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h" 
+
 
 t_tokn	*get_tail_node(t_tokn **list)
 {
@@ -53,6 +54,8 @@ void	append_token_list(t_tokn **head, t_tokn **tail, t_tokn *new)
 	}
 	else
 	{
+		if (*head && !*tail)
+			*tail = get_tail_node(head);
 		(*tail)->next = new;
 		*tail = (*tail)->next;
 	}
