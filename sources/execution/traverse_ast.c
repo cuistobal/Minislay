@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:20:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:21:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,11 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		node = build_command_node(minishell, expands, &redirections);
 
+		printf("redirections	->	");
+		print_tokens(redirections);
+
 		expand(*minishell, &expands);
+		expand(*minishell, &redirections);
 
 		//open_all_redirections(*minishell, redirections);	
 

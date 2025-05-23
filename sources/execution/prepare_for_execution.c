@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:04:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:22:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirecti
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
+
 	node_redirs = get_execution_bloc_redirs(&tokens, redirections);
+
 	node->command = get_command_and_arguments(*minishell, tokens);
 	node->environ = NULL;
 	node->redirections[HERE_DOC] = create_token_sub_list(&tokens, HDOC);

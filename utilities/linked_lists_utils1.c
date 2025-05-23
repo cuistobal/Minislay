@@ -6,13 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:30:31 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:19:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:28:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
+//I USED TERNARIES ON LEETCODE AND IT WAS FCKING READABLE
 static void	append_pointers_values(t_tokn **list, t_tokn **current, t_tokn **prev)
 {
 	if (!*current)
@@ -24,16 +24,13 @@ static void	append_pointers_values(t_tokn **list, t_tokn **current, t_tokn **pre
 	}
 }
 
-//
+//I HONESTLY FCKING HATE THE NORM
 static void	modify_pointers(t_tokn **list, t_tokn **p, t_tokn **n, t_tokn **cur)
 {
 	if (!*p)
         *list = *n;
 	else
-    {
         (*p)->next = *n;
-		(*cur)->next = NULL;
-    }
 
 }
 
@@ -59,8 +56,8 @@ t_tokn	*create_token_sub_list(t_tokn **list, int ttype)
         {
 			modify_pointers(list, &prev, &next, &current);
 			append_token_list(&subhead, &subtail, current);
+			current->next = NULL;
 			current = prev;
-			//printf("prev %p\n", prev);
         }
 		append_pointers_values(list, &current, &prev);
     }
