@@ -54,7 +54,6 @@ SOURCES = \
     sources/parsing/algorithm/parse_terminals.c \
     sources/parsing/algorithm/parse_terminals1.c \
 	sources/execution/subshells/subshells.c \
-	sources/execution/split_list.c \
 	sources/execution/traverse_ast.c \
 	sources/execution/prepare_for_execution/prepare_for_execution.c \
 	sources/execution/prepare_for_execution/get_env.c \
@@ -71,6 +70,7 @@ SOURCES = \
 	sources/execution/commands/get_command_and_arguments.c \
 	sources/execution/redirections/handle_redirections.c \
 	sources/execution/redirections/handle_here_doc.c \
+	sources/execution/redirections/redirections.c \
 	sources/execution/processes/create_execution_node.c \
 	sources/execution/processes/inter_process_communications.c \
 	sources/execution/processes/execute_commands.c \

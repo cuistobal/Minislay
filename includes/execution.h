@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:59:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:18:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,8 @@ bool	open_here_doc(t_shell *minishell, t_tokn **source);
 
 //get_env.c
 char	**get_env(t_shell *minishell);
+
+//redirections.c
+void	open_all_redirections(t_shell *minishell, t_tokn **redirections, t_tokn **heredocs);
 
 #endif

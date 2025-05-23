@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:36:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:19:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,70 +110,6 @@ static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
 		move_pointer(&copy);
 		move_pointer(&copy);
 	}
-}
-
-//Needs a proper implementation
-static int	open_redirections(t_shell *minishell, t_tokn **redirections)
-{
-	int		flag;
-	t_tokn	*prev;
-	t_tokn	*current;
-
-	prev = NULL;
-	current = *redirections;
-	while (current)
-	{
-		printf("%s\n", current->value);	
-		prev = current;	
-		move_pointer(&current);
-	}
-	return SUCCESS;
-}
-
-//
-static void	split_redirections_and_heredocs(t_tokn *redirections, t_tokn **heredoc, t_tokn **classic)
-{
-	t_tokn	*prev;
-	t_tokn	*copy;
-	t_tokn	*ctail;
-	t_tokn	*htail;
-
-	prev = NULL;
-	ctail = NULL;
-	htail = NULL;
-	copy = redirections;
-	while (copy)
-	{
-		if (is_state_active(copy->type, HDOC) || (prev && is_state_active(prev->type, HDOC)))
-			append_token_list(heredoc, &htail, copy);
-		else
-			append_token_list(classic, &ctail, copy);
-		prev = copy;
-		move_pointer(&copy);
-	}
-	if (htail)
-		htail->next = NULL;
-	if (ctail)
-		ctail->next = NULL;
-}
-
-//Ouvrir toutes els redirections
-//Les loger dans le bon index
-//POur els inredirs, unlink le heredoc s'il y a une nouvelle in_redir
-static int	open_all_redirections(t_shell *minishell, t_tokn *redirections)
-{
-	t_tokn	*simple;
-	t_tokn	*heredoc;
-
-	simple = NULL;
-	heredoc = NULL;
-
-	split_redirections_and_heredocs(redirections, &heredoc, &simple);
-
-	open_heredocs(minishell, heredoc);
-
-
-	return (open_redirections(minishell, &simple));
 }
 
 //
@@ -286,26 +222,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		node = build_command_node(minishell, expands, &redirections);
 
-//		expand(*minishell, &expands);
-//		expand(*minishell, &redirections);
-
-		//open_all_redirections(*minishell, redirections);
-
-		while (node)
-		{
-			printf("heredocs	->	");
-			print_tokens(node->redirections[HERE_DOC]);
-
-			printf("infiles		->	");
-			print_tokens(node->redirections[INFILE]);
-
-			printf("outfiles	->	");
-			print_tokens(node->redirections[OUTFILE]);
-
-			printf("\n");
-			node = node->next;
-		}
-
+		open_all_redirections(*minishell, &redirections, &heredocs);
+		
 		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node);
 		free_execution_node(node);
