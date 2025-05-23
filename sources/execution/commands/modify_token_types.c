@@ -6,83 +6,80 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 15:19:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 12:43:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-
-// gros probleme avec ce fichier
-
-//A retravailler
-static void	append_redirections(t_tokn **head, t_tokn **tail, t_tokn **current)
+//
+static bool	redir_list(t_tokn **red, t_tokn *prev, t_tokn **rtail, t_tokn *cur)
 {
-	if (*head)
+	if (valid_lexeme(cur, IRED, ARED) || valid_lexeme(prev, IRED, ARED))
 	{
-		*tail = *current;
-/*
-		(*tail)->next = *current;
-		move_pointer(tail);
-*/
+		if (!valid_lexeme(cur, IRED, ARED))
+			set_state(&cur->type, FILENAM);
+		if (*red && !rtail)
+			*rtail = get_tail_node(red);
+		append_token_list(red, rtail, cur);
 	}
-	else
-	{
-		*head = *current;
-		*tail = (*current)->next;
-	}
-	move_pointer(current);
-	if (*current)
-	{
-		set_state(&(*current)->type, FILENAM);
-		*tail = *current;
-	//	move_pointer(current);
-		if (*current)
-			(*tail)->next = NULL;
-	}
+	return (false);
 }
 
 //
-static void	append_token_type(t_tokn **expanded, t_tokn **current, t_tokn **previous, int *count)	
+static bool	command_list(t_tokn **chead, t_tokn **ctail, t_tokn *current)
 {
-	*previous = *current;
-	if (*current == *expanded)
-		set_state(&(*expanded)->type, ARGUMNT);
+	if (*chead)
+		set_state(&current->type, ARGUMNT);
 	else
-		set_state(&(*expanded)->type, COMMAND);
-	(*count)++;
-	move_pointer(current);
+		set_state(&current->type, COMMAND);
+	append_token_list(chead, ctail, current);
 }
 
 //
-void	modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count)
+void	modify_token_types(t_tokn **expanded, t_tokn **redirections)
 {
+	t_tokn	*prev;
 	t_tokn	*rtail;
-	t_tokn	*rhead;
+	t_tokn	*ctail;
+	t_tokn	*chead;
 	t_tokn	*current;
-	t_tokn	*previous;
-	t_tokn	*redir_list;
 
-	*count = 0;
+	prev = NULL;
 	rtail = NULL;
-	previous = NULL;
+	ctail = NULL;
+	chead = NULL;
 	current = *expanded;
-	rhead = *redirections;
 	while (current)
 	{
-		if (valid_lexeme(current, IRED, ARED))
+		if (!redir_list(redirections, prev, &rtail, current))
+			command_list(&chead, &ctail, current);
+
+/*
+		if (valid_lexeme(current, IRED, ARED) || valid_lexeme(prev, IRED, ARED))
 		{
-			append_redirections(&rhead, &rtail, &current);
-			if (previous)
-				previous->next = current;
-			else
-				*expanded = current;
+			if (*redirections && !rtail)
+				rtail = get_tail_node(redirections);
+			append_token_list(redirections, &rtail, current);
 		}
+
 		else
-			append_token_type(expanded, &current, &previous, count);
+		{
+			if (chead)
+				set_state(&current->type, ARGUMNT);
+			else
+				set_state(&current->type, COMMAND);
+			append_token_list(&chead, &ctail, current);	
+		}
+
+
+*/
+		prev = current;
+		current = current->next;
 	}
-	printf("%s\n", __func__);
-	print_tokens(*expanded);
-	print_tokens(*redirections);
-	printf("\n");
+	*expanded = chead;
+	if (ctail)
+		ctail->next = NULL;
+	if (rtail)
+		rtail->next = NULL;
 }

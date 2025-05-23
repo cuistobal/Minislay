@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:35:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:18:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char    **get_command_and_arguments(t_shell *minishell, t_tokn *list);
 //bool    is_builtin(char *command);
 
 //modify_token_types.c
-void    modify_token_types(t_tokn **expanded, t_tokn **redirections, int *count);
+void modify_token_types(t_tokn **expanded, t_tokn **redirections);
 
 //expand.c
 bool    expand(t_shell *minishell, t_tokn **list);
@@ -39,7 +39,8 @@ bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 //
 //bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
 //char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
-t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections);
+//t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections);
+t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirections);
 
 //traverse_ast.c
 void	execute_pipeline(t_shell **minishell, t_exec *execute);
@@ -87,7 +88,8 @@ int		handle_redirections(t_exec **execution, int original_stds[2]);
 
 
 //handle_pipeline.c
-t_exec	*build_command_node(t_shell **minishell, t_tree *ast);
+//t_exec	*build_command_node(t_shell **minishell, t_tree *ast);
+t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, t_tokn **redirections);
 
 int		execute_commands(t_shell **minishell, t_exec *executiondle_assn);
 
@@ -102,5 +104,11 @@ bool	open_outfile_append(t_tokn **redirections);
 void	handle_assignations(t_shell **minishell, t_tokn **source);
 
 bool	open_here_doc(t_shell *minishell, t_tokn **source);
+
+//get_env.c
+char	**get_env(t_shell *minishell);
+
+//redirections.c
+void	open_all_redirections(t_shell *minishell, t_tokn **redirections, t_tokn **heredocs);
 
 #endif

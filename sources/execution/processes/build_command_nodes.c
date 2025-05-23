@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:45:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:01:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 
 //This function splits the current's branch token into a list of command 
 //separated by pipes.
-t_exec	*build_command_node(t_shell **minishell, t_tree *ast)
+//t_exec	*build_command_node(t_shell **minishell, t_tree *ast)
+t_exec	*build_command_node(t_shell **minishell, t_tokn	*tokens, t_tokn **redirs)
 {
 	t_exec	*new;
 	t_exec	*head;
@@ -50,17 +51,16 @@ t_exec	*build_command_node(t_shell **minishell, t_tree *ast)
 	head = NULL;
 	tail = NULL;
 	modified = NULL;
-	while (ast->tokens)
+	while (tokens)
 	{
-		print_tokens(ast->tokens);
-		modified = split_token_list_if(&ast->tokens, PIPE);
-		save = ast->tokens;
-		ast->tokens = modified;
-		new = create_execution_node(minishell, ast);
+		modified = split_token_list_if(&tokens, PIPE);
+		save = tokens;
+		tokens = modified;
+		new = prepare_for_exec(minishell, tokens, redirs);
 		if (!new)
 			return (free_execution_node(head), NULL);
 		append_exec_list(&head, &tail, new);
-		ast->tokens = save;
+		tokens = save;
 	}
 	return (head);
 }

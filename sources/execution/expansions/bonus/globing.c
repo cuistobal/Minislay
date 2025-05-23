@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 10:53:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:26:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int
 		*init = true;
 		return (true);
     }
-	new = create_token_node(value, WORD);
+	new = create_token_node(value, (*list)->type);
 	if (!new)
 		return (free(value), false);
 	(*count)++;

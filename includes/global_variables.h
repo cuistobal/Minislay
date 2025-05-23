@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 12:26:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:58:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@
 */
 
 # define BUFFER_SIZE 1024
+# define TAB_SIZE 64
 //Shifting operator from token type to exec type
 # define CONVERT 3
 
