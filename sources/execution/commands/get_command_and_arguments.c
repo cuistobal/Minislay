@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 13:41:47 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/24 14:00:26 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 {
 	int		count;
 	int		index;
+    char    *copy;
 	char	**commands;
 
 	index = 0;
@@ -25,18 +26,19 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 		return (NULL);
 	while (list)
 	{
+        copy = strdup(list->value);
 		if (index == 0)
 		{
-			if (!is_builtin(list->value) && !is_absolute(list->value))
+			if (!is_builtin(copy) && !is_absolute(copy))
 			{
-				if (!is_executable(list->value))
+				if (!is_executable(copy))
 				{
-					if (!retrieve_path(minishell, &list->value))
+					if (!retrieve_path(minishell, &copy))
 						return (error_message("Invalid command\n"), NULL);
 				}
 			}
 		}
-		commands[index] = strdup(list->value);
+		commands[index] = copy;
 		move_pointer(&list);
 		index++;
 	}
