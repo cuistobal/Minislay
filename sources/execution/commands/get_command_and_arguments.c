@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/19 15:50:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:41:47 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 	int		index;
 	char	**commands;
 
-	count = 1;
 	index = 0;
-	commands = (char **)calloc(count + 1, sizeof(char *));
+	commands = (char **)calloc(TAB_SIZE, sizeof(char *));
 	if (!commands)
 		return (NULL);
 	while (list)
@@ -33,10 +32,7 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 				if (!is_executable(list->value))
 				{
 					if (!retrieve_path(minishell, &list->value))
-					{
-						printf("%s	->	%s\n", __func__, list->value);
 						return (error_message("Invalid command\n"), NULL);
-					}
 				}
 			}
 		}
