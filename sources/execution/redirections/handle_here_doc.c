@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 17:23:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:13:59 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,18 +111,6 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 
 	expanded = NULL;
 	expansions = true;
-
-/*
-	if (!redirections || !redirections->next)
-		return (false);
-	limiter = limiter_handler(redirections->next->value, &expansions);
-	if (!limiter)
-		return (false);
-	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
-	if (fd <  0)
-		return (false);
-*/
-
 	limiter = init_heredoc(redirections, &expansions);
 	if (!limiter)
 		return (false);
