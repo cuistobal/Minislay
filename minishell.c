@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:58:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 04:29:21 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,26 @@ int	start_process(t_shell **minishell, char *terminal_name)
     int             retcode;
     char			*user_input;
 
+	init_signals();
     while (1)
     {
         user_input = readline(terminal_name);
-        add_history(user_input);
-        retcode = get_minishelled(minishell,user_input);
-        free(user_input);
-        user_input = NULL;
+        if (user_input == NULL)  // Gestion du Ctrl-D
+		{
+			write(STDOUT_FILENO, "exit\n", 5);
+			exit(0);
+		}
+		if (g_signal_status == SIGQUIT)
+		{
+			g_signal_status = 0;
+			free(user_input);
+			continue; // Ne pas parser une ligne vide suite à SIGQUIT
+		}
+		if (*user_input)
+			add_history(user_input);
+		retcode = get_minishelled(minishell, user_input);
+		free(user_input);
+		user_input = NULL;
     }
     return (retcode);
 }

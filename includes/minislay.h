@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:17:05 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/24 00:49:51 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include "../minitester/utils/minislay_test.h"
 # include "parsing.h"
 # include "execution.h"
-#include "builtins.h"
+# include "builtins.h"
+# include "signals.h"
 
 //minnishell.c
 int		get_minishelled(t_shell **minishell, char *input);
