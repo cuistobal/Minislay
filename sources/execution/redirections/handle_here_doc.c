@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 14:13:59 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/24 15:06:19 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	char	*limiter;
 
 	limiter = NULL;
-	if (!redirections || !redirections->next)
+	if (!redirections)
 		return (NULL);
 //	limiter = limiter_handler(redirections->next->value, expansions);
 	limiter = limiter_handler(redirections->value, expansions);
@@ -129,5 +129,5 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		line = readline(HERE);
 		rl_on_new_line();
 	}
-	return (free(line), close(redirections->type), true);
+	return (free(line), true);//close(redirections->type), true);
 }

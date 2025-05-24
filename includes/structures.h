@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/22 13:14:16 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/24 15:24:19 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct exec
 //	int			redirections[2];
 	char		**command;
 	char		**environ;
-	t_tokn		*redirections[3];
+	t_tokn		*redirections;
 	struct exec	*next;
 }	t_exec;
 

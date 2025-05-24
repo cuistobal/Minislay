@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 13:35:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/24 15:31:35 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static bool	is_pipeline(t_tokn *list)
 }
 
 
-//
+/*
 static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 {
 	int	i;
@@ -82,10 +82,9 @@ static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 		i++;
 	}
 	return (i < 10);
-/*
-	if (i == 10)
-		printf("Tu forces frere\n");
-*/
+\\	if (i == 10)
+\\		printf("Tu forces frere\n");
+
 }
 
 static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
@@ -111,6 +110,7 @@ static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
 		move_pointer(&copy);
 	}
 }
+*/
 
 //
 static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn **r)
@@ -222,7 +222,29 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		node = build_command_node(minishell, expands, &redirections);
 
-		open_all_redirections(*minishell, &redirections, &heredocs);
+
+//open_all_redirections()
+
+        t_exec  *copy = node;
+        t_exec  *save = NULL;
+
+        while (copy)
+        {
+            while (copy->redirections)
+            {
+                if (is_state_active(copy->redirections->type, HDOC))
+                {
+                    if (save)
+                        unlink(save->redirections->value);
+                    handle_here_doc(*minishell, copy->redirections);
+                    save = copy;
+                }
+                move_pointer(&copy->redirections);
+            }
+            copy = copy->next;
+        }
+        
+	//	open_all_redirections(*minishell, &redirections, &heredocs);
 		
 //		matchmaking(&node, &redirections, &heredocs)
 

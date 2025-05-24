@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 17:03:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 15:29:04 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,19 @@ t_exec	*prepare_for_exec(t_shell **m, t_tokn *tokens, t_tokn **redirections)
 	if (!node)
 		return (NULL);
 	node_redirs = get_execution_bloc_redirs(&tokens, redirections);
+/*
 	if (node_redirs)
 		deep_copy = duplicate_token_list(node_redirs);
+*/
 	node->command = get_command_and_arguments(*m, tokens);
 	node->environ = get_env(*m);
+//    node->redirections = create_token_sub_list(&deep_copy, HDOC | IRED | ORED | ARED);
+    node->redirections = create_token_sub_list(&node_redirs, HDOC | IRED | ORED | ARED);
+/*
 	node->redirections[HERE_DOC] = create_token_sub_list(&deep_copy, HDOC);
 	node->redirections[INFILE] = create_token_sub_list(&deep_copy, IRED);
 	node->redirections[OUTFILE] = create_token_sub_list(&deep_copy, ORED | ARED); 
+*/
 	node->next = NULL;
 	return (node);
 }
