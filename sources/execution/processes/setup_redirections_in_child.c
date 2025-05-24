@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/18 16:41:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:36:02 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,10 @@ int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2
 		dup2(pipe[cmd - 1][0], STDIN_FILENO);
 		close(pipe[cmd - 1][1]);
 	}
-
 	else if ((*node)->next)
 	{
 		dup2(pipe[cmd][1], STDOUT_FILENO);
         close(pipe[cmd][0]);
 	}
-
 	return (SUCCESS);
 }

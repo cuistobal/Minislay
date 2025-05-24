@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:51:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:36:58 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void	close_unused_pipes(t_exec **node, int pipefd[2])
 	if ((*node)->redirections[INFILE] == STDIN_FILENO)
 		(*node)->redirections[INFILE] = pipefd[0];
 		*/
-	if ((*node)->redirections[INFILE])	
-		close(pipefd[0]);
+//	if ((*node)->redirections[INFILE])	
+//		close(pipefd[0]);
 }
 
 //

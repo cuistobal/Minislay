@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 17:38:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:31:17 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	matchmaking(t_exec **node, t_tokn *redirections, t_tokn *heredocs)
 	t_tokn	*last_in;
 	t_tokn	*last_out;
 
+    current = *node; 
 	while (current)
 	{
 
