@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 15:36:10 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/26 09:10:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,69 +221,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		expand(*minishell, &redirections);
 
 		node = build_command_node(minishell, expands, &redirections);
-
-
-//open_all_redirections()
-
-        t_exec  *copy = node;
-        t_exec  *save = NULL;
-
-        while (copy)
-        {
-            while (copy->redirections)
-            {
-                if (is_state_active(copy->redirections->type, HDOC))
-                {
-                    if (save)
-                        unlink(save->redirections->value);
-                    handle_here_doc(*minishell, copy->redirections);
-                    save = copy;
-                }
-                move_pointer(&copy->redirections);
-            }
-            copy = copy->next;
-        }
-
-        copy = node;
-        save = NULL;
-
-        while (copy)
-        {
-            while (copy->redirections)
-            {
-                if (!is_state_active(copy->redirections->type, HDOC | IRED))
-                {
-                    if (save)
-                        close(save->redirections->type);
-                    copy->redirections->type = open(copy->redirections->value, O_RDWR);
-                    save = copy;
-                }
-                move_pointer(&copy->redirections);
-            }
-            copy = copy->next;
-        }
-
-        copy = node;
-        save = NULL;
-
-        while (copy)
-        {
-            while (copy->redirections)
-            {
-                if (is_state_active(copy->redirections->type, IRED))
-                {
-                    if (save)
-                        close(save->redirections->type);
-                    copy->redirections->type = open(copy->redirections->value, O_RDONLY);
-                    save = copy;
-                }
-                move_pointer(&copy->redirections);
-            }
-            copy = copy->next;
-        }
-
         
-	//	open_all_redirections(*minishell, &redirections, &heredocs);
+		open_all_redirections(*minishell, &node);
 		
 //		matchmaking(&node, &redirections, &heredocs)
 

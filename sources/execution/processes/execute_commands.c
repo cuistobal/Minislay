@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 13:36:58 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/26 09:00:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][
 	else if (child == 0)
 	{
 		setup_redirections_in_child(minishell, node, pipefd, index);
-		execute_command_in_child((*node)->command, (*node)->environ);
+		if (!is_builtin(*(*node)->command))
+			execute_command_in_child((*node)->command, (*node)->environ);
 	}
+	else
+		exec_builtin((*node)->command, (*node)->environ, *minishell);
 	return (child);
 }
 

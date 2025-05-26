@@ -6,12 +6,26 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:32:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:21:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h" 
 
+void	remove_node(t_tokn **head, t_tokn **current, t_tokn **prev)
+{
+	t_tokn	*next;
+
+	if (!(*head) || !(*current))
+		return ;
+	next = (*current)->next;
+	if (!*prev)
+		move_pointer(head);
+	else
+		(*prev)->next = next;
+	free(*current);
+	current = NULL;
+}
 //
 t_tokn	*duplicate_token_list(t_tokn *source)
 {

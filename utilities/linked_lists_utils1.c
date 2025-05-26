@@ -6,11 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:30:31 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:28:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:35:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+t_tokn	*copy_token(t_tokn *source)
+{
+	t_tokn	*new;
+
+	new = NULL;
+	if (!source)
+		return (NULL);
+	new = malloc(sizeof(t_tokn));
+	if (!new)
+		return (NULL);
+	new->value = strdup(source->value);
+	new->type = source->type;
+	new->next = source->next;
+	return (new);
+}
 
 //I USED TERNARIES ON LEETCODE AND IT WAS FCKING READABLE
 static void	append_pointers_values(t_tokn **list, t_tokn **current, t_tokn **prev)

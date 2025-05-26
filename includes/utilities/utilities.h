@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:33:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 09:36:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,11 @@ bool	balance_tree(t_avlt **node, char *key, int len);
 void	set_error_code(t_shell **minishell, int error_code);
 
 //linked_lists_utils1.c
+t_tokn	*copy_token(t_tokn *source);
 t_tokn	*create_token_sub_list(t_tokn **list, int ttype);
 
 //linked_lists_utils.c
-
+void	remove_node(t_tokn **head, t_tokn **current, t_tokn **prev);
 t_tokn	*duplicate_token_list(t_tokn *source);
 t_tokn	*get_tail_node(t_tokn **list);
 void	append_token_list(t_tokn **head, t_tokn **tail, t_tokn *new);
