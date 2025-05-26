@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/05/26 11:34:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:59:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	open_infile(t_tokn *redirections)
 	int	fd;
 
 	fd = -1;
-	if (!access(redirections->value, F_OK))
+	if (access(redirections->value, F_OK) != 0)
 	{
 		printf("Missing file: %s\n", (redirections)->value);
 		return ;
 	}
-	if (!access(redirections->value, R_OK))
+	if (access(redirections->value, R_OK) != 0)
 	{
 		printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
 		return ; 
@@ -50,11 +50,11 @@ void	open_infile(t_tokn *redirections)
 //
 void    open_outfile(t_tokn *redirections)
 {
-	if (!access(redirections->value, F_OK))
+	if (access(redirections->value, F_OK) != 0)
 		redirections->type = open_file(redirections->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else 
 	{
-		if (access(redirections->value, W_OK))	
+		if (access(redirections->value, W_OK) == 0)	
 			redirections->type = open_file(redirections->value, O_WRONLY | O_TRUNC, 0);
 		else
 			printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
@@ -64,11 +64,11 @@ void    open_outfile(t_tokn *redirections)
 //
 void    open_outfile_append(t_tokn *redirections)
 {
-	if (!access(redirections->value, F_OK))
+	if (access(redirections->value, F_OK) != 0)
 		redirections->type = open_file(redirections->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else 
 	{
-		if (access(redirections->value, W_OK))	
+		if (access(redirections->value, W_OK) == 0)	
 			redirections->type = open_file(redirections->value, O_WRONLY | O_APPEND, 0);
 		else
 			printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
