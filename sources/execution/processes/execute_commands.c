@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 11:57:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:54:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,25 @@ int	execute_command_in_child(char **command, char **envp)
 }
 
 //
-static void	close_unused_pipes(t_exec **node, int pipefd[2])
+static void	close_unused_pipes(t_exec *node, int pipefd[2])
 {
-	if ((*node)->redirections && (*node)->redirections->type != -1)
-		close((*node)->redirections->type);	
-	if (!(*node)->next)
+	//if ((*node)->redirections && (*node)->redirections->type != -1)
+	//	close((*node)->redirections->type);	
+	if (!node->next)
 		return ;
+//	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	//	if ((*node)->redirections && (*node)->redirections->type != -1)
 	//		pipefd[0] = (*node)->redirections->type;	
 }
 
 //
-pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][2], int index)
+pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
 {
 	pid_t	child;
 	bool	builtin;
 
-	builtin = is_builtin(*(*node)->command);
+	builtin = is_builtin(node->command[0]);
 	child = fork();
 	if (child < 0)
 		return (-1);
@@ -62,14 +63,14 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][
 	{
 		setup_redirections_in_child(minishell, node, pipefd, index);
 		if (!builtin)
-			execute_command_in_child((*node)->command, (*node)->environ);
+			execute_command_in_child((node)->command, (node)->environ);
 	}
 	else if (builtin)
-		exec_builtin((*node)->command, (*node)->environ, *minishell);
+		exec_builtin((node)->command, (node)->environ, *minishell);
 	return (child);
 }
 
-//
+
 void	redirections_in_parent(t_exec *node, int pipefd[2])
 {
 	int	infile;
@@ -77,18 +78,19 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 
 	if (!node || !node->redirections)
 		return;
-	infile = node->redirections->type;
-	outfile = node->redirections->next->type;
+	infile = node->redirs[INFILE];
+	outfile = node->redirs[OUTFILE];
 	if (infile != -1)
 	{
+		printf("%d	&&	%d\n", pipefd[0], infile);
 		dup2(pipefd[0], infile);
-		//close(infile);	
+		close(infile);
 //		pipefd[0] = infile;
 	}
 	if (outfile != -1)
 	{
 		dup2(pipefd[1], outfile);
-	//	close(outfile);
+		close(outfile);
 	//	pipefd[1] = outfile;
 	}
 }
@@ -108,10 +110,10 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
 		redirections_in_parent(current, pipefd[index]);
-		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
+		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
-		close_unused_pipes(&current, pipefd[index]);
+		close_unused_pipes(current, pipefd[index]);
 		current = current->next;
 		index++;
 		if (index == BUFFER_SIZE)

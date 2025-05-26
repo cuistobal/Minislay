@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 11:12:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:35:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ static bool	redirections_queue(t_shell *minishell, t_tokn **list, t_tokn **hered
 }
 */
 //
-int	setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd)
+int	setup_redirections_in_child(t_shell **minishell, t_exec *node, int pipe[][2], int cmd)
 {	
 	if (cmd > 0)
 	{
 		dup2(pipe[cmd - 1][0], STDIN_FILENO);
 		close(pipe[cmd - 1][1]);
 	}
-	else if ((*node)->next)
+	else if ((node)->next)
 	{
 		dup2(pipe[cmd][1], STDOUT_FILENO);
         close(pipe[cmd][0]);

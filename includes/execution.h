@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/25 09:58:32 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/26 20:35:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, t_tokn **redirec
 
 int		execute_commands(t_shell **minishell, t_exec *executiondle_assn);
 
-int		setup_redirections_in_child(t_shell **minishell, t_exec **node, int pipe[][2], int cmd);
+int		setup_redirections_in_child(t_shell **minishell, t_exec *node, int pipe[][2], int cmd);
 
 void	insert_heredoc_in_list(t_tokn **head, t_tokn **tail, t_tokn *current);
 
@@ -108,8 +108,8 @@ char	**get_env(t_shell *minishell);
 void    open_all_redirections(t_shell *minishell, t_exec **node);
 
 //handle_standard_redirections.c
-void    open_infile(t_tokn *redirections);
-void    open_outfile(t_tokn *redirections);
-void    open_outfile_append(t_tokn *redirections);
+int		open_infile(t_tokn *redirections);
+int		open_outfile(t_tokn *redirections);
+int		open_outfile_append(t_tokn *redirections);
 
 #endif

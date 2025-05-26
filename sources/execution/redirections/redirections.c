@@ -6,13 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 11:32:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:30:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
+/*
 t_tokn	*trimmed_list(t_tokn *last_in, t_tokn *last_out)
 {
 	t_tokn	*list;
@@ -21,7 +21,7 @@ t_tokn	*trimmed_list(t_tokn *last_in, t_tokn *last_out)
 	if (!last_in && !last_out)
 		return (NULL);
 	if (!last_in)
-			list = create_token_node("", INIT);
+		list = create_token_node("", -1);
 	else
 	{
 		list = copy_token(last_in);
@@ -31,7 +31,8 @@ t_tokn	*trimmed_list(t_tokn *last_in, t_tokn *last_out)
 	if (last_out)
 		list->next = copy_token(last_out);
 	else
-		list->next = NULL;
+		list->next = create_token_node("", -1);
+	print_tokens(list);
 	return (list);
 }
 
@@ -47,67 +48,113 @@ t_tokn	*trim_and_keep(t_tokn **redirections)
     current = *redirections;
     while (current)
     {
-        if (valid_lexeme(current, HDOC, IRED))
+        if (is_state_active(current->type, HDOC | IRED))
         {
-            if (last_in)
-                close(last_in->type);
-            last_in = current;
+			if (last_in)
+				close(last_in->type);
+			last_in = current;
         }
         else
         {
-            if (last_out)
-                close(last_out->type);
+			if (last_out)
+				close(last_out->type);
             last_out = current;
         }
         move_pointer(&current);
     }
 	return (trimmed_list(last_in, last_out));
 }
+*/
 
-//
-static void	open_standard_redirections(t_tokn *redirections)
+static void	append_redirections(t_exec **node, t_tokn *redirections)
 {
-    while (redirections)
+    t_tokn  *current;
+    t_tokn  *last_in;
+    t_tokn  *last_out;
+
+    last_in = NULL;
+    last_out = NULL;
+    current = redirections;
+    while (current)
     {
-		if(is_state_active(redirections->type, IRED))
-			open_infile(redirections);
-		else if(is_state_active(redirections->type, ORED))
-			open_outfile(redirections);
-		else if(is_state_active(redirections->type, ARED))
-			open_outfile_append(redirections);
-        move_pointer(&redirections);
+        if (is_state_active(current->type, HDOC | IRED))
+        {
+			if (last_in)
+				close(last_in->type);
+			last_in = current;
+        }
+        else
+        {
+			if (last_out)
+				close(last_out->type);
+            last_out = current;
+        }
+        move_pointer(&current);
     }
+	
 }
 
 //
-static void	open_here_docs(t_shell *minishell, t_tokn *redirections)
+static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
 {
+	int	last_in;
+	int	last_out;
+
+	last_in = -1;
+	last_out = -1;
     while (redirections)
     {
-        if (is_state_active(redirections->type, HDOC))
-            handle_here_doc(minishell, redirections);
+		if(is_state_active(redirections->type, IRED))
+			last_in = open_infile(redirections);
+		else if(is_state_active(redirections->type, ORED))
+			last_out = open_outfile(redirections);
+		else if(is_state_active(redirections->type, ARED))
+			last_out = open_outfile_append(redirections);
         move_pointer(&redirections);
     }
+	if (node->redirs[INFILE] == -1)
+		node->redirs[INFILE] = last_in;
+	node->redirs[OUTFILE] = last_out;
+}
+
+//
+static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
+{
+	int		fd;
+
+	fd = -1;
+    while (redirections)
+    {
+		if (is_state_active(redirections->type, IRED))
+		{
+			if (fd != -1)
+				close(fd);
+			fd = -1;
+		}
+		else if (is_state_active(redirections->type, HDOC))
+		{
+            handle_here_doc(minishell, redirections);
+			fd = redirections->type;
+		}
+        move_pointer(&redirections);
+    }
+	return (fd);
 }
 
 //
 void	open_all_redirections(t_shell *minishell, t_exec **node)
 {   
 	t_exec	*current;
-	t_tokn	*final_list;
     t_tokn  *redirections;
 
-	redirections = NULL;
     current = *node;
-	final_list = NULL;
+	redirections = NULL;
     while (current)
     {
         redirections = current->redirections;
-        open_here_docs(minishell, redirections);
-        open_standard_redirections(redirections);
-        final_list = trim_and_keep(&redirections);
-	//	free_tokens((*node)->redirections);
-		(*node)->redirections = final_list;
+		append_redirections(node, redirections);
+		current->redirs[INFILE] =  open_here_docs(minishell, redirections);
+        open_standard_redirections(current, redirections);
         current = current->next;
     }
 }

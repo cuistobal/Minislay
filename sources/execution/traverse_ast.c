@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 09:10:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:51:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,6 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		node = build_command_node(minishell, expands, &redirections);
         
 		open_all_redirections(*minishell, &node);
-		
-//		matchmaking(&node, &redirections, &heredocs)
 
 		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node);
