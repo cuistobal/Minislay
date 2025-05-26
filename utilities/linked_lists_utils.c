@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 09:21:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:37:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,8 @@ t_tokn	*get_tail_node(t_tokn **list)
 	current = *list;
 	if (!current)
 		return (NULL);
-	printf("%s\n", current->value);
 	while (current->next)
-	{
 		move_pointer(&current);
-
-	printf("%s\n", current->value);
-	}
-	printf("%s\n", current->value);
 	return (current);
 }
 

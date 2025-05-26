@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 10:36:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:32:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,12 @@ static void	open_standard_redirections(t_tokn *redirections)
 {
     while (redirections)
     {
-        if(!is_state_active(redirections->type, HDOC))
-        {
-            if(is_state_active(redirections->type, IRED))
-                open_infile(redirections);
-            if(is_state_active(redirections->type, ORED))
-                open_outfile(redirections);
-            if(is_state_active(redirections->type, ARED))
-                open_outfile_append(redirections);
-        }
+		if(is_state_active(redirections->type, IRED))
+			open_infile(redirections);
+		else if(is_state_active(redirections->type, ORED))
+			open_outfile(redirections);
+		else if(is_state_active(redirections->type, ARED))
+			open_outfile_append(redirections);
         move_pointer(&redirections);
     }
 }

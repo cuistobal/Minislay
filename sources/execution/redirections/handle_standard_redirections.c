@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/05/26 10:34:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:34:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 int	open_file(char *filename, int mask, int permissions)
 {
 	int	fd;
+
+//	printf("%s	%d	%d\n", filename, mask, permissions);
 
 	if (mask & O_CREAT)
 		fd = open(filename, mask, permissions);
