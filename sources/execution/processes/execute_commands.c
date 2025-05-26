@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 10:52:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:18:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	execute_command_in_child(char **command, char **envp)
 
 	if (!command || !*command || !env || !*env)
 		return (GENERAL_ERROR);
+/*	
 	if (is_builtin(*command))
 	{
 		code = exec_builtin(command, envp, NULL);
@@ -25,6 +26,7 @@ int	execute_command_in_child(char **command, char **envp)
 		free_array(envp, 0);	
 		exit(code);
 	}
+*/
 	else if (execve(*command, command, envp) < 0)
 	{
 		free_array(command, 0);
@@ -67,6 +69,28 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec **node, int pipefd[][
 	return (child);
 }
 
+void	redirections_in_parent(t_exec *node, int pipefd[2])
+{
+	int	infile;
+	int	outfile;
+
+	if (node->redirections)
+		return;
+	infile = node->redirections->type;
+	outfile = node->redirections->next->type;
+	if (infile != -1)
+	{
+		dup2(pipefd[0], infile);
+
+//		pipefd[0] = infile;
+	}
+	if (outfile != -1)
+	{
+		dup2(pipefd[1], outfile);
+	//	pipefd[1] = outfile;
+	}
+}
+
 //
 int	execute_commands(t_shell **minishell, t_exec *node)
 {
@@ -81,6 +105,7 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
+		redirections_in_parent(node, pipefd[index]);
 		pids[index] = create_and_execute_child(minishell, &current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
