@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 09:32:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:10:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,20 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 	}
 }
 
+static void	get_or_restore_stds(int fds[2], bool set)
+{
+	if (set)
+	{
+		fds[0] = dup(STDIN_FILENO);
+		fds[1] = dup(STDOUT_FILENO);
+	}
+	else
+	{
+		dup2(fds[0], STDIN_FILENO);
+		dup2(fds[1], STDOUT_FILENO);
+	}
+}
+
 //
 int	execute_commands(t_shell **minishell, t_exec *node)
 {
@@ -110,8 +124,7 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 
 	index = 0;
 	current = node;
-	original_stds[0] = dup(STDIN_FILENO);
-	original_stds[1] = dup(STDOUT_FILENO);
+	get_or_restore_stds(original_stds, true);
 	while (current)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
@@ -126,8 +139,7 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		if (index == BUFFER_SIZE)
 			break ;
 	}
-	dup2(original_stds[0], STDIN_FILENO);
-	dup2(original_stds[1], STDOUT_FILENO);
+	get_or_restore_stds(original_stds, false);
 	if (index == BUFFER_SIZE)
 			return (free_execution_node(node), GENERAL_ERROR);
 	return (wait_module(pids, index));
