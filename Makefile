@@ -78,6 +78,7 @@ SOURCES = \
 	sources/execution/processes/wait_module.c \
 	sources/execution/processes/build_command_nodes.c \
 	sources/execution/processes/setup_redirections_in_child.c \
+	sources/signals/signals.c \
 	minishell.c \
     minitester/utils/minislays_test_utils.c
 

@@ -51,6 +51,7 @@
 		"istream": "c",
 		"system_error": "c",
 		"minislay.h": "c",
-		"standard_headers.h": "c"
+		"standard_headers.h": "c",
+		"signal.h": "c"
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 13:16:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:37:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	execute_command_in_child(char **command, char **envp)
 	else if (execve(*command, command, envp) < 0)
 	{
 		free_array(command, 0);
-		free_array(command, 0);
+		free_array(envp, 0);
 		exit(GENERAL_ERROR);
 	}
 	return (SUCCESS);
@@ -54,6 +54,9 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 		return (-1);
 	if (child == 0)
 	{
+		//comportemment par defaut des signaux
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		setup_redirections_in_child(minishell, node, pipefd, index);
 		if (!builtin)
 			execute_command_in_child((node)->command, (node)->environ);
