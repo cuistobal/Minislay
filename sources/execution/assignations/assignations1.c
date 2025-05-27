@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:40:10 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 16:38:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:26:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,22 @@
 //
 void	add_key_to_local(t_shell **minishell, t_tokn *assignations)
 {
-	return ;	
+	t_env	*local;
+	t_env	*ahead;
+	t_env	*atail;
+	t_env	*new_element;
+
+	ahead = NULL;
+	atail = NULL;
+	while (assignations)
+	{
+		new_element = create_env_node(strdup(assignations->value)); 
+		insert_env_node(&ahead, &atail, new_element);
+		move_pointer(&assignations);
+	}
+	local = (*minishell)->local;
+	atail->next = local;
+	(*minishell)->local = ahead;
 }
 
 // This function sends the assignation token to the local env list.

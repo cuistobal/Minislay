@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 09:18:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:27:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 		assignations = create_token_sub_list(&ast->tokens, EQUL);
 		//Liste idnependante -> ne pas oublier de la free
+
+		handle_assignations(minishell, &assignations);
 
 		expands = duplicate_token_list(ast->tokens);
 

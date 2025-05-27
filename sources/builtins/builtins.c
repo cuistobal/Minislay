@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/26 08:57:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:12:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static char	*int_to_str(int n)
 {
 	char	buffer[12];
@@ -22,6 +23,7 @@ static char	*int_to_str(int n)
 	return (res);
 }
 
+//
 int	is_builtin(char *cmd)
 {
 	if (!cmd)
@@ -43,6 +45,7 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
+//
 void	free_env(char **env)
 {
 	int	index;

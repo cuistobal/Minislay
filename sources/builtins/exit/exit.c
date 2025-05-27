@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:13:34 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:12:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static int	is_numeric(char *str)
 {
 	int	i;
@@ -29,6 +30,7 @@ static int	is_numeric(char *str)
 	return (1);
 }
 
+//
 int	my_exit(t_shell *minishell, char **args)
 {
 	long	code;

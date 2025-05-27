@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:41:54 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:24:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 	return (true);
 }
 
-
+//
 t_env	*create_env_node(char *line)
 {
 	t_env	*new;
@@ -54,14 +54,6 @@ t_env	*create_env_node(char *line)
 		return (free(key), free(value), NULL);
 	new->var[KEY] = key;
 	new->var[VALUE] = value;
-	new->next = NULL;/*
-	if (!*prev)
-		*prev = new;
-	else
-	{
-		(*prev)->next = new;
-		*prev = (*prev)->next;
-	}*/
+	new->next = NULL;
 	return (new);
 }
-

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:58:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:18:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
 int	get_minishelled(t_shell **minishell, char *input)
 {
-	t_tree	*ast;
-	t_pars	*parser;
-	t_tokn	*tokens;
+	t_tree			*ast;
+	t_pars			*parser;
+	t_tokn			*tokens;
+	struct termios	*initial_state;
 
 	ast = NULL;
 	tokens = NULL;
