@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 09:01:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 09:14:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,7 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 		}
 		else if (is_state_active(redirections->type, HDOC))
 		{
-			printf("%d\n", redirections->type);
             handle_here_doc(minishell, redirections);
-			printf("%d\n", redirections->type);
 			fd = redirections->type;
 		}
         move_pointer(&redirections);
@@ -153,7 +151,7 @@ void	open_all_redirections(t_shell *minishell, t_exec *node)
 	t_exec	*current;
     t_tokn  *redirections;
 
-	current = node;
+	current =node;
 	redirections = NULL;
     while (current)
     {

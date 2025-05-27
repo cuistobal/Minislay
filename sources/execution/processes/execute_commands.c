@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 08:45:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 09:32:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 	pid_t	child;
 	bool	builtin;
 
-	builtin = is_builtin(node->command[0]);
+	builtin = is_builtin(*node->command);
 	child = fork();
 	if (child < 0)
 		return (-1);
@@ -80,14 +80,9 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 		return;
 	infile = node->redirs[INFILE];
 	outfile = node->redirs[OUTFILE];
-	dup2(infile, STDIN_FILENO);
-	dup2(outfile, STDOUT_FILENO);
-
-
-/*
 	if (infile != -1)
 	{
-		//dup2(pipefd[0], infile);
+//		dup2(infile, pipefd[0]);
 		dup2(infile, STDIN_FILENO);
 			//	, infile);
 		close(infile);
@@ -95,25 +90,28 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 	}
 	if (outfile != -1)
 	{
-	//	dup2(pipefd[1], outfile);
+	//	dup2(outfile, pipefd[1]);
 		dup2(outfile, STDOUT_FILENO);
 			//	, outfile);
 		close(outfile);
 	//	pipefd[1] = outfile;
 	}
-*/
 }
 
 //
 int	execute_commands(t_shell **minishell, t_exec *node)
 {
-	int		index;
-	t_exec	*current;
-	pid_t	pids[BUFFER_SIZE];
-	int		pipefd[BUFFER_SIZE][2];
+	int				index;
+	t_exec			*current;
+	pid_t			pids[BUFFER_SIZE];
+//	struct termios	initial_term_state;
+	int				pipefd[BUFFER_SIZE][2];
+	int				original_stds[2];
 
 	index = 0;
 	current = node;
+	original_stds[0] = dup(STDIN_FILENO);
+	original_stds[1] = dup(STDOUT_FILENO);
 	while (current)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
@@ -128,6 +126,8 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		if (index == BUFFER_SIZE)
 			break ;
 	}
+	dup2(original_stds[0], STDIN_FILENO);
+	dup2(original_stds[1], STDOUT_FILENO);
 	if (index == BUFFER_SIZE)
 			return (free_execution_node(node), GENERAL_ERROR);
 	return (wait_module(pids, index));

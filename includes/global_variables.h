@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:58:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 09:16:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@
 # define EXIT_STATUS 32
 
 # define HERE_DOC 0
-# define INFILE 1
-# define OUTFILE 2
+# define INFILE 0
+# define OUTFILE 1
 
 #endif
