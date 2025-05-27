@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 15:09:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:33:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	execute_command_in_child(char **command, char **envp)
 	return (SUCCESS);
 }
 
-//
+/*
 static void	close_unused_pipes(t_exec *node, int pipefd[2])
 {
 	//if ((*node)->redirections && (*node)->redirections->type != -1)
@@ -39,6 +39,7 @@ static void	close_unused_pipes(t_exec *node, int pipefd[2])
 	//	if ((*node)->redirections && (*node)->redirections->type != -1)
 	//		pipefd[0] = (*node)->redirections->type;	
 }
+*/
 
 //
 pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
@@ -69,6 +70,13 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 //
 void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 {
+
+    if (index > 0)
+        close(pipefd[index - 1][0]);
+    if (node->next)
+        close(pipefd[index][1]);
+
+/*
 	int	infile;
 	int	outfile;
 
@@ -81,29 +89,20 @@ void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 	}
 	else if (index > 0)
 	{
-		dup2(STDOUT_FILENO, STDIN_FILENO);
-		close(pipefd[index][0]);
+		dup2(pipefd[index - 1][0], STDIN_FILENO);
+		close(pipefd[index - 1][0]);
 	}
-/*
-	else
-	{
-		dup2(pipefd[0], STDIN_FILENO);	
-		close(pipefd[0]);
-	}
-*/
-/*
-	if (outfile != -1 && node->next)
-	{
-		dup2(outfile, pipefd[index][1]);
-		close(outfile);
-	}
-*/
-
 	if (outfile != -1)
 	{
 		dup2(outfile, STDOUT_FILENO);
 		close(outfile);
 	}
+    else if (node->next)
+    {
+        dup2(pipefd[index][1], STDOUT_FILENO);
+        close(pipefd[index][1]);
+    }
+*/
 }
 
 //
@@ -141,7 +140,7 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
-		close_unused_pipes(current, pipefd[index]);
+		//close_unused_pipes(current, pipefd[index]);
 		current = current->next;
 		index++;
 		if (index == BUFFER_SIZE)
