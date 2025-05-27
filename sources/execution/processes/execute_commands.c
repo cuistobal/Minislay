@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 16:11:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:33:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 //
 void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 {
-
+	close(pipefd[index][1]);
 /*
 	int	infile;
 	int	outfile;
