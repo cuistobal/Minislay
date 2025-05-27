@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 14:37:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:09:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 	}
 	else if (index > 0)
 	{
-		dup2(pipefd[index - 1][1], STDIN_FILENO);
-		close(pipefd[index - 1][1]);
+		dup2(STDOUT_FILENO, STDIN_FILENO);
+		close(pipefd[index][0]);
 	}
 /*
 	else
