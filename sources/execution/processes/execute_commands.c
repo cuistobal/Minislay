@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 15:33:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:11:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,6 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 {
 
-    if (index > 0)
-        close(pipefd[index - 1][0]);
-    if (node->next)
-        close(pipefd[index][1]);
-
 /*
 	int	infile;
 	int	outfile;
@@ -89,8 +84,8 @@ void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 	}
 	else if (index > 0)
 	{
-		dup2(pipefd[index - 1][0], STDIN_FILENO);
-		close(pipefd[index - 1][0]);
+		dup2(pipefd[index - 1][READ_END], STDIN_FILENO);
+		close(pipefd[index - 1][READ_END]);
 	}
 	if (outfile != -1)
 	{
@@ -99,8 +94,8 @@ void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 	}
     else if (node->next)
     {
-        dup2(pipefd[index][1], STDOUT_FILENO);
-        close(pipefd[index][1]);
+        dup2(pipefd[index][WRITE_END], STDOUT_FILENO);
+        close(pipefd[index][WRITE_END]);
     }
 */
 }

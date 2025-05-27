@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 14:38:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:58:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	start_process(t_shell **minishell, char *terminal_name)
 	init_signals();
     while (1)
     {
-        user_input = readline(terminal_name);
-        if (user_input == NULL)  // Gestion du Ctrl-D
+		user_input = readline(terminal_name);
+		if (user_input == NULL)  // Gestion du Ctrl-D
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
 			exit(0);
@@ -77,7 +77,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		retcode = get_minishelled(minishell, user_input);
 		free(user_input);
 		user_input = NULL;
-    }
+	}
 	rl_clear_history();
     return (retcode);
 }
