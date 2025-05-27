@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 11:58:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:41:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 	pid_t	child;
 	bool	builtin;
 
-	builtin = is_builtin(*node->command);
+	builtin = false;
+	if (node->command);
+		builtin = is_builtin(*node->command);
 	child = fork();
 	if (child < 0)
 		return (-1);

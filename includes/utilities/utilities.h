@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:43:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:19:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,8 @@ void	append_exec_list(t_exec **head, t_exec **tail, t_exec *new);
 
 //environement_utils.c 
 bool	is_standard_key(t_shell *minishell, char **value, char *key);
+
+//linked_lists_utils2.c
+t_env	*get_env_tail_node(t_env *list);
 
 #endif

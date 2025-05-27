@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 17:22:16 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:33:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 		return (false);
 	find_element(tree, &node, key, *value);
 	if (node)
-		*value = node->env->var[VALUE];
-	return (true);
+		return (*value = node->env->var[VALUE], true);
+	return (false);
 }
 
 //

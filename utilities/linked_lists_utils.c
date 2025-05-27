@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 11:37:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:17:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	remove_node(t_tokn **head, t_tokn **current, t_tokn **prev)
 	free(*current);
 	current = NULL;
 }
+
 //
 t_tokn	*duplicate_token_list(t_tokn *source)
 {

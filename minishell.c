@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 11:00:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:08:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ bool	build_env(t_shell **minishell, char **envp)
 		head = head->next;
 	}
 	(*minishell)->expt = root;
+	(*minishell)->local = NULL;
+	(*minishell)->command = NULL;
 	append_specials(minishell);
 	return (true);
 }
