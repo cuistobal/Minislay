@@ -6,23 +6,11 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 12:16:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 16:28:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:01:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-/*
-int	setup_redirections_in_child(t_shell **minishell, t_exec *node, int pipe[][2], int cmd)
-{	
-	close(pipe[cmd][WRITE_END]);
-	if (cmd > 0)
-		dup2(pipe[cmd - 1][WRITE_END], STDIN_FILENO);
-	else
-		dup2(STDIN_FILENO, pipe[cmd][READ_END]);
-	return (SUCCESS);
-}
-*/
 
 int	setup_redirections_in_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
 {

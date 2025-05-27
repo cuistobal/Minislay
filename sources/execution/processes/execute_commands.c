@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 16:33:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:28:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,43 +61,12 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 		setup_redirections_in_child(minishell, node, pipefd, index);
 		if (!builtin)
 			execute_command_in_child((node)->command, (node)->environ);
+		else
+			exit(SUCCESS);
 	}
 	else if (builtin)
 		exec_builtin((node)->command, (node)->environ, *minishell);
 	return (child);
-}
-
-//
-void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
-{
-	close(pipefd[index][1]);
-/*
-	int	infile;
-	int	outfile;
-
-	infile = node->redirs[INFILE];
-	outfile = node->redirs[OUTFILE];
-	if (infile != -1)
-	{
-		dup2(infile, STDIN_FILENO);
-		close(infile);
-	}
-	else if (index > 0)
-	{
-		dup2(pipefd[index - 1][READ_END], STDIN_FILENO);
-		close(pipefd[index - 1][READ_END]);
-	}
-	if (outfile != -1)
-	{
-		dup2(outfile, STDOUT_FILENO);
-		close(outfile);
-	}
-    else if (node->next)
-    {
-        dup2(pipefd[index][WRITE_END], STDOUT_FILENO);
-        close(pipefd[index][WRITE_END]);
-    }
-*/
 }
 
 //
@@ -113,6 +82,14 @@ static void	get_or_restore_stds(int fds[2], bool set)
 		dup2(fds[0], STDIN_FILENO);
 		dup2(fds[1], STDOUT_FILENO);
 	}
+}
+
+//
+void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
+{
+	if (!node->next)
+		return ;
+	close(pipe[index][1]);
 }
 
 //
@@ -135,7 +112,6 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
-		//close_unused_pipes(current, pipefd[index]);
 		current = current->next;
 		index++;
 		if (index == BUFFER_SIZE)
