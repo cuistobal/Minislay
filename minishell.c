@@ -6,11 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/27 12:08:44 by chrleroy         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/24 04:29:21 by ynyamets         ###   ########.fr       */
->>>>>>> main
+/*   Updated: 2025/05/27 14:38:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +61,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
     while (1)
     {
         user_input = readline(terminal_name);
-<<<<<<< HEAD
-        add_history(user_input);
-	//	rl_on_new_line();
-        retcode = get_minishelled(minishell,user_input);
-        free(user_input);
-        user_input = NULL;
-		//rl_replace_line("", 0);
-	//	rl_redisplay();
-=======
         if (user_input == NULL)  // Gestion du Ctrl-D
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -90,7 +77,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		retcode = get_minishelled(minishell, user_input);
 		free(user_input);
 		user_input = NULL;
->>>>>>> main
     }
 	rl_clear_history();
     return (retcode);
