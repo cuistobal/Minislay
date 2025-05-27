@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 17:28:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:35:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,6 @@ int	execute_command_in_child(char **command, char **envp)
 	}
 	return (SUCCESS);
 }
-
-/*
-static void	close_unused_pipes(t_exec *node, int pipefd[2])
-{
-	//if ((*node)->redirections && (*node)->redirections->type != -1)
-	//	close((*node)->redirections->type);	
-	if (!node->next)
-		return ;
-//	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
-	//	if ((*node)->redirections && (*node)->redirections->type != -1)
-	//		pipefd[0] = (*node)->redirections->type;	
-}
-*/
 
 //
 pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
@@ -108,10 +94,11 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
-		redirections_in_parent(current, pipefd, index);
+		//redirections_in_parent(current, pipefd, index);
 		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
+		redirections_in_parent(current, pipefd, index);
 		current = current->next;
 		index++;
 		if (index == BUFFER_SIZE)
