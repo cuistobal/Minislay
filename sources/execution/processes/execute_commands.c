@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 12:41:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:16:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,11 @@ void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 		dup2(infile, STDIN_FILENO);
 		close(infile);
 	}
-/*
 	else if (index > 0)
 	{
 		dup2(pipefd[index - 1][1], STDIN_FILENO);
 		close(pipefd[index - 1][1]);
 	}
-*/
 /*
 	else
 	{
