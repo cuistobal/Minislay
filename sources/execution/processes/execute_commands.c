@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 17:35:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:38:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
-		//redirections_in_parent(current, pipefd, index);
 		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
