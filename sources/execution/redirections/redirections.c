@@ -5,96 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 09:14:47 by chrleroy         ###   ########.fr       */
+/*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/27 11:37:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-/*
-t_tokn	*trimmed_list(t_tokn *last_in, t_tokn *last_out)
-{
-	t_tokn	*list;
-
-	list = NULL;
-	if (!last_in && !last_out)
-		return (NULL);
-	if (!last_in)
-		list = create_token_node("", -1);
-	else
-	{
-		list = copy_token(last_in);
-		if (!list)
-			return (NULL);
-	}
-	if (last_out)
-		list->next = copy_token(last_out);
-	else
-		list->next = create_token_node("", -1);
-	print_tokens(list);
-	return (list);
-}
-
-//
-t_tokn	*trim_and_keep(t_tokn **redirections)
-{
-    t_tokn  *current;
-    t_tokn  *last_in;
-    t_tokn  *last_out;
-
-    last_in = NULL;
-    last_out = NULL;
-    current = *redirections;
-    while (current)
-    {
-        if (is_state_active(current->type, HDOC | IRED))
-        {
-			if (last_in)
-				close(last_in->type);
-			last_in = current;
-        }
-        else
-        {
-			if (last_out)
-				close(last_out->type);
-            last_out = current;
-        }
-        move_pointer(&current);
-    }
-	return (trimmed_list(last_in, last_out));
-}
-*/
-
-/*
-static void	append_redirections(t_exec *node, t_tokn *redirections)
-{
-    t_tokn  *current;
-    t_tokn  *last_in;
-    t_tokn  *last_out;
-
-    last_in = NULL;
-    last_out = NULL;
-    current = redirections;
-    while (current)
-    {
-        if (is_state_active(current->type, HDOC | IRED))
-        {
-			if (last_in)
-				close(last_in->type);
-			last_in = current;
-        }
-        else
-        {
-			if (last_out)
-				close(last_out->type);
-            last_out = current;
-        }
-        move_pointer(&current);
-    }
-	
-}
-*/
 
 //
 static void	open_standard_redirections(t_exec *node, t_tokn *redirections)

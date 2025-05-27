@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 11:14:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:58:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@ int	execute_command_in_child(char **command, char **envp)
 
 	if (!command || !*command || !env || !*env)
 		return (GENERAL_ERROR);
-/*	
-	if (is_builtin(*command))
-	{
-		code = exec_builtin(command, envp, NULL);
-		free_array(command, 0);	
-		free_array(envp, 0);	
-		exit(code);
-	}
-*/
 	else if (execve(*command, command, envp) < 0)
 	{
 		free_array(command, 0);
@@ -71,21 +62,40 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 }
 
 //
-void	redirections_in_parent(t_exec *node, int pipefd[2])
+void	redirections_in_parent(t_exec *node, int pipefd[][2], int index)
 {
 	int	infile;
 	int	outfile;
 
-	if (!node || !node->redirections)
-		return;
 	infile = node->redirs[INFILE];
 	outfile = node->redirs[OUTFILE];
-	//printf("command: %s	->	%d | %d\n", *node->command, node->redirs[0], node->redirs[1]);
 	if (infile != -1)
 	{
 		dup2(infile, STDIN_FILENO);
 		close(infile);
 	}
+/*
+	else if (index > 0)
+	{
+		dup2(pipefd[index - 1][1], STDIN_FILENO);
+		close(pipefd[index - 1][1]);
+	}
+*/
+/*
+	else
+	{
+		dup2(pipefd[0], STDIN_FILENO);	
+		close(pipefd[0]);
+	}
+*/
+/*
+	if (outfile != -1 && node->next)
+	{
+		dup2(outfile, pipefd[index][1]);
+		close(outfile);
+	}
+*/
+
 	if (outfile != -1)
 	{
 		dup2(outfile, STDOUT_FILENO);
@@ -93,6 +103,7 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 	}
 }
 
+//
 static void	get_or_restore_stds(int fds[2], bool set)
 {
 	if (set)
@@ -123,7 +134,7 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 	{
 		if (current->next && pipe(pipefd[index]) < 0)
 			return (GENERAL_ERROR);
-		redirections_in_parent(current, pipefd[index]);
+		redirections_in_parent(current, pipefd, index);
 		pids[index] = create_and_execute_child(minishell, current, pipefd, index);
 		if (pids[index] < 0)
 			return (GENERAL_ERROR);
