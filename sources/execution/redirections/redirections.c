@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 20:30:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 08:27:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ t_tokn	*trim_and_keep(t_tokn **redirections)
 }
 */
 
-static void	append_redirections(t_exec **node, t_tokn *redirections)
+/*
+static void	append_redirections(t_exec *node, t_tokn *redirections)
 {
     t_tokn  *current;
     t_tokn  *last_in;
@@ -93,6 +94,7 @@ static void	append_redirections(t_exec **node, t_tokn *redirections)
     }
 	
 }
+*/
 
 //
 static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
@@ -128,8 +130,10 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 		if (is_state_active(redirections->type, IRED))
 		{
 			if (fd != -1)
+			{
 				close(fd);
-			fd = -1;
+				fd = -1;
+			}
 		}
 		else if (is_state_active(redirections->type, HDOC))
 		{
@@ -142,19 +146,24 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 }
 
 //
-void	open_all_redirections(t_shell *minishell, t_exec **node)
+void	open_all_redirections(t_shell *minishell, t_exec *node)
 {   
 	t_exec	*current;
     t_tokn  *redirections;
 
-    current = *node;
+	//current = *node;
+	current = node;
 	redirections = NULL;
     while (current)
     {
         redirections = current->redirections;
-		append_redirections(node, redirections);
-		current->redirs[INFILE] =  open_here_docs(minishell, redirections);
-        open_standard_redirections(current, redirections);
+		if (redirections)
+		{
+			//append_redirections(current, redirections);
+			current->redirs[INFILE] =  open_here_docs(minishell, redirections);
+    	    open_standard_redirections(current, redirections);
+		//	append_redirections(current, redirections);
+		}
         current = current->next;
     }
 }

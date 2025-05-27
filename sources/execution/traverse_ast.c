@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 20:51:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 08:28:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,15 +150,6 @@ void	modify_redirections_nodes(t_tokn **source)
 	while (copy)
 	{
 		next = copy->next;
-/*
-		if (valid_lexeme(copy, HDOC, ARED))
-		{
-			free(copy->value);
-			copy->value = next->value;
-			copy->next = next->next;
-			free(next);
-		}
-*/
 		if (valid_lexeme(copy, HDOC, ARED))
 		{
 			if (is_state_active(copy->type, HDOC))
@@ -221,9 +212,8 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 		expand(*minishell, &redirections);
 
 		node = build_command_node(minishell, expands, &redirections);
-        
-		open_all_redirections(*minishell, &node);
 
+		open_all_redirections(*minishell, node);
 		// Finally, we execute the commands and free the nodes
 		execute_commands(minishell, node);
 		free_execution_node(node);
