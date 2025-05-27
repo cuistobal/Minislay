@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 11:37:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:56:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,39 @@ static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
 	node->redirs[OUTFILE] = last_out;
 }
 
+//Used to unlink unneccessary heredocs.
+//For example, in:
+//
+//	<< eof << bad cat
+//
+//	<<eof would get unlink() because it's not the last in redirection of the 
+//	command bloc
+static void	close_and_unlink(t_tokn **heredoc, int *fd, int newfd)
+{
+	close((*heredoc)->type);
+	unlink((*heredoc)->value);
+	*heredoc = NULL;
+	*fd = newfd;
+}
+
 //
 static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 {
 	int		fd;
+	t_tokn	*prev;
 
 	fd = -1;
+	prev = NULL;
     while (redirections)
     {
-		if (is_state_active(redirections->type, IRED))
-		{
-			if (fd != -1)
-			{
-				close(fd);
-				fd = -1;
-			}
-		}
+		if (is_state_active(redirections->type, IRED) && fd != -1)
+			close_and_unlink(&prev, &fd, -1);
 		else if (is_state_active(redirections->type, HDOC))
 		{
             handle_here_doc(minishell, redirections);
-			fd = redirections->type;
+			if (prev)
+				close_and_unlink(&prev, &fd, redirections->type);
+			prev = redirections;
 		}
         move_pointer(&redirections);
     }
