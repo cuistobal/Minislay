@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:40:10 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:26:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:36:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ void	add_key_to_local(t_shell **minishell, t_tokn *assignations)
 		move_pointer(&assignations);
 	}
 	local = (*minishell)->local;
+	if (!atail || !ahead)
+		return ;
 	atail->next = local;
 	(*minishell)->local = ahead;
 }
 
+/*
 // This function sends the assignation token to the local env list.
 void	handle_assignations(t_shell **minishell, t_tokn **source)
 {
@@ -64,3 +67,4 @@ void	handle_assignations(t_shell **minishell, t_tokn **source)
 	if (assignation_tail)
 		assignation_tail->next = NULL;
 }
+*/

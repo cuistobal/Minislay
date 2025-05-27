@@ -36,6 +36,7 @@ SOURCES = \
 	utilities/inline_utilities.c \
 	utilities/linked_lists_utils.c \
 	utilities/linked_lists_utils1.c \
+	utilities/environement_utils.c \
 	sources/initialisation.c\
 	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \

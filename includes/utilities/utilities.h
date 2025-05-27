@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 09:36:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:43:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,8 @@ void	append_token_list(t_tokn **head, t_tokn **tail, t_tokn *new);
 void	append_exec_list(t_exec **head, t_exec **tail, t_exec *new);
 
 //bool	handle_here_doc(t_shell *minishell, t_tokn **redirections);
+
+//environement_utils.c 
+bool	is_standard_key(t_shell *minishell, char **value, char *key);
 
 #endif

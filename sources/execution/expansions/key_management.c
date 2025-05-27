@@ -1,24 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_management.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/27 10:42:12 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
-
-static const char *g_keys[DKCT] = {DSTR, DARO, DHAS, DEXT, DHYP, DPID, DCID, DNME, DLST, DIFS};
-
-//
-static bool	is_standard_key(t_shell *minishell, char **value, char *key)
-{
-	int	index;
-
-	index = 0;
-	while (index < DKCT)
-	{
-		if (strcmp(key, g_keys[index]) == 0)
-		{
-			*value = minishell->special[index];
-			break ;
-		}
-		index++;
-	}	
-	return (index < DKCT);
-}
 
 
 //We use this utility to extract the key within the current token string.
@@ -48,7 +40,7 @@ static char	*extract_key(char *token, int *index, int start)
 	return strndup(token + start, tlen + 1);
 }
 
-static inline void	quote_state(char current, char *quote, bool *sqte)
+static void	quote_state(char current, char *quote, bool *sqte)
 {
 	if (is_quote(current))
 	{
@@ -76,7 +68,6 @@ static char	*retrieve_expansions(char *token, int *index)
 	static char	quote;
 
 	sqte = false;
-//	quote = INIT;
 	start = *index;
 	if (*index == 0)
 		quote = INIT;
@@ -84,33 +75,11 @@ static char	*retrieve_expansions(char *token, int *index)
 	{
 		while (token[*index])
 		{
-			// quote_handler()	This smol util needs implemetantion.
-			// 					Note that a similar code snippet is implemented
-			// 					in tokenizer.c
-		//	printf("@%d	->	bool = %d, token[*index] = %c, quote = %c\n", *index, sqte, token[*index], quote);		
-			/*
-			if (is_quote(token[*index]))
-			{
-				if (!quote)
-				{
-					quote = token[*index];
-					sqte = quote == '\'';
-				}
-				else if (quote == token[*index])
-				{
-					quote = INIT;
-					sqte = quote == '\'';
-				}
-			}
-			*/
 			quote_state(token[*index], &quote, &sqte);
-		//	else if (token[*index] == '$' && !sqte)
 			if (token[*index] == '$' && !sqte)
 			{
-				printf("%s\n", token + *index);
 				if (*index == start)
 					return (extract_key(token, index, start));
-				//index modification here ?
 				return (strndup(token + start, *index - start));
 			}
 			(*index)++;
@@ -160,22 +129,3 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 	}
 	return (!token[*index]);
 }
-
-/*
-bool	get_expanded(t_shel *minishell, char *token, char **value, int *index)
-{
-	char	*key;
-
-	key = NULL;
-	if (!token || !token[*index])
-		return (false);
-	key = retrieve_expansions(token, index);
-	if (!key)
-		return (false);
-	if (retrieve_keys_value(minishell, key, value))
-		return (true);	
-
-	*value = "";
-	return (true);
-}
-*/

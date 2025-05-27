@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 09:14:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:38:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,7 @@ void    open_all_redirections(t_shell *minishell, t_exec *node);
 int		open_infile(t_tokn *redirections);
 int		open_outfile(t_tokn *redirections);
 int		open_outfile_append(t_tokn *redirections);
+
+void	add_key_to_local(t_shell **minishell, t_tokn *assignations);
 
 #endif

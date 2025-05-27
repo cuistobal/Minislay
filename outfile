@@ -1,0 +1,14 @@
+LICENSE
+Makefile
+README.md
+includes
+minishell.c
+minishell.o
+minislay
+minitester
+outfile
+sources
+tags
+tests
+toolbox_and_notes
+utilities

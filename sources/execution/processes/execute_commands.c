@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:10:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:14:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 	return (child);
 }
 
-
+//
 void	redirections_in_parent(t_exec *node, int pipefd[2])
 {
 	int	infile;
@@ -80,21 +80,16 @@ void	redirections_in_parent(t_exec *node, int pipefd[2])
 		return;
 	infile = node->redirs[INFILE];
 	outfile = node->redirs[OUTFILE];
+	//printf("command: %s	->	%d | %d\n", *node->command, node->redirs[0], node->redirs[1]);
 	if (infile != -1)
 	{
-//		dup2(infile, pipefd[0]);
 		dup2(infile, STDIN_FILENO);
-			//	, infile);
 		close(infile);
-//		pipefd[0] = infile;
 	}
 	if (outfile != -1)
 	{
-	//	dup2(outfile, pipefd[1]);
 		dup2(outfile, STDOUT_FILENO);
-			//	, outfile);
 		close(outfile);
-	//	pipefd[1] = outfile;
 	}
 }
 
@@ -117,10 +112,9 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 {
 	int				index;
 	t_exec			*current;
-	pid_t			pids[BUFFER_SIZE];
-//	struct termios	initial_term_state;
-	int				pipefd[BUFFER_SIZE][2];
 	int				original_stds[2];
+	pid_t			pids[BUFFER_SIZE];
+	int				pipefd[BUFFER_SIZE][2];
 
 	index = 0;
 	current = node;
