@@ -6,7 +6,7 @@
 /*   By: chrleroy <chrleroy@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:22:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 11:30:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:20:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <ctype.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>

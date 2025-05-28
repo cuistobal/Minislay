@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 09:49:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:20:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ int	get_minishelled(t_shell **minishell, char *input)
 	return (free_tree(ast), 0);
 }
 
+static bool	temporisation(int code)
+{
+	if (code == EXIT_CODE)
+		return (true);
+	while (code++ < INT_MAX)
+	{
+	}
+	return (false);
+}
+
 //
 int	start_process(t_shell **minishell, char *terminal_name)
 {
@@ -77,6 +87,8 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		retcode = get_minishelled(minishell, user_input);
 		free(user_input);
 		user_input = NULL;
+		if (temporisation(retcode)) 
+			break ;
 	}
 	rl_clear_history();
     return (retcode);

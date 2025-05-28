@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/26 10:33:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:16:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define DEAD_SIGNAL 130
 # define INVALID_EXIT_STATUS 255
 # define REDIRECTION_ERROR -1
+# define EXIT_CODE 55
 
 /*
 0: Success. The command or script executed successfully.
