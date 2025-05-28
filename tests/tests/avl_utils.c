@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   avl_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/28 14:59:50 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/28 14:59:53 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "avl_tree.h"
 
 //
@@ -18,26 +30,35 @@ int	my_max(const int a, const int b)
 
 void	free_avlt_tree(t_avlt *root)
 {
-	if (root)
+	if (!root)
+		return ;
+	free_avlt_tree(root->left);
+	root->left = NULL;
+	free_avlt_tree(root->right);
+	root->right = NULL;
+	if (root->data[0])
 	{
-		free_avlt_tree(root->left);
-		free_avlt_tree(root->right);
 		free(root->data[0]);
-		free(root->data[1]);
-		free(root);
+		root->data[0] = NULL;
 	}
+	if (root->data[1])
+	{
+		free(root->data[1]);
+		root->data[1] = NULL;
+	}
+	free(root);
+	root = NULL;
 }
 
 //This function prints the tree's content in pre_order (leftmost -> rightmost)
 void	pre_order_display(t_avlt *root)
 {
-	if (root)
-	{
-		pre_order_display(root->left);
-		printf("export %s", root->data[0]);
-		printf("=%s\n", root->data[1]);
-		pre_order_display(root->right);
-	}
+	if (!root)
+		return ;
+	pre_order_display(root->left);
+	printf("export %s", root->data[0]);
+	printf("=%s\n", root->data[1]);
+	pre_order_display(root->right);
 }
 
 //This function takes the adress of a t_avlt pointer and allocates & intialize
@@ -104,12 +125,3 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
 	}
 	return (false);
 }
-
-/*
-bool	remove node(t_avlt *tree, char *key)
-{
-	if (tree)
-	{
-
-	}
-}*/

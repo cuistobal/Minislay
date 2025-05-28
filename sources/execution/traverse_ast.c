@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 14:43:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:48:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 	int	ctype;
 	int	original_stds[2];
 
-	if (!ast)
+	if (!ast || !ast->tokens)
 		return ;
 	ctype = 0;
 	if (is_state_active(ast->tokens->type, OPAR))

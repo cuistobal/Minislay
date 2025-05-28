@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 14:35:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:03:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@ int	get_minishelled(t_shell **minishell, char *input)
 		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
-	traverse_ast(minishell, ast);
-	return (free_tree(ast), 0);
+
+	traverse_ast(minishell, ast);	
+	free_tokens(tokens);
+	free_tree(ast);
+	free(parser);
+	return (0);
 }
 
 static bool	temporisation(int code)
@@ -136,6 +140,7 @@ bool	build_env(t_shell **minishell, char **envp)
 //
 int	main(int argc, char **argv, char **envp)
 {
+	int		ret;
 	t_shell	*minishell;
     char	*user_input;
 	char	rl_prompt[BUFFER_SIZE];
@@ -146,5 +151,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
-    return (start_process(&minishell, rl_prompt));
+	ret = start_process(&minishell, rl_prompt);
+	free_minishell(minishell);
+	return (ret);
 }
