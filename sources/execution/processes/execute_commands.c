@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 11:59:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:19:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,15 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 	current = node;
 	while (current && index < BUFFER_SIZE)
 	{
-		if (current->next && pipe(pipefd[index]) < 0)
-			return (GENERAL_ERROR);
-		if (is_builtin(*current->command))
-			exec_builtin(current->command, current->environ, *minishell);
-		else
-			execute_binay(current, pids, pipefd, index);
+		if (current->command)
+		{
+			if (current->next && pipe(pipefd[index]) < 0)
+				return (GENERAL_ERROR);
+			if (is_builtin(*current->command))
+				exec_builtin(current->command, current->environ, *minishell);
+			else
+				execute_binay(current, pids, pipefd, index);
+		}
 		current = current->next;
 		index++;
 	}
