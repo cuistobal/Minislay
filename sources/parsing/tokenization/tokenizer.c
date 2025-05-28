@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:42:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 12:02:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,37 +132,3 @@ bool	tokenize(t_tokn **head, const char *input, int len)
     }
 	return (true);
 }
-
-/*	UTILS && TESTS
-void print_tokens(t_tokn *node)
-{
-    while (node)
-	{
-        printf("%s -> %s\n", node->type, node->value);
-        node = node->next;
-    }
-}
-
-int main(int argc, char **argv)
-{
-	t_tokn	*temp;
-	t_tokn	*tokens;
-
-	temp = NULL;
-	tokens = NULL;
-    if (argc == 2)
-	{
-		tokens = tokenize(argv[1], strlen(argv[1]));
-    	print_tokens(tokens);
-    	while (tokens)
-		{
-        	temp = tokens;
-        	tokens = tokens->next;
-        	free(temp->value);
-        	free(temp);
-    	}
-		return (0);
-	}
-    fprintf(stderr, "Usage: %s \"<command_string>\"\n", argv[0]);
-    return (127);
-}*/

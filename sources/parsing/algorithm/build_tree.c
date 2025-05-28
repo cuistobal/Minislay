@@ -8,7 +8,6 @@ t_tree	*create_tree_node(t_tokn *tokens)
 	new_node = (t_tree *)malloc(sizeof(t_tree));
 	if (new_node)
 	{
-		print_tokens(tokens);
 		new_node->tokens = tokens;
 		new_node->left = NULL;
 		new_node->right = NULL;

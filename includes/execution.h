@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:49:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:57:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ bool    expand(t_shell *minishell, t_tokn **list);
 bool	split_list(t_tokn *current, t_tokn **assignations, t_tokn **expansions);
 
 //
-//bool	prepare_for_exec(t_shel **minishell, t_tree *ast);
-//char	**prepare_for_exec(t_shel *minishell, t_tree *ast, int *size);
-//t_exec	*prepare_for_exec(t_shell **minishell, t_tree *ast, t_tokn **redirections);
-t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens, t_tokn **redirections);
+t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens);
 
 //traverse_ast.c
 void	execute_pipeline(t_shell **minishell, t_exec *execute);
@@ -84,9 +81,9 @@ int		wait_module(pid_t *pids, int count);
 
 //handle_pipeline.c
 //t_exec	*build_command_node(t_shell **minishell, t_tree *ast);
-t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, t_tokn **redirections);
+t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, int *count);
 
-int		execute_commands(t_shell **minishell, t_exec *executiondle_assn);
+int		execute_commands(t_shell **minishell, t_exec *execution, int count);
 
 void	insert_heredoc_in_list(t_tokn **head, t_tokn **tail, t_tokn *current);
 

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:07:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:59:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,17 @@ pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
 
 
 
-static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int *index)
+static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int index)
 {
-	pids[*index] = create_and_execute_child(current, pipefd, *index);
-	if (pids[*index] < 0)
+	pids[index] = create_and_execute_child(current, pipefd, index);
+	if (pids[index] < 0)
 		return (GENERAL_ERROR);
-	redirections_in_parent(current, pipefd, *index);
-	(*index)++;
+	redirections_in_parent(current, pipefd, index);
 	return (SUCCESS);
 }
 
 //
-int	execute_commands(t_shell **minishell, t_exec *node)
+int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
 	int				index;
 	t_exec			*current;
@@ -76,18 +75,11 @@ int	execute_commands(t_shell **minishell, t_exec *node)
 		if (is_builtin(*current->command))
 			exec_builtin(current->command, current->environ, *minishell);
 		else
-			execute_binay(current, pids, pipefd, &index);
-/*
-			pids[index] = create_and_execute_child(minishell, current, pipefd, index);
-			if (pids[index] < 0)
-				return (GENERAL_ERROR);
-		}
-		redirections_in_parent(current, pipefd, index);
-*/
+			execute_binay(current, pids, pipefd, index);
 		current = current->next;
-//		index++;
+		index++;
 	}
 	if (index == BUFFER_SIZE)
-			return (wait_module(pids, index), execute_commands(minishell, current));
+			return (wait_module(pids, index), execute_commands(minishell, current, count - index));
 	return (wait_module(pids, index));
 }
