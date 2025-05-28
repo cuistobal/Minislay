@@ -6,12 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 14:08:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:54:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static int	return_exit_code(pid_t pid)
 {
 	int	status;
@@ -22,19 +23,22 @@ static int	return_exit_code(pid_t pid)
 	return (GENERAL_ERROR);
 }
 
-
-int	wait_module(pid_t *pids, int count)
+//
+int	wait_module(pid_t *pids, int count, int ret)
 {
-	int	index;
-	int	status;
+	bool	error;
+	int		index;
+	int		status;
 	
 	index = 0;
 	while (count < index)
 	{
 		status = return_exit_code(pids[index]);
 		if (status != 0)
-			printf("Error exec\n");
+			error = true;
 		count++;
 	}
+	if (ret == EXIT_CODE)
+		return (EXIT_CODE);
 	return (GENERAL_ERROR);
 }

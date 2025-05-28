@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build_tree.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/28 15:09:34 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/05/28 15:11:39 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //We use this function to create a new tree_node
@@ -22,37 +34,25 @@ bool	build_ast(t_pars **parser)
 	t_tree	*branch;
 
 	branch = NULL;
-
-	//Ajout check parser && parser->ast
-	
 	if (!*((*parser)->ast))
 		*((*parser)->ast) = create_tree_node(NULL);
 	if (*((*parser)->ast))
 	{
 		branch = *((*parser)->ast);
-
 		delete_links(*parser);
-
 		save = (*parser)->tab[TTNEXT];
-
 		if ((*parser)->tab[TTCURR] && is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
-
 			branch->tokens = (*parser)->tab[TTCURR];
 			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
-			
 			if (parse_script(parser))
 			{
-
-				reset_parser(*parser, save, TTHEAD, &branch->right);
-				
+				reset_parser(*parser, save, TTHEAD, &branch->right);	
 				return (parse_script(parser));
 			}
 			return (false);
 		}
-
 		branch->tokens = (*parser)->tab[TTHEAD];
-	
 	}
 	return (branch);
 }

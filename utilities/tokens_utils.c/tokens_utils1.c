@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:01:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:02:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:38:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,19 @@ void	free_tokens(t_tokn *tokens)
 {
 	t_tokn *temp;
 
+	temp = NULL;
+	if (!tokens)
+		return ;
 	while (tokens)
 	{
-		temp = tokens;
-		tokens = tokens->next;
-		if (temp->value)
+		temp = (tokens)->next;
+		if ((tokens)->value)
 		{
-			free (temp->value);
-			temp->value = NULL;
+			free((tokens)->value);
+			(tokens)->value = NULL;
 		}
-		free (temp);
-		temp = NULL;
+		free(tokens);
+		tokens = temp;
 	}
 }
 

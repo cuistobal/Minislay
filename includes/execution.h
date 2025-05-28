@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 11:57:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:54:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_exec	*prepare_for_exec(t_shell **minishell, t_tokn *tokens);
 
 //traverse_ast.c
 void	execute_pipeline(t_shell **minishell, t_exec *execute);
-void	traverse_ast(t_shell **minishell, t_tree *ast);
+int		traverse_ast(t_shell **minishell, t_tree *ast);
 
 //subshells.c
 bool    handle_subshell(t_shell *minishell, t_tree *ast);
@@ -51,7 +51,6 @@ bool    handle_subshell(t_shell *minishell, t_tree *ast);
 bool	word_splitting(t_shell *minishell, t_tokn **current);
 
 //globing.c
-void	free_array(char **array, int count);
 bool	match_pattern(char **patterns, char *current, int *i);
 char	**identify_globing_patterns(char *globing);
 bool	globing(t_tokn **list, const char *path, int *count);
@@ -76,7 +75,7 @@ int		execute_command_in_child(char **command, char **env);
 int		create_child_process(t_shell *minishell, t_exec **execution);
 
 //wait_module.c
-int		wait_module(pid_t *pids, int count);
+int		wait_module(pid_t *pids, int count, int ret);
 
 
 //handle_pipeline.c

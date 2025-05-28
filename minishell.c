@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:03:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:57:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int	get_minishelled(t_shell **minishell, char *input)
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
 
-	traverse_ast(minishell, ast);	
+	ret = traverse_ast(minishell, ast);	
+	free(parser);
 	free_tokens(tokens);
 	free_tree(ast);
-	free(parser);
-	return (0);
+	return (ret);
 }
 
 static bool	temporisation(int code)
@@ -77,8 +77,11 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		retcode = get_minishelled(minishell, user_input);
 		free(user_input);
 		user_input = NULL;
-		if (temporisation(retcode)) 
+		if (retcode == EXIT_CODE)
 			break ;
+		printf("KOIKOUUUBEH\n");
+		//if (temporisation(retcode)) 
+		//	break ;
 	}
 	rl_clear_history();
     return (retcode);

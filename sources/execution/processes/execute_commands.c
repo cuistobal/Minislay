@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 12:20:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:02:55 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int ind
 //
 int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
+	int				ret;
 	int				index;
 	t_exec			*current;
 	pid_t			pids[BUFFER_SIZE];
@@ -74,15 +75,19 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 		{
 			if (current->next && pipe(pipefd[index]) < 0)
 				return (GENERAL_ERROR);
-			if (is_builtin(*current->command))
-				exec_builtin(current->command, current->environ, *minishell);
-			else
+			if (!is_builtin(*current->command))
 				execute_binay(current, pids, pipefd, index);
+			else
+			{
+				ret = exec_builtin(current->command, current->environ, *minishell);
+				if (ret == EXIT_CODE)
+					break ;
+			}
 		}
 		current = current->next;
 		index++;
 	}
 	if (index == BUFFER_SIZE)
-			return (wait_module(pids, index), execute_commands(minishell, current, count - index));
-	return (wait_module(pids, index));
+			return (wait_module(pids, index, ret), execute_commands(minishell, current, count - index));
+	return (wait_module(pids, index, ret));
 }

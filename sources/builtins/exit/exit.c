@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:12:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:58:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int	my_exit(t_shell *minishell, char **args)
 	else
 		code = atol(args[0]);
 	code = (code % 256 + 256) % 256;
-	free_minishell(minishell);
-	exit((int)code);
+//	free_minishell(minishell);
+	return (EXIT_CODE);
 }

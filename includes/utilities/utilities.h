@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 12:19:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:10:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	is_state_active(int state, int flag);
 char	*my_strtok_r(char *str, const char *delim, char **saveptr);
 
 //tokens_utils1.c:
-void	free_tokens(t_tokn *tokens);
+//void	free_tokens(t_tokn **tokens);
 
 //tokens_utils1.c:
 void	free_tokens(t_tokn *tokens);
@@ -77,8 +77,8 @@ bool	error_message(char *message);
 
 //tests
 void	free_tree(t_tree *ast);
-void	free_array(char **array, int count);
 void	free_minishell(t_shell *minishell);
+void	free_array(char **array, int count);
 void	free_execution_node(t_exec *execution);
 
 //update_key_value.c
