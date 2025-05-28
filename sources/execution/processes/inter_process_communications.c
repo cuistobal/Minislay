@@ -6,73 +6,85 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/22 13:15:43 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/28 10:05:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-/*
-int	handle_communication_in_child(t_exec **node)
+//
+int	my_dup(int source)
 {
-	if (dup2((*node)->pipe[0], STDIN_FILENO) != 0)
-		return (GENERAL_ERROR);
-	close((*node)->pipe[1]);
-	return (SUCCESS);
+	int	newfd;
+
+	newfd = dup(source);
+	if (newfd < 0)
+		error_message(DUP_FAILED);
+	return (newfd);
 }
 
 //
-int	handle_communication_in_parent(t_exec **node)
+int	my_dup2(int oldfd, int newfd)
 {
-	if (dup2((*node)->pipe[1], STDIN_FILENO) != 0)
+	int	ret;
+
+	ret = dup2(oldfd, newfd);
+	if (ret < 0)
+	{
+		error_message(DUP_FAILED);
 		return (GENERAL_ERROR);
-	close((*node)->pipe[0]);
+	}
 	return (SUCCESS);
 }
-*/
 
-// This function redirects the STDIN/OUT streams acccording to the execution's
-// node position.
-int	pipe_communication(int pipefd[2], bool parent)
+void	get_or_restore_stds(int fds[2], bool set)
 {
-	int	new_fd;
-
-	new_fd = dup2(STDIN_FILENO, pipefd[parent]);
-	if (new_fd < 0)
-		return (GENERAL_ERROR);
-	return (new_fd);
+	if (set)
+	{
+		fds[0] = dup(STDIN_FILENO);
+		fds[1] = dup(STDOUT_FILENO);
+	}
+	else
+	{
+		dup2(fds[0], STDIN_FILENO);
+		dup2(fds[1], STDOUT_FILENO);
+	}
 }
 
 //
-int	handle_redirections(t_exec **execution, int original_stds[2])
+void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 {
+	if (!node->next)
+		return ;
+	close(pipe[index][1]);
+}
 
-    original_stds[0] = dup(STDIN_FILENO);
-    if (original_stds[0] == -1)
-		return (GENERAL_ERROR);
-    original_stds[1] = dup(STDOUT_FILENO);
-    if (original_stds[1] == -1)
-		return (GENERAL_ERROR);
+//Integrer la gestion d'erreur piur les dup()
+int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
+{
+    int infile;
+	int outfile;
 
-	//If we have a in redirection ->
-/*
-=======
->>>>>>> main:sources/execution/processes/ipc_module.c
-	if ((*execution)->redirections[INFILE] != STDIN_FILENO)
-	{
-		if (dup2((*execution)->redirections[INFILE], STDIN_FILENO) != 0)
-			return (GENERAL_ERROR);
-		close((*execution)->redirections[INFILE]);
-	}
-
-	//If we have an out redirection ->
-
-	if ((*execution)->redirections[OUTFILE] != STDOUT_FILENO)
-	{
-		if (dup2((*execution)->redirections[OUTFILE], STDOUT_FILENO) != 0)
-			return (GENERAL_ERROR);
-		close((*execution)->redirections[OUTFILE]);
-	}
-	return (SUCCESS);
-*/
+	infile = node->redirs[INFILE];
+	outfile = node->redirs[OUTFILE];
+    if (infile != -1)
+    {
+        dup2(infile, STDIN_FILENO);
+        close(infile);
+    }
+	else if (index > 0)
+    {
+        dup2(pipefd[index - 1][READ_END], STDIN_FILENO);
+        close(pipefd[index - 1][READ_END]);
+    }
+    if (outfile != -1)
+    {
+        dup2(outfile, STDOUT_FILENO);
+        close(outfile);
+    }
+    else if (node->next)
+    {
+        dup2(pipefd[index][WRITE_END], STDOUT_FILENO);
+        close(pipefd[index][WRITE_END]);
+    }
 }

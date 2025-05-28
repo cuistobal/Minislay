@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 13:14:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 09:20:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,6 @@ static void	execute_branch(t_shell **minishell, t_tree *ast)
 	expands = NULL;
 	heredocs = NULL;
 	redirections = NULL;
-	//First, we handle redirections and return a token list containing only
-	//commands and redirections
 
 	assignations = create_token_sub_list(&ast->tokens, EQUL);
 	if (assignations)
@@ -199,20 +197,12 @@ static void	execute_branch(t_shell **minishell, t_tree *ast)
 		add_key_to_local(minishell, assignations);
 		free_tokens(assignations);
 	}
-	//Liste idnependante -> ne pas oublier de la free
-
 	expands = duplicate_token_list(ast->tokens);
-
 	modify_redirections_nodes(&expands);
-
 	expand(*minishell, &expands);
 	expand(*minishell, &redirections);
-
 	node = build_command_node(minishell, expands, &redirections);
-
 	open_all_redirections(*minishell, node);
-
-	// Finally, we execute the commands and free the nodes
 	execute_commands(minishell, node);
 	free_execution_node(node);
 }
@@ -220,13 +210,19 @@ static void	execute_branch(t_shell **minishell, t_tree *ast)
 //
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
+	int	original_stds[2];
+
 	if (!ast)
 		return ;
 
 	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
 		handle_operators(minishell, ast);
 	else
+	{
+		get_or_restore_stds(original_stds, true);
 		execute_branch(minishell, ast);
+		get_or_restore_stds(original_stds, false);
+	}
 	traverse_ast(minishell, ast->left);
 	traverse_ast(minishell, ast->right);
 

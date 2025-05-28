@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:38:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:08:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,12 @@ int		create_child_process(t_shell *minishell, t_exec **execution);
 //wait_module.c
 int		wait_module(pid_t *pids, int count);
 
-//ipc_module.c
-int		handle_communication_in_child(t_exec **node);
-int		handle_communication_in_parent(t_exec **node);
-int		handle_redirections(t_exec **execution, int original_stds[2]);
-
 
 //handle_pipeline.c
 //t_exec	*build_command_node(t_shell **minishell, t_tree *ast);
 t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, t_tokn **redirections);
 
 int		execute_commands(t_shell **minishell, t_exec *executiondle_assn);
-
-int		setup_redirections_in_child(t_shell **minishell, t_exec *node, int pipe[][2], int cmd);
 
 void	insert_heredoc_in_list(t_tokn **head, t_tokn **tail, t_tokn *current);
 
@@ -114,5 +107,12 @@ int		open_outfile(t_tokn *redirections);
 int		open_outfile_append(t_tokn *redirections);
 
 void	add_key_to_local(t_shell **minishell, t_tokn *assignations);
+
+//inter_process_communications.c
+int		my_dup2();
+int		my_dup();
+void	get_or_restore_stds(int fds[2], bool set);
+void	redirections_in_parent(t_exec *node, int pipe[][2], int index);
+int		setup_redirections_in_child(t_exec *node, int pipefd[][2], int index);
 
 #endif
