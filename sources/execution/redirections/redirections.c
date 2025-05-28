@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 14:56:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:29:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	open_all_redirections(t_shell *minishell, t_exec *node)
     while (current)
     {
         redirections = current->redirections;
+		print_tokens(redirections);
 		if (redirections)
 		{
 			current->redirs[INFILE] =  open_here_docs(minishell, redirections);

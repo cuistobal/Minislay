@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 09:20:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:44:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
 		printf("Tu forces frere\n");
 */
 }
-
+/*
 static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
 {
 	t_tokn	*copy;
@@ -137,6 +137,7 @@ static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn *
 	if (ctail)
 		ctail->next = NULL;
 }
+*/
 
 //
 void	modify_redirections_nodes(t_tokn **source)
@@ -228,4 +229,3 @@ void	traverse_ast(t_shell **minishell, t_tree *ast)
 
 //	free_tree_node(ast);
 }
-
