@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 14:20:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:35:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 //Has to return an ast for exec // Needs to take an ast pointer as parameter
 int	get_minishelled(t_shell **minishell, char *input)
 {
+	int				ret;
 	t_tree			*ast;
 	t_pars			*parser;
 	t_tokn			*tokens;
@@ -32,22 +33,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
 	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
-	/*
- 	 *
-	 *	I forgot an important point here ->	redirections are handled first, then
-	 *	the tree is traversed for execution.
-	 *
-	 *	We need to make decision about this implementation.
-	 *	IMO, we could handle it gracefully by splitting redirections and
-	 *	treating them first, hence we'd only have to perform the dup()'s while
-	 *	executing.
-	 *	Otherwise, we could choose to traverse the tree twice. First we'd check
-	 *	redirections and ssecond execute commands.
-	 *
- 	 */
-
 	traverse_ast(minishell, ast);
-
 	return (free_tree(ast), 0);
 }
 

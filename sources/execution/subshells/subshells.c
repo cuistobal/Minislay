@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 14:17:39 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:41:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ static bool	prompt(char **prompt, t_tree *branch)
 
 bool	handle_subshell(t_shell *minishell, t_tree *ast)
 {
+	t_shell	*subshell;
 	char	*subshell_command;
 
 	subshell_command = NULL;
 	if (prompt(&subshell_command, ast))
 	{
-		printf("SUBSHELL COMMAND	->	%s\n", subshell_command);
+	
 		if (get_minishelled(&minishell, subshell_command))
 		{
 			free(subshell_command);

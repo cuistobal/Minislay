@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 11:58:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:43:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,15 @@ static int	do_or()
 */
 
 //
-void	handle_operators(t_shell **minishell, t_tree *ast)
+static int	handle_operators(t_shell **minishell, t_tree *ast)
 {
-	return ;	
+	return 0;	
 
 	if (is_state_active(ast->tokens->type, OPAR))
-		handle_subshell(*minishell, ast);
+		return (handle_subshell(*minishell, ast));
 	else if (is_state_active(ast->tokens->type, LAND))
-	{
-
-	}
-	else
-	{
-
-	}
+		return (LAND);
+	return (LORR);
 }
 
 //
@@ -93,12 +88,16 @@ static void	execute_branch(t_shell **minishell, t_tree *ast)
 //
 void	traverse_ast(t_shell **minishell, t_tree *ast)
 {
+	int	ctype;
 	int	original_stds[2];
 
 	if (!ast)
 		return ;
+	ctype = 0;
+	if (is_state_active(ast->tokens->type, OPAR))
+		handle_subshell(*minishell, ast);
 	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
-		handle_operators(minishell, ast);
+		ctype = handle_operators(minishell, ast);
 	else
 	{
 		get_or_restore_stds(original_stds, true);
