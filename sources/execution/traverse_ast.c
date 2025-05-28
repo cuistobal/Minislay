@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:44:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:50:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,124 +61,7 @@ static bool	is_pipeline(t_tokn *list)
 	return (false);
 }
 
-
 //
-static bool	set_heredoc_name(char buffer[BUFFER_SIZE], char *limiter)
-{
-	int	i;
-	int	index;
-	int	limlen;
-
-	i = 0;
-	memset(buffer, 0, BUFFER_SIZE);
-	index = strlen(HEREDOC);
-	strncpy(buffer, HEREDOC, index);
-	limlen = strlen(limiter);
-	strncpy(buffer + index, limiter, limlen);
-	index += limlen;
-	while (access(buffer, F_OK) == 0 && i < 10)
-	{
-		buffer[index] = 48 + i;
-		i++;
-	}
-	return (i < 10);
-/*
-	if (i == 10)
-		printf("Tu forces frere\n");
-*/
-}
-/*
-static int open_heredocs(t_shell *minishell, t_tokn *heredocs)
-{
-	t_tokn	*copy;
-	char	name_buffer[BUFFER_SIZE];
-
-	copy = heredocs;
-	while (copy)
-	{
-		if (!copy->next)
-			return (GENERAL_ERROR);
-		//if is_last heredoc for current node && is_last redire_in for current node
-		//	Use heredoc as input
-		//else
-		//	Unlink(heredoc) after appending content
-		if (!set_heredoc_name(name_buffer, copy->next->value))
-			return (GENERAL_ERROR);
-		free(copy->value);
-		copy->value = strdup(name_buffer);
-		handle_here_doc(minishell, copy);
-		move_pointer(&copy);
-		move_pointer(&copy);
-	}
-}
-
-//
-static void	split_redirections_and_commands(t_tokn *copy, t_tokn **cmd, t_tokn **r)
-{
-	t_tokn	*rtail;
-	t_tokn	*ctail;
-
-	rtail = NULL;
-	ctail = NULL;
-	while (copy)
-	{
-		if (valid_lexeme(copy, HDOC, ARED | OPAR))
-		{
-			append_token_list(r, &rtail, copy);
-			move_pointer(&copy);
-			append_token_list(r, &rtail, copy);
-		}
-		else
-			append_token_list(cmd, &ctail, copy);
-		move_pointer(&copy);
-	}
-	if (rtail)
-		rtail->next = NULL;
-	if (ctail)
-		ctail->next = NULL;
-}
-*/
-
-//
-void	modify_redirections_nodes(t_tokn **source)
-{
-	t_tokn	*prev;
-	t_tokn	*next;
-	t_tokn	*copy;
-
-	prev = NULL;
-	copy = *source;
-	while (copy)
-	{
-		next = copy->next;
-		if (valid_lexeme(copy, HDOC, ARED))
-		{
-			if (is_state_active(copy->type, HDOC))
-				set_state(&copy->next->type, HDOC);
-			if (is_state_active(copy->type, IRED))
-				set_state(&copy->next->type, IRED);
-			if (is_state_active(copy->type, ORED))
-				set_state(&copy->next->type, ORED);
-			if (is_state_active(copy->type, ARED))
-				set_state(&copy->next->type, ARED);
-			if (!prev)
-			{
-				free(*source);
-				*source = next;
-				copy = *source;
-			}
-			else
-			{
-				prev->next = next;
-				free(copy);
-				copy = next;
-			}
-		}
-		prev = copy;
-		move_pointer(&copy);
-	}
-}
-
 static void	execute_branch(t_shell **minishell, t_tree *ast)
 {
 	t_exec	*node;

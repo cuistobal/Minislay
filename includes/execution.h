@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:08:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:49:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,8 @@ int		my_dup();
 void	get_or_restore_stds(int fds[2], bool set);
 void	redirections_in_parent(t_exec *node, int pipe[][2], int index);
 int		setup_redirections_in_child(t_exec *node, int pipefd[][2], int index);
+
+//modify_redirection_nodes.c
+void	modify_redirections_nodes(t_tokn **source);
 
 #endif

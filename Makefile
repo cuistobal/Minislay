@@ -73,6 +73,7 @@ SOURCES = \
 	sources/execution/redirections/redirections.c \
 	sources/execution/redirections/handle_here_doc.c \
 	sources/execution/redirections/handle_standard_redirections.c \
+	sources/execution/redirections/modify_redirection_nodes.c \
 	sources/execution/processes/inter_process_communications.c \
 	sources/execution/processes/execute_commands.c \
 	sources/execution/processes/wait_module.c \

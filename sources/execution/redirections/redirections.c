@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:29:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:53:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 			close_and_unlink(&prev, &fd, -1);
 		else if (is_state_active(redirections->type, HDOC))
 		{
-            handle_here_doc(minishell, redirections);
+            //handle_here_doc(minishell, redirections);
 			if (prev)
 				close_and_unlink(&prev, &fd, redirections->type);
+            handle_here_doc(minishell, redirections);
 			prev = redirections;
 		}
         move_pointer(&redirections);
