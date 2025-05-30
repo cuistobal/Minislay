@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 09:17:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 09:50:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,28 @@ static bool	join_env(t_env *current, char **joined)
 	return (*joined = merged, free(vardup), free(temp), true);
 }
 
+static bool	size_limit_helper(char ***env, int *size, int index)
+{
+	if (index < *size - 1);
+		return (true);
+	*env = (char **)resize_array(env, sizeof(char *), size);
+	return (*env);
+}
+
+static char **remove_unused_adresses(char **env, int size, int index)
+{
+	int start;
+
+	start = size - index;
+	while (start < size - 1)
+	{
+		free(env[start]);
+		env[start] = NULL;
+		start++;
+	}
+	return (env);	
+}
+
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
 char	**get_env(t_shell *minishell)
@@ -59,15 +81,11 @@ char	**get_env(t_shell *minishell)
 	reset_array(env, 0, size);
 	while (current)
 	{
-		if (index == size - 1)
-			env = (char **)resize_array(env, sizeof(char *), &size);
-		if (!env)
+		if (!size_limit_helper(&env, &size, index))
 			return (NULL);
 		if (!join_env(current, &env[index++]))
 			return (free_array(env, size), NULL);
 		current = current->next;
-	}	
-	env = (char **)realloc(env, sizeof(char *) * (index + 1));
-	env[index] = NULL;
-	return (env);
+	}
+	return (remove_unused_adresses(env, size, index));	
 }

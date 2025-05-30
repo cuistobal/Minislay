@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 08:48:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 09:52:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	free_array(char **array, int count)
 			index++;
 		}
 	}
-	free(*array);
-	*array = NULL;
+	free(array);
+	array = NULL;
 }
 
 //
@@ -57,21 +57,6 @@ void	free_tree(t_tree *ast)
 //
 void	free_execution_node(t_exec *execution)
 {
-/*
-	int		index;
-	t_exec	*next;
-
-	if (!execution)
-		return ;
-	if ((execution)->environ)
-		free_array((execution)->environ, 0);	
-	if ((execution)->command)
-		free_array((execution)->command, 0);
-	next = (execution)->next;
-	free(execution);
-	execution = NULL;
-	free_execution_node(next);
-*/
 	t_exec	*next;
 
 	next = NULL;

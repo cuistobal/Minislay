@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 08:15:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:00:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ bool	build_env(t_shell **minishell, char **envp)
 		return (false);
 	root = NULL;
 	(*minishell)->envp = build_environement(envp);
+	if (!(*minishell)->envp)
+		return (NULL);
 	head = (*minishell)->envp;
 	while (head)
 	{
