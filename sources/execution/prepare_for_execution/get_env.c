@@ -6,25 +6,39 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 08:26:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 09:17:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-//
-static bool	join_env(char **joined, char *temp[2])
-{
-	char	*t;
-	char	*merged;
 
-	merged = ft_strjoin(strdup(temp[0]), strdup("\""));
+//
+static bool	join_env(t_env *current, char **joined)
+{
+	char	*c;
+	char	*temp;
+	char	*merged;
+	char	*keydup;
+	char	*vardup;
+
+	keydup = strdup(current->var[KEY]);
+	if (!keydup)
+		return (false);
+	vardup = strdup(current->var[VALUE]);
+	if (!vardup)
+		return (free(keydup), false);
+	c = strdup("\"");
+	if (!c)
+		return (free(keydup), free(vardup), false);
+	temp = ft_strjoin(keydup, c);
+	if (!temp)
+		return (free(keydup), free(vardup), free(c), false);
+	free(c);
+	free(keydup);
+	merged = ft_strjoin(temp, strdup(current->var[VALUE]));
 	if (!merged)
-		return (free(merged), merged = NULL, false);
-	t = ft_strjoin(merged, strdup(temp[1]));
-	if (!t)
-		return (free(merged), merged = NULL, free(t), t = NULL, false);
-	free(merged);
-	return (*joined = t, true);
+		return (free(temp), free(vardup), false);
+	return (*joined = merged, free(vardup), free(temp), true);
 }
 
 // Had to declare a current pointer bc the original minishel pointer is moved
@@ -34,7 +48,6 @@ char	**get_env(t_shell *minishell)
 	int		size;
 	int		index;
 	char	**env;
-	char	*temp[2];
 	t_env	*current;
 
 	index = 0;
@@ -46,16 +59,15 @@ char	**get_env(t_shell *minishell)
 	reset_array(env, 0, size);
 	while (current)
 	{
-		reset_array(temp, 0, 2);
 		if (index == size - 1)
 			env = (char **)resize_array(env, sizeof(char *), &size);
 		if (!env)
 			return (NULL);
-		temp[0] = current->var[0];
-		temp[1] = current->var[1];
-		if (!join_env(&env[index++], temp))
+		if (!join_env(current, &env[index++]))
 			return (free_array(env, size), NULL);
 		current = current->next;
-	}
+	}	
+	env = (char **)realloc(env, sizeof(char *) * (index + 1));
+	env[index] = NULL;
 	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 13:10:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 08:58:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 		index++;
 	}
 	commands[index] = NULL;
+	commands = (char **)realloc(commands, sizeof(char *) * (index + 1));
 	return (commands);
 }
