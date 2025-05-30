@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 13:12:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:22:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,10 @@ bool	find_key(t_shell *minishell, char **value, char *key)
 	head = minishell->command;
 	if (find_key_in_command(head, value, key))
 		return (*value);
+/*
+	head = minishell->special;
+	if (find_key_in_special(head, value, key))
+		return (*value);
+*/
 	return (false);
 }

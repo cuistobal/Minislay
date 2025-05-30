@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 13:57:16 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/05/30 13:20:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,12 @@ static bool	try_path(char **command, char *path)
 	copy = strdup(path);
 	try_path = copy;
 	while (*try_path)
-	{
+	{	
 		if (test_path(command, strtok_r(try_path, ":", &try_path)))
-			return (free(copy), true);
+		{
+			free(copy);
+			return (true);
+		}
 	}
 	free(copy);
 	//Error message -> No path
