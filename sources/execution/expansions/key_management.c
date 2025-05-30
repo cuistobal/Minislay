@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 10:42:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:57:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		if (key)
 		{
 			if (!retrieve_keys_value(minishell, key, value))
-				*value = "";
+				*value = strdup("");
 			return (true);
 		}
 	}
