@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 12:58:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:53:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,26 @@ t_env	*append_specials(void)
 	int		index;
 	t_env	*head;
 	t_env	*tail;
-	char	temp[2];
+	char	*temp;
 
 	index = 0;
 	head = NULL;
 	tail = NULL;
 	while (index < DKCT)
 	{
+		temp = strdup(g_spec[index]);
 		if (!head)
 		{
-			head = create_env_node(strdup(strdup(g_spec[index])));
+			head = create_env_node(temp);
 			tail = head;
 		}
 		else
 		{
-			tail->next = create_env_node(strdup(g_spec[index]));
+			tail->next = create_env_node(temp);
 			tail = tail->next;
 		}
 		index++;
+		free(temp);
 	}
 	return (head);
 }
