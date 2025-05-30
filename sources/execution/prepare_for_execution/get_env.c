@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 09:50:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:21:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	join_env(t_env *current, char **joined)
 		return (free(keydup), free(vardup), free(c), false);
 	free(c);
 	free(keydup);
-	merged = ft_strjoin(temp, strdup(current->var[VALUE]));
+	merged = ft_strjoin(temp, vardup);
 	if (!merged)
 		return (free(temp), free(vardup), false);
 	return (*joined = merged, free(vardup), free(temp), true);
@@ -51,14 +51,11 @@ static bool	size_limit_helper(char ***env, int *size, int index)
 
 static char **remove_unused_adresses(char **env, int size, int index)
 {
-	int start;
-
-	start = size - index;
-	while (start < size - 1)
+	while (index < size - 1)
 	{
-		free(env[start]);
-		env[start] = NULL;
-		start++;
+		free(env[index]);
+		env[index] = NULL;
+		index++;
 	}
 	return (env);	
 }
@@ -86,6 +83,6 @@ char	**get_env(t_shell *minishell)
 		if (!join_env(current, &env[index++]))
 			return (free_array(env, size), NULL);
 		current = current->next;
-	}
-	return (remove_unused_adresses(env, size, index));	
+	}	
+	return (realloc(env, sizeof(char *) * index));
 }
