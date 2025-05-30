@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:57:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 08:15:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ int	main(int argc, char **argv, char **envp)
 	build_rl_prompt(rl_prompt, argv[0]);
 	ret = start_process(&minishell, rl_prompt);
 	free_minishell(minishell);
+	minishell = NULL;
 	return (ret);
 }

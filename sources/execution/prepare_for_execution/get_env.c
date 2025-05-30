@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 16:57:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 08:26:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 //
 static bool	join_env(char **joined, char *temp[2])
 {
+	char	*t;
 	char	*merged;
 
 	merged = ft_strjoin(strdup(temp[0]), strdup("\""));
 	if (!merged)
 		return (free(merged), merged = NULL, false);
-	merged = ft_strjoin(merged, strdup(temp[1]));
-	if (!merged)
-		return (free(merged), merged = NULL,false);
-	return (*joined = merged, true);
+	t = ft_strjoin(merged, strdup(temp[1]));
+	if (!t)
+		return (free(merged), merged = NULL, free(t), t = NULL, false);
+	free(merged);
+	return (*joined = t, true);
 }
 
 // Had to declare a current pointer bc the original minishel pointer is moved

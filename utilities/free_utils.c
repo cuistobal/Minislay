@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 16:11:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 08:48:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	free_tree(t_tree *ast)
 //
 void	free_execution_node(t_exec *execution)
 {
+/*
 	int		index;
 	t_exec	*next;
 
@@ -70,6 +71,20 @@ void	free_execution_node(t_exec *execution)
 	free(execution);
 	execution = NULL;
 	free_execution_node(next);
+*/
+	t_exec	*next;
+
+	next = NULL;
+	while (execution)
+	{
+		next = execution->next;
+		if (execution->command)
+			free_array(execution->command, 0);
+		if (execution->environ)
+			free_array(execution->environ, 0);
+		free(execution);
+		execution = next;
+	}
 }
 
 //
@@ -86,6 +101,10 @@ void	free_minishell(t_shell *minishell)
 	while (current)
 	{
 		(minishell)->envp = (minishell)->envp->next;
+		if (current->var[KEY])
+			free(current->var[KEY]);
+		if (current->var[VALUE])
+			free(current->var[VALUE]);
 		free(current);
 		current = (minishell)->envp;
 	}
