@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 08:27:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:17:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	open_all_redirections(*minishell, node);
 	ret = execute_commands(minishell, node, count);
 	free_execution_node(node);
+//	free_token_nodes(expands);
 	return (ret);
 }
 

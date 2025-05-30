@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 16:02:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:16:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 	pid_t			pids[BUFFER_SIZE];
 	int				pipefd[BUFFER_SIZE][2];
 
+	ret = -1;
 	index = 0;
 	current = node;
 	while (current && index < BUFFER_SIZE)

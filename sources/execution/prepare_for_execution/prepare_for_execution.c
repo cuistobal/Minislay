@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 11:33:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:02:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,7 @@ static bool	quote_removal(t_tokn *list)
 t_exec	*prepare_for_exec(t_shell **m, t_tokn *tokens)
 {
 	t_exec	*node;
-	t_tokn	*deep_copy;
 
-	deep_copy = NULL;
 	if (!m || !tokens)
 		return (NULL);
 	node = (t_exec *)malloc(sizeof(t_exec));

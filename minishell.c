@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 10:00:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:18:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		user_input = NULL;
 		if (retcode == EXIT_CODE)
 			break ;
-		printf("KOIKOUUUBEH\n");
 		//if (temporisation(retcode)) 
 		//	break ;
 	}

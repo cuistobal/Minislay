@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 16:10:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 10:09:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,7 @@ bool	is_standard_key(t_shell *minishell, char **value, char *key);
 
 //linked_lists_utils2.c
 t_env	*get_env_tail_node(t_env *list);
+
+void	free_token_nodes(t_tokn *tokens);
 
 #endif
