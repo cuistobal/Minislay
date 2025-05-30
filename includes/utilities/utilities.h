@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 12:46:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:05:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ bool	valid_lexeme(t_tokn *current, int min, int max);
 //parser_utils.c:
 bool	append_token_tab(t_tokn *tab[], t_tokn *pointer, int token_type);
 bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch);
-bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens);
+t_pars	*define_parser(t_tree **ast, t_tokn *tokens);
 
 //env_node.c
 bool	insert_env_node(t_env **head, t_env **tail, t_env *new);

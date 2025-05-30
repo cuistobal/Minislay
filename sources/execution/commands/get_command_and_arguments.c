@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:26:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:02:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*get_token_copy(char *source)
 	if (!source)
 		return (strdup(""));
 	else
-    	return (strdup(source));
+		return (strdup(source));
 
 }
 

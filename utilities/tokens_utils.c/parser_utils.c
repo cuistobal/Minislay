@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:55:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:55:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:05:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,18 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 
 //Allocate memory for the parsing structure && initialiase its variables.
 //Returns false if malloc fails.
-bool	define_parser(t_pars **parser, t_tree **ast, t_tokn *tokens)
+t_pars	*define_parser(t_tree **ast, t_tokn *tokens)
 {
-	if (!(*parser))
-	{
-		*parser = (t_pars *)malloc(sizeof(t_pars));
-		if (*parser)
-		{
-			(*parser)->state = INITIAL;
-			append_token_tab((*parser)->tab, tokens, TTHEAD);
-			append_token_tab((*parser)->tab, NULL, TTPREV);
-			append_token_tab((*parser)->tab, NULL, TTCURR);
-			append_token_tab((*parser)->tab, NULL, TTNEXT);
-			(*parser)->ast = ast;
-		}
-	}
-	return (*parser);
+	t_pars	*parser;
+
+	parser = (t_pars *)malloc(sizeof(t_pars));
+	if (!parser)
+		return (NULL);
+	parser->state = INITIAL;
+	append_token_tab(parser->tab, tokens, TTHEAD);
+	append_token_tab(parser->tab, NULL, TTPREV);
+	append_token_tab(parser->tab, NULL, TTCURR);
+	append_token_tab(parser->tab, NULL, TTNEXT);
+	parser->ast = ast;
+	return (parser);
 }

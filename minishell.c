@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:57:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:09:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	get_minishelled(t_shell **minishell, char *input)
 		return (printf(TOKENIZATION), free_tokens(tokens), GENERAL_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
 		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
-	if (!define_parser(&parser, &ast, tokens) || !parse_script(&parser))
+	parser = define_parser(&ast, tokens);
+	if (!parser || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
 	ret = traverse_ast(minishell, ast);	
 	free(parser);
@@ -113,7 +114,6 @@ t_env	*build_environement(char **envp)
 	return (head);	
 }
 
-		if (temp)
 //
 bool	build_env(t_shell **minishell, char **envp)
 {

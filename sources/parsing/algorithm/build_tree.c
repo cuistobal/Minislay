@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:11:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:07:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@ t_tree	*create_tree_node(t_tokn *tokens)
 	t_tree	*new_node;
 
 	new_node = (t_tree *)malloc(sizeof(t_tree));
-	if (new_node)
-	{
-		new_node->tokens = tokens;
-		new_node->left = NULL;
-		new_node->right = NULL;
-	}
+	if (!new_node)
+		return (NULL);
+	new_node->tokens = tokens;
+	new_node->left = NULL;
+	new_node->right = NULL;
 	return (new_node);
 }
 
