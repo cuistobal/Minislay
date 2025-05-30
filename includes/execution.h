@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:54:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:27:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char    **get_command_and_arguments(t_shell *minishell, t_tokn *list);
 //bool    is_builtin(char *command);
 
 //modify_token_types.c
-void modify_token_types(t_tokn **expanded, t_tokn **redirections);
+void 	modify_token_types(t_tokn **expanded, t_tokn **redirections);
 
 //expand.c
 bool    expand(t_shell *minishell, t_tokn **list);

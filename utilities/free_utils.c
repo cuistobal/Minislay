@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 09:52:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:35:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,24 @@ void	free_execution_node(t_exec *execution)
 }
 
 //
+void	free_env_list(t_env *list)
+{
+	t_env	*current;
+
+	current = list;
+	while (current)
+	{
+		list = list->next;
+		if (current->var[KEY])
+			free(current->var[KEY]);
+		if (current->var[VALUE])
+			free(current->var[VALUE]);
+		free(current);
+		current = list;
+	}
+}
+
+//
 void	free_minishell(t_shell *minishell)
 {
 	int		index;
@@ -82,36 +100,9 @@ void	free_minishell(t_shell *minishell)
 	index = 0;
 	if (!minishell)
 		return ;
-	current = (minishell)->envp;
-	while (current)
-	{
-		(minishell)->envp = (minishell)->envp->next;
-		if (current->var[KEY])
-			free(current->var[KEY]);
-		if (current->var[VALUE])
-			free(current->var[VALUE]);
-		free(current);
-		current = (minishell)->envp;
-	}
-	branch = (minishell)->expt;
-	if (branch)
-		free_avlt_tree(branch);
-	while (index < DKCT)
-	{
-        if (minishell->special[index])
-	    	free((minishell)->special[index]);
-		index++;
-	}
-	while (minishell->local)
-	{
-		current = minishell->local;
-		minishell->local = minishell->local->next;
-		free(current);
-	}
-	while (minishell->command)
-	{
-		current = minishell->command;
-		minishell->command = minishell->command->next;
-		free(current);
-	}
+	free_env_list(minishell->envp);
+	free_env_list(minishell->local);
+	free_env_list(minishell->command);
+	free_env_list(minishell->special);
+	free_avlt_tree(minishell->expt);
 }

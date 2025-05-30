@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:25:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 15:25:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:47:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static bool words(t_tokn **current, char *delimiter)
     char    *expanded;
 
     save = (*current)->next;
-   // expanded = strdup((*current)->value);
     expanded = (*current)->value;
     if (expanded)
     {
@@ -37,7 +36,6 @@ static bool words(t_tokn **current, char *delimiter)
             word = strtok_r(expanded, delimiter, &expanded);
         }
         (*current)->next = save;
-        //*current = save;
     }
     return (!*expanded);
 }
@@ -45,9 +43,13 @@ static bool words(t_tokn **current, char *delimiter)
 //We use this module to split tokens after their expansion.
 bool	word_splitting(t_shell *minishell, t_tokn **current)
 {
+	t_env	*difsi;
 	char	*delimiter;
 
-	delimiter = minishell->special[DIFSI];
+	difsi = find_special_env_variable(minishell, DIFSI);
+	if (!difsi)
+		return (false);
+	delimiter = difsi->var[VALUE];
 	if (*current && delimiter)
         return (words(current, delimiter));
     return (false);

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/26 11:00:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:57:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ typedef enum special_keys
 # define VNME "MINISLAY"
 # define VLST "JSP"
 # define VIFS " 	\n"
+
+# define ISTR "$*="
+# define IARO "$@="
+# define IHAS "$#="
+# define IEXT "$?=0"
+# define IHYP "$-=--posix"
+# define IPID "$$="
+# define ICID "$!=0"
+# define INME "$0="
+# define ILST "$_="
+# define IIFS "$IFS= 	\n"
 
 # define DNUL ""
 
