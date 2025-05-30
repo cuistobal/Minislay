@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 12:57:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:09:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef enum special_keys
 	DIFSI,
 	DKCTI,
 }	t_keys;
+
+# define SPE_EXP_CHAR "*@#?-$!"
 
 # define DSTR "$*"
 # define DARO "$@"

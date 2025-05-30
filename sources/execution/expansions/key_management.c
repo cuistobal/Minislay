@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 12:07:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:10:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static char	*extract_key(char *token, int *index, int start)
 		{
 			if (tlen == 0)
 			{
-				if (token[*index] == '$' || token[*index] == '?')
+				if (strchr(SPE_EXP_CHAR, token[*index]))
+		//		if (token[*index] == '$' || token[*index] == '?')
 				{
 					tlen++;	
 					(*index)++;
