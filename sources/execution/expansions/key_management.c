@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 10:57:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:07:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,16 @@ static char	*extract_key(char *token, int *index, int start)
 					tlen++;	
 					(*index)++;
 				}
-				return strndup(token + start, tlen + 1);
+				return (strndup(token + start, tlen + 1));
 			}
 			break ;
 		}
 		tlen++;	
 	}
-	return strndup(token + start, tlen + 1);
+	return (strndup(token + start, tlen + 1));
 }
 
+//
 static void	quote_state(char current, char *quote, bool *sqte)
 {
 	if (is_quote(current))
@@ -124,6 +125,8 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		{
 			if (!retrieve_keys_value(minishell, key, value))
 				*value = strdup("");
+			free(key);
+			key = NULL;
 			return (true);
 		}
 	}

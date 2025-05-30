@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 11:12:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:08:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static char	*get_token_copy(char *source)
 {
 	if (!source)
@@ -21,6 +22,7 @@ static char	*get_token_copy(char *source)
 
 }
 
+//
 static bool	handle_command_argument(t_shell *m, char **cpy, int i)
 {
 	if (index > 0)
@@ -54,14 +56,6 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 
 		if (!handle_command_argument(minishell, &copy, index))
 			return (free_array(commands, TAB_SIZE), NULL);
-		
-/*
-		if (index == 0 && !is_builtin(copy) && !is_absolute(copy))
-		{
-			if (!is_executable(copy) && !retrieve_path(minishell, &copy))
-				return (free(copy), free_array(commands, 0), error_message("Invalid command\n"), NULL);
-		}
-*/
 		commands[index] = copy;
 		move_pointer(&list);
 		index++;
