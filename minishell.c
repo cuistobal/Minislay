@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:09:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 09:38:58 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ int	get_minishelled(t_shell **minishell, char *input)
 	return (ret);
 }
 
-static bool	temporisation(int code)
-{
-	if (code == EXIT_CODE)
-		return (true);
-	while (code++ < INT_MAX)
-	{
-	}
-	return (false);
-}
-
 //
 int	start_process(t_shell **minishell, char *terminal_name)
 {
@@ -79,8 +69,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		user_input = NULL;
 		if (retcode == EXIT_CODE)
 			break ;
-		//if (temporisation(retcode)) 
-		//	break ;
 	}
 	rl_clear_history();
     return (retcode);
@@ -97,14 +85,14 @@ t_env	*build_environement(char **envp)
 	{	
 		if (!head)
 		{
-			head = create_env_node(strdup(*envp));
+			head = create_env_node(*envp);
 			if (!head)
 				return (NULL);
 			tail = head;
 		}
 		else
 		{
-			tail->next = create_env_node(strdup(*envp));
+			tail->next = create_env_node(*envp);
 			if (!tail->next)
 				return (NULL);
 			tail = tail->next;

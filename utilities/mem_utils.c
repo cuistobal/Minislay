@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:38:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 09:51:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 09:47:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ void	reset_array(char **array, int start, int end)
 	reset = 0;
 	if (!array)
 		return ;
-	while (reset < end - start )
+	while (reset < end - start)
 		array[start + reset++] = NULL;
 }

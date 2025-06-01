@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:00:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 09:32:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 {
 	int		start;
 	char	quote;
+	char	*word;	
 	bool	dollar;
 
 	quote = INIT;
@@ -86,7 +87,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	if (quote)
 		return (NULL);
 // This is why we have a 1 bit invalid read problem
-    return (strndup(input + start, *pos - start));
+	return (strndup(input + start, *pos - start));
 }
 
 //
@@ -126,6 +127,7 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 		if (!create_new_token(head, &current, token, type)) 
 		{
 			free(token);
+			token = NULL;
 			printf("Tokenization error @ %c for %s", input[pos], input + pos - 1);
 			return (false);
 		}
