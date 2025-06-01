@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:00:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 08:38:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	is_standard_key(t_shell *minishell, char **value, char *key)
 	current = minishell->special;
 	while (index < DKCT)
 	{
-		if (strcmp(current->var[KEY], g_keys[index]) == 0)
+		if (strcmp(current->var[KEY], key) == 0)
 		{
 			*value = current->var[VALUE];
 			break ;
