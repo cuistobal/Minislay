@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 12:52:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:39:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ int	my_exit(t_shell *minishell, char **args)
 	if (!is_numeric(args[0]))
 	{
 		write(2, "minislay: exit: numeric argument required\n", 43);
-	//	free_minishell(minishell);
-	//	exit(2);
-		return (EXIT_CODE);
+		free_minishell(minishell);
+		exit(2);
 	}
 	else if (args[1])
 		return (write(2, "minislay: exit: too many arguments\n", 35), 1);
