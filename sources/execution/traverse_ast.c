@@ -6,32 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 10:34:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:04:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-/*
-static int  execute_branch(t_shell *minishell, t_exec **node)
-{
-	if (is_builtin(*(*node)->command))
-		return (exec_builtin((*node)->command, (*node)->environ, minishell));
-	return (create_child_process(minishell, node));
-}
-*/
-
-/*
-static int	do_and()
-{
-
-}
-
-static int	do_or()
-{
-
-}
-*/
 
 //
 static int	handle_operators(t_shell **minishell, t_tree *ast)
@@ -117,8 +96,13 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 	}
 	if (ret == EXIT_CODE)
 		return (EXIT_CODE);
-	ret = traverse_ast(minishell, ast->left);
-	if (should_i_go_on(ctype, ret))
-		return (traverse_ast(minishell, ast->right));
-	return (SUCCESS);
+//	else if (ctype != 0)
+//	{
+		ret = traverse_ast(minishell, ast->left);
+		if (should_i_go_on(ctype, ret))
+			return (traverse_ast(minishell, ast->right));
+		return (ret);
+//	}
+//	traverse_ast(minishell, ast->left);
+//	traverse_ast(minishell, ast->right);
 }
