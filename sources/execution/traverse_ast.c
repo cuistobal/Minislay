@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 10:17:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 10:34:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,15 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	return (ret);
 }
 
+static bool	should_i_go_on(int ctype, int ret)		
+{
+	if (ctype == LAND && ret != 0)
+		return (false);
+	if (ctype == LORR && ret == 0)
+		return (false);
+	return (true);
+}
+
 //
 int	traverse_ast(t_shell **minishell, t_tree *ast)
 {
@@ -105,10 +114,11 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 		get_or_restore_stds(original_stds, true);
 		ret = execute_branch(minishell, ast);
 		get_or_restore_stds(original_stds, false);
-	}	
+	}
 	if (ret == EXIT_CODE)
 		return (EXIT_CODE);
-	traverse_ast(minishell, ast->left);
-	traverse_ast(minishell, ast->right);
+	ret = traverse_ast(minishell, ast->left);
+	if (should_i_go_on(ctype, ret))
+		return (traverse_ast(minishell, ast->right));
 	return (SUCCESS);
 }
