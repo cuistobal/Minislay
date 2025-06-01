@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 14:09:46 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 11:56:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:19:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 {
 	t_tokn	*head;
+	t_tokn	*prev;
 	t_tokn	*current;
 
 	head = *original;	
@@ -26,7 +27,12 @@ t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 		if (!*original || is_state_active((*original)->type, split_type))
 		{
 			if (*original)
+			{
+				prev = *original;
 				*original = (*original)->next;
+				free(prev->value);
+				free(prev);
+			}
 			current->next = NULL;
 			break ;
 		}
@@ -43,25 +49,20 @@ t_exec	*build_command_node(t_shell **minishell, t_tokn	*tokens, int *count)
 	t_exec	*new;
 	t_exec	*head;
 	t_exec	*tail;
-	t_tokn	*save;
 	t_tokn	*modified;
 
 	new = NULL;
-	save = NULL;
 	head = NULL;
 	tail = NULL;
 	modified = NULL;
 	while (tokens)
 	{
 		modified = split_token_list_if(&tokens, PIPE);
-		save = tokens;
-		tokens = modified;
-		new = prepare_for_exec(minishell, tokens);
+		new = prepare_for_exec(minishell, modified);
 		if (!new)
 			return (free_execution_node(head), NULL);
 		append_exec_list(&head, &tail, new);
-		tokens = save;
-		(*count)++;	
+		(*count)++;
 	}
 	return (head);
 }
