@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/27 12:17:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:30:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_tokn	*duplicate_token_list(t_tokn *source)
 		if (!dup)
 			return (free_tokens(dup), NULL);
 		dup->type = source->type;
-		dup->value = source->value;
+		dup->value = strdup(source->value);
 		dup->next = NULL;
 		append_token_list(&head, &tail, dup);
 		source = source->next;

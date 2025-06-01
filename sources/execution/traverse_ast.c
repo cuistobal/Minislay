@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 11:04:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:29:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	open_all_redirections(*minishell, node);
 	ret = execute_commands(minishell, node, count);
 	free_execution_node(node);
-//	free_token_nodes(expands);
+	free_tokens(expands);
 	return (ret);
 }
 
@@ -94,6 +94,8 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 		ret = execute_branch(minishell, ast);
 		get_or_restore_stds(original_stds, false);
 	}
+
+/*
 	if (ret == EXIT_CODE)
 		return (EXIT_CODE);
 //	else if (ctype != 0)
@@ -103,6 +105,8 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 			return (traverse_ast(minishell, ast->right));
 		return (ret);
 //	}
-//	traverse_ast(minishell, ast->left);
-//	traverse_ast(minishell, ast->right);
+*/
+	traverse_ast(minishell, ast->left);
+	traverse_ast(minishell, ast->right);
+	return (ret);
 }

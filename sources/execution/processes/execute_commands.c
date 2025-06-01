@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 10:20:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:17:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 		{
 			ret = exec_builtin(current->command, current->environ, *minishell);
 			if (ret == EXIT_CODE)
-				break ;
+				return (EXIT_CODE);
 		}
 		current = current->next;
 		index++;
