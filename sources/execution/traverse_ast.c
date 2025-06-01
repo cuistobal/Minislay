@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:15:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:36:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,9 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 		add_key_to_local(minishell, assignations);
 		free_tokens(assignations);
 	}
-	expands = duplicate_token_list(ast->tokens);
-	modify_redirections_nodes(&expands);
-	expand(*minishell, &expands);
-	node = build_command_node(minishell, expands, &count); 
+	modify_redirections_nodes(&ast->tokens);
+	expand(*minishell, &ast->tokens);
+	node = build_command_node(minishell, ast->tokens, &count); 
 	open_all_redirections(*minishell, node);
 	ret = execute_commands(minishell, node, count);
 	free_execution_node(node);
