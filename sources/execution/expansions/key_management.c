@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 08:35:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:47:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		return (token + start);		//Needs to be modified.
+		return (strdup(token + start));		//Needs to be modified.
+//		return (token + start);		//Needs to be modified.
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 15:06:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/01 14:53:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,12 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 			break ;
 		expanded = expand_line(minishell, line, expansions);
 		if (!expanded)
-			return (free(line), close(redirections->type), false);
+			return (free(line), free(limiter), close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
 		free(line);
 		line = readline(HERE);
 		rl_on_new_line();
 	}
-	return (free(line), true);//close(redirections->type), true);
+	return (free(line), free(limiter), true);//close(redirections->type), true);
 }
