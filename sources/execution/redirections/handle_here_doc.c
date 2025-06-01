@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:53:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 15:11:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,19 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 {
 	int		fd;
 	char	*limiter;
+	char	*heredocname;	
 
 	limiter = NULL;
 	if (!redirections)
 		return (NULL);
-//	limiter = limiter_handler(redirections->next->value, expansions);
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
+	heredocname = ft_strjoin("<<", redirections->value);	
+	if (!heredocname)
+		return (free(limiter), NULL);
+	free(redirections->value);
+	redirections->value = heredocname;
 	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 	if (fd <  0)
 		return (free(limiter), NULL);
