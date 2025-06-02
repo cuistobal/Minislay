@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 15:05:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:28:18 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void	free_execution_node(t_exec *execution)
 		while (current)
 		{
 			close(current->type);
-//unlink heredocs
 			if (current->value && strncmp(current->value, "<<", 2) == 0)
 				unlink(current->value);
 			free(current->value);
