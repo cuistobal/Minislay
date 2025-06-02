@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 09:01:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 15:10:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:26:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	get_merged(char **merged, char **temp, char **expanded)
 			free(*temp);
 			*temp = NULL;
 		}
+		if (*expanded)
+			free(*expanded);	
 		*expanded = *merged;
 		return (true);
 	}
@@ -38,4 +40,3 @@ bool	get_merged(char **merged, char **temp, char **expanded)
 	}
 	return (false);
 }
-
