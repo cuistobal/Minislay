@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 16:36:45 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/02 16:52:23 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
 		return (-1);
 	if (child == 0)
 	{
-		//comportemment par defaut des signaux
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_redirections_in_child(node, pipefd, index);
@@ -50,7 +49,7 @@ pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
 static int	execute_builtin(t_exec *current, pid_t *pids, int pipefd[][2], int index)
 {
 	if (!strcmp(*current->command, "exit"))
-		return (printf("aled\n"), EXIT_CODE);
+		return (EXIT_CODE);
 	pids[index] = create_and_execute_child(current, pipefd, index);
 	if (pids[index] < 0)
 		return (GENERAL_ERROR);
@@ -85,7 +84,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 				(curr->next && pipe(pipefd[index]) < 0))
 			return (GENERAL_ERROR);
 		if (!is_builtin(*curr->command))
-			execute_binay(curr, pids, pipefd, index);
+			ret = execute_binay(curr, pids, pipefd, index);
 		//else if (exec_builtin(curr->command, curr->environ, *minishell) == EXIT_CODE)
 		else if (execute_builtin(curr, pids, pipefd, index) == EXIT_CODE)
 			return (EXIT_CODE);
