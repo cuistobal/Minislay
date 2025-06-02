@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 13:17:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:29:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
 	return (child);
 }
 
-
-
 static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int index)
 {
 	pids[index] = create_and_execute_child(current, pipefd, index);
@@ -63,31 +61,27 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
 	int				ret;
 	int				index;
-	t_exec			*current;
+	t_exec			*curr;
 	pid_t			pids[BUFFER_SIZE];
 	int				pipefd[BUFFER_SIZE][2];
 
 	ret = -1;
 	index = 0;
-	current = node;
-	while (current && index < BUFFER_SIZE)
+	curr = node;
+	while (curr && index < BUFFER_SIZE)
 	{
-		if (!current->command || !*current->command)
+		if ((!curr->command || !*curr->command) || \
+				(curr->next && pipe(pipefd[index]) < 0))
 			return (GENERAL_ERROR);
-		if (current->next && pipe(pipefd[index]) < 0)
-			return (GENERAL_ERROR);
-		if (!is_builtin(*current->command))
-			execute_binay(current, pids, pipefd, index);
-		else
-		{
-			ret = exec_builtin(current->command, current->environ, *minishell);
-			if (ret == EXIT_CODE)
-				return (EXIT_CODE);
-		}
-		current = current->next;
+		if (!is_builtin(*curr->command))
+			execute_binay(curr, pids, pipefd, index);
+		else if (exec_builtin(curr->command, curr->environ, *minishell) == EXIT_CODE)
+			return (EXIT_CODE);
+		curr = curr->next;
 		index++;
 	}
 	if (index == BUFFER_SIZE)
-			return (wait_module(pids, index, ret), execute_commands(minishell, current, count - index));
+		return (wait_module(pids, index, ret), \
+				execute_commands(minishell, curr, count - index));
 	return (wait_module(pids, index, ret));
 }
