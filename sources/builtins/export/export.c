@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:41:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:53:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ static void	print_export(t_env *env)
 int	export(t_shell *minishell, char **args)
 {
 	int		i;
-	char	*equal;
 	char	*key;
+	char	*value;
+	char	*equal;
 
+	value = NULL;	
 	if (!args || !args[0])
 		return (print_export(minishell->envp), SUCCESS);
 	i = 0;
@@ -65,11 +67,13 @@ int	export(t_shell *minishell, char **args)
 		equal = strchr(args[i], '=');
 		if (equal)
 		{
-			key = strndup(args[i], equal - args[i]);
-	//		if (find_key_in_local())
-	//
-	//		else if (!is_valid_identifier(key))
-			if (!is_valid_identifier(key))
+			key = strndup(args[i], equal - args[i]);	
+
+			if (find_key_in_local(minishell->local, &value, key))
+			{
+				
+			}
+			else if (!is_valid_identifier(key))
 			{
 				write(2, "minislay: export: `", 20);
 				write(2, args[i], strlen(args[i]));

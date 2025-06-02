@@ -6,14 +6,14 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 08:19:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:41:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
+bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 {
 	t_avlt	*node;
 
@@ -30,7 +30,7 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 }
 
 //
-static bool	find_key_in_local(t_env *local, char **value, char *key)
+bool	find_key_in_local(t_env *local, char **value, char *key)
 {
 	while (local)
 	{
@@ -45,7 +45,7 @@ static bool	find_key_in_local(t_env *local, char **value, char *key)
 }
 
 //
-static bool	find_key_in_command(t_env *command, char **value, char *key)
+bool	find_key_in_command(t_env *command, char **value, char *key)
 {
 	while (command)
 	{
