@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 14:32:24 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/02 16:36:27 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 	if (!node->next)
 		return ;
 	close(pipe[index][1]);
-    if (node->redirs[INFILE])
+    if (node->redirs[INFILE] >= 0)
         close(node->redirs[INFILE]);
     if (node->redirs[OUTFILE])
-        close(node->redirs[OUTFILE]);
+        close(node->redirs[OUTFILE] >= 0);
 }
 
 //Integrer la gestion d'erreur piur les dup()

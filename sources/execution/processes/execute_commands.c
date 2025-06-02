@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 11:18:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:36:45 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 		//else if (exec_builtin(curr->command, curr->environ, *minishell) == EXIT_CODE)
 		else if (execute_builtin(curr, pids, pipefd, index) == EXIT_CODE)
 			return (EXIT_CODE);
-		curr = curr->next;
-		index++;
+       curr = curr->next;
+       index++;
 	}
 	if (index == BUFFER_SIZE)
 		return (wait_module(pids, index, ret), \
