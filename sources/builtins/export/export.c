@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:53:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:23:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,22 @@ int	export(t_shell *minishell, char **args)
 		equal = strchr(args[i], '=');
 		if (equal)
 		{
+			if (!minishell->envp)
 			key = strndup(args[i], equal - args[i]);	
-
+/*
 			if (find_key_in_local(minishell->local, &value, key))
 			{
 				
 			}
-			else if (!is_valid_identifier(key))
+*/
+			if (!is_valid_identifier(key))
+	//		else if (!is_valid_identifier(key))
 			{
 				write(2, "minislay: export: `", 20);
 				write(2, args[i], strlen(args[i]));
 				write(2, "': not a valid identifier\n", 27);
 			}
-			else
+			else	
 				update_key_value(minishell, key, equal + 1);
 			free(key);
 		}
