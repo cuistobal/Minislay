@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 10:29:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:06:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 			execute_binay(curr, pids, pipefd, index);
 		else if (exec_builtin(curr->command, curr->environ, *minishell) == EXIT_CODE)
 			return (EXIT_CODE);
+		close(pipefd[index][1]);
 		curr = curr->next;
 		index++;
 	}

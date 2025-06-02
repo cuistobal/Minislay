@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:05:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:04:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void	get_or_restore_stds(int fds[2], bool set)
 	else
 	{
 		dup2(fds[0], STDIN_FILENO);
+		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
 	}
 }
 
