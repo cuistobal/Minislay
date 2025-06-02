@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 22:26:11 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:41:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	print_export(t_env *env)
 	}
 }
 
+//Il faut ajouter la promotion depuis l'environement local
 int	export(t_shell *minishell, char **args)
 {
 	int		i;
@@ -65,6 +66,9 @@ int	export(t_shell *minishell, char **args)
 		if (equal)
 		{
 			key = strndup(args[i], equal - args[i]);
+	//		if (find_key_in_local())
+	//
+	//		else if (!is_valid_identifier(key))
 			if (!is_valid_identifier(key))
 			{
 				write(2, "minislay: export: `", 20);

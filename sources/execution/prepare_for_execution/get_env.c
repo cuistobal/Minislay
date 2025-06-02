@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 12:22:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 09:49:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static bool	join_env(t_env *current, char **joined)
 	return (*joined = merged, free(vardup), free(temp), true);
 }
 
+//
 static bool	size_limit_helper(char ***env, int *size, int index)
 {
 	if (index < *size - 1);
@@ -49,6 +50,7 @@ static bool	size_limit_helper(char ***env, int *size, int index)
 	return (*env);
 }
 
+//
 static char **remove_unused_adresses(char **env, int size, int index)
 {
 	while (index < size - 1)
@@ -87,5 +89,6 @@ char	**get_env(t_shell *minishell)
 	if (!size_limit_helper(&env, &size, index))
 		return (NULL);
 	env[index++] = NULL;
+//	return (env);
 	return (realloc(env, sizeof(char *) * index + 1));
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/01 11:07:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	cd(t_shell *minishell, char **args)
 	char	cwd[BUFFER_SIZE];
 	char	*target;
 
-	if (!minishell || !args || args[1])
+	if (!minishell || !args)
 		return (write(2, "minislay: cd: too many arguments\n", 33), ERROR);
 	target = args[0];
 	if (!target || strcmp(target, "~") == 0)
@@ -53,4 +53,3 @@ int	cd(t_shell *minishell, char **args)
 	update_key_value(minishell, "PWD", cwd);
 	return (SUCCESS);
 }
-

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 08:27:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/01 09:30:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_env	*create_env_node(char *line)
 	if (!equal)
 		return (NULL);
 	*equal = '\0';
-	key = strdup(line);
+	key = strdup(line);	
 	value = strdup(equal + 1);
 	*equal = '=';
 	if (!key || !value)

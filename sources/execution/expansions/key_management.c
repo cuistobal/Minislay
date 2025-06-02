@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:10:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:25:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*extract_key(char *token, int *index, int start)
 			if (tlen == 0)
 			{
 				if (strchr(SPE_EXP_CHAR, token[*index]))
-		//		if (token[*index] == '$' || token[*index] == '?')
+	//			if (token[*index] == '$' || token[*index] == '?')
 				{
 					tlen++;	
 					(*index)++;
@@ -86,7 +86,8 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		return (token + start);		//Needs to be modified.
+		return (strdup(token + start));		//Needs to be modified.
+//		return (token + start);		//Needs to be modified.
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/21 09:14:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:27:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static bool expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 			temp = merged;
 			if (!get_merged(&merged, &temp, &value))
 				return (false);
-		}
+		}	
+		free((*list)->value);		
         (*list)->value = merged;
 		if (!is_state_active((*list)->type, STAR))
 			return (word_splitting(minishell, list));

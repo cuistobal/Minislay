@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/24 15:06:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/01 15:11:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,19 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 {
 	int		fd;
 	char	*limiter;
+	char	*heredocname;	
 
 	limiter = NULL;
 	if (!redirections)
 		return (NULL);
-//	limiter = limiter_handler(redirections->next->value, expansions);
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
+	heredocname = ft_strjoin("<<", redirections->value);	
+	if (!heredocname)
+		return (free(limiter), NULL);
+	free(redirections->value);
+	redirections->value = heredocname;
 	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 	if (fd <  0)
 		return (free(limiter), NULL);
@@ -122,12 +127,12 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 			break ;
 		expanded = expand_line(minishell, line, expansions);
 		if (!expanded)
-			return (free(line), close(redirections->type), false);
+			return (free(line), free(limiter), close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
 		free(line);
 		line = readline(HERE);
 		rl_on_new_line();
 	}
-	return (free(line), true);//close(redirections->type), true);
+	return (free(line), free(limiter), true);//close(redirections->type), true);
 }
