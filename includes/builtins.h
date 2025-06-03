@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/17 13:52:33 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/03 11:34:41 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ void	echo(const char **arguments, bool flag);
 int		env(t_shell *minishell, char **arguments);
 
 //export.c
-int	export(t_shell *minishell, char **args);
+int	    export(t_shell **minishell, char **args);
 
 //exit.c
-int	my_exit(t_shell *minishell, char **args);
+int	    my_exit(t_shell *minishell, char **args);
 
 //pwd.c
 int		pwd(t_shell *minishell);
 
 //unsset.v
-int	unset(t_shell *minishell, char **args);
+int	    unset(t_shell *minishell, char **args);
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier
-int		exec_builtin(char **argv, char **env, t_shell *minishell);
+int		exec_builtin(char **argv, char **env, t_shell **minishell);
 int		builtin_echo(char **argv);
 
 #endif
