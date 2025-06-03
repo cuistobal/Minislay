@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:09:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 07:25:02 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,20 @@ static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
     while (redirections)
     {
 		if(is_state_active(redirections->type, IRED))
-			last_in = open_infile(redirections);
+        {
+		    redirections->type = open_infile(redirections);
+            last_in = redirections->type;
+        }
 		else if(is_state_active(redirections->type, ORED))
-			last_out = open_outfile(redirections);
+        {
+            redirections->type = open_outfile(redirections);
+            last_out = redirections->type;
+        }
 		else if(is_state_active(redirections->type, ARED))
-			last_out = open_outfile_append(redirections);
+        {
+            redirections->type = open_outfile_append(redirections);
+            last_out = redirections->type;
+        }
         move_pointer(&redirections);
     }
 	if (node->redirs[INFILE] == -1)
@@ -64,7 +73,6 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 			close_and_unlink(&prev, &fd, -1);
 		else if (is_state_active(redirections->type, HDOC))
 		{
-            //handle_here_doc(minishell, redirections);
 			if (prev)
 				close_and_unlink(&prev, &fd, redirections->type);
             handle_here_doc(minishell, redirections);
@@ -89,7 +97,9 @@ void	open_all_redirections(t_shell *minishell, t_exec *node)
 		if (redirections)
 		{
 			current->redirs[INFILE] =  open_here_docs(minishell, redirections);
+            printf("%d  &&", current->redirs[INFILE]);
     	    open_standard_redirections(current, redirections);
+            printf("%d\n", current->redirs[INFILE]);
 		}
         current = current->next;
     }
