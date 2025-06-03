@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 11:56:04 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/03 12:00:24 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void export_new_variable(t_shell **minishell, char *argument)
     insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[VALUE]));
 }
 
+
+
 //Il faut ajouter la promotion depuis l'environement local
 int	export(t_shell **minishell, char **args)
 {
@@ -66,12 +68,18 @@ int	export(t_shell **minishell, char **args)
     t_env   *node;
 
 	i = 0;
-    node = NULL;
-	value = NULL;
 	while (args[i])
 	{
+        node = NULL;
+	    value = NULL;
 		equal = strchr(args[i], '=');
-		key = strndup(args[i], equal - args[i]);
+        if (equal)
+        {
+		    key = strndup(args[i], equal - args[i]);
+            value = strdup(args[i] + strlen(key));
+        }
+        else
+		    key = strdup(args[i]);
 		if (is_valid_identifier(key))
         {
             if (equal)
@@ -80,7 +88,6 @@ int	export(t_shell **minishell, char **args)
             if (!node)
                 export_new_variable(minishell, args[i]);
             else if (value && strcmp(node->var[VALUE], value) != 0)
-                
             {
                 free(node->var[VALUE]);
                 node->var[VALUE] = strdup(value);
