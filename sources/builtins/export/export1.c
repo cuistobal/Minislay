@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 09:55:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:56:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:33:45 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 static void	promote_local_node(t_shell **minishell)
 {
 
+    insert_env_in_avlt();
 }
-
-

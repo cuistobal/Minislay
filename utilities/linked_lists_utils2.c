@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 10:09:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:46:01 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 			return (environ);	
 	}	
 	environ = minishell->command;
+	while (environ)
+	{
+		if (strcmp(environ->var[KEY], key) == 0)
+			return (environ);	
+	}	
+    environ = minishell->special;
 	while (environ)
 	{
 		if (strcmp(environ->var[KEY], key) == 0)

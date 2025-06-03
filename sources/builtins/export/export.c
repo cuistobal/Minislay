@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 10:23:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 10:18:09 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static int	is_valid_identifier(const char *s)
 {
 	int	i;
@@ -30,6 +31,7 @@ static int	is_valid_identifier(const char *s)
 	return (1);
 }
 
+//
 static void	print_export(t_env *env)
 {
 	while (env)
@@ -57,24 +59,25 @@ int	export(t_shell *minishell, char **args)
 	char	*key;
 	char	*value;
 	char	*equal;
+    t_env   *node;
 
+    node = NULL;
 	value = NULL;	
+    for (int i = 0; args[i]; i++)
+        printf("%s\n", args[i]);
 	if (!args || !args[0])
-		return (print_export(minishell->envp), SUCCESS);
+	//	return (print_export(minishell->envp), SUCCESS);
 	i = 0;
 	while (args[i])
 	{
 		equal = strchr(args[i], '=');
-		if (equal)
-		{
-			if (!minishell->envp)
-			key = strndup(args[i], equal - args[i]);	
-/*
-			if (find_key_in_local(minishell->local, &value, key))
-			{
-				
-			}
-*/
+		key = strndup(args[i], equal - args[i]);
+        if (equal)
+            value = strdup(args[i] + strlen(key));
+        printf("%s  &&  %s\n", key, value);
+        node = get_env_node(minishell, key, value);
+       // if (node)
+
 			if (!is_valid_identifier(key))
 	//		else if (!is_valid_identifier(key))
 			{
@@ -85,8 +88,8 @@ int	export(t_shell *minishell, char **args)
 			else	
 				update_key_value(minishell, key, equal + 1);
 			free(key);
-		}
-		else if (!is_valid_identifier(args[i]))
+
+		if (!is_valid_identifier(args[i]))
 		{
 			write(2, "minislay: export: `", 20);
 			write(2, args[i], strlen(args[i]));
