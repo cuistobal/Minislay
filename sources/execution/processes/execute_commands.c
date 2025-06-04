@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 09:47:45 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 15:57:14 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 	int		(*pipefd)[2];
     
 	index = 0;
+    if (count <= 0)
+        return (SUCCESS);
     pids = malloc(sizeof(pid_t) * count);
     pipefd = malloc(sizeof(int[2]) * (count - 1));
     if (!pids || !pipefd)

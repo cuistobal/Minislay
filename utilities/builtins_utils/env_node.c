@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:30:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:55:17 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,12 @@ t_env	*create_env_node(char *line)
 		return (NULL);
 	*equal = '\0';
 	key = strdup(line);	
+    if (!key)
+        return (*equal = '=', NULL);
 	value = strdup(equal + 1);
 	*equal = '=';
-	if (!key || !value)
-		return (free(key), free(value), NULL);
+	if (!value)
+		return (free(key), NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (free(key), free(value), NULL);

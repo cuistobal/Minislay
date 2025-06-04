@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 09:31:59 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 15:59:06 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,6 @@ void	free_minishell(t_shell *minishell)
 	free_env_list(minishell->command);
 	free_env_list(minishell->special);
 	free_avlt_tree(minishell->expt);
-	free(minishell);	
+	free(minishell);
 	minishell = NULL;
 }
