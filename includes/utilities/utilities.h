@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:05:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:09:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ bool	is_state_active(int state, int flag);
 
 //my_strtok_r.c:
 char	*my_strtok_r(char *str, const char *delim, char **saveptr);
-
-//tokens_utils1.c:
-//void	free_tokens(t_tokn **tokens);
 
 //tokens_utils1.c:
 void	free_tokens(t_tokn *tokens);
@@ -128,10 +125,17 @@ bool	is_standard_key(t_shell *minishell, char **value, char *key);
 
 //linked_lists_utils2.c
 t_env	*get_env_tail_node(t_env *list);
+t_env	*get_env_node(t_shell *minishell, char *key, char *value);
 t_env	*find_special_env_variable(t_shell *minishell, int index);
 
 void	free_token_nodes(t_tokn *tokens);
 
+//find_keys.c
+
+bool	find_key_in_command(t_env *command, char **value, char *key);
+bool	find_key_in_local(t_env *local, char **value, char *key);
+bool	find_key_in_avlt(t_avlt *tree, char **value, char *key);
+bool	find_key(t_shell *minishell, char **value, char *key);
 
 
 #endif

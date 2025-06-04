@@ -6,14 +6,14 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 08:19:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 09:41:42 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
+bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 {
 	t_avlt	*node;
 
@@ -30,22 +30,7 @@ static bool	find_key_in_avlt(t_avlt *tree, char **value, char *key)
 }
 
 //
-static bool	find_key_in_local(t_env *local, char **value, char *key)
-{
-	while (local)
-	{
-		if (strcmp(local->var[KEY], key) == 0)
-		{
-			*value = local->var[VALUE];
-			return (true);
-		}
-		move_env_pointer(&local);
-	}
-	return (false);
-}
-
-//
-static bool	find_key_in_command(t_env *command, char **value, char *key)
+bool	find_key_in_env(t_env *command, char **value, char *key)
 {
 	while (command)
 	{
@@ -72,15 +57,13 @@ bool	find_key(t_shell *minishell, char **value, char *key)
 	if (find_key_in_avlt(root, value, key))
 		return (*value);
 	head = minishell->local;
-	if (find_key_in_local(head, value, key))
+	if (find_key_in_env(head, value, key))
 		return (*value);
 	head = minishell->command;
-	if (find_key_in_command(head, value, key))
+	if (find_key_in_env(head, value, key))
 		return (*value);
-/*
 	head = minishell->special;
-	if (find_key_in_special(head, value, key))
+	if (find_key_in_env(head, value, key))
 		return (*value);
-*/
 	return (false);
 }

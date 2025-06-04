@@ -1,1 +1,2 @@
-valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=toolbox_and_notes/readline.supp -s ./minislay
+make re && valgrind --leak-check=full --show-leak-kinds=all --track-fds=all --suppressions=toolbox_and_notes/readline.supp ./minislay
+

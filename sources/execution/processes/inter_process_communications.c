@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 10:05:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:36:27 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ void	get_or_restore_stds(int fds[2], bool set)
 	else
 	{
 		dup2(fds[0], STDIN_FILENO);
+		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
 	}
 }
 
@@ -57,6 +59,10 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 	if (!node->next)
 		return ;
 	close(pipe[index][1]);
+    if (node->redirs[INFILE] >= 0)
+        close(node->redirs[INFILE]);
+    if (node->redirs[OUTFILE])
+        close(node->redirs[OUTFILE] >= 0);
 }
 
 //Integrer la gestion d'erreur piur les dup()

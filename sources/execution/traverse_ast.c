@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:36:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/03 07:26:36 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	handle_operators(t_shell **minishell, t_tree *ast)
 	return (LORR);
 }
 
-//
+/*
 static bool	is_pipeline(t_tokn *list)
 {
 	while (list)
@@ -36,6 +36,7 @@ static bool	is_pipeline(t_tokn *list)
 	}
 	return (false);
 }
+	*/
 
 //
 static int	execute_branch(t_shell **minishell, t_tree *ast)
@@ -63,48 +64,34 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	return (ret);
 }
 
-static bool	should_i_go_on(int ctype, int ret)		
-{
-	if (ctype == LAND && ret != 0)
-		return (false);
-	if (ctype == LORR && ret == 0)
-		return (false);
-	return (true);
-}
-
 //
 int	traverse_ast(t_shell **minishell, t_tree *ast)
 {
-	int	ret;
-	int	ctype;
-	int	original_stds[2];
+    int	ret;
+    int	original_stds[2];
 
-	if (!ast || !ast->tokens)
-		return (SUCCESS);
-	ctype = 0;
-	if (is_state_active(ast->tokens->type, OPAR))
-		handle_subshell(*minishell, ast);
-	if (is_state_active(ast->tokens->type, LAND | LORR | OPAR))
-		ctype = handle_operators(minishell, ast);
-	else
-	{
-		get_or_restore_stds(original_stds, true);
-		ret = execute_branch(minishell, ast);
-		get_or_restore_stds(original_stds, false);
-	}
-
-/*
-	if (ret == EXIT_CODE)
-		return (EXIT_CODE);
-//	else if (ctype != 0)
-//	{
-		ret = traverse_ast(minishell, ast->left);
-		if (should_i_go_on(ctype, ret))
-			return (traverse_ast(minishell, ast->right));
-		return (ret);
-//	}
-*/
-	traverse_ast(minishell, ast->left);
-	traverse_ast(minishell, ast->right);
-	return (ret);
+    if (!ast)
+        return (SUCCESS);
+	ret = 0;
+    if (is_state_active(ast->tokens->type, LAND))
+    {
+        ret = traverse_ast(minishell, ast->left);
+        if (ret == 0)
+            return (traverse_ast(minishell, ast->right));
+    }
+    else if (is_state_active(ast->tokens->type, LORR))
+    {
+        ret = traverse_ast(minishell, ast->left);
+        if (ret != 0)
+            return (traverse_ast(minishell, ast->right));
+    }
+    else if (is_state_active(ast->tokens->type, OPAR))
+        return handle_subshell(*minishell, ast);
+    else
+    {
+        get_or_restore_stds(original_stds, true);
+        ret = execute_branch(minishell, ast);
+        get_or_restore_stds(original_stds, false);
+    }
+    return (ret);
 }

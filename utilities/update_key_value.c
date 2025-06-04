@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/15 19:52:30 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:13:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int	update_key_value(t_shell *minishell, char *key, char *new_value)
 	{
 		if (curr->var[0] && strcmp(curr->var[0], key) == 0)
 		{
-			if (curr->var[1] && curr->var[1] != new_value) {
+			if (curr->var[1] && curr->var[1] != new_value)
+			{
 				free(curr->var[1]);
 				curr->var[1] = NULL;
-			}
+			}	
 			curr->var[1] = new_value ? strdup(new_value) : NULL;
 			return (SUCCESS);
 		}

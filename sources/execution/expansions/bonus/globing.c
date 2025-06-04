@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 15:26:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/02 09:33:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ bool	globing(t_tokn **list, const char *path, int *count)
 	if (!patterns)
 		return (false);
 	if (globing_loop(list, patterns, dir_stream, count))
-		return (closedir(dir_stream), true);
+		return (closedir(dir_stream), free_array(patterns, 0), true);
+	free_array(patterns, 0);
 	return (closedir(dir_stream), false);
 }
