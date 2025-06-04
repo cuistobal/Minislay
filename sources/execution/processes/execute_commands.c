@@ -66,7 +66,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
             exit(ret == EXIT_CODE ? 0 : ret);
         }
         redirections_in_parent(current, pipefd, index);
-        return pid;
+        return (pid);
     }
     setup_redirections_in_child(current, pipefd, index);
     ret = exec_builtin(current->command, current->environ, minishell);
@@ -85,6 +85,7 @@ static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int ind
 	return (SUCCESS);
 }
 
+//
 static int	init_exec_arrays(pid_t **pids, int (**pipefd)[2], int count)
 {
     *pids = malloc(sizeof(pid_t) * count);
@@ -98,6 +99,7 @@ static int	init_exec_arrays(pid_t **pids, int (**pipefd)[2], int count)
     return (SUCCESS);
 }
 
+//
 int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
 	int		ret;

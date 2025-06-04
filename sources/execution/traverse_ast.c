@@ -75,6 +75,39 @@ static bool	should_i_go_on(int ctype, int ret)
 //
 int	traverse_ast(t_shell **minishell, t_tree *ast)
 {
+    int	ret = 0;
+    int	ctype = 0;
+    int	original_stds[2];
+
+    if (!ast || !ast->tokens)
+        return (SUCCESS);
+
+    // Détection du type d'opérateur
+    if (is_state_active(ast->tokens->type, OPAR))
+        return (handle_subshell(*minishell, ast));
+
+    if (is_state_active(ast->tokens->type, LAND | LORR))
+        ctype = ast->tokens->type;
+    
+    get_or_restore_stds(original_stds, true);
+    ret = execute_branch(minishell, ast);
+    get_or_restore_stds(original_stds, false);
+
+    // Gestion des opérateurs && et ||
+    if (ctype == LAND && ret == 0)
+        return traverse_ast(minishell, ast->right);
+    if (ctype == LORR && ret != 0)
+        return traverse_ast(minishell, ast->right);
+
+    // Parcours récursif classique si pas d'opérateur logique
+    traverse_ast(minishell, ast->left);
+    traverse_ast(minishell, ast->right);
+    return (ret);
+}
+
+/*
+int	traverse_ast(t_shell **minishell, t_tree *ast)
+{
 	int	ret;
 	int	ctype;
 	int	original_stds[2];
@@ -93,18 +126,19 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 		get_or_restore_stds(original_stds, false);
 	}
 
-/*
-	if (ret == EXIT_CODE)
-		return (EXIT_CODE);
-//	else if (ctype != 0)
-//	{
-		ret = traverse_ast(minishell, ast->left);
-		if (should_i_go_on(ctype, ret))
-			return (traverse_ast(minishell, ast->right));
-		return (ret);
-//	}
-*/
+//
+// 	if (ret == EXIT_CODE)
+// 		return (EXIT_CODE);
+// //	else if (ctype != 0)
+// //	{
+// 		ret = traverse_ast(minishell, ast->left);
+// 		if (should_i_go_on(ctype, ret))
+// 			return (traverse_ast(minishell, ast->right));
+// 		return (ret);
+// //	}
+//
 	traverse_ast(minishell, ast->left);
 	traverse_ast(minishell, ast->right);
 	return (ret);
 }
+*/
