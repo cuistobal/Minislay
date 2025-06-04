@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 16:36:27 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:50:12 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	my_dup2(int oldfd, int newfd)
 	return (SUCCESS);
 }
 
+//
 void	get_or_restore_stds(int fds[2], bool set)
 {
 	if (set)
@@ -61,8 +62,8 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 	close(pipe[index][1]);
     if (node->redirs[INFILE] >= 0)
         close(node->redirs[INFILE]);
-    if (node->redirs[OUTFILE])
-        close(node->redirs[OUTFILE] >= 0);
+    if (node->redirs[OUTFILE] >= 0)
+        close(node->redirs[OUTFILE]);
 }
 
 //Integrer la gestion d'erreur piur les dup()

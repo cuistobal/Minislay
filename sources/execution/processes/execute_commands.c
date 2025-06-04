@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 09:12:22 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:47:45 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,6 @@ static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int ind
 }
 
 //
-static int	init_exec_arrays(pid_t **pids, int (**pipefd)[2], int count)
-{
-    *pids = malloc(sizeof(pid_t) * count);
-    *pipefd = malloc(sizeof(int[2]) * (count - 1));
-    if (!*pids || !*pipefd)
-    {
-        free(*pids);
-        free(*pipefd);
-        return (GENERAL_ERROR);
-    }
-    return (SUCCESS);
-}
-
-//
 int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
 	int		ret;
@@ -108,9 +94,10 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
 	int		(*pipefd)[2];
     
 	index = 0;
-    ret = init_exec_arrays(&pids, &pipefd, count);
-    if (ret != SUCCESS)
-        return (ret);
+    pids = malloc(sizeof(pid_t) * count);
+    pipefd = malloc(sizeof(int[2]) * (count - 1));
+    if (!pids || !pipefd)
+    	return (free(pids), free(pipefd), GENERAL_ERROR);
     while (node && index < count)
     {
         if ((!node->command || !*node->command) || \

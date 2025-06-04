@@ -6,11 +6,18 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 07:28:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:30:31 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+static void append_redirs_value(t_exec *node, int last_in, int last_out)
+{
+	if (node->redirs[INFILE] == -1)
+		node->redirs[INFILE] = last_in;
+	node->redirs[OUTFILE] = last_out;
+}
 
 //
 static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
@@ -39,9 +46,7 @@ static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
         }
         move_pointer(&redirections);
     }
-	if (node->redirs[INFILE] == -1)
-		node->redirs[INFILE] = last_in;
-	node->redirs[OUTFILE] = last_out;
+    append_redirs_value(node, last_in, last_out);
 }
 
 //Used to unlink unneccessary heredocs.

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 07:26:36 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:23:50 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,6 @@ static int	handle_operators(t_shell **minishell, t_tree *ast)
 	return (LORR);
 }
 
-/*
-static bool	is_pipeline(t_tokn *list)
-{
-	while (list)
-	{
-		if (is_state_active(list->type, PIPE))
-			return (true);
-		else
-			list = list->next;
-	}
-	return (false);
-}
-	*/
-
 //
 static int	execute_branch(t_shell **minishell, t_tree *ast)
 {
@@ -47,6 +33,7 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	t_tokn	*expands;
 	t_tokn	*assignations;
 
+    count = 0;
 	node = NULL;
 	expands = NULL;
 	assignations = create_token_sub_list(&ast->tokens, EQUL);

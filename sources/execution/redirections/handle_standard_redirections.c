@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/05/26 13:56:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/04 09:28:43 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	open_infile(t_tokn *redirections)
 
 	fd = -1;
 	if (access(redirections->value, F_OK) != 0)	
-		return (printf("Missing file: %s\n", (redirections)->value), -1);
+		return (printf("Missing file: %s\n", (redirections)->value), fd);
 	if (access(redirections->value, R_OK) != 0)
-		return (printf("%s%s\n", PERMISSION_ERROR, (redirections)->value), -1);
+		return (printf("%s%s\n", PERMISSION_ERROR, (redirections)->value), fd);
 	return (open_file(redirections->value, O_RDONLY, 0)); 
 }
 

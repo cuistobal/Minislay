@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 14:28:18 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:31:59 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	free_execution_node(t_exec *execution)
 			free_array(execution->environ, 0);
 		while (current)
 		{
-			close(current->type);
+            if (current->type != -1)
+		    	close(current->type);
 			if (current->value && strncmp(current->value, "<<", 2) == 0)
 				unlink(current->value);
 			free(current->value);
