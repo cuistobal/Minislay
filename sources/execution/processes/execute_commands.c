@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 11:34:24 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 09:12:22 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
             signal(SIGQUIT, SIG_DFL);
             setup_redirections_in_child(current, pipefd, index);
             ret = exec_builtin(current->command, current->environ, minishell);
-            exit(ret == EXIT_CODE ? 0 : ret);
+            exit(ret);
         }
         redirections_in_parent(current, pipefd, index);
         return (pid);
@@ -120,8 +120,6 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
             ret = execute_binay(node, pids, pipefd, index);
         else
             ret = execute_builtin(node, pipefd, index, minishell);
-        if (ret == EXIT_CODE)
-            return (EXIT_CODE);
         node = node->next;
         index++;
     }

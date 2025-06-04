@@ -24,7 +24,7 @@ static int	handle_operators(t_shell **minishell, t_tree *ast)
 	return (LORR);
 }
 
-//
+/*
 static bool	is_pipeline(t_tokn *list)
 {
 	while (list)
@@ -36,6 +36,7 @@ static bool	is_pipeline(t_tokn *list)
 	}
 	return (false);
 }
+	*/
 
 //
 static int	execute_branch(t_shell **minishell, t_tree *ast)
@@ -63,15 +64,7 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	return (ret);
 }
 
-static bool	should_i_go_on(int ctype, int ret)		
-{
-	if (ctype == LAND && ret != 0)
-		return (false);
-	if (ctype == LORR && ret == 0)
-		return (false);
-	return (true);
-}
-
+//
 int	traverse_ast(t_shell **minishell, t_tree *ast)
 {
     int	ret;
