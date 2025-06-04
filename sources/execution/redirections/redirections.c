@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 07:25:02 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/04 07:28:19 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ void	open_all_redirections(t_shell *minishell, t_exec *node)
 		if (redirections)
 		{
 			current->redirs[INFILE] =  open_here_docs(minishell, redirections);
-            printf("%d  &&", current->redirs[INFILE]);
     	    open_standard_redirections(current, redirections);
-            printf("%d\n", current->redirs[INFILE]);
 		}
         current = current->next;
     }
