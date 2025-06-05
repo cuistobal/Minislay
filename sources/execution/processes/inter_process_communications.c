@@ -54,7 +54,7 @@ void	get_or_restore_stds(int fds[2], bool set)
 	}
 }
 
-//
+/*
 void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 {
 	if (!node->next)
@@ -65,15 +65,111 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
     if (node->redirs[OUTFILE] >= 0)
         close(node->redirs[OUTFILE]);
 }
+*/
+
+void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
+{
+    if (!node->next)
+        return;
+    
+    // Fermeture du pipe courant
+    close(pipe[index][WRITE_END]);
+    if (index > 0)
+        close(pipe[index - 1][READ_END]);
+
+    // Fermeture des redirections
+    if (node->redirs[INFILE] >= 0)
+        close(node->redirs[INFILE]);
+    if (node->redirs[OUTFILE] >= 0)
+        close(node->redirs[OUTFILE]);
+}
+
+static int stdin_management(t_exec *node, int pipefd[][2], int index)
+{
+    int infile;
+
+    infile = node->redirs[INFILE];
+    if (infile != -1)
+    {
+        if (my_dup2(infile, STDIN_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+        close(infile);
+    }
+    else if (index > 0)
+    {
+        if (my_dup2(pipefd[index - 1][READ_END], STDIN_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+    }
+	return (SUCCESS);
+}
+
+static int stdout_management(t_exec *node, int pipefd[][2], int index)
+{
+    int outfile;
+
+    outfile = node->redirs[OUTFILE];
+	if (outfile != -1)
+	{
+		if (my_dup2(outfile, STDOUT_FILENO) != SUCCESS)
+			return (GENERAL_ERROR);
+		close(outfile);
+	}
+	else if (node->next)
+	{
+		if (my_dup2(pipefd[index][WRITE_END], STDOUT_FILENO) != SUCCESS)
+			return (GENERAL_ERROR);
+	}
+	return (SUCCESS);
+}
+
+static int close_unused_pipes(t_exec *node, int pipefd[][2], int index)
+{
+	if (index > 0)
+	{
+		close(pipefd[index - 1][READ_END]);
+		close(pipefd[index - 1][WRITE_END]);
+	}
+	if (node->next)
+	{
+		close(pipefd[index][READ_END]);
+		close(pipefd[index][WRITE_END]);
+	}
+	return (SUCCESS);
+}
 
 int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
 {
-    int infile;
-    int outfile;
+    // int infile;
+    // int outfile;
 
-    infile = node->redirs[INFILE];
-    outfile = node->redirs[OUTFILE];
-    
+    // infile = node->redirs[INFILE];
+    // outfile = node->redirs[OUTFILE];
+    int ret;
+
+	ret = stdin_management(node, pipefd, index);
+	if (ret != SUCCESS)
+		return (ret);
+	ret = stdout_management(node, pipefd, index);
+	if (ret != SUCCESS)
+		return (ret);
+	ret = close_unused_pipes(node, pipefd, index);
+	if (ret != SUCCESS)
+		return (ret);
+	// Gestion de l'entrée
+	/*
+	if (infile != -1)
+	{
+		if (my_dup2(infile, STDIN_FILENO) != SUCCESS)
+			return (GENERAL_ERROR);
+		close(infile);
+	}
+	else if (index > 0)
+	{
+		if (my_dup2(pipefd[index - 1][READ_END], STDIN_FILENO) != SUCCESS)
+			return (GENERAL_ERROR);
+	}
+	*/
+	/*
     // Gestion de l'entrée
     if (infile != -1)
     {
@@ -86,31 +182,31 @@ int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
         if (my_dup2(pipefd[index - 1][READ_END], STDIN_FILENO) != SUCCESS)
             return (GENERAL_ERROR);
     }
-
+*/
     // Gestion de la sortie
-    if (outfile != -1)
-    {
-        if (my_dup2(outfile, STDOUT_FILENO) != SUCCESS)
-            return (GENERAL_ERROR);
-        close(outfile);
-    }
-    else if (node->next)
-    {
-        if (my_dup2(pipefd[index][WRITE_END], STDOUT_FILENO) != SUCCESS)
-            return (GENERAL_ERROR);
-    }
+    // if (outfile != -1)
+    // {
+    //     if (my_dup2(outfile, STDOUT_FILENO) != SUCCESS)
+    //         return (GENERAL_ERROR);
+    //     close(outfile);
+    // }
+    // else if (node->next)
+    // {
+    //     if (my_dup2(pipefd[index][WRITE_END], STDOUT_FILENO) != SUCCESS)
+    //         return (GENERAL_ERROR);
+    // }
 
     // Fermeture des pipes inutiles
-    if (index > 0)
-    {
-        close(pipefd[index - 1][READ_END]);
-        close(pipefd[index - 1][WRITE_END]);
-    }
-    if (node->next)
-    {
-        close(pipefd[index][READ_END]);
-        close(pipefd[index][WRITE_END]);
-    }
+    // if (index > 0)
+    // {
+    //     close(pipefd[index - 1][READ_END]);
+    //     close(pipefd[index - 1][WRITE_END]);
+    // }
+    // if (node->next)
+    // {
+    //     close(pipefd[index][READ_END]);
+    //     close(pipefd[index][WRITE_END]);
+    // }
     return (SUCCESS);
 }
 
