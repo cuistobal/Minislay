@@ -66,6 +66,55 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
         close(node->redirs[OUTFILE]);
 }
 
+int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
+{
+    int infile;
+    int outfile;
+
+    infile = node->redirs[INFILE];
+    outfile = node->redirs[OUTFILE];
+    
+    // Gestion de l'entrée
+    if (infile != -1)
+    {
+        if (my_dup2(infile, STDIN_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+        close(infile);
+    }
+    else if (index > 0)
+    {
+        if (my_dup2(pipefd[index - 1][READ_END], STDIN_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+    }
+
+    // Gestion de la sortie
+    if (outfile != -1)
+    {
+        if (my_dup2(outfile, STDOUT_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+        close(outfile);
+    }
+    else if (node->next)
+    {
+        if (my_dup2(pipefd[index][WRITE_END], STDOUT_FILENO) != SUCCESS)
+            return (GENERAL_ERROR);
+    }
+
+    // Fermeture des pipes inutiles
+    if (index > 0)
+    {
+        close(pipefd[index - 1][READ_END]);
+        close(pipefd[index - 1][WRITE_END]);
+    }
+    if (node->next)
+    {
+        close(pipefd[index][READ_END]);
+        close(pipefd[index][WRITE_END]);
+    }
+    return (SUCCESS);
+}
+
+/*
 //Integrer la gestion d'erreur piur les dup()
 int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
 {
@@ -95,3 +144,4 @@ int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
         close(pipefd[index][WRITE_END]);
     }
 }
+	*/
