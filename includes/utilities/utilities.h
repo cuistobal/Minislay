@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 10:09:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/05 08:28:23 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,5 +137,6 @@ bool	find_key_in_local(t_env *local, char **value, char *key);
 bool	find_key_in_avlt(t_avlt *tree, char **value, char *key);
 bool	find_key(t_shell *minishell, char **value, char *key);
 
+void    append_exit_code(t_shell *minishell, int code, bool command);
 
 #endif
