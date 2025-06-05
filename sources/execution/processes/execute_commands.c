@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 15:57:14 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/05 08:47:00 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,19 @@ static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int ind
 	return (SUCCESS);
 }
 
+static void close_pipes(int (*pipefd)[2], int count)
+{
+    int index;
+
+    index = 0;
+    while (index < count - 1)
+    {
+        close(pipefd[index][READ_END]);
+        close(pipefd[index][WRITE_END]);
+        index++; 
+    }
+}
+
 //
 int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
@@ -104,7 +117,8 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
     {
         if ((!node->command || !*node->command) || \
             (node->next && pipe(pipefd[index]) < 0))
-            return (GENERAL_ERROR);
+            return (free(pids), close_pipes(pipefd, count), \
+                    free(pipefd), GENERAL_ERROR);
         if (!is_builtin(*node->command))
             ret = execute_binay(node, pids, pipefd, index);
         else
@@ -112,5 +126,6 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
         node = node->next;
         index++;
     }
-    return (free(pids), free(pipefd), wait_module(pids, index, ret));
+    return (free(pids), close_pipes(pipefd, count), \
+            free(pipefd), wait_module(pids, index, ret));
 }
