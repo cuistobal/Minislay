@@ -6,12 +6,34 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:33:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:33:36 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+/*
+static void sort_nodes(t_tokn **list, t_tokn *new)
+{
+    t_tokn  *prev;
+    t_tokn  *current;
+
+    current = *list;
+    if (!*list)
+        *list = new;
+    else
+    {
+        while (current)
+        {
+            prev = current;
+            if (strcmp(current->value, new->value) < 0)   
+
+            move_pointer(&current);
+        }
+    }
+      
+}
+*/
 //
 static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int *count)
 {
