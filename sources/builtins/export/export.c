@@ -46,17 +46,14 @@ static void export_new_variable(t_shell **minishell, char *argument)
 {
     t_env   *new;
     t_env   *tail;
-    t_env   *head;
-    t_avlt  *root;
-    
+
     new = create_env_node(argument);
     if (!new)
         return ;
-    head = (*minishell)->envp;
     tail = get_env_tail_node((*minishell)->envp);
-    root = (*minishell)->expt;
-    insert_env_node(&head, &tail, new); 
-    insert_avlt_node(&root, new, strlen(new->var[VALUE]));
+    insert_env_node(&(*minishell)->envp, &tail, new); 
+    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[VALUE]));
+    pre_order_display((*minishell)->expt); 
 }
 
 static bool split_token(char *token, char **key, char **value)

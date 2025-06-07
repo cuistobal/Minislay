@@ -30,6 +30,25 @@ bool	insert_env_node(t_env **head, t_env **tail, t_env *new)
 	return (true);
 }
 
+static void	split_key_and_value(char *line, char **key, char **value)
+{
+	char	*equal;
+
+	equal = strchr(line, '=');
+	if (equal)
+	{
+		*equal = '\0';
+		*key = strdup(line);
+		*value = strdup(equal + 1);
+		*equal = '=';
+	}
+	else
+	{
+		*key = strdup(line);
+		*value = NULL;
+	}
+}
+
 //
 t_env	*create_env_node(char *line)
 {
@@ -38,6 +57,7 @@ t_env	*create_env_node(char *line)
 	char	*key;
 	char	*value;
 
+	/*
 	equal = strchr(line, '=');
 	if (!equal)
 		return (NULL);
@@ -49,6 +69,8 @@ t_env	*create_env_node(char *line)
 	*equal = '=';
 	if (!value)
 		return (free(key), NULL);
+		*/
+	split_key_and_value(line, &key, &value);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (free(key), free(value), NULL);
