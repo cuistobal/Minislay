@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 08:54:59 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 12:06:11 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ typedef struct shell
 	struct	env		*local;
 	struct	env		*command;
 	struct	env		*special;
+    struct  exec    *execution;
+    struct  tree    *ast; 
+    pid_t           *pids;
+    int             (*pipefd)[2];
+    int             original_stds[2];
 }	t_shell;
 
 //Basic environement node
