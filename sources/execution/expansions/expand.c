@@ -6,11 +6,64 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:27:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 09:53:01 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+//
+static void	quote_removal_helper(char *token, char *removed)
+{
+	int		save;
+	int		index;
+	char	quote;
+
+	save = 0;
+	index = 0;
+	quote = INIT;
+	while (token[index])
+	{
+		if (!quote)
+		{
+			if (is_quote(token[index]))
+				quote = token[index];
+			else
+				removed[save++] = token[index];
+		}
+		else
+		{
+			if (token[index] == quote)
+				quote = INIT;
+			else
+				removed[save++] = token[index];
+		}
+		index++;
+	}
+}
+
+//
+static bool	quote_removal(t_tokn *list)
+{
+	int		tlen;
+	char	*removed;
+
+	while (list)
+	{
+		if (list->value)
+		{
+			tlen = strlen(list->value) + 1;
+			removed = (char *)calloc(tlen, sizeof(char));
+			if (!removed)
+				return (false);
+			quote_removal_helper(list->value, removed);
+            free(list->value);
+			list->value = removed;
+		}
+		move_pointer(&list);
+	}
+	return (true);
+}
 
 //We need to implement the token split when dealing with weird stuff like
 //"$PATH"'PATH'
@@ -93,5 +146,7 @@ bool    expand(t_shell *minishell, t_tokn **list)
 		}
         move_pointer(&copy);
     }
-    return (!copy);
+	copy = *list;
+    return (quote_removal(copy));
+   // return (!copy);
 }

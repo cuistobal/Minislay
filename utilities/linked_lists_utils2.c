@@ -20,10 +20,11 @@ t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 	t_env	*environ;
 
 	node = NULL;
+	environ = NULL;
 	avlt = minishell->expt;
 	find_element(avlt, &node, key, value);
 	if (node)
-		return (node->env);	
+		return (node->env);
 	environ = minishell->local;
 	while (environ)
 	{
@@ -35,14 +36,8 @@ t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 	{
 		if (strcmp(environ->var[KEY], key) == 0)
 			return (environ);	
-	}	
-    environ = minishell->special;
-	while (environ)
-	{
-		if (strcmp(environ->var[KEY], key) == 0)
-			return (environ);	
 	}
-	return (environ);
+	return (NULL);
 }
 
 //

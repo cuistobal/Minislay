@@ -6,11 +6,19 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:49:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 09:45:54 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+static char *handle_value(char *value)
+{
+    if (!value)
+        return (strdup(""));
+    else
+    	return (strdup(value));
+}
 
 //
 static bool	join_env(t_env *current, char **joined)
@@ -24,9 +32,17 @@ static bool	join_env(t_env *current, char **joined)
 	keydup = strdup(current->var[KEY]);
 	if (!keydup)
 		return (false);
-	vardup = strdup(current->var[VALUE]);
-	if (!vardup)
-		return (free(keydup), false);
+    vardup = handle_value(current->var[VALUE]);
+/*
+    if (!current->var[VALUE])
+        vardup = strdup("'\0'");
+    else
+    {
+    	vardup = strdup(current->var[VALUE]);
+    	if (!vardup)
+	    	return (free(keydup), false);
+    }
+    */
 	c = strdup("\"");
 	if (!c)
 		return (free(keydup), free(vardup), false);
@@ -89,6 +105,5 @@ char	**get_env(t_shell *minishell)
 	if (!size_limit_helper(&env, &size, index))
 		return (NULL);
 	env[index++] = NULL;
-//	return (env);
 	return (realloc(env, sizeof(char *) * index + 1));
 }
