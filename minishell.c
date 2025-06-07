@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 12:07:03 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 14:34:28 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,15 @@ bool	build_env(t_shell **minishell, char **envp)
 	(*minishell)->envp = build_environement(envp);
 	if (!(*minishell)->envp)
 		return (NULL);
+/*
 	head = (*minishell)->envp;
 	while (head)
 	{
 		insert_avlt_node(&root, head, strlen(head->var[KEY]));
 		head = head->next;
 	}
-	(*minishell)->expt = root;
+*/
+	//(*minishell)->expt = root;
 	(*minishell)->local = NULL;
 	(*minishell)->command = NULL;
 	(*minishell)->special = append_specials();

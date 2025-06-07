@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 05:11:37 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:38 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:19:07 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	unset(t_shell *minishell, char **args)
 	while (args[i])
 	{
 		if (is_valid_key(args[i]))
-			remove_from_env(&minishell->envp, args[i]);
+		 	remove_from_env(&minishell->envp, args[i]);
 		i++;
 	}
 	return (SUCCESS);

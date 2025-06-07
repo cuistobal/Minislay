@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 09:46:01 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 14:32:24 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,22 @@
 //
 t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 {
-	t_avlt	*avlt;
-	t_avlt	*node;
+//	t_avlt	*avlt;
+//	t_avlt	*node;
 	t_env	*environ;
 
-	node = NULL;
+//	node = NULL;
 	environ = NULL;
-	avlt = minishell->expt;
-	find_element(avlt, &node, key, value);
-	if (node)
-		return (node->env);
+//	avlt = minishell->expt;
+//	find_element(avlt, &node, key, value);
+//	if (node)
+//		return (node->env);
+    environ = minishell->envp;
+	while (environ)
+	{
+		if (strcmp(environ->var[KEY], key) == 0)
+			return (environ);	
+	}	
 	environ = minishell->local;
 	while (environ)
 	{

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:20:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:29:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool	retrieve_path(t_shell *minishell, char **command)
 	path = NULL;
 	if (!minishell || !*command)
 		return (false);
-	if (find_key(minishell, &path, PATH))
+	if (find_key_in_env(minishell->envp, &path, PATH))
 		return (try_path(command, path));
 	return (false);
 }

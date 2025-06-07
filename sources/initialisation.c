@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:53:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:33:05 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_env	*append_specials(void)
 }
 
 
-//
+/*
 bool	insert_env_in_avlt(t_shell *minishell)
 {
 	t_env	*copy;
@@ -81,3 +81,4 @@ bool	insert_env_in_avlt(t_shell *minishell)
 	}
 	return (!copy);
 }
+*/

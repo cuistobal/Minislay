@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 12:00:24 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 14:34:09 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void export_new_variable(t_shell **minishell, char *argument)
         return ;
     tail = get_env_tail_node((*minishell)->envp);
     insert_env_node(&(*minishell)->envp, &tail, new);
-    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
+    //insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
 }
 
 //
@@ -132,6 +132,7 @@ int	export(t_shell **minishell, char **args)
 		i++;
 	}
     if (i == 0)
-        pre_order_display((*minishell)->expt); 
+    //    pre_order_display((*minishell)->expt); 
+        printf("temp\n"); 
 	return (SUCCESS);
 }

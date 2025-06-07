@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:25:19 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 12:06:11 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 14:30:16 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 //					quick access.
 typedef struct shell
 {
-	struct	avltree	*expt;
+//	struct	avltree	*expt;
 	struct  env		*envp;
 	struct	env		*local;
 	struct	env		*command;

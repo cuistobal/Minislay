@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:59:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 09:47:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 14:23:49 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ bool	insert_node(t_avlt **node, char *key, char *value, int len)
 }
 
 //
-bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
+bool	find_element(t_avlt *tree, t_avlt **node, char *key)
 {
 	if (tree)
 	{
@@ -120,8 +120,8 @@ bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value)
 			else
 			{
 				if (strcmp(key, tree->data[KEY]) < 0)
-					return (find_element(tree->left, node, key, value));
-				return (find_element(tree->right, node, key, value));
+					return (find_element(tree->left, node, key));
+				return (find_element(tree->right, node, key));
 			}
 		}
 	}
