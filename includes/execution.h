@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 11:16:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 12:21:12 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast);
 //int		create_child_process(t_shel *minishell, t_exec *execution);
 
 //create_process.c
-int		execute_command_in_child(char **command, char **env);
+int		execute_command_in_child(t_shell **minishell, char **command, char **env, int index);
 int		create_child_process(t_shell *minishell, t_exec **execution);
 
 //wait_module.c

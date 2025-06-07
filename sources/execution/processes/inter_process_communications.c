@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/05 08:41:42 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 12:32:46 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ void	get_or_restore_stds(int fds[2], bool set)
 	}
 	else
 	{
-		dup2(fds[0], STDIN_FILENO);
+	//	dup2(fds[0], STDIN_FILENO);
+		dup2(STDIN_FILENO, fds[0]);
 		close(fds[0]);
-		dup2(fds[1], STDOUT_FILENO);
+	//	dup2(fds[1], STDOUT_FILENO);
+		dup2(STDOUT_FILENO, fds[1]);
 		close(fds[1]);
 	}
 }
@@ -86,6 +88,7 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index)
 
 static int stdin_management(t_exec *node, int pipefd[][2], int index)
 {
+    int old;
     int infile;
 
     infile = node->redirs[INFILE];
@@ -97,14 +100,17 @@ static int stdin_management(t_exec *node, int pipefd[][2], int index)
     }
     else if (index > 0)
     {
+        old = pipefd[index - 1][READ_END];
         if (my_dup2(pipefd[index - 1][READ_END], STDIN_FILENO) != SUCCESS)
             return (GENERAL_ERROR);
+        close(old);
     }
 	return (SUCCESS);
 }
 
 static int stdout_management(t_exec *node, int pipefd[][2], int index)
 {
+    int old;
     int outfile;
 
     outfile = node->redirs[OUTFILE];
@@ -116,8 +122,10 @@ static int stdout_management(t_exec *node, int pipefd[][2], int index)
 	}
 	else if (node->next)
 	{
+        old = pipefd[index][WRITE_END];
 		if (my_dup2(pipefd[index][WRITE_END], STDOUT_FILENO) != SUCCESS)
 			return (GENERAL_ERROR);
+        close(old);
 	}
 	return (SUCCESS);
 }
@@ -139,11 +147,7 @@ static int close_unused_pipes(t_exec *node, int pipefd[][2], int index)
 
 int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
 {
-    // int infile;
-    // int outfile;
 
-    // infile = node->redirs[INFILE];
-    // outfile = node->redirs[OUTFILE];
     int ret;
 
 	ret = stdin_management(node, pipefd, index);

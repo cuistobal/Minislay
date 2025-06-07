@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 14:35:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 12:07:03 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	get_minishelled(t_shell **minishell, char *input)
 	parser = define_parser(&ast, tokens);
 	if (!parser || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
-	ret = traverse_ast(minishell, ast);	
 	free(parser);
+    (*minishell)->ast = ast;
+	ret = traverse_ast(minishell, ast);	
 	free_tree(ast);
 	return (ret);
 }
@@ -139,6 +140,12 @@ int	main(int argc, char **argv, char **envp)
 	minishell = (t_shell *)malloc(sizeof(t_shell));
 	if (!minishell)
 		return (GENERAL_ERROR);
+    minishell->execution = NULL;
+    minishell->ast = NULL;
+    minishell->pids = NULL;
+    minishell->pipefd = NULL;
+    minishell->original_stds[0] = -1;
+    minishell->original_stds[1] = -1;
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);

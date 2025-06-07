@@ -6,14 +6,35 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/05 08:49:44 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 12:23:07 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+static void child_cleanup(t_shell **minishell, int cmd)
+{
+    int index;
+
+    index = 0;
+    free_execution_node((*minishell)->execution);
+    free_tree((*minishell)->ast);
+    while (index < cmd + 1)
+    {
+        close((*minishell)->pipefd[index][READ_END]);
+        close((*minishell)->pipefd[index][WRITE_END]);
+        index++;
+    }
+    free((*minishell)->pipefd);
+    free((*minishell)->pids);
+    close((*minishell)->original_stds[0]);
+    close((*minishell)->original_stds[1]);
+    free_minishell(*minishell);
+}
+
+
 //
-int	execute_command_in_child(char **command, char **envp)
+int	execute_command_in_child(t_shell **minishell, char **command, char **envp, int cmd)
 {
 	int	code;
 
@@ -21,15 +42,14 @@ int	execute_command_in_child(char **command, char **envp)
 		return (GENERAL_ERROR);
 	else if (execve(*command, command, envp) < 0)
 	{
-		free_array(command, 0);
-		free_array(envp, 0);
+        child_cleanup(minishell, cmd);
 		exit(GENERAL_ERROR);
 	}
 	return (SUCCESS);
 }
 
 //
-pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
+pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
 {
 	pid_t	child;
 
@@ -41,7 +61,7 @@ pid_t	create_and_execute_child(t_exec *node, int pipefd[][2], int index)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		setup_redirections_in_child(node, pipefd, index);
-		execute_command_in_child((node)->command, (node)->environ);
+		execute_command_in_child(minishell, (node)->command, (node)->environ, index);
 	}
 	return (child);
 }
@@ -63,6 +83,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
             signal(SIGQUIT, SIG_DFL);
             setup_redirections_in_child(current, pipefd, index);
             ret = exec_builtin(current->command, current->environ, minishell);
+            child_cleanup(minishell, index);
             exit(ret);
         }
         redirections_in_parent(current, pipefd, index);
@@ -76,13 +97,15 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
 
 
 //
-static int	execute_binay(t_exec *current, pid_t pids[], int pipefd[][2], int index)
+static pid_t    execute_binay(t_shell **minishell, t_exec *current, int pipefd[][2], int index)
 {
-	pids[index] = create_and_execute_child(current, pipefd, index);
-	if (pids[index] < 0)
+    pid_t   pid;
+
+	pid = create_and_execute_child(minishell, current, pipefd, index);
+	if (pid < 0)
 		return (GENERAL_ERROR);
 	redirections_in_parent(current, pipefd, index);
-	return (SUCCESS);
+	return (pid);
 }
 
 static void close_pipes(int (*pipefd)[2], int count)
@@ -102,30 +125,28 @@ static void close_pipes(int (*pipefd)[2], int count)
 int	execute_commands(t_shell **minishell, t_exec *node, int count)
 {
 	int		ret;
-    pid_t	*pids;
     int		index;
-	int		(*pipefd)[2];
     
 	index = 0;
     if (count <= 0)
         return (SUCCESS);
-    pids = malloc(sizeof(pid_t) * count);
-    pipefd = malloc(sizeof(int[2]) * (count - 1));
-    if (!pids || !pipefd)
-    	return (free(pids), free(pipefd), GENERAL_ERROR);
+    (*minishell)->pids = malloc(sizeof(pid_t) * count);
+    (*minishell)->pipefd = malloc(sizeof(int[2]) * (count - 1));
+    if (!(*minishell)->pids || !(*minishell)->pipefd)
+    	return (free((*minishell)->pids), free((*minishell)->pipefd), GENERAL_ERROR);
     while (node && index < count)
     {
         if ((!node->command || !*node->command) || \
-            (node->next && pipe(pipefd[index]) < 0))
-            return (free(pids), close_pipes(pipefd, index), \
-                    free(pipefd), GENERAL_ERROR);
+            (node->next && pipe((*minishell)->pipefd[index]) < 0))
+            return (free((*minishell)->pids), close_pipes((*minishell)->pipefd, index), \
+                    free((*minishell)->pipefd), GENERAL_ERROR);
         if (!is_builtin(*node->command))
-            ret = execute_binay(node, pids, pipefd, index);
+            ret = execute_binay(minishell, node, (*minishell)->pipefd, index);
         else
-            ret = execute_builtin(node, pipefd, index, minishell);
+            ret = execute_builtin(node, (*minishell)->pipefd, index, minishell);
         node = node->next;
         index++;
     }
-    return (free(pids), close_pipes(pipefd, count), \
-            free(pipefd), wait_module(pids, index, ret));
+    return (free((*minishell)->pids), close_pipes((*minishell)->pipefd, count), \
+            free((*minishell)->pipefd), wait_module((*minishell)->pids, index, ret));
 }
