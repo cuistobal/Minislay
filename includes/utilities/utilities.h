@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 10:15:03 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 10:15:26 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ typedef struct	avltree
 //avl_utils.c:
 int		height(t_avlt *node);
 int		my_max(const int a, const int b);
-//void	pre_order_display(t_avlt *root);
 bool	create_avlt_node(t_avlt **new, t_env *node);
 bool	insert_avlt_node(t_avlt **node, t_env *env, int len);
 void	free_avlt_tree(t_avlt *root);
