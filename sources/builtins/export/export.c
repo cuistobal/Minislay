@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:34:09 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/07 15:35:26 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ static void	pre_order_display(t_avlt *root)
 		printf("=%s", root->env->var[VALUE]);
 	printf("\n");
 	pre_order_display(root->right);
+}
+
+//
+static void print_export(t_env *list)
+{
+    t_env   *sorted; 
 }
 
 //
@@ -132,6 +138,7 @@ int	export(t_shell **minishell, char **args)
 		i++;
 	}
     if (i == 0)
+        print_export((*minishell)->envp);
     //    pre_order_display((*minishell)->expt); 
         printf("temp\n"); 
 	return (SUCCESS);
