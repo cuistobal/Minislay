@@ -13,6 +13,19 @@
 #include "minislay.h"
 
 //
+static void	pre_order_display(t_avlt *root)
+{
+	if (!root)
+		return ;
+	pre_order_display(root->left);
+	printf("export %s", root->env->var[KEY]);
+	if (root->env->var[VALUE])
+		printf("=%s", root->env->var[VALUE]);
+	printf("\n");
+	pre_order_display(root->right);
+}
+
+//
 static int	is_valid_identifier(const char *s)
 {
 	int	i;
@@ -41,7 +54,6 @@ static int	is_valid_identifier(const char *s)
 	return (1);
 }
 
-
 //
 static void export_new_variable(t_shell **minishell, char *argument)
 {
@@ -52,11 +64,28 @@ static void export_new_variable(t_shell **minishell, char *argument)
     if (!new)
         return ;
     tail = get_env_tail_node((*minishell)->envp);
-    insert_env_node(&(*minishell)->envp, &tail, new); 
-    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[VALUE]));
+    insert_env_node(&(*minishell)->envp, &tail, new);
+    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
 }
 
+//
+static bool split_token(char *token, char **key, char **value)
+{
+    char *equal;
 
+    equal = strchr(token, '=');
+    if (equal)
+    {
+        *key = strndup(token, equal - token);
+        *value = strdup(equal + 1);
+    }
+    else
+    {
+        *key = strdup(token);
+        *value = NULL;
+    }
+    return (*key && (*value || !equal));
+}
 
 //Il faut ajouter la promotion depuis l'environement local
 int	export(t_shell **minishell, char **args)
@@ -68,22 +97,15 @@ int	export(t_shell **minishell, char **args)
     t_env   *node;
 
 	i = 0;
+    key = NULL;
+    value = NULL;
 	while (args[i])
 	{
         node = NULL;
-	    value = NULL;
-		equal = strchr(args[i], '=');
-        if (equal)
+        if (!split_token(args[i], &key, &value))
+            return (GENERAL_ERROR);
+		else if (is_valid_identifier(key))
         {
-		    key = strndup(args[i], equal - args[i]);
-            value = strdup(args[i] + strlen(key));
-        }
-        else
-		    key = strdup(args[i]);
-		if (is_valid_identifier(key))
-        {
-            if (equal)
-                value = strdup(args[i] + strlen(key));
             node = get_env_node(*minishell, key, value);
             if (!node)
                 export_new_variable(minishell, args[i]);
@@ -92,6 +114,18 @@ int	export(t_shell **minishell, char **args)
                 free(node->var[VALUE]);
                 node->var[VALUE] = strdup(value);
             }
+            else if (!value && node->var[VALUE])
+            {
+                free(node->var[VALUE]);
+                node->var[VALUE] = NULL;
+            }
+        }
+        else
+        {
+            free(key);
+            free(value);
+            printf("minislay: export: `%s': not a valid identifier\n", args[i]);
+            return (GENERAL_ERROR);
         }
         free(key);
         free(value);

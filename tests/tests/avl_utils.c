@@ -56,8 +56,10 @@ void	pre_order_display(t_avlt *root)
 	if (!root)
 		return ;
 	pre_order_display(root->left);
-	printf("export %s", root->data[0]);
-	printf("=%s\n", root->data[1]);
+	printf("export %s", root->data[KEY]);
+	if (root->data[VALUE])
+		printf("=%s", root->data[VALUE]);
+	printf("\n");
 	pre_order_display(root->right);
 }
 
