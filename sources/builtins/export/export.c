@@ -13,6 +13,19 @@
 #include "minislay.h"
 
 //
+static void	pre_order_display(t_avlt *root)
+{
+	if (!root)
+		return ;
+	pre_order_display(root->left);
+	printf("export %s", root->env->var[KEY]);
+	if (root->env->var[VALUE])
+		printf("=%s", root->env->var[VALUE]);
+	printf("\n");
+	pre_order_display(root->right);
+}
+
+//
 static int	is_valid_identifier(const char *s)
 {
 	int	i;
@@ -51,11 +64,11 @@ static void export_new_variable(t_shell **minishell, char *argument)
     if (!new)
         return ;
     tail = get_env_tail_node((*minishell)->envp);
-    insert_env_node(&(*minishell)->envp, &tail, new); 
-    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[VALUE]));
-    pre_order_display((*minishell)->expt); 
+    insert_env_node(&(*minishell)->envp, &tail, new);
+    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
 }
 
+//
 static bool split_token(char *token, char **key, char **value)
 {
     char *equal;
