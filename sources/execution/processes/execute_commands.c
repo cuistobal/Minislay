@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 12:23:07 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 15:37:02 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
         if ((!node->command || !*node->command) || \
             (node->next && pipe((*minishell)->pipefd[index]) < 0))
             return (free((*minishell)->pids), close_pipes((*minishell)->pipefd, index), \
-                    free((*minishell)->pipefd), GENERAL_ERROR);
+                    free((*minishell)->pipefd), COMMAND_NOT_FOUND);
         if (!is_builtin(*node->command))
             ret = execute_binay(minishell, node, (*minishell)->pipefd, index);
         else

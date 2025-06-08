@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:31:00 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 16:01:57 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,34 @@ void	free_array(char **array, int count)
 }
 
 //
-void	free_tree(t_tree *ast)
+void	free_tree(t_tree **ast)
 {
-	if (!ast)
+    t_tokn  *current;
+
+    current = NULL;
+	if (!*ast)
 		return ;
-	free_tree(ast->left);
-	ast->left = NULL;
-	free_tree(ast->right);
-	ast->right = NULL;
-	free(ast);
-	ast = NULL;
+	free_tree(&(*ast)->left);
+	(*ast)->left = NULL;
+	free_tree(&(*ast)->right);
+	(*ast)->right = NULL;
+    free_tokens((*ast)->tokens);
+    (*ast)->tokens = NULL;
+/*
+    current = ast->tokens;
+    while (current)
+    {
+        if (current->value)
+        {
+            free(current->value);
+            current->value = NULL;
+        }
+        move_pointer(&ast->tokens);
+        current = ast->tokens;
+    }
+    */
+	free(*ast);
+	*ast = NULL;
 }
 
 //
@@ -118,7 +136,6 @@ void	free_minishell(t_shell *minishell)
 	free_env_list(minishell->local);
 	free_env_list(minishell->command);
 	free_env_list(minishell->special);
-//	free_avlt_tree(minishell->expt);
 	free(minishell);
 	minishell = NULL;
 }

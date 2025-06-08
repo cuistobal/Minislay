@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 12:07:34 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 16:00:44 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	handle_operators(t_shell **minishell, t_tree *ast)
 		return (handle_subshell(*minishell, ast));
 	else if (is_state_active(ast->tokens->type, LAND))
 		return (LAND);
+    free_tokens(ast->tokens);
 	return (LORR);
 }
 
@@ -57,15 +58,20 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
 	ret = 0;
     if (is_state_active(ast->tokens->type, LAND))
     {
+        free_tokens(ast->tokens);
         ret = traverse_ast(minishell, ast->left);
         if (ret == 0)
             return (traverse_ast(minishell, ast->right));
+        free_tree(&ast->right);
+        ast->right = NULL;
     }
     else if (is_state_active(ast->tokens->type, LORR))
     {
+        free_tokens(ast->tokens);
         ret = traverse_ast(minishell, ast->left);
         if (ret != 0)
             return (traverse_ast(minishell, ast->right));
+        free_tree(&ast->right);
     }
     else if (is_state_active(ast->tokens->type, OPAR))
         return (handle_subshell(*minishell, ast));

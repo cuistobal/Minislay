@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:54:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:17:05 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ int	wait_module(pid_t *pids, int count, int ret)
 	}
 	if (ret == EXIT_CODE)
 		return (EXIT_CODE);
-	return (GENERAL_ERROR);
+	return (SUCCESS);
 }

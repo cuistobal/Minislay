@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 09:53:41 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 15:35:25 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_exec	*prepare_for_exec(t_shell **m, t_tokn *tokens)
 	node = (t_exec *)malloc(sizeof(t_exec));
 	if (!node)
 		return (NULL);
-    //node->assignations = create_token_sub_list(&tokens, EQUL);
     node->assignations = NULL;
 	node->redirections = create_token_sub_list(&tokens, HDOC | IRED | ORED | ARED);
 	node->redirs[INFILE] = -1;
