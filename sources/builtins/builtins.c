@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/03 11:33:17 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 17:24:47 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,5 @@ int	exec_builtin(char **argv, char **envp, t_shell **minishell)
 		code = export(minishell, argv + 1);
 	else if (!strncmp(argv[0], "unset", 6))
 		code = unset(*minishell, argv + 1);
-	//temp = minishell->special[DEXTI];
-	//minishell->special[DEXTI] = int_to_str(code);
 	return (code);
 }

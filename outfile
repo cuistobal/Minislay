@@ -1,1 +1,15 @@
-test
+LICENSE
+Makefile
+README.md
+SCREENSHOT_FICHIERS_FONCTIONS_INTERDITES.png
+includes
+minishell.c
+minishell.o
+minislay
+minitester
+outfile
+sources
+tags
+tests
+toolbox_and_notes
+utilities
