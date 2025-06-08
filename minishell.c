@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:34:28 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 20:42:03 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 	free(parser);
     (*minishell)->ast = ast;
 	ret = traverse_ast(minishell, ast);	
+    append_exit_code(*minishell, ret, false);
 	free_tree(ast);
 	return (ret);
 }
@@ -60,7 +61,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		{
 			g_signal_status = 0;
 			free(user_input);
-			continue; // Ne pas parser une ligne vide suite à SIGQUIT
+			continue ; // Ne pas parser une ligne vide suite à SIGQUIT
 		}
 		if (*user_input)
 			add_history(user_input);
@@ -116,15 +117,6 @@ bool	build_env(t_shell **minishell, char **envp)
 	(*minishell)->envp = build_environement(envp);
 	if (!(*minishell)->envp)
 		return (NULL);
-/*
-	head = (*minishell)->envp;
-	while (head)
-	{
-		insert_avlt_node(&root, head, strlen(head->var[KEY]));
-		head = head->next;
-	}
-*/
-	//(*minishell)->expt = root;
 	(*minishell)->local = NULL;
 	(*minishell)->command = NULL;
 	(*minishell)->special = append_specials();

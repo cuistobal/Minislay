@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:32:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:42:16 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	}
 	if (quote)
 		return (NULL);
-// This is why we have a 1 bit invalid read problem
 	return (strndup(input + start, *pos - start));
 }
 
