@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:17 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 17:40:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/07 14:26:09 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,18 @@ bool	insert_avlt_node(t_avlt **node, t_env *env, int len)
 	return (balance_tree(node, (*node)->env->var[KEY], len));
 }
 
-/*			NEEDS IMPLEMENTATION
- *
- *
+/*
+
 bool	remove node(t_avlt *tree, char *key)
 {
-	if (tree)
-	{
+    t_avlt  *node;
 
-	}
-}*/
+
+	if (!tree)
+        return (false);
+    if (find_element(tree, &node, key))
+    {
+        free((*node);
+    }
+}
+*/

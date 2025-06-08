@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 12:00:24 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 09:29:50 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,26 @@ static void	pre_order_display(t_avlt *root)
 		printf("=%s", root->env->var[VALUE]);
 	printf("\n");
 	pre_order_display(root->right);
+}
+
+//
+static void print_export(t_env *list)
+{
+    t_env   *head;
+    t_env   *sorted; 
+
+    head = sort_env_list(list);
+    sorted = head;
+    while (sorted)
+    {
+        printf("export ");
+        printf("%s", sorted->var[KEY]);
+        if (sorted->var[VALUE])
+            printf("=%s", sorted->var[VALUE]);
+        printf("\n");
+        sorted = sorted->next;
+    }
+    free_env_list(head);
 }
 
 //
@@ -65,7 +85,6 @@ static void export_new_variable(t_shell **minishell, char *argument)
         return ;
     tail = get_env_tail_node((*minishell)->envp);
     insert_env_node(&(*minishell)->envp, &tail, new);
-    insert_avlt_node(&(*minishell)->expt, new, strlen(new->var[KEY]));
 }
 
 //
@@ -132,6 +151,6 @@ int	export(t_shell **minishell, char **args)
 		i++;
 	}
     if (i == 0)
-        pre_order_display((*minishell)->expt); 
+        print_export((*minishell)->envp);
 	return (SUCCESS);
 }

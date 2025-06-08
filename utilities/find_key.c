@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:21:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 09:41:42 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 08:31:01 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,18 @@ bool	find_key_in_env(t_env *command, char **value, char *key)
 //return false;
 bool	find_key(t_shell *minishell, char **value, char *key)
 {
-	t_avlt	*root;
+//	t_avlt	*root;
 	t_env	*head;
 
 	if (!minishell)
 		return (false);
+/*
 	root = minishell->expt;
 	if (find_key_in_avlt(root, value, key))
+		return (*value);
+*/
+    head = minishell->envp;
+	if (find_key_in_env(head, value, key))
 		return (*value);
 	head = minishell->local;
 	if (find_key_in_env(head, value, key))
