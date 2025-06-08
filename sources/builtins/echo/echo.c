@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 17:25:34 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 17:38:24 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int builtin_echo(char **argv)
 
 	i = 1;
 	newline = true;
-	// gérer tous les -n/-nnn
 	while (argv[i] && strncmp(argv[i], "-n", 2) == 0) 
     {
 		j = 2;
@@ -32,7 +31,6 @@ int builtin_echo(char **argv)
 		newline = false;
 		i++;
 	}
-	// afficher le reste
 	while (argv[i]) 
     {
 		printf("%s", argv[i]);

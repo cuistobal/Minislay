@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:37:02 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 18:02:32 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,32 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 	return (child);
 }
 
+static void setup_redirections_for_builtin(t_exec *node, int original[2], bool set)
+{
+    if (set)
+    {
+        original[INFILE] = dup(STDIN_FILENO);
+        original[OUTFILE] = dup(STDOUT_FILENO);
+        if (node->redirs[INFILE] != -1)
+            dup2(STDIN_FILENO, node->redirs[INFILE]);
+        if (node->redirs[OUTFILE] != -1)
+            dup2(STDOUT_FILENO, node->redirs[OUTFILE]);
+    }
+    else
+    { 
+        if (original[INFILE] != STDIN_FILENO)
+            dup2(STDIN_FILENO, original[INFILE]);
+        if (original[INFILE] != STDOUT_FILENO)
+            dup2(STDOUT_FILENO, original[OUTFILE]);
+    }
+}
+
 //
 static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shell **minishell)
 {
 	int 	ret;
     pid_t 	pid;
+    int     original[2];
 
     if (current->next || index > 0)
     {
@@ -86,13 +107,11 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
             child_cleanup(minishell, index);
             exit(ret);
         }
-        redirections_in_parent(current, pipefd, index);
-        return (pid);
-    }
-    setup_redirections_in_child(current, pipefd, index);
+        return (redirections_in_parent(current, pipefd, index), pid);
+    } 
+    setup_redirections_for_builtin(current, original, true);
     ret = exec_builtin(current->command, current->environ, minishell);
-    redirections_in_parent(current, pipefd, index);
-	return (ret);
+    return (setup_redirections_for_builtin(current, original, false), ret);
 }
 
 
