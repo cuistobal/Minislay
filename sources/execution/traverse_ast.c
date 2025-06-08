@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 17:14:38 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 18:12:20 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	traverse_ast(t_shell **minishell, t_tree *ast)
     if (is_state_active(ast->tokens->type, LAND | LORR))
         return (handle_logical_operators(minishell, ast));
     else if (is_state_active(ast->tokens->type, OPAR))
-        return (handle_subshell(*minishell, ast));
+        append_exit_code(*minishell, handle_subshell(*minishell, ast), true);
     else
     {
         get_or_restore_stds((*minishell)->original_stds, true);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:36:29 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 18:10:58 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	execute_pipeline(t_shell **minishell, t_exec *execute);
 int		traverse_ast(t_shell **minishell, t_tree *ast);
 
 //subshells.c
-bool    handle_subshell(t_shell *minishell, t_tree *ast);
+int handle_subshell(t_shell *minishell, t_tree *ast);
 
 //word_splitting.c
 //bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
