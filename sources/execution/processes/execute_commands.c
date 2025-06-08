@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 18:02:32 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 20:28:48 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static void setup_redirections_for_builtin(t_exec *node, int original[2], bool s
             dup2(STDIN_FILENO, original[INFILE]);
         if (original[INFILE] != STDOUT_FILENO)
             dup2(STDOUT_FILENO, original[OUTFILE]);
+        close(original[INFILE]);
+        close(original[OUFILE]);
     }
 }
 

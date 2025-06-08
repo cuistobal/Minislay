@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 18:11:32 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 20:23:13 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,6 @@ int handle_subshell(t_shell *minishell, t_tree *ast)
 	if (!prompt(&subshell_command, ast))
         return (GENERAL_ERROR);
     ret = get_minishelled(&minishell, subshell_command); 
-    free(subshell_command);
+    free(subshell_command); 
     return (ret);
 }
