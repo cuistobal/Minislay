@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 16:01:57 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 17:07:25 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,21 @@ void	free_array(char **array, int count)
 }
 
 //
-void	free_tree(t_tree **ast)
+void	free_tree(t_tree *ast)
 {
     t_tokn  *current;
 
     current = NULL;
-	if (!*ast)
+	if (!ast)
 		return ;
-	free_tree(&(*ast)->left);
-	(*ast)->left = NULL;
-	free_tree(&(*ast)->right);
-	(*ast)->right = NULL;
-    free_tokens((*ast)->tokens);
-    (*ast)->tokens = NULL;
+	free_tree(ast->left);
+	ast->left = NULL;
+	free_tree(ast->right);
+	ast->right = NULL;
 /*
+    if (ast->tokens)
+        free_tokens((*ast)->tokens);
+    (*ast)->tokens = NULL;
     current = ast->tokens;
     while (current)
     {
@@ -68,8 +69,8 @@ void	free_tree(t_tree **ast)
         current = ast->tokens;
     }
     */
-	free(*ast);
-	*ast = NULL;
+	free(ast);
+	ast = NULL;
 }
 
 //

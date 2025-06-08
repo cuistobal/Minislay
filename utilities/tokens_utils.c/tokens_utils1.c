@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:01:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:10:34 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 17:05:52 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ void	free_tokens(t_tokn *tokens)
 		free(tokens);
 		tokens = temp;
 	}
+    tokens = NULL;
 }
 

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 16:02:53 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 17:07:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	reset_array(char **array, int start, int end);
 bool	error_message(char *message);
 
 //tests
-void	free_tree(t_tree **ast);
+void	free_tree(t_tree *ast);
 void	free_minishell(t_shell *minishell);
 void	free_array(char **array, int count);
 void	free_execution_node(t_exec *execution);
