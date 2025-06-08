@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:29:21 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/08 09:19:48 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,7 @@ bool	find_key(t_shell *minishell, char **value, char *key);
 void    append_exit_code(t_shell *minishell, int code, bool command);
 
 bool	find_key_in_env(t_env *command, char **value, char *key);
+
+t_env   *sort_env_list(t_env *list);
 
 #endif

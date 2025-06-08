@@ -37,6 +37,7 @@ SOURCES = \
 	utilities/linked_lists_utils.c \
 	utilities/linked_lists_utils1.c \
 	utilities/linked_lists_utils2.c \
+	utilities/sort_list.c \
 	utilities/environement_utils.c \
 	sources/initialisation.c\
 	sources/builtins/cd/cd.c \

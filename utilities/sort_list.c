@@ -1,0 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_list.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/08 09:09:36 by cuistobal         #+#    #+#             */
+/*   Updated: 2025/06/08 09:28:23 by cuistobal        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minislay.h"
+
+//
+static t_env    *merge_sort(t_env* left, t_env* right)
+{
+    t_env   *sorted;
+
+    sorted = NULL;
+    if(!left)
+        return (right);
+    if(!right)
+        return (left);
+    if(strcmp(left->var[KEY], right->var[KEY]) < 0)
+    {
+        sorted = left;
+        sorted->next = merge_sort(left->next,right);
+    }
+    else
+    {
+        sorted = right;
+        sorted->next = merge_sort(left,right->next);
+    }
+    return (sorted);
+}
+
+//
+static t_env    *get_middle_node(t_env *list)
+{
+    t_env   *slow;
+    t_env   *fast;
+
+    slow = list;
+    fast = list->next;
+    while(fast && fast->next)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return (slow);
+}
+
+//
+static t_env    *sort_list(t_env *list)
+{
+    t_env   *mid;
+    t_env   *temp;
+    t_env   *left;
+    t_env   *right;
+
+    if(!list || !list->next)
+        return list;
+    mid = get_middle_node(list);
+    temp = mid->next;
+    mid->next=NULL;
+    left = sort_list(list);
+    right = sort_list(temp);
+    return (merge_sort(left,right));
+}
+
+t_env   *copy_env_list(t_env *list)
+{
+    t_env   *copy;
+    t_env   *head;
+    t_env   *tail;
+
+    head = NULL;
+    copy = NULL;
+    tail = NULL;
+    while (list)
+    {
+        copy = malloc(sizeof(t_env));
+        if (!copy)
+            return (free_env_list(head), NULL);
+        if (!head)
+        {
+            head = copy;
+            tail = copy;
+        }
+        else
+        {
+            tail->next = copy;
+            tail = copy;
+        }
+        copy->var[KEY] = strdup(list->var[KEY]);
+        copy->var[VALUE] = strdup(list->var[VALUE]);
+        copy->next = NULL;
+        list = list->next;
+    }
+    return (head);
+}
+
+//
+t_env    *sort_env_list(t_env *list)
+{
+    t_env   *duplicate;
+
+    duplicate = copy_env_list(list);
+    return (sort_list(duplicate));
+}
