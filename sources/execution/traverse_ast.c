@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 20:39:26 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 09:28:30 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int  handle_logical_operators(t_shell **minishell, t_tree *ast)
         free_tree(ast->right);
     }
     else
-    {
+    {      
         ret = handle_subshell(*minishell, ast);
         free_tokens(ast->tokens);
     }
