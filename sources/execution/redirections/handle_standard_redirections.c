@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/04 09:28:43 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:23:19 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ static int	open_file(char *filename, int mask, int permissions)
 {
 	int	fd;
 
-//	printf("%s	%d	%d\n", filename, mask, permissions);
-
 	if (mask & O_CREAT)
 		fd = open(filename, mask, permissions);
 	else
 		fd = open(filename, mask);
 	if (fd < 0)
-		printf("%s%s\n", OPEN_ERROR, filename);
+    {
+        error_message(OPEN_ERROR);
+        error_message(filename);
+    }
 	return (fd);
 }
 

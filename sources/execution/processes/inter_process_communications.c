@@ -34,36 +34,29 @@ int	my_dup2(int oldfd, int newfd)
 	return (SUCCESS);
 }
 
-//
-// void	get_or_restore_stds(int fds[2], bool set)
-// {
-// 	if (set)
-// 	{
-// 		fds[0] = dup(STDIN_FILENO);
-// 		fds[1] = dup(STDOUT_FILENO);
-// 	}
-// 	else
-// 	{
-// 		dup2(STDIN_FILENO, fds[0]);
-// 		close(fds[0]);
-// 		dup2(STDOUT_FILENO, fds[1]);
-// 		close(fds[1]);
-// 	}
-// }
-
 void get_or_restore_stds(int fds[2], bool set)
 {
+    static struct termios original;
+    struct termios term;
+
     if (set)
     {
-        fds[0] = dup(STDIN_FILENO);
-        fds[1] = dup(STDOUT_FILENO);
+        // Sauvegarde l'état du terminal
+        if (isatty(STDIN_FILENO))
+            tcgetattr(STDIN_FILENO, &original);
+        // Sauvegarde les fds pour la référence
+        fds[0] = STDIN_FILENO;
+        fds[1] = STDOUT_FILENO;
     }
     else
     {
-        dup2(fds[0], STDIN_FILENO);
-        close(fds[0]);
-        dup2(fds[1], STDOUT_FILENO);
-        close(fds[1]);
+        // Restaure l'état du terminal
+        if (isatty(STDIN_FILENO))
+        {
+            tcgetattr(STDIN_FILENO, &term);
+            term = original;  // Copie les attributs originaux
+            tcsetattr(STDIN_FILENO, TCSANOW, &term);
+        }
     }
 }
 

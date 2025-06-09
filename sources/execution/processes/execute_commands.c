@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 14:30:23 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:37:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,40 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 // Elle est utilisée pour les builtins qui nécessitent des redirections, comme 'cd' ou 'export'.
 static void setup_redirections_for_builtin(t_exec *node, int original[2], bool set)
 {
+    int                     fd;
+    struct termios          term;
+    static char             *tty_path;
+    static struct termios   term_original;
+
+    tty_path = NULL;
     if (set)
     {
-        original[INFILE] = dup(STDIN_FILENO);
-        original[OUTFILE] = dup(STDOUT_FILENO);
+        if (isatty(STDIN_FILENO))
+        {
+            tcgetattr(STDIN_FILENO, &term_original);
+            if (!tty_path)
+                tty_path = ttyname(STDIN_FILENO);
+        }
         if (node->redirs[INFILE] != -1)
             dup2(node->redirs[INFILE], STDIN_FILENO);
         if (node->redirs[OUTFILE] != -1)
             dup2(node->redirs[OUTFILE], STDOUT_FILENO);
     }
-    else
+    else if (tty_path)
     {
-        if (original[INFILE] != STDIN_FILENO)
-            dup2(original[INFILE], STDIN_FILENO);
-        if (original[INFILE] != STDOUT_FILENO)
-            dup2(original[OUTFILE], STDOUT_FILENO);
-        close(original[INFILE]);
-        close(original[OUTFILE]);
+        if (isatty(STDIN_FILENO))
+        {
+            tcgetattr(STDIN_FILENO, &term);
+            term = term_original;
+            tcsetattr(STDIN_FILENO, TCSANOW, &term);
+        }
+        fd = open(tty_path, O_RDWR);
+        if (fd >= 0)
+        {
+            dup2(fd, STDIN_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+        }
     }
 }
 
@@ -133,7 +150,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
             exit(ret);
         }
         return (redirections_in_parent(current, pipefd, index), pid);
-    } 
+    }
     setup_redirections_for_builtin(current, original, true);
     ret = exec_builtin(current->command, current->environ, minishell);
     return (setup_redirections_for_builtin(current, original, false), ret);
