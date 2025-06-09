@@ -89,6 +89,7 @@ static char *append_heredoc_name(t_tokn *redirections)
     char    *unextended;
     char    *heredocname;
 
+	i = 0;
     temp = NULL;
 	heredocname = ft_strjoin("<<", redirections->value);	
     if (!heredocname)
@@ -96,7 +97,7 @@ static char *append_heredoc_name(t_tokn *redirections)
     unextended = heredocname;
     while (i < 10)
     {
-        if (access(heredocname, O_RDWR) == 0)
+        if (access(heredocname, O_RDWR) != 0)
             break ; 
         else if (i > 0)
             free(heredocname);
@@ -106,7 +107,6 @@ static char *append_heredoc_name(t_tokn *redirections)
     }
     if (i == 10)
         return (free(heredocname), error_message("Invalid heredoc\n"), NULL);
-    printf("%s\n", heredocname);
     return (heredocname);
 }
 
@@ -126,16 +126,6 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
     heredocname = append_heredoc_name(redirections);
 	if (!heredocname)
 		return (free(limiter), NULL);
-   /* 
-	heredocname = ft_strjoin("<<", redirections->value);	
-	if (!heredocname)
-		return (free(limiter), NULL);
-    if (access(heredocname, O_RDWR))
-    {
-        heredocname = ft_strjoin(heredocname, )
-    }
-        printf("Sir, we have a problem\n");
-        */
 	free(redirections->value);
 	redirections->value = heredocname;
 	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
@@ -161,7 +151,7 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		return (false);
 	line = readline(HERE);
 	rl_on_new_line();
-	while (line)
+	while (true)
 	{
 		if (!strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
 			break ;
