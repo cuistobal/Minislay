@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 17:07:38 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 17:46:27 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 bool    find_key(t_shell *minishell, char **value, char *key);
 
 //get_merged.c
-bool	get_merged(char **merged, char **temp, char **expanded);
+//bool	get_merged(char **merged, char **temp, char **expanded);
+char    *get_merged(char **merged, char **temp, char **expanded);
 
 //mem_utils.c
 void	*resize_array(void *array, int array_type, int *size);

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:25:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:05:12 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static char	*extract_key(char *token, int *index, int start)
 			if (tlen == 0)
 			{
 				if (strchr(SPE_EXP_CHAR, token[*index]))
-	//			if (token[*index] == '$' || token[*index] == '?')
 				{
 					tlen++;	
 					(*index)++;
@@ -125,7 +124,7 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		key = retrieve_expansions(token, index);
 		if (key)
 		{
-			if (!retrieve_keys_value(minishell, key, value))
+			if (!retrieve_keys_value(minishell, key, value)) 
 				*value = strdup("");
 			free(key);
 			key = NULL;

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 09:19:02 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:49:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,30 @@ static bool	prompt(char **prompt, t_tree *branch)
 	return (true);
 }
 
+//
 int handle_subshell(t_shell *minishell, t_tree *ast)
 {
-    int     ret;
-	t_shell	*subshell;
-	char	*subshell_command;
+    int             ret;
+    pid_t           pid;
+    char            *subshell_command;
 
-	subshell_command = NULL;
-	if (!prompt(&subshell_command, ast))
+    subshell_command = NULL;
+    if (!prompt(&subshell_command, ast))
         return (GENERAL_ERROR);
-    ret = get_minishelled(&minishell, subshell_command); 
-    free(subshell_command); 
-    return (ret);
+    pid = fork();
+    if (pid < 0)
+        return (free(subshell_command), GENERAL_ERROR);
+    if (pid == 0)
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        ret = get_minishelled(&minishell, subshell_command);
+        free(subshell_command);
+        free_tree(ast);
+        free_minishell(minishell);
+        exit(ret);
+    }
+    free(subshell_command);
+    waitpid(pid, &ret, 0);
+    return (WEXITSTATUS(ret));
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 09:16:05 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 17:08:13 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 	char	**commands;
 
 	index = 0;
-	if (!list)
+	if (!list || !list->value)
 		return (NULL);
 	commands = (char **)calloc(TAB_SIZE, sizeof(char *));
 	if (!commands)
