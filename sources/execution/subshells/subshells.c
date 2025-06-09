@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 20:23:13 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 09:19:02 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,27 @@ static bool append_prompt(char **prompt, t_tokn *current)
 //Hence, we can eprform recursive call to minishell.
 static bool	prompt(char **prompt, t_tree *branch)
 {
+    bool    closing;
     t_tokn  *current;
 
+    closing = false;
     if (!branch)
 		return (false);
     current = branch->tokens;
     while (current)
     {
     	current = current->next;
-		if (current && current->type != CPAR)
-		{
-    		if (!append_prompt(prompt, current))
-    	    	return (false);
+        if (!current)
+            break ;
+		if (current->type != CPAR)
+        {
+            if (!append_prompt(prompt, current))
+    	        return (false);
 		}
+        else if (!closing)
+            closing = true;
+        else if (!append_prompt(prompt, current))
+    	    return (false);
     }
 	return (true);
 }

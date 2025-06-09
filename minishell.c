@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 20:42:03 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 10:19:12 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ int	get_minishelled(t_shell **minishell, char *input)
 	if (!input)
 		return (GENERAL_ERROR);
 	if (!tokenize(&tokens, input, strlen(input)))
-		return (printf(TOKENIZATION), free_tokens(tokens), GENERAL_ERROR);
+		return (printf(TOKENIZATION), free_tokens(tokens), PARSING_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
-		return (printf("%s unmatched '('\n", SYNTAX), GENERAL_ERROR);
+		return (printf("%s unmatched '('\n", SYNTAX), free_tokens(tokens),\
+                GENERAL_ERROR);
 	parser = define_parser(&ast, tokens);
 	if (!parser || !parse_script(&parser))
-		return (printf(PARSING), free_tokens(tokens), free_tree(ast), GENERAL_ERROR);
+		return (printf(PARSING), free_tokens(tokens), free_tree(ast), \
+                free(parser), GENERAL_ERROR);
 	free(parser);
     (*minishell)->ast = ast;
 	ret = traverse_ast(minishell, ast);	
@@ -52,8 +54,8 @@ int	start_process(t_shell **minishell, char *terminal_name)
     while (1)
     {
 		user_input = readline(terminal_name);
-		if (user_input == NULL)  // Gestion du Ctrl-D
-		{
+		if (user_input == NULL)
+        {
 			write(STDOUT_FILENO, "exit\n", 5);
 			exit(0);
 		}
@@ -61,7 +63,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		{
 			g_signal_status = 0;
 			free(user_input);
-			continue ; // Ne pas parser une ligne vide suite à SIGQUIT
+			continue ;
 		}
 		if (*user_input)
 			add_history(user_input);
@@ -70,6 +72,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
 		user_input = NULL;
 		if (retcode == EXIT_CODE)
 			break ;
+        append_exit_code(*minishell, retcode, false);
 	}
 	rl_clear_history();
     return (retcode);

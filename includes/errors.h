@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 14:16:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:19:03 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 
 # define SUCCESS 0
 # define GENERAL_ERROR 1
+# define PARSING_ERROR 2
 # define ERROR 1
 # define BUILTINS 2
 # define COMMAND_EXEC 126

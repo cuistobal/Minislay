@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:38:51 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 08:45:58 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void    append_exit_code(t_shell *minishell, int code, bool command)
     if (!node)
         return ;
     ecode = ft_itoa(code);
+    if (!ecode)
+        return ;
     if (strcmp(node->var[VALUE], ecode) == 0)
         free(ecode);
     else

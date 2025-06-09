@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/28 15:09:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:15:58 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-		if (parse_command(current, parser))
+		if (!parse_command(current, parser))
+            return (false);
+		if (*current)
 		{
-			if (*current)
-			{
-				while ((*current) && (*current)->type & CPAR)
-					consume_token(current, parser);
-				return (ignore_nested_operators(current, parser));
-			}
+			while ((*current) && (*current)->type & CPAR)
+				consume_token(current, parser);
+			return (ignore_nested_operators(current, parser));
 		}
 	}
 	return (!*current);

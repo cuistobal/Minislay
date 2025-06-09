@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 15:11:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:04:53 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,36 @@ static bool	append_heredoc(char *expanded, int fd)
 	return (write(fd, "\n", 1));
 }
 
+static char *append_heredoc_name(t_tokn *redirections)
+{
+    int     i;
+    char    j;
+    char    *temp;
+    char    *unextended;
+    char    *heredocname;
+
+    temp = NULL;
+	heredocname = ft_strjoin("<<", redirections->value);	
+    if (!heredocname)
+        return (free(heredocname), NULL);
+    unextended = heredocname;
+    while (i < 10)
+    {
+        if (access(heredocname, O_RDWR) == 0)
+            break ; 
+        else if (i > 0)
+            free(heredocname);
+        j = i + 48;
+        heredocname = ft_strjoin(unextended, &j);
+        i++;
+    }
+    if (i == 10)
+        return (free(heredocname), error_message("Invalid heredoc\n"), NULL);
+    printf("%s\n", heredocname);
+    return (heredocname);
+}
+
+//
 static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 {
 	int		fd;
@@ -93,9 +123,19 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
+    heredocname = append_heredoc_name(redirections);
+	if (!heredocname)
+		return (free(limiter), NULL);
+   /* 
 	heredocname = ft_strjoin("<<", redirections->value);	
 	if (!heredocname)
 		return (free(limiter), NULL);
+    if (access(heredocname, O_RDWR))
+    {
+        heredocname = ft_strjoin(heredocname, )
+    }
+        printf("Sir, we have a problem\n");
+        */
 	free(redirections->value);
 	redirections->value = heredocname;
 	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
@@ -134,5 +174,5 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		line = readline(HERE);
 		rl_on_new_line();
 	}
-	return (free(line), free(limiter), true);//close(redirections->type), true);
+	return (free(line), free(limiter), true);
 }

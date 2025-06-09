@@ -17,28 +17,16 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-
 		if ((*current)->type & PIPE)	
 		{
-
 			set_state(&parser->state, PIPELIN);
-
 			consume_token(current, parser);
-			
 			if (*current)
-
 				return (parse_command(current, parser)); 
-			
-			printf("Invalid syntax, expected token after PIPE token.\n");	
-			
-			return (false);
-		
+			return (error_message("Invalid syntax, expected token after PIPE token.\n"));	
 		}
-
         return (true); //A retravailler
-
 	}
-
 	return (!*current);
 
 }
