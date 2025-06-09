@@ -36,6 +36,7 @@ int	wait_module(pid_t *pids, int count, int ret)
 		status = return_exit_code(pids[index]);
 		if (status != 0)
 			error = true;
+		append_exit_code(pids[index], status, true);
 		count++;
 	}
 	if (ret == EXIT_CODE)

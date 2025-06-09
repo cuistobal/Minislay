@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 05:11:37 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/07 14:19:07 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:43:43 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	unset(t_shell *minishell, char **args)
 	int	i;
 
 	if (!minishell || !args)
-		return (ERROR);
+		return (BUILTINS);
 	i = 0;
 	while (args[i])
 	{

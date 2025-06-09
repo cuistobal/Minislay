@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:19:12 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:03:45 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,36 +45,61 @@ int	get_minishelled(t_shell **minishell, char *input)
 }
 
 //
-int	start_process(t_shell **minishell, char *terminal_name)
+int start_process(t_shell **minishell, char *terminal_name)
 {
     int             retcode;
-    char			*user_input;
+    char            *user_input;
+    struct termios  term;
+    struct termios  old_term;
 
-	init_signals();
+    init_signals();
+    tcgetattr(STDIN_FILENO, &old_term);
     while (1)
     {
-		user_input = readline(terminal_name);
-		if (user_input == NULL)
+        // Configuration pour readline et heredoc
+        tcgetattr(STDIN_FILENO, &term);
+        term.c_lflag |= (ECHO | ICANON);  // Ajout de ICANON pour heredoc
+        term.c_lflag &= ~ECHOCTL;
+        tcsetattr(STDIN_FILENO, TCSANOW, &term);
+
+        user_input = readline(terminal_name);
+        if (!user_input)
         {
-			write(STDOUT_FILENO, "exit\n", 5);
-			exit(0);
-		}
-		if (g_signal_status == SIGQUIT)
-		{
-			g_signal_status = 0;
-			free(user_input);
-			continue ;
-		}
-		if (*user_input)
-			add_history(user_input);
-		retcode = get_minishelled(minishell, user_input);
-		free(user_input);
-		user_input = NULL;
-		if (retcode == EXIT_CODE)
-			break ;
-        append_exit_code(*minishell, retcode, false);
-	}
-	rl_clear_history();
+            write(STDOUT_FILENO, "exit\n", 5);
+            tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+            exit(0);
+        }
+        if (g_signal_status == SIGQUIT)
+        {
+            g_signal_status = 0;
+            free(user_input);
+            continue;
+        }
+        if (*user_input)
+        {
+            add_history(user_input);
+            retcode = get_minishelled(minishell, user_input);
+            
+            // Restauration des attributs du terminal après l'exécution
+            tcgetattr(STDIN_FILENO, &term);
+            term.c_lflag |= (ECHO | ICANON);
+            term.c_lflag &= ~ECHOCTL;
+            tcsetattr(STDIN_FILENO, TCSANOW, &term);
+            
+            // Attente des processus
+            while (wait(NULL) > 0)
+                continue;
+            
+            free(user_input);
+            if (retcode == EXIT_CODE)
+                break;
+            append_exit_code(*minishell, retcode, false);
+        }
+        rl_on_new_line();
+        rl_replace_line("", 0);
+    }
+    tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+    rl_clear_history();
     return (retcode);
 }
 

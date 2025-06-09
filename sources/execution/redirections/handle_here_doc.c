@@ -6,12 +6,21 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:04:53 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:12:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
+static bool rewind_heredoc(t_tokn *redirections)
+{
+    if (access(redirections->value, F_OK) != 0)
+        return (false);
+    close(redirections->type);
+    redirections->type = open(redirections->value, O_RDONLY);
+    return (redirections->type != -1);
+}
 //
 static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 {
@@ -89,6 +98,7 @@ static char *append_heredoc_name(t_tokn *redirections)
     char    *unextended;
     char    *heredocname;
 
+	i = 0;
     temp = NULL;
 	heredocname = ft_strjoin("<<", redirections->value);	
     if (!heredocname)
@@ -96,7 +106,7 @@ static char *append_heredoc_name(t_tokn *redirections)
     unextended = heredocname;
     while (i < 10)
     {
-        if (access(heredocname, O_RDWR) == 0)
+        if (access(heredocname, O_RDWR) != 0)
             break ; 
         else if (i > 0)
             free(heredocname);
@@ -106,7 +116,6 @@ static char *append_heredoc_name(t_tokn *redirections)
     }
     if (i == 10)
         return (free(heredocname), error_message("Invalid heredoc\n"), NULL);
-    printf("%s\n", heredocname);
     return (heredocname);
 }
 
@@ -123,22 +132,13 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
-    heredocname = append_heredoc_name(redirections);
+	heredocname = ft_strjoin("/tmp/heredoc_", redirections->value);	
 	if (!heredocname)
 		return (free(limiter), NULL);
-   /* 
-	heredocname = ft_strjoin("<<", redirections->value);	
-	if (!heredocname)
-		return (free(limiter), NULL);
-    if (access(heredocname, O_RDWR))
-    {
-        heredocname = ft_strjoin(heredocname, )
-    }
-        printf("Sir, we have a problem\n");
-        */
 	free(redirections->value);
 	redirections->value = heredocname;
-	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	//fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	fd = open(heredocname, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	if (fd <  0)
 		return (free(limiter), NULL);
 	redirections->type = fd;
@@ -149,6 +149,7 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 //the limiter is an unquoted token, lines get expanded.
 bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 {
+    int     len;
 	char	*line;
 	char	*limiter;
 	char	*expanded;
@@ -159,20 +160,19 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 	limiter = init_heredoc(redirections, &expansions);
 	if (!limiter)
 		return (false);
-	line = readline(HERE);
-	rl_on_new_line();
-	while (line)
+    len = strlen(limiter) - 1;
+	while (true)
 	{
-		if (!strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
-			break ;
+		line = readline(HERE);
+		rl_on_new_line();
+		if (*line && !strncmp(line, limiter, len) && strlen(line) == len)
+            break ;
 		expanded = expand_line(minishell, line, expansions);
-		if (!expanded)
+		if (*line && !expanded)
 			return (free(line), free(limiter), close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
 		free(line);
-		line = readline(HERE);
-		rl_on_new_line();
 	}
-	return (free(line), free(limiter), true);
+	return (free(line), free(limiter), rewind_heredoc(redirections));
 }

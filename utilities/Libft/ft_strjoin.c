@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 09:44:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:44:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:17:23 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,31 +43,25 @@ static char	*join_s2(const char *s2, char *joined)
 	return (joined);
 }
 
-//New version
-//Joins 2 string and handle more edge cases
-char	*ft_strjoin(const char *s1, const char *s2)
+char    *ft_strjoin(const char *s1, const char *s2)
 {
-	char	*joined;
-	size_t	size;
+    size_t  size;
+    char    *joined;
 
-	joined = "";
-	if (s1 != NULL && s2 != NULL)
-	{
-		size = strlen(s1) + strlen(s2);
-		joined = (char *)malloc(sizeof(char) * (size + 1));
-		if (joined)
-		{
-			join_s1(s1, joined);
-			join_s2(s2, joined + strlen(s1));
-			joined[size] = '\0';
-		}
-		return (joined);
-	}
-	else if (s1 != NULL || s2 != NULL)
-	{
-		if (s1 != NULL)
-			return (strdup(s1));
-		return (strdup(s2));
-	}
-	return (joined);
+    if (!s1 && !s2)
+        return (NULL);
+    if (!s1)
+        return (strdup(s2));
+    if (!s2)
+        return (strdup(s1));
+    if (!*s1 && !*s2)
+        return (NULL);
+    size = strlen(s1) + strlen(s2);
+    joined = (char *)malloc(sizeof(char) * (size + 1));
+    if (!joined)
+        return (NULL);
+    join_s1(s1, joined);
+    join_s2(s2, joined + strlen(s1));
+    joined[size] = '\0';
+    return (joined);
 }

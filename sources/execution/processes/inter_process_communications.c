@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 09:39:41 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:03:20 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,34 @@ int	my_dup2(int oldfd, int newfd)
 
 	ret = dup2(oldfd, newfd);
 	if (ret < 0)
-	{
-		error_message(DUP_FAILED);
-		return (GENERAL_ERROR);
-	}
+        return (error_message(DUP_FAILED), GENERAL_ERROR);
 	return (SUCCESS);
 }
 
-//
-void	get_or_restore_stds(int fds[2], bool set)
+void get_or_restore_stds(int fds[2], bool set)
 {
-	if (set)
-	{
-		fds[0] = dup(STDIN_FILENO);
-		fds[1] = dup(STDOUT_FILENO);
-	}
-	else
-	{
-		dup2(STDIN_FILENO, fds[0]);
-		close(fds[0]);
-		dup2(STDOUT_FILENO, fds[1]);
-		close(fds[1]);
-	}
+    static struct termios original;
+    struct termios term;
+
+    if (set)
+    {
+        // Sauvegarde l'état du terminal
+        if (isatty(STDIN_FILENO))
+            tcgetattr(STDIN_FILENO, &original);
+        // Sauvegarde les fds pour la référence
+        fds[0] = STDIN_FILENO;
+        fds[1] = STDOUT_FILENO;
+    }
+    else
+    {
+        // Restaure l'état du terminal
+        if (isatty(STDIN_FILENO))
+        {
+            tcgetattr(STDIN_FILENO, &term);
+            term = original;  // Copie les attributs originaux
+            tcsetattr(STDIN_FILENO, TCSANOW, &term);
+        }
+    }
 }
 
 //

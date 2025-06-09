@@ -6,13 +6,12 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 09:53:01 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 18:25:35 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
 static void	quote_removal_helper(char *token, char *removed)
 {
 	int		save;
@@ -97,34 +96,61 @@ static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 	return (true);
 }
 
-//if multiple dollars, split the list into subtokens
+//
+static bool expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
+{
+    int     tlen;
+    char    *temp;
+    char    *value;
+
+    temp = NULL;
+    value = NULL;
+    tlen = strlen((*l)->value);
+    if (!get_expanded(m, (*l)->value, &value, i) || !value)
+        return ((*i)++, true);
+    temp = *r;
+    *r = get_merged(r, &temp, &value);
+    if (!*r)
+        return (false);
+    if (*i > tlen)
+    {
+        value = strdup((*l)->value + (tlen - 1));
+        if (!value)
+            return (false);
+        temp = *r;
+        *r = get_merged(r, &temp, &value);
+        if (!*r)
+            return (false);
+    }
+    return (true);
+}
+
+//
 static bool expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 {
-	int		index;
-	char	*temp;
-	char	*value;
-	char	*merged;
+    int     tlen;
+    int     index;
+    char    *expanded;
 
-	index = 0;
-	temp = NULL;
-	value = NULL;
-	merged = NULL;
-	if (is_state_active((*list)->type, DOLL))
-	{
-		while ((*list)->value[index])
-		{
-			if (!get_expanded(minishell, (*list)->value, &value, &index))
-				return (false);
-			temp = merged;
-			if (!get_merged(&merged, &temp, &value))
-				return (false);
-		}	
-		free((*list)->value);		
-        (*list)->value = merged;
-		if (!is_state_active((*list)->type, STAR))
-			return (word_splitting(minishell, list));
-	}
-	return (globing(list, CWD, count));
+    index = 0;
+    expanded = NULL;
+
+    if (is_state_active((*list)->type, DOLL))
+    {
+        tlen = strlen((*list)->value);
+        while ((*list)->value[index])
+        {
+            if (!expand_no_quotes_helper(minishell, list, &index, &expanded))
+                return (free(expanded), false);
+            if (index > tlen)
+                break;
+        }
+        free((*list)->value);        
+        (*list)->value = expanded; 
+        if (!is_state_active((*list)->type, STAR))
+            return (word_splitting(minishell, list));
+    }
+    return (globing(list, CWD, count));
 }
 
 //Entry point of the expansion module
@@ -148,5 +174,4 @@ bool    expand(t_shell *minishell, t_tokn **list)
     }
 	copy = *list;
     return (quote_removal(copy));
-   // return (!copy);
 }

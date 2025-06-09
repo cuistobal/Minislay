@@ -6,37 +6,26 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 09:01:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/02 09:26:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 17:54:41 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//We use this function to merge to arrays and free their original memory adress
-bool	get_merged(char **merged, char **temp, char **expanded)
+//
+char    *get_merged(char **merged, char **temp, char **value)
 {
-	*merged = ft_strjoin(*temp, *expanded);
-	if (*merged)
-	{
-		if (*temp)
-		{
-			free(*temp);
-			*temp = NULL;
-		}
-		if (*expanded)
-			free(*expanded);	
-		*expanded = *merged;
-		return (true);
-	}
-	else
-	{
-		if (*temp)
-		{
-			free(*temp);
-			*temp = NULL;
-		}
-		free(*expanded);
-		*expanded = NULL;
-	}
-	return (false);
+    char    *joined;
+
+    joined = ft_strjoin(*temp, *value);
+    if (!joined)
+        return (NULL);
+    if (*temp && *temp != *merged && *temp != *value)
+        free(*temp);
+    if (*value && *value != *merged)
+        free(*value);
+    *temp = NULL;
+    *value = joined;
+    free(*merged);
+    return (joined);
 }

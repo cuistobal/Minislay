@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:29:38 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:40:59 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,6 @@ static bool	test_path(char **command, char *path)
 	temp = ft_strjoin(path, "/");
 	if (!temp)
 		return (false);
-
-/*
- *
- * 	There is a read probleme here, apprently, the command token lacks 1 bit of
- * 	memory from somewhere, hence giving us an invalid read on the first command
- * 	when using ls.
- *
- */
-
-
 	merged = ft_strjoin(temp, *command);
 	if (!merged)
 		return (false);

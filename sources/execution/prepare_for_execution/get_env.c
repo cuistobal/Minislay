@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 09:45:54 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 16:47:37 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,9 @@ static bool	join_env(t_env *current, char **joined)
 	if (!keydup)
 		return (false);
     vardup = handle_value(current->var[VALUE]);
-/*
-    if (!current->var[VALUE])
-        vardup = strdup("'\0'");
-    else
-    {
-    	vardup = strdup(current->var[VALUE]);
-    	if (!vardup)
-	    	return (free(keydup), false);
-    }
-    */
-	c = strdup("\"");
-	if (!c)
-		return (free(keydup), free(vardup), false);
-	temp = ft_strjoin(keydup, c);
+	temp = ft_strjoin(keydup, "=");
 	if (!temp)
-		return (free(keydup), free(vardup), free(c), false);
-	free(c);
+		return (free(keydup), free(vardup), false);
 	free(keydup);
 	merged = ft_strjoin(temp, vardup);
 	if (!merged)

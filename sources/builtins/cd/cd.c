@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 11:07:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:42:20 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	cd(t_shell *minishell, char **args)
 	if (!target || chdir(target) != 0)
 		return (write(2, "minislay: cd: ", 14),
 			write(2, args[0], strlen(args[0])),
-			write(2, ": No such file or directory\n", 29), ERROR);
+			write(2, ": No such file or directory\n", 29), BUILTINS);
 	if (!getcwd(cwd, BUFFER_SIZE))
-		return (ERROR);
+		return (BUILTINS);
 	update_key_value(minishell, "OLDPWD",
 		get_env_value(minishell->envp, "PWD"));
 	update_key_value(minishell, "PWD", cwd);
