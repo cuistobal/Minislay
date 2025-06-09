@@ -128,6 +128,33 @@ static void setup_redirections_for_builtin(t_exec *node, int original[2], bool s
     }
 }
 
+static pid_t execute_simple_builtin(t_exec *current, int pipefd[][2], int index, t_shell **minishell)
+{
+    int     ret;
+    int     original[2];
+    char    *tty_path;
+
+    tty_path = NULL;
+    if (isatty(STDIN_FILENO))
+        tty_path = ttyname(STDIN_FILENO);
+    if (current->redirs[INFILE] != -1)
+        dup2(current->redirs[INFILE], STDIN_FILENO);
+    if (current->redirs[OUTFILE] != -1)
+        dup2(current->redirs[OUTFILE], STDOUT_FILENO);
+    ret = exec_builtin(current->command, current->environ, minishell);
+    if (tty_path && (current->redirs[INFILE] != -1 || current->redirs[OUTFILE] != -1))
+    {
+        int fd = open(tty_path, O_RDWR);
+        if (fd >= 0)
+        {
+            dup2(fd, STDIN_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+        }
+    }
+    return (ret);
+}
+
 //
 static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shell **minishell)
 {
@@ -151,9 +178,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
         }
         return (redirections_in_parent(current, pipefd, index), pid);
     }
-    setup_redirections_for_builtin(current, original, true);
-    ret = exec_builtin(current->command, current->environ, minishell);
-    return (setup_redirections_for_builtin(current, original, false), ret);
+    return (execute_simple_builtin(current, pipefd, index, minishell));
 }
 
 
