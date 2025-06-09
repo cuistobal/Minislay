@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 09:29:50 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:43:16 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	export(t_shell **minishell, char **args)
 	{
         node = NULL;
         if (!split_token(args[i], &key, &value))
-            return (GENERAL_ERROR);
+            return (BUILTINS);
 		else if (is_valid_identifier(key))
         {
             node = get_env_node(*minishell, key, value);
@@ -144,7 +144,7 @@ int	export(t_shell **minishell, char **args)
             free(key);
             free(value);
             printf("minislay: export: `%s': not a valid identifier\n", args[i]);
-            return (GENERAL_ERROR);
+            return (BUILTINS);
         }
         free(key);
         free(value);

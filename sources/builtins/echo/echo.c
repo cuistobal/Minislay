@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 17:38:24 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:41:49 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ int builtin_echo(char **argv)
 	}
 	if (newline)
 		printf("\n");
-	return (0); // succès = 0
+	return (SUCCESS); // succès = 0
 }

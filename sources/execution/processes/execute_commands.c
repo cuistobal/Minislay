@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 20:29:23 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:40:10 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ int	execute_command_in_child(t_shell **minishell, char **command, char **envp, i
 	int	code;
 
 	if (!command || !*command || !env || !*env)
-		return (GENERAL_ERROR);
+    {
+        child_cleanup(minishell, cmd);
+        exit(COMMAND_EXEC);
+    }
 	else if (execve(*command, command, envp) < 0)
 	{
         child_cleanup(minishell, cmd);
-		exit(GENERAL_ERROR);
+		exit(COMMAND_EXEC);
 	}
 	return (SUCCESS);
 }
