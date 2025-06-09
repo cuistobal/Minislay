@@ -149,11 +149,11 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 	limiter = init_heredoc(redirections, &expansions);
 	if (!limiter)
 		return (false);
-	line = readline(HERE);
-	rl_on_new_line();
 	while (true)
 	{
-		if (!strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
+		line = readline(HERE);
+		rl_on_new_line();
+		if (line && !strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
 			break ;
 		expanded = expand_line(minishell, line, expansions);
 		if (!expanded)
@@ -161,8 +161,6 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
 		free(line);
-		line = readline(HERE);
-		rl_on_new_line();
 	}
 	return (free(line), free(limiter), true);
 }
