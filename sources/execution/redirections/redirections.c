@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 09:30:31 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:00:21 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int	open_here_docs(t_shell *minishell, t_tokn *redirections)
 			if (prev)
 				close_and_unlink(&prev, &fd, redirections->type);
             handle_here_doc(minishell, redirections);
+            fd = redirections->type;
 			prev = redirections;
 		}
         move_pointer(&redirections);
@@ -94,7 +95,7 @@ void	open_all_redirections(t_shell *minishell, t_exec *node)
 	t_exec	*current;
     t_tokn  *redirections;
 
-	current =node;
+	current = node;
 	redirections = NULL;
     while (current)
     {

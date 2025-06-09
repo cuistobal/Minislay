@@ -6,12 +6,21 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:36:07 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 15:12:38 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
+static bool rewind_heredoc(t_tokn *redirections)
+{
+    if (access(redirections->value, F_OK) != 0)
+        return (false);
+    close(redirections->type);
+    redirections->type = open(redirections->value, O_RDONLY);
+    return (redirections->type != -1);
+}
 //
 static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 {
@@ -123,12 +132,13 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
-	heredocname = ft_strjoin("<<", redirections->value);	
+	heredocname = ft_strjoin("/tmp/heredoc_", redirections->value);	
 	if (!heredocname)
 		return (free(limiter), NULL);
 	free(redirections->value);
 	redirections->value = heredocname;
-	fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	//fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
+	fd = open(heredocname, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	if (fd <  0)
 		return (free(limiter), NULL);
 	redirections->type = fd;
@@ -164,5 +174,5 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		free(expanded);
 		free(line);
 	}
-	return (free(line), free(limiter), true);
+	return (free(line), free(limiter), rewind_heredoc(redirections));
 }

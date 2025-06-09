@@ -6,12 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:40:10 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 14:30:23 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static void child_cleanup(t_shell **minishell, int cmd)
 {
     int index;
@@ -65,7 +66,8 @@ int	execute_command_in_child(t_shell **minishell, char **command, char **envp, i
 // It is used to create a new process for executing commands in the shell.
 pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
 {
-	pid_t	child;
+    int     ret;
+	pid_t   child;
 
 	child = fork();
 	if (child < 0)
@@ -76,31 +78,10 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 		signal(SIGQUIT, SIG_DFL);
 		setup_redirections_in_child(node, pipefd, index);
 		execute_command_in_child(minishell, (node)->command, (node)->environ, index);
-	}
+        exit(COMMAND_EXEC);
+    }
 	return (child);
 }
-
-// static void setup_redirections_for_builtin(t_exec *node, int original[2], bool set)
-// {
-//     if (set)
-//     {
-//         original[INFILE] = dup(STDIN_FILENO);
-//         original[OUTFILE] = dup(STDOUT_FILENO);
-//         if (node->redirs[INFILE] != -1)
-//             dup2(STDIN_FILENO, node->redirs[INFILE]);
-//         if (node->redirs[OUTFILE] != -1)
-//             dup2(STDOUT_FILENO, node->redirs[OUTFILE]);
-//     }
-//     else
-//     { 
-//         if (original[INFILE] != STDIN_FILENO)
-//             dup2(STDIN_FILENO, original[INFILE]);
-//         if (original[INFILE] != STDOUT_FILENO)
-//             dup2(STDOUT_FILENO, original[OUTFILE]);
-//         close(original[INFILE]);
-//         close(original[OUTFILE]);
-//     }
-// }
 
 //Cette fonction gère les redirections dans le processus enfant pour les builtins.
 //Si set == true, elle duplique les descripteurs de fichiers d'entrée et de sortie
