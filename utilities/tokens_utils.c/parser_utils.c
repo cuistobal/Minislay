@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:55:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:05:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/09 10:09:35 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 		return (true);
 	}
 	return (false);
-//	return (parser && parser->tab);
 }
 
 //Allocate memory for the parsing structure && initialiase its variables.
