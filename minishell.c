@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:03:45 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 19:22:07 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int start_process(t_shell **minishell, char *terminal_name)
     {
         // Configuration pour readline et heredoc
         tcgetattr(STDIN_FILENO, &term);
-        term.c_lflag |= (ECHO | ICANON);  // Ajout de ICANON pour heredoc
+        // Ajout de ICANON pour heredoc
+        term.c_lflag |= (ECHO | ICANON);  
         term.c_lflag &= ~ECHOCTL;
         tcsetattr(STDIN_FILENO, TCSANOW, &term);
 
@@ -79,13 +80,11 @@ int start_process(t_shell **minishell, char *terminal_name)
         {
             add_history(user_input);
             retcode = get_minishelled(minishell, user_input);
-            
             // Restauration des attributs du terminal après l'exécution
             tcgetattr(STDIN_FILENO, &term);
             term.c_lflag |= (ECHO | ICANON);
             term.c_lflag &= ~ECHOCTL;
-            tcsetattr(STDIN_FILENO, TCSANOW, &term);
-            
+            tcsetattr(STDIN_FILENO, TCSANOW, &term); 
             // Attente des processus
             while (wait(NULL) > 0)
                 continue;
