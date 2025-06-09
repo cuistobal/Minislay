@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:04:53 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/09 13:36:07 by cuistobal        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
-    heredocname = append_heredoc_name(redirections);
+	heredocname = ft_strjoin("<<", redirections->value);	
 	if (!heredocname)
 		return (free(limiter), NULL);
 	free(redirections->value);
@@ -139,6 +139,7 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 //the limiter is an unquoted token, lines get expanded.
 bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 {
+    int     len;
 	char	*line;
 	char	*limiter;
 	char	*expanded;
@@ -149,14 +150,15 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 	limiter = init_heredoc(redirections, &expansions);
 	if (!limiter)
 		return (false);
+    len = strlen(limiter) - 1;
 	while (true)
 	{
 		line = readline(HERE);
 		rl_on_new_line();
-		if (line && !strncmp(line, limiter, strlen(line)) && strlen(line) > 0)
-			break ;
+		if (*line && !strncmp(line, limiter, len) && strlen(line) == len)
+            break ;
 		expanded = expand_line(minishell, line, expansions);
-		if (!expanded)
+		if (*line && !expanded)
 			return (free(line), free(limiter), close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
