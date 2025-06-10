@@ -6,11 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD:sources/initialisation/initialisation.c
-/*   Updated: 2025/06/10 08:36:35 by chrleroy         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/09 19:13:22 by cuistobal        ###   ########.fr       */
->>>>>>> feat/final_rush:sources/initialisation.c
+/*   Updated: 2025/06/10 08:52:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
