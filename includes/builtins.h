@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/03 11:34:41 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 09:25:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ int		env(t_shell *minishell, char **arguments);
 
 //export.c
 int	    export(t_shell **minishell, char **args);
+
+//export1.c
+bool	split_token(char *token, char **key, char **value);
+void	export_new_variable(t_shell **minishell, char *argument);
+int		is_valid_identifier(const char *s);
+void	print_export(t_env *list);
 
 //exit.c
 int	    my_exit(t_shell *minishell, char **args);

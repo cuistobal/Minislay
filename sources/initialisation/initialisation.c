@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 08:52:23 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:27:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ bool	build_env(t_shell **minishell, char **envp)
 	if (!*minishell)
 		return (false);
 	(*minishell)->envp = build_environement(envp);
-	if (!(*minishell)->envp)
-		return (NULL);
+	//if (!(*minishell)->envp)
+	//	return (NULL);
 	(*minishell)->local = NULL;
 	(*minishell)->command = NULL;
 	(*minishell)->special = append_specials();

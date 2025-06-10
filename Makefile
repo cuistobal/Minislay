@@ -47,6 +47,7 @@ SOURCES = \
 	sources/builtins/exit/exit.c \
 	sources/builtins/pwd/pwd.c \
 	sources/builtins/export/export.c \
+	sources/builtins/export/export1.c \
 	sources/builtins/unset/unset.c \
 	sources/builtins/builtins.c \
     sources/parsing/tokenization/handle_special_chars.c \
