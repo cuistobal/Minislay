@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:25:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:31:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		is_valid_identifier(const char *s);
 void	print_export(t_env *list);
 
 //exit.c
-int	    my_exit(t_shell *minishell, char **args);
+int	    my_exit(char **args);
 
 //pwd.c
 int		pwd(t_shell *minishell);

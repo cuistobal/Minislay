@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 13:12:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:31:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,14 @@ static int	is_numeric(char *str)
 }
 
 //
-int	my_exit(t_shell *minishell, char **args)
+int	my_exit(char **args)
 {
 	long	code;
 
 	write(1, "exit\n", 5);
-//	if (!args[0])
-//		code = atoi(minishell->special[DEXTI]);
-//	else if (!is_numeric(args[0]))
 	if (!is_numeric(args[0]))
 	{
 		write(2, "minislay: exit: numeric argument required\n", 43);
-//		free_minishell(minishell);
-//		exit(2);
 		return (EXIT_CODE);
 	}
 	else if (args[1])
@@ -51,6 +46,5 @@ int	my_exit(t_shell *minishell, char **args)
 	else
 		code = atol(args[0]);
 	code = (code % 256 + 256) % 256;
-//	free_minishell(minishell);
 	return (EXIT_CODE);
 }
