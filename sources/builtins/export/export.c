@@ -6,24 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:08:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 09:19:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//
-static void	pre_order_display(t_avlt *root)
-{
-	if (!root)
-		return ;
-	pre_order_display(root->left);
-	printf("export %s", root->env->var[KEY]);
-	if (root->env->var[VALUE])
-		printf("=%s", root->env->var[VALUE]);
-	printf("\n");
-	pre_order_display(root->right);
-}
 
 //
 static void print_export(t_env *list)
@@ -35,7 +22,7 @@ static void print_export(t_env *list)
     sorted = head;
     while (sorted)
     {
-        printf("export ");
+        printf(EXPORT_PROMPT);
         printf("%s", sorted->var[KEY]);
         if (sorted->var[VALUE])
             printf("=%s", sorted->var[VALUE]);
@@ -106,7 +93,7 @@ static bool split_token(char *token, char **key, char **value)
     return (*key && (*value || !equal));
 }
 
-//Il faut ajouter la promotion depuis l'environement local
+/* //Il faut ajouter la promotion depuis l'environement local
 int	export(t_shell **minishell, char **args)
 {
 	int		i;
@@ -143,12 +130,7 @@ int	export(t_shell **minishell, char **args)
 				node->var[VALUE] = strdup(value);
         }
         else
-        {
-            free(key);
-            free(value);
-            printf("minislay: export: `%s': not a valid identifier\n", args[i]);
-            return (BUILTINS);
-        }
+			return (free(key), free(value), BUILTINS); 
         free(key);
         free(value);
 		i++;
@@ -156,4 +138,85 @@ int	export(t_shell **minishell, char **args)
     if (i == 0)
         print_export((*minishell)->envp);
 	return (SUCCESS);
+}
+ */
+
+ /*
+** Updates an existing environment variable node
+** - Manages value updates and memory allocation
+** - Handles cases where value exists or is NULL
+*/
+static void	update_env_node(t_env *node, char *value)
+{
+    if (value && node->var[VALUE] && strcmp(node->var[VALUE], value) != 0)
+    {
+        free(node->var[VALUE]);
+        node->var[VALUE] = strdup(value);
+    }
+    else if (!value && node->var[VALUE])
+    {
+        free(node->var[VALUE]);
+        node->var[VALUE] = NULL;
+    }
+    else if (value && !node->var[VALUE])
+        node->var[VALUE] = strdup(value);
+}
+
+/*
+** Processes a single export argument
+** - Splits argument into key/value
+** - Validates identifier format
+** - Creates or updates environment variable
+*/
+static int	process_export_arg(t_shell **minishell, char *arg)
+{
+    char	*key;
+    char	*value;
+    t_env	*node;
+
+    key = NULL;
+    value = NULL;
+    if (!split_token(arg, &key, &value))
+        return (BUILTINS);
+    if (!is_valid_identifier(key))
+    {
+        free(key);
+        free(value);
+        return (BUILTINS);
+    }
+    node = get_env_node(*minishell, key, value);
+    if (!node)
+        export_new_variable(minishell, arg);
+    else
+        update_env_node(node, value);
+    free(key);
+    free(value);
+    return (SUCCESS);
+}
+
+/*
+** Main export builtin function
+** - Handles export with no args (prints env)
+** - Processes multiple export arguments
+** - Returns appropriate exit status
+*/
+int	export(t_shell **minishell, char **args)
+{
+    int		i;
+    int		status;
+
+    i = 0;
+    if (!args[i])
+    {
+        print_export((*minishell)->envp);
+        return (SUCCESS);
+    }
+    while (args[i])
+    {
+        status = process_export_arg(minishell, args[i]);
+        if (status != SUCCESS)
+            return (status);
+        i++;
+    }
+    return (SUCCESS);
 }

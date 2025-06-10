@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:19:03 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 09:13:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define INV_ENV "Invalid env.\n"
 # define OPEN_ERROR "Failed to open: "
 # define PERMISSION_ERROR "Invalid permissions: "
+
+# define EXPORT1 "minislay: export: `"
+# define EXPORT2 "': not a valid identifier\n"
 
 //Error codes
 
