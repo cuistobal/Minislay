@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 14:52:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:00:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static bool	insert_sorted_results(t_tokn **list, t_tokn *sorted, t_tokn *next)
 	while (temp->next)
 		move_pointer(&temp);
 	temp->next = next;
-	free(sorted);
 	return (true);
 }
 
@@ -92,7 +91,9 @@ static bool	globing_loop(t_tokn **list, char **patterns, \
 	{
 		sort_token_list(&expanded);
 		if (!insert_sorted_results(list, expanded, temp))
-			return (false);
+			return (free(expanded->value), free(expanded), false);
+		free(expanded->value);
+		free(expanded);
 	}
 	return (!current);
 }
