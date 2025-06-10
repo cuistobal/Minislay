@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 08:39:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 08:41:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:35:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ static void	handle_terminal_settings(struct termios *term)
 ** - Restores original terminal settings
 ** - Exits the program cleanly
 */
-static int	handle_eof(struct termios *old_term)
+static int	handle_eof(t_shell *minishell, struct termios *old_term)
 {
     write(STDOUT_FILENO, "exit\n", 5);
     tcsetattr(STDIN_FILENO, TCSANOW, old_term);
+	free_minishell(minishell);
     exit(0);
     return (EXIT_CODE);
 }
@@ -96,7 +97,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
         handle_terminal_settings(&term);
         user_input = readline(terminal_name);
         if (!user_input)
-            return (handle_eof(&old_term));
+            return (handle_eof(*minishell, &old_term));
         if (g_signal_status == SIGQUIT)
         {
             g_signal_status = 0;
