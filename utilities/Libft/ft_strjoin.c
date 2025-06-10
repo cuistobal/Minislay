@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "libft.h"
 #include "minislay.h"
 
 //Appends s2 to the joined string

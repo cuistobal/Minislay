@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:42:16 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 18:47:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ static char	*handle_words(const char *input, int *pos, int *type)
 //
 static char	*determinism(const char *input, int *pos, int *type)
 {
+	static char *prev;
+
 	if (strchr(SPECIAL, input[*pos]))
 		return (handle_special_chars(input, pos, type));
 	return (handle_words(input, pos, type));

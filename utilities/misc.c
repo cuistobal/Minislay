@@ -32,6 +32,7 @@ bool	move_pointer(t_tokn **pointer)
 	}
 	return (false);
 }
+
 //We use this utility to move to the next token 
 bool	move_list_pointer(t_tokn **pointer, t_tokn **save)
 {

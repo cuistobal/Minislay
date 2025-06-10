@@ -29,7 +29,7 @@ int	wait_module(pid_t *pids, int count, int ret)
 	bool	error;
 	int		index;
 	int		status;
-	
+
 	index = 0;
 	while (count < index)
 	{

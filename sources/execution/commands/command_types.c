@@ -25,7 +25,7 @@ bool is_builtin_bool(char *command)
 	while (index < BCNT)
 	{
 		if (strcmp(command, g_b[index]) == 0)
-			break;
+			break ;
 		index++;
 	}
 	return (index < BCNT);

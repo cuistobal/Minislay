@@ -57,19 +57,6 @@ t_env	*create_env_node(char *line)
 	char	*key;
 	char	*value;
 
-	/*
-	equal = strchr(line, '=');
-	if (!equal)
-		return (NULL);
-	*equal = '\0';
-	key = strdup(line);	
-    if (!key)
-        return (*equal = '=', NULL);
-	value = strdup(equal + 1);
-	*equal = '=';
-	if (!value)
-		return (free(key), NULL);
-		*/
 	split_key_and_value(line, &key, &value);
 	new = malloc(sizeof(t_env));
 	if (!new)

@@ -52,18 +52,6 @@ static bool	size_limit_helper(char ***env, int *size, int index)
 	return (*env);
 }
 
-//
-static char **remove_unused_adresses(char **env, int size, int index)
-{
-	while (index < size - 1)
-	{
-		free(env[index]);
-		env[index] = NULL;
-		index++;
-	}
-	return (env);	
-}
-
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
 char	**get_env(t_shell *minishell)

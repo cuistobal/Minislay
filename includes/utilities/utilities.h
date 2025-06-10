@@ -84,25 +84,7 @@ int	update_key_value(t_shell *minishell, char *key, char *new_value);
 
 char	*ft_itoa(int num);
 
-//
-typedef struct	avltree
-{
-	int				height;
-	struct env		*env;
-	struct avltree	*left;
-	struct avltree	*right;
-}	t_avlt;
 
-//avl_utils.c:
-int		height(t_avlt *node);
-int		my_max(const int a, const int b);
-bool	create_avlt_node(t_avlt **new, t_env *node);
-bool	insert_avlt_node(t_avlt **node, t_env *env, int len);
-void	free_avlt_tree(t_avlt *root);
-bool	find_element(t_avlt *tree, t_avlt **node, char *key, char *value);
-
-//rotations.c:
-bool	balance_tree(t_avlt **node, char *key, int len);
 
 //inline_utilities.c
 void	set_error_code(t_shell **minishell, int error_code);
@@ -134,7 +116,6 @@ void	free_token_nodes(t_tokn *tokens);
 
 bool	find_key_in_command(t_env *command, char **value, char *key);
 bool	find_key_in_local(t_env *local, char **value, char *key);
-bool	find_key_in_avlt(t_avlt *tree, char **value, char *key);
 bool	find_key(t_shell *minishell, char **value, char *key);
 
 void    append_exit_code(t_shell *minishell, int code, bool command);

@@ -12,9 +12,6 @@
 
 #include "minislay.h"
 
-//#include <unistd.h>
-//#include <string.h>
-
 // Réimplémentation de strtok_r
 char	*my_strtok_r(char *str, const char *delim, char **saveptr)
 {
@@ -36,30 +33,4 @@ char	*my_strtok_r(char *str, const char *delim, char **saveptr)
     }
     *saveptr = str;
     return (token_start);
-}/*
-
-
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
-int main(int argc, char **argv) 
-{
-    char 		*str;
-    char 		*token;
-    const char 	*delim;
-    char 		*saveptr;
-
-	if (argc == 3)
-	{
-		str = argv[1];
-		delim = argv[2];
-    	token = my_strtok_r(str, delim, &saveptr);
-    	while (token != NULL) 
-		{
-            printf("Token: %s\n", token);
-            token = my_strtok_r(NULL, delim, &saveptr);
-    	}
-	}
-    return 0;
-}*/
+}

@@ -54,26 +54,6 @@ void	modify_token_types(t_tokn **expanded, t_tokn **redirections)
 	{
 		if (!redir_list(redirections, prev, &rtail, current))
 			command_list(&chead, &ctail, current);
-
-/*
-		if (valid_lexeme(current, IRED, ARED) || valid_lexeme(prev, IRED, ARED))
-		{
-			if (*redirections && !rtail)
-				rtail = get_tail_node(redirections);
-			append_token_list(redirections, &rtail, current);
-		}
-
-		else
-		{
-			if (chead)
-				set_state(&current->type, ARGUMNT);
-			else
-				set_state(&current->type, COMMAND);
-			append_token_list(&chead, &ctail, current);	
-		}
-
-
-*/
 		prev = current;
 		current = current->next;
 	}

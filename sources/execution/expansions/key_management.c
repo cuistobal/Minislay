@@ -28,14 +28,14 @@ static char	*extract_key(char *token, int *index, int start)
 			{
 				if (strchr(SPE_EXP_CHAR, token[*index]))
 				{
-					tlen++;	
+					tlen++;
 					(*index)++;
 				}
 				return (strndup(token + start, tlen + 1));
 			}
 			break ;
 		}
-		tlen++;	
+		tlen++;
 	}
 	return (strndup(token + start, tlen + 1));
 }
@@ -56,7 +56,6 @@ static void	quote_state(char current, char *quote, bool *sqte)
 			*sqte = *quote == '\'';
 		}
 	}
-
 }
 //We use this utility to discriminate keys and non keys within the current token
 //string.

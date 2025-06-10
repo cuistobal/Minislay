@@ -16,13 +16,10 @@
 //current most meaningfull grammar operator
 void	delete_links(t_pars *parser)
 {
-	//if (parser && parser->tab)
-	//{
-		if (parser->tab[TTPREV])
-			parser->tab[TTPREV]->next = NULL;
-		if (parser->tab[TTCURR])
-			parser->tab[TTCURR]->next = NULL;
-//	}
+	if (parser->tab[TTPREV])
+		parser->tab[TTPREV]->next = NULL;
+	if (parser->tab[TTCURR])
+		parser->tab[TTCURR]->next = NULL;
 }
 
 //This function saves the positions of current and sets it to ->next
@@ -43,5 +40,5 @@ bool	consume_token(t_tokn **current, t_pars *parser)
 //Assesses if the lexeme's value falls within the set range 
 bool	valid_lexeme(t_tokn *current, int min, int max)
 {
-	return (current && (current->type >= min && current->type <= max));	
+	return (current && (current->type >= min && current->type <= max));
 }

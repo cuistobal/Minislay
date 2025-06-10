@@ -45,7 +45,7 @@ t_env	*find_special_env_variable(t_shell *minishell, int index)
 	t_env	*current;
 
 	current = minishell->special;
-	if (index < 0 || index >=  DKCT)		
+	if (index < 0 || index >=  DKCT)
 		return (NULL);
 	while (index-- != 0)
 		current = current->next;

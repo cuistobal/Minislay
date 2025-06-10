@@ -24,7 +24,7 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 {
 	int	index;
 
-	if (parser) 
+	if (parser)
 	{
 		if ((parser)->tab)
 		{
@@ -34,7 +34,7 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 				(parser)->tab[index] = NULL;
 				if (index == i)
 					(parser)->tab[index] = token;
-				index++;	
+				index++;
 			}
 		}
 		if ((parser)->state & SUBSHEL)

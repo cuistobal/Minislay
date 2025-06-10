@@ -127,7 +127,6 @@ void	free_env_list(t_env *list)
 void	free_minishell(t_shell *minishell)
 {
 	int		index;
-	t_avlt	*branch;
 	t_env	*current;
 
 	index = 0;

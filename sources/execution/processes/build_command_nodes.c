@@ -19,7 +19,7 @@ t_tokn	*split_token_list_if(t_tokn **original, int split_type)
 	t_tokn	*prev;
 	t_tokn	*current;
 
-	head = *original;	
+	head = *original;
 	current = head;
 	while (*original)
 	{	
