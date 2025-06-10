@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 07:58:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 08:05:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,34 +22,30 @@ static bool rewind_heredoc(t_tokn *redirections)
     return (redirections->type != -1);
 }
 
-//
 static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 {
-	int		index;
-	char	*temp;
-	char	*value;
-	char	*expanded;
+    int		index;
+    char	*expanded;
+    char	*value;
 
-	temp = NULL;
-	value = NULL;
-	expanded = NULL;
-	if (!line)
-		return (NULL);
-	if (!expansions)
-		expanded = strdup(line);
-	else
-	{
-		index = 0;
-		while (line[index])
-		{
-			if (!get_expanded(minishell, line, &value, &index))
-				return (NULL);
-			temp = expanded;
-			if (!get_merged(&expanded, &temp, &value))
-				return (NULL);
-		}
-	}
-	return (expanded);
+    if (!line)
+        return (NULL);
+    if (!expansions)
+        return (strdup(line));
+
+    expanded = NULL;
+    value = NULL;
+    index = 0;
+    while (line[index])
+    {
+        if (!get_expanded(minishell, line, &value, &index))
+            return (free(expanded), NULL);
+
+        expanded = get_merged(&expanded, &expanded, &value);
+        if (!expanded)
+            return (free(value), NULL);
+    }
+    return (expanded);
 }
 
 //
@@ -139,7 +135,7 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		if (*line && !strncmp(line, limiter, len) && strlen(line) == len)
             break ;
 		expanded = expand_line(minishell, line, expansions);
-		if (*line && !expanded)
+		if (*line && !expanded && *line != '$')
 			return (free(line), free(limiter), close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
 		free(expanded);
