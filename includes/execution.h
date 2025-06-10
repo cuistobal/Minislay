@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 18:10:58 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 16:55:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,16 @@ int handle_subshell(t_shell *minishell, t_tree *ast);
 //bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
 bool	word_splitting(t_shell *minishell, t_tokn **current);
 
+/*
 //globing.c
 bool	match_pattern(char **patterns, char *current, int *i);
 char	**identify_globing_patterns(char *globing);
+bool	globing(t_tokn **list, const char *path, int *count);
+*/
+
+//globing.c
+bool	match_pattern(char *pattern, char *current);
+//char	*identify_globing_patterns(char *globing);
 bool	globing(t_tokn **list, const char *path, int *count);
 
 //key_management.c
