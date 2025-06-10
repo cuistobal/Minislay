@@ -6,31 +6,31 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:25:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:45:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
- /*
+/*
 ** Updates an existing environment variable node
 ** - Manages value updates and memory allocation
 ** - Handles cases where value exists or is NULL
 */
 static void	update_env_node(t_env *node, char *value)
 {
-    if (value && node->var[VALUE] && strcmp(node->var[VALUE], value) != 0)
-    {
-        free(node->var[VALUE]);
-        node->var[VALUE] = strdup(value);
-    }
-    else if (!value && node->var[VALUE])
-    {
-        free(node->var[VALUE]);
-        node->var[VALUE] = NULL;
-    }
-    else if (value && !node->var[VALUE])
-        node->var[VALUE] = strdup(value);
+	if (value && node->var[VALUE] && strcmp(node->var[VALUE], value) != 0)
+	{
+		free(node->var[VALUE]);
+		node->var[VALUE] = strdup(value);
+	}
+	else if (!value && node->var[VALUE])
+	{
+		free(node->var[VALUE]);
+		node->var[VALUE] = NULL;
+	}
+	else if (value && !node->var[VALUE])
+		node->var[VALUE] = strdup(value);
 }
 
 /*
@@ -41,12 +41,12 @@ static void	update_env_node(t_env *node, char *value)
 */
 static int	process_export_arg(t_shell **minishell, char *arg)
 {
-    char	*key;
-    char	*value;
-    t_env	*node;
+	char	*key;
+	char	*value;
+	t_env	*node;
 
-    key = NULL;
-    value = NULL;
+	key = NULL;
+	value = NULL;
     if (!split_token(arg, &key, &value))
         return (BUILTINS);
     if (!is_valid_identifier(key))

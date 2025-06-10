@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 08:48:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:47:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,15 @@ int	get_minishelled(t_shell **minishell, char *input)
 		return (printf(TOKENIZATION), free_tokens(tokens), PARSING_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
 		return (printf("%s unmatched '('\n", SYNTAX), free_tokens(tokens), \
-        GENERAL_ERROR);
-    parser = define_parser(&ast, tokens);
+				GENERAL_ERROR);
+	parser = define_parser(&ast, tokens);
 	if (!parser || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), \
-                free(parser), GENERAL_ERROR);
+				free(parser), GENERAL_ERROR);
 	free(parser);
-    (*minishell)->ast = ast;
-	ret = traverse_ast(minishell, ast);	
-    append_exit_code(*minishell, ret, false);
-	free_tree(ast);
-	return (ret);
+	(*minishell)->ast = ast;
+	ret = traverse_ast(minishell, ast);
+	return (append_exit_code(*minishell, ret, false), free_tree(ast), ret);
 }
 
 //

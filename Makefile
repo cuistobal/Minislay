@@ -37,7 +37,8 @@ SOURCES = \
 	utilities/linked_lists_utils.c \
 	utilities/linked_lists_utils1.c \
 	utilities/linked_lists_utils2.c \
-	utilities/sort_list.c \
+	utilities/sort_env_list.c \
+	utilities/sort_token_list.c \
 	utilities/environement_utils.c \
 	sources/initialisation/initialisation.c\
 	sources/initialisation/start_process.c\

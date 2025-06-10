@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 18:50:41 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 13:48:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static bool	quote_removal(t_tokn *list)
 			if (!removed)
 				return (false);
 			quote_removal_helper(list->value, removed);
-            free(list->value);
+			free(list->value);
 			list->value = removed;
 		}
 		move_pointer(&list);
@@ -79,7 +79,7 @@ static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 	index = 0;
 	temp = NULL;
 	value = NULL;
-	merged = NULL;	
+	merged = NULL;
 	if (is_state_active((*list)->type, DOLL))
 	{
 		while ((*list)->value[index])
@@ -99,8 +99,8 @@ static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 //
 static bool expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
 {
-    int     tlen;
-    char    *temp;
+	int     tlen;
+	char	*temp;
     char    *value;
 
     temp = NULL;

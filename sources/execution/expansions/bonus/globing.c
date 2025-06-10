@@ -6,71 +6,73 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/05 14:33:36 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 14:52:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 /*
-static void sort_nodes(t_tokn **list, t_tokn *new)
-{
-    t_tokn  *prev;
-    t_tokn  *current;
-
-    current = *list;
-    if (!*list)
-        *list = new;
-    else
-    {
-        while (current)
-        {
-            prev = current;
-            if (strcmp(current->value, new->value) < 0)   
-
-            move_pointer(&current);
-        }
-    }
-      
-}
+** Creates a new token node for globbing result
+** - Duplicates filename and creates new token
+** - Returns false if memory allocation fails
 */
-//
-static bool	insert_globing_result(t_tokn **list, char *filename, bool *init, int *count)
+static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type)
 {
-    t_tokn  *new;
+	t_tokn	*new;
+	t_tokn	*tail;
 	char	*value;
 
-    new = NULL;
+	tail = NULL;
 	value = strdup(filename);
 	if (!value)
 		return (false);
-	if (!*init)
-    {
-		free((*list)->value);
-		(*list)->value = value;
-		*init = true;
-		return (true);
-    }
-	new = create_token_node(value, (*list)->type);
+	new = create_token_node(value, type);
 	if (!new)
 		return (free(value), false);
-	(*count)++;
-	(*list)->next = new;
-	return (move_pointer(list));
+	append_token_list(expanded, &tail, new);
+	return (true);
 }
 
-//
-static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count)
+/*
+** Inserts sorted globbing results into main token list
+** - Updates first node value
+** - Links sorted results
+** - Preserves original list continuation
+** Returns success status
+*/
+static bool	insert_sorted_results(t_tokn **list, t_tokn *sorted, t_tokn *next)
+{
+	t_tokn	*temp;
+
+	if (!sorted || !list || !*list)
+		return (false);
+	free((*list)->value);
+	(*list)->value = strdup(sorted->value);
+	if (!(*list)->value)
+		return (false);
+	(*list)->next = sorted->next;
+	temp = *list;
+	while (temp->next)
+		move_pointer(&temp);
+	temp->next = next;
+	free(sorted);
+	return (true);
+}
+
+static bool	globing_loop(t_tokn **list, char **patterns, \
+	DIR *stream, int *count)
 {
 	int				i;
-    bool            init;
-	t_tokn			*next;
+	t_tokn			*temp;
+	t_tokn			*sorted;
+	t_tokn			*expanded;
 	struct dirent	*current;
 
 	i = 0;
-    init = false;
-	current = NULL;
-	next = (*list)->next;
+	temp = (*list)->next;
+	sorted = NULL;
+	expanded = NULL;
 	if (!patterns || !stream)
 		return (false);
 	current = readdir(stream);
@@ -78,13 +80,20 @@ static bool	globing_loop(t_tokn **list, char **patterns, DIR *stream, int *count
 	{
 		if (match_pattern(patterns, current->d_name, &i))
 		{
-        	if (!insert_globing_result(list, current->d_name, &init, count))
-        		break ;
+			if (!add_to_expanded_list(&expanded, current->d_name, \
+				(*list)->type))
+				return (free_tokens(expanded), false);
+			(*count)++;
 		}
 		i = 0;
 		current = readdir(stream);
 	}
-	(*list)->next = next;
+	if (*count > 0)
+	{
+		sort_token_list(&expanded);
+		if (!insert_sorted_results(list, expanded, temp))
+			return (false);
+	}
 	return (!current);
 }
 
@@ -100,7 +109,7 @@ static bool	open_directory(const char *dir_path, DIR **dir_stream)
 }
 
 //
-bool	globing(t_tokn **list, const char *path, int *count) 
+bool	globing(t_tokn **list, const char *path, int *count)
 {
 	char	**patterns;
 	DIR		*dir_stream;

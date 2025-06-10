@@ -6,12 +6,11 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:13:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/04/29 11:06:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 14:53:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-//#include "globing.h"
 
 static inline bool	is_hidden_file(char *current, int i)
 {
