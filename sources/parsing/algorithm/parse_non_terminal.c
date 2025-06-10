@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_non_terminal.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/06/10 18:05:19 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 // SimpleCommand → Assignment* WORD (Argument | Redirection)*
@@ -25,7 +37,8 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 				return (parse_command(current, parser)); 
 			return (error_message("Invalid syntax, expected token after PIPE token.\n"));	
 		}
-        return (true); //A retravailler
+		return (*current);	
+       // return (true); //A retravailler
 	}
 	return (!*current);
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_terminals.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 17:59:00 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/06/10 17:59:12 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 // Assignment → WORD '=' Expression -> Implemtanton a revoir
@@ -22,7 +34,6 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-  //  	if ((*current)->type >= IRED && (*current)->type <= (ARED | OPAR))
     	if (valid_lexeme(*current, HDOC, ARED | OPAR))
 		{
 
@@ -35,6 +46,7 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 				
 					return (consume_token(current, parser));
 				
+					
 				printf("syntax error: Unexpected %s token after %s token.\n", (*current)->value, (parser)->tab[TTPREV]->value);
 				
 				return (false);

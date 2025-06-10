@@ -29,11 +29,7 @@ SOURCES = \
 	utilities/misc.c \
 	utilities/find_key.c \
 	utilities/update_key_value.c \
-	utilities/avl_tree/avl_tree_utils1.c \
-	utilities/avl_tree/avl_tree_utils2.c \
-	utilities/avl_tree/rotations.c \
 	utilities/Libft/ft_itoa.c \
-	utilities/inline_utilities.c \
 	utilities/linked_lists_utils.c \
 	utilities/linked_lists_utils1.c \
 	utilities/linked_lists_utils2.c \

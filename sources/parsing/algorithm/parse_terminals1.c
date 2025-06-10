@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_terminals1.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 17:54:39 by chrleroy          #+#    #+#             */
+/*   Updated: 2025/06/10 17:54:48 by chrleroy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minislay.h"
 
 //
@@ -19,7 +31,6 @@ bool	argument_or_redirection(t_tokn **current, t_pars *parser)
 //
 bool	assignations(t_tokn **current, t_pars *parser)
 {
-    //(*current) ? printf("%s	@	%s\n", (*current)->value, __func__) : printf("End	@	%s\n", __func__);
 	if (current)
 	{
 		if (parse_assignment(current, parser))
