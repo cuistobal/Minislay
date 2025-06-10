@@ -39,7 +39,8 @@ SOURCES = \
 	utilities/linked_lists_utils2.c \
 	utilities/sort_list.c \
 	utilities/environement_utils.c \
-	sources/initialisation.c\
+	sources/initialisation/initialisation.c\
+	sources/initialisation/start_process.c\
 	sources/builtins/cd/cd.c \
 	sources/builtins/echo/echo.c \
 	sources/builtins/env/env.c \

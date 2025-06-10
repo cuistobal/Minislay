@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/07 14:33:05 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 08:36:35 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static const char *g_spec[DKCT] = {ISTR, IARO, IHAS, IEXT, IHYP, IPID, ICID, INME, ILST, IIFS};
 
+//
 void	build_rl_prompt(char *rl_prompt, char *tname)
 {
 	int	index;
@@ -65,20 +66,48 @@ t_env	*append_specials(void)
 	return (head);
 }
 
-
-/*
-bool	insert_env_in_avlt(t_shell *minishell)
+//
+t_env	*build_environement(char **envp)
 {
-	t_env	*copy;
-	t_avlt	*root;
+	t_env	*tail;
+	t_env	*head;
 
-	root = minishell->expt;
-	copy = minishell->envp;
-	while(copy)
-	{
-		insert_avlt_node(&root, copy, strlen(copy->var[KEY]));
-		copy = copy->next;
+	head = NULL;
+	while (*envp)
+	{	
+		if (!head)
+		{
+			head = create_env_node(*envp);
+			if (!head)
+				return (NULL);
+			tail = head;
+		}
+		else
+		{
+			tail->next = create_env_node(*envp);
+			if (!tail->next)
+				return (NULL);
+			tail = tail->next;
+		}
+		envp++;
 	}
-	return (!copy);
+	return (head);
 }
-*/
+
+//
+bool	build_env(t_shell **minishell, char **envp)
+{
+	int		index;
+	t_env	*head;
+
+	index = 0;
+	if (!*minishell)
+		return (false);
+	(*minishell)->envp = build_environement(envp);
+	if (!(*minishell)->envp)
+		return (NULL);
+	(*minishell)->local = NULL;
+	(*minishell)->command = NULL;
+	(*minishell)->special = append_specials();
+	return (true);
+}

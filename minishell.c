@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:03:45 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 08:42:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 	return (ret);
 }
 
-//
+/*
 int start_process(t_shell **minishell, char *terminal_name)
 {
     int             retcode;
@@ -101,73 +101,27 @@ int start_process(t_shell **minishell, char *terminal_name)
     tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
     rl_clear_history();
     return (retcode);
-}
-
-//
-t_env	*build_environement(char **envp)
-{
-    t_env	*tail;
-    t_env	*head;
-
-	head = NULL;
-	while (*envp)
-	{	
-		if (!head)
-		{
-			head = create_env_node(*envp);
-			if (!head)
-				return (NULL);
-			tail = head;
-		}
-		else
-		{
-			tail->next = create_env_node(*envp);
-			if (!tail->next)
-				return (NULL);
-			tail = tail->next;
-		}
-		envp++;
-	}
-	return (head);	
-}
-
-//
-bool	build_env(t_shell **minishell, char **envp)
-{
-    int     index;
-    t_env	*head;
-	t_avlt	*root;
-
-    index = 0;
-    if (!*minishell)
-		return (false);
-	root = NULL;
-	(*minishell)->envp = build_environement(envp);
-	if (!(*minishell)->envp)
-		return (NULL);
-	(*minishell)->local = NULL;
-	(*minishell)->command = NULL;
-	(*minishell)->special = append_specials();
-	return (true);
-}
+}*/
 
 //
 int	main(int argc, char **argv, char **envp)
 {
 	int		ret;
 	t_shell	*minishell;
-    char	*user_input;
+	char	*user_input;
 	char	rl_prompt[BUFFER_SIZE];
 
+	(void)argc;
+	(void)argv;
 	minishell = (t_shell *)malloc(sizeof(t_shell));
 	if (!minishell)
 		return (GENERAL_ERROR);
-    minishell->execution = NULL;
-    minishell->ast = NULL;
-    minishell->pids = NULL;
-    minishell->pipefd = NULL;
-    minishell->original_stds[0] = -1;
-    minishell->original_stds[1] = -1;
+	minishell->execution = NULL;
+	minishell->ast = NULL;
+	minishell->pids = NULL;
+	minishell->pipefd = NULL;
+	minishell->original_stds[0] = -1;
+	minishell->original_stds[1] = -1;
 	if (!build_env(&minishell, envp))
 		return (GENERAL_ERROR);
 	build_rl_prompt(rl_prompt, argv[0]);
