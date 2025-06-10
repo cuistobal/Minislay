@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 09:55:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:24:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 12:03:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void print_export(t_env *list)
     sorted = head;
     while (sorted)
     {
-        printf(EXPORT_PROMPT);
+        printf("export ");
         printf("%s", sorted->var[KEY]);
         if (sorted->var[VALUE])
             printf("=%s", sorted->var[VALUE]);

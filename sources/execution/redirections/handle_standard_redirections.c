@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/09 15:23:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 11:58:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,14 @@ int	open_infile(t_tokn *redirections)
 
 	fd = -1;
 	if (access(redirections->value, F_OK) != 0)	
-		return (printf("Missing file: %s\n", (redirections)->value), fd);
+		return (error_message(MISSING_FILE), \
+				error_message(redirections->value), error_message("\n"), fd);
+//		return (printf("Missing file: %s\n", (redirections)->value), fd);
+
 	if (access(redirections->value, R_OK) != 0)
-		return (printf("%s%s\n", PERMISSION_ERROR, (redirections)->value), fd);
+		return (error_message(PERMISSION_ERROR), \
+				error_message(redirections->value), fd);
+//		return (printf("%s%s\n", PERMISSION_ERROR, (redirections)->value), fd);
 	return (open_file(redirections->value, O_RDONLY, 0)); 
 }
 
@@ -46,13 +51,17 @@ int	open_infile(t_tokn *redirections)
 int	open_outfile(t_tokn *redirections)
 {
 	if (access(redirections->value, F_OK) != 0)
-		return (open_file(redirections->value, O_WRONLY | O_CREAT | O_TRUNC, 0644));
+		return (open_file(redirections->value, \
+					O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	else 
 	{
 		if (access(redirections->value, W_OK) == 0)	
 			return (open_file(redirections->value, O_WRONLY | O_TRUNC, 0));
 		else
-			printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
+		{
+			error_message(PERMISSION_ERROR);
+			error_message(redirections->value);
+		}
 	}
 	return (-1);
 }
@@ -61,13 +70,16 @@ int	open_outfile(t_tokn *redirections)
 int	open_outfile_append(t_tokn *redirections)
 {
 	if (access(redirections->value, F_OK) != 0)
-		return (open_file(redirections->value, O_WRONLY | O_CREAT | O_APPEND, 0644));
+		return (open_file(redirections->value, \
+					O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else 
 	{
 		if (access(redirections->value, W_OK) == 0)	
 			return (open_file(redirections->value, O_WRONLY | O_APPEND, 0));
 		else
-			printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
+			return (error_message(PERMISSION_ERROR), \
+				error_message(redirections->value), -1);
+		//	printf("%s%s\n", PERMISSION_ERROR, (redirections)->value);
 	}
 	return (-1);
 }
