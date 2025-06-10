@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 13:48:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:18:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ bool    expand(t_shell *minishell, t_tokn **list)
 			else if ((copy)->type & DQTE && !expand_in_quotes(minishell, &copy))
 				return (false);
 		}
+		while (count-- > 0)
+        	move_pointer(&copy);
         move_pointer(&copy);
     }
 	copy = *list;

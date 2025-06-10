@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 15:00:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:20:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 ** - Duplicates filename and creates new token
 ** - Returns false if memory allocation fails
 */
-static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type)
+static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type, \
+		int *count)
 {
 	t_tokn	*new;
 	t_tokn	*tail;
@@ -31,6 +32,7 @@ static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type)
 	if (!new)
 		return (free(value), false);
 	append_token_list(expanded, &tail, new);
+	(*count)++;
 	return (true);
 }
 
@@ -41,7 +43,9 @@ static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type)
 ** - Preserves original list continuation
 ** Returns success status
 */
-static bool	insert_sorted_results(t_tokn **list, t_tokn *sorted, t_tokn *next)
+/*
+static bool	insert_sorted_results(t_tokn **list, t_tokn *sorted, \
+		t_tokn *next, int *count)
 {
 	t_tokn	*temp;
 
@@ -58,44 +62,57 @@ static bool	insert_sorted_results(t_tokn **list, t_tokn *sorted, t_tokn *next)
 	temp->next = next;
 	return (true);
 }
+*/
+
+static bool	insert_sorted_results(t_tokn **list, t_tokn **expanded, \
+		t_tokn *next, int *count)
+{
+	t_tokn	*temp;
+
+	if (!*expanded || !list || !*list)
+		return (false);
+	if (*count <= 0)
+		return (true);
+	else if (is_state_active((*list)->type, IRED | ARED | ORED) && *count != 1)
+		return (*count = 0, false);
+	free((*list)->value);
+	(*list)->value = strdup((*expanded)->value);
+	if (!(*list)->value)
+		return (false);
+	(*list)->next = (*expanded)->next;
+	temp = *expanded;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = next;
+	return (true);
+}
+
 
 static bool	globing_loop(t_tokn **list, char **patterns, \
 	DIR *stream, int *count)
 {
 	int				i;
-	t_tokn			*temp;
-	t_tokn			*sorted;
 	t_tokn			*expanded;
 	struct dirent	*current;
 
-	i = 0;
-	temp = (*list)->next;
-	sorted = NULL;
 	expanded = NULL;
 	if (!patterns || !stream)
 		return (false);
 	current = readdir(stream);
 	while (current)
 	{
+		i = 0;
 		if (match_pattern(patterns, current->d_name, &i))
 		{
 			if (!add_to_expanded_list(&expanded, current->d_name, \
-				(*list)->type))
+				(*list)->type, count))
 				return (free_tokens(expanded), false);
-			(*count)++;
 		}
-		i = 0;
 		current = readdir(stream);
 	}
-	if (*count > 0)
-	{
-		sort_token_list(&expanded);
-		if (!insert_sorted_results(list, expanded, temp))
-			return (free(expanded->value), free(expanded), false);
-		free(expanded->value);
-		free(expanded);
-	}
-	return (!current);
+	if (!insert_sorted_results(list, &expanded, (*list)->next, count))
+		return (free_tokens(expanded), false);
+	return (free(expanded->value), free(expanded), true);
 }
 
 //

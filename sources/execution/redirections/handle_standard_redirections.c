@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/10 11:58:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/10 15:37:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,28 @@ int	open_infile(t_tokn *redirections)
 	int	fd;
 
 	fd = -1;
-	if (access(redirections->value, F_OK) != 0)	
+	if (access(redirections->value, F_OK) != 0 && \
+			!is_state_active(redirections->type, DOLL | STAR))	
 		return (error_message(MISSING_FILE), \
 				error_message(redirections->value), error_message("\n"), fd);
-//		return (printf("Missing file: %s\n", (redirections)->value), fd);
-
+	else if (access(redirections->value, F_OK) != 0 && \
+			is_state_active(redirections->type, DOLL | STAR))	
+		return (error_message(BASH), error_message(redirections->value), \
+				error_message(AMBIGUOUS_REDIRECTION), fd);
 	if (access(redirections->value, R_OK) != 0)
 		return (error_message(PERMISSION_ERROR), \
 				error_message(redirections->value), fd);
-//		return (printf("%s%s\n", PERMISSION_ERROR, (redirections)->value), fd);
 	return (open_file(redirections->value, O_RDONLY, 0)); 
 }
 
 //
 int	open_outfile(t_tokn *redirections)
 {
-	if (access(redirections->value, F_OK) != 0)
+	if (access(redirections->value, F_OK) != 0 && \
+			is_state_active(redirections->type, DOLL | STAR))
+		return (error_message(BASH), error_message(redirections->value), \
+				error_message(AMBIGUOUS_REDIRECTION), -1);
+	else if (access(redirections->value, F_OK) != 0)
 		return (open_file(redirections->value, \
 					O_WRONLY | O_CREAT | O_TRUNC, 0644));
 	else 
@@ -69,7 +75,11 @@ int	open_outfile(t_tokn *redirections)
 //
 int	open_outfile_append(t_tokn *redirections)
 {
-	if (access(redirections->value, F_OK) != 0)
+	if (access(redirections->value, F_OK) != 0 && \
+			is_state_active(redirections->type, DOLL | STAR))
+		return (error_message(BASH), error_message(redirections->value), \
+				error_message(AMBIGUOUS_REDIRECTION), -1);
+	else if (access(redirections->value, F_OK) != 0)
 		return (open_file(redirections->value, \
 					O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else 
