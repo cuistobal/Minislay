@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:12:38 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 07:58:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static bool rewind_heredoc(t_tokn *redirections)
     redirections->type = open(redirections->value, O_RDONLY);
     return (redirections->type != -1);
 }
+
 //
 static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 {
@@ -85,38 +86,9 @@ static bool	append_heredoc(char *expanded, int fd)
 	if (expanded)
 	{
 		if (!write(fd, expanded, strlen(expanded)))
-			return false;
+			return (false);
 	}
 	return (write(fd, "\n", 1));
-}
-
-static char *append_heredoc_name(t_tokn *redirections)
-{
-    int     i;
-    char    j;
-    char    *temp;
-    char    *unextended;
-    char    *heredocname;
-
-	i = 0;
-    temp = NULL;
-	heredocname = ft_strjoin("<<", redirections->value);	
-    if (!heredocname)
-        return (free(heredocname), NULL);
-    unextended = heredocname;
-    while (i < 10)
-    {
-        if (access(heredocname, O_RDWR) != 0)
-            break ; 
-        else if (i > 0)
-            free(heredocname);
-        j = i + 48;
-        heredocname = ft_strjoin(unextended, &j);
-        i++;
-    }
-    if (i == 10)
-        return (free(heredocname), error_message("Invalid heredoc\n"), NULL);
-    return (heredocname);
 }
 
 //
@@ -132,12 +104,11 @@ static char	*init_heredoc(t_tokn *redirections, bool *expansions)
 	limiter = limiter_handler(redirections->value, expansions);
 	if (!limiter)
 		return (NULL);
-	heredocname = ft_strjoin("/tmp/heredoc_", redirections->value);	
+	heredocname = ft_strjoin(HEREDOC_PREFIX, redirections->value);
 	if (!heredocname)
 		return (free(limiter), NULL);
 	free(redirections->value);
 	redirections->value = heredocname;
-	//fd = open(redirections->value, O_APPEND | O_CREAT | O_RDWR, 0644);
 	fd = open(heredocname, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	if (fd <  0)
 		return (free(limiter), NULL);

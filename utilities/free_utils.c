@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 16:43:33 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 07:55:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void	free_array(char **array, int count)
 	array = NULL;
 }
 
-//
+
 void	free_tree(t_tree *ast)
 {
-    t_tokn  *current;
+    t_tokn	*current;
 
-    current = NULL;
+	current = NULL;
 	if (!ast)
 		return ;
 	free_tree(ast->left);
@@ -54,21 +54,21 @@ void	free_tree(t_tree *ast)
 	free_tree(ast->right);
 	ast->right = NULL;
 /*
-    if (ast->tokens)
-        free_tokens((*ast)->tokens);
-    (*ast)->tokens = NULL;
-    current = ast->tokens;
-    while (current)
-    {
-        if (current->value)
-        {
-            free(current->value);
-            current->value = NULL;
-        }
-        move_pointer(&ast->tokens);
-        current = ast->tokens;
-    }
-    */
+	if (ast->tokens)
+		free_tokens((ast)->tokens);
+	(ast)->tokens = NULL;
+	current = ast->tokens;
+	while (current)
+	{
+		if (current->value)
+		{
+			free(current->value);
+			current->value = NULL;
+		}
+		move_pointer(&ast->tokens);
+		current = ast->tokens;
+	}
+*/
 	free(ast);
 	ast = NULL;
 }
@@ -92,7 +92,7 @@ void	free_execution_node(t_exec *execution)
 		{
             if (current->type != -1)
 		    	close(current->type);
-			if (current->value && strncmp(current->value, "<<", 2) == 0)
+			if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
 				unlink(current->value);
 			free(current->value);
 			move_pointer(&execution->redirections);			

@@ -30,9 +30,9 @@ int	get_minishelled(t_shell **minishell, char *input)
 	if (!tokenize(&tokens, input, strlen(input)))
 		return (printf(TOKENIZATION), free_tokens(tokens), PARSING_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
-		return (printf("%s unmatched '('\n", SYNTAX), free_tokens(tokens),\
-                GENERAL_ERROR);
-	parser = define_parser(&ast, tokens);
+		return (printf("%s unmatched '('\n", SYNTAX), free_tokens(tokens), \
+        GENERAL_ERROR);
+    parser = define_parser(&ast, tokens);
 	if (!parser || !parse_script(&parser))
 		return (printf(PARSING), free_tokens(tokens), free_tree(ast), \
                 free(parser), GENERAL_ERROR);
@@ -73,7 +73,7 @@ int start_process(t_shell **minishell, char *terminal_name)
         {
             g_signal_status = 0;
             free(user_input);
-            continue;
+            continue ;
         }
         if (*user_input)
         {
