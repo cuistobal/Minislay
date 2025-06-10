@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:43:16 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 09:08:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ int	export(t_shell **minishell, char **args)
             node = get_env_node(*minishell, key, value);
             if (!node)
                 export_new_variable(minishell, args[i]);
-            else if (value && strcmp(node->var[VALUE], value) != 0)
+            else if (value && node->var[VALUE] && \
+					strcmp(node->var[VALUE], value) != 0)
             {
                 free(node->var[VALUE]);
                 node->var[VALUE] = strdup(value);
@@ -138,6 +139,8 @@ int	export(t_shell **minishell, char **args)
                 free(node->var[VALUE]);
                 node->var[VALUE] = NULL;
             }
+			else if (value && !node->var[VALUE])
+				node->var[VALUE] = strdup(value);
         }
         else
         {

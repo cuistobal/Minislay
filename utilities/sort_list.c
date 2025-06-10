@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:09:36 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/08 09:28:23 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/10 09:05:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static t_env    *sort_list(t_env *list)
     return (merge_sort(left,right));
 }
 
+//
 t_env   *copy_env_list(t_env *list)
 {
     t_env   *copy;
@@ -83,18 +84,13 @@ t_env   *copy_env_list(t_env *list)
         copy = malloc(sizeof(t_env));
         if (!copy)
             return (free_env_list(head), NULL);
-        if (!head)
-        {
-            head = copy;
-            tail = copy;
-        }
-        else
-        {
-            tail->next = copy;
-            tail = copy;
-        }
-        copy->var[KEY] = strdup(list->var[KEY]);
-        copy->var[VALUE] = strdup(list->var[VALUE]);
+		copy->var[KEY] = NULL;
+		copy->var[VALUE] = NULL;
+		insert_env_node(&head, &tail, copy);
+		if (list->var[KEY])
+       		copy->var[KEY] = strdup(list->var[KEY]);	
+		if (list->var[VALUE])
+    		copy->var[VALUE] = strdup(list->var[VALUE]);
         copy->next = NULL;
         list = list->next;
     }

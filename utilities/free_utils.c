@@ -90,16 +90,16 @@ void	free_execution_node(t_exec *execution)
 			free_array(execution->environ, 0);
 		while (current)
 		{
-            if (current->type != -1)
-		    	close(current->type);
-			if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
+			if (current->type != -1)
+				close(current->type);
+			else if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
 				unlink(current->value);
 			free(current->value);
-			move_pointer(&execution->redirections);			
+			move_pointer(&execution->redirections);
 			free(current);
 			current = execution->redirections;
 		}
-        free_tokens(execution->assignations);
+		free_tokens(execution->assignations);
 		free(execution);
 		execution = next;
 	}
