@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 08:38:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:12:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ bool    expand(t_shell *minishell, t_tokn **list)
 	copy = *list;
 	while (copy)
 	{
-		if (copy->type & DOLL || copy->type & STAR)
+		if ((copy->type & DOLL || copy->type & STAR) && (!(copy->type & HDOC)))
 		{
 			if (!((copy)->type & DQTE) && (!expand_no_quotes(minishell, &copy, &count)))
 				return (false);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 10:48:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:08:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define INV_ENV "Invalid env.\n"
 # define OPEN_ERROR "Failed to open: "
 # define PERMISSION_ERROR "Invalid permissions: "
-# define AMBIGUOUS_REDIRECTION ": ambiguous redirect\n"
+# define AMBIGUOUS_REDIRECTION ": ambiguous redirection\n"
 
 # define EXPORT1 "minislay: export: `"
 # define EXPORT2 "': not a valid identifier\n"
