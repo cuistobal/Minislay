@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 12:24:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:12:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,20 @@ void get_or_restore_stds(int fds[2], bool set)
 
     if (set)
     {
-        // Sauvegarde l'état du terminal
         if (isatty(STDIN_FILENO))
             tcgetattr(STDIN_FILENO, &original);
-        // Sauvegarde les fds pour la référence
         fds[0] = STDIN_FILENO;
         fds[1] = STDOUT_FILENO;
     }
     else
     {
-        // Restaure l'état du terminal
-        if (isatty(STDIN_FILENO))
-        {
-            tcgetattr(STDIN_FILENO, &term);
-            term = original;  // Copie les attributs originaux
-            tcsetattr(STDIN_FILENO, TCSANOW, &term);
-        }
-    }
+		if (isatty(STDIN_FILENO))
+		{
+			tcgetattr(STDIN_FILENO, &term);
+			term = original;
+			tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		}
+	}
 }
 
 //

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 18:31:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:35:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ static int	is_numeric(char *str)
 	if (str[0] == '-' || str[0] == '+')
 		i++;
 	while (str[i])
+	{
 		if (str[i] < '0' || str[i] > '9')
 			return (0);
 		else
 			i++;
+	}
 	return (1);
 }
 

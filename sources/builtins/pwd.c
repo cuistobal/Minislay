@@ -6,12 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:42:54 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:23:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
 
 int	pwd(t_shell *minishell)
 {

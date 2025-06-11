@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 18:31:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:09:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	echo(const char **arguments, bool flag);
 int		env(t_shell *minishell, char **arguments);
 
 //export.c
-int	    export(t_shell **minishell, char **args);
+int		export(t_shell **minishell, char **args);
 
 //export1.c
 bool	split_token(char *token, char **key, char **value);
@@ -32,13 +32,14 @@ int		is_valid_identifier(const char *s);
 void	print_export(t_env *list);
 
 //exit.c
-int	    my_exit(char **args);
+int		my_exit(char **args);
 
 //pwd.c
 int		pwd(t_shell *minishell);
 
 //unsset.v
-int	    unset(t_shell *minishell, char **args);
+int		unset(t_shell *minishell, char **args);
+
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier

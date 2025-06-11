@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 13:45:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:28:52 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,22 @@ static int	process_export_arg(t_shell **minishell, char *arg)
 
 	key = NULL;
 	value = NULL;
-    if (!split_token(arg, &key, &value))
-        return (BUILTINS);
-    if (!is_valid_identifier(key))
-    {
-        free(key);
-        free(value);
-        return (BUILTINS);
-    }
-    node = get_env_node(*minishell, key, value);
-    if (!node)
-        export_new_variable(minishell, arg);
-    else
-        update_env_node(node, value);
-    free(key);
-    free(value);
-    return (SUCCESS);
+	if (!split_token(arg, &key, &value))
+		return (BUILTINS);
+	if (!is_valid_identifier(key))
+	{
+		free(key);
+		free(value);
+		return (BUILTINS);
+	}
+	node = get_env_node(*minishell, key, value);
+	if (!node)
+		export_new_variable(minishell, arg);
+	else
+		update_env_node(node, value);
+	free(key);
+	free(value);
+	return (SUCCESS);
 }
 
 /*
@@ -73,21 +73,21 @@ static int	process_export_arg(t_shell **minishell, char *arg)
 */
 int	export(t_shell **minishell, char **args)
 {
-    int		i;
-    int		status;
+	int		i;
+	int		status;
 
-    i = 0;
-    if (!args[i])
-    {
-        print_export((*minishell)->envp);
-        return (SUCCESS);
-    }
-    while (args[i])
-    {
-        status = process_export_arg(minishell, args[i]);
-        if (status != SUCCESS)
-            return (status);
-        i++;
-    }
-    return (SUCCESS);
+	i = 0;
+	if (!args[i])
+	{
+		print_export((*minishell)->envp);
+		return (SUCCESS);
+	}
+	while (args[i])
+	{
+		status = process_export_arg(minishell, args[i]);
+		if (status != SUCCESS)
+			return (status);
+		i++;
+	}
+	return (SUCCESS);
 }

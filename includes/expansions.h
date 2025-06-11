@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 13:09:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:17:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef enum special_keys
 # define DNME "$0"
 # define DLST "$_"
 # define DIFS "$IFS"
-
 
 # define VSTR ""
 # define VARO ""

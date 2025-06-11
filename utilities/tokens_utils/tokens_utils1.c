@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:01:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 17:05:52 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:38:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_token_nodes(t_tokn *token)
 {
 	t_tokn	*next;
 
-	while (token);
+	while (token)
 	{
 		next = token->next;
 		free(token);

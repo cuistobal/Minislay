@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/11 11:36:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:22:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	exec_builtin(char **argv, char **envp, t_shell **minishell)
 {
 	int		code;
 	char	*temp;
-	
+
 	if (!argv || !argv[0] || !*minishell)
 		return (1);
 	code = BUILTINS;

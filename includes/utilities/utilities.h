@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 14:47:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:22:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,10 @@ bool	move_env_pointer(t_env **pointer);
 bool	move_list_pointer(t_tokn **pointer, t_tokn **save);
 
 //find_key.c
-bool    find_key(t_shell *minishell, char **value, char *key);
+bool	find_key(t_shell *minishell, char **value, char *key);
 
 //get_merged.c
-//bool	get_merged(char **merged, char **temp, char **expanded);
-char    *get_merged(char **merged, char **temp, char **expanded);
+char	*get_merged(char **merged, char **temp, char **expanded);
 
 //mem_utils.c
 void	*resize_array(void *array, int array_type, int *size);
@@ -80,11 +79,8 @@ void	free_array(char **array, int count);
 void	free_execution_node(t_exec *execution);
 
 //update_key_value.c
-int	update_key_value(t_shell *minishell, char *key, char *new_value);
-
+int		update_key_value(t_shell *minishell, char *key, char *new_value);
 char	*ft_itoa(int num);
-
-
 
 //inline_utilities.c
 void	set_error_code(t_shell **minishell, int error_code);
@@ -109,22 +105,16 @@ bool	is_standard_key(t_shell *minishell, char **value, char *key);
 t_env	*get_env_tail_node(t_env *list);
 t_env	*get_env_node(t_shell *minishell, char *key, char *value);
 t_env	*find_special_env_variable(t_shell *minishell, int index);
-
 void	free_token_nodes(t_tokn *tokens);
 
 //find_keys.c
-
 bool	find_key_in_command(t_env *command, char **value, char *key);
 bool	find_key_in_local(t_env *local, char **value, char *key);
 bool	find_key(t_shell *minishell, char **value, char *key);
-
-void    append_exit_code(t_shell *minishell, int code, bool command);
-
+void	append_exit_code(t_shell *minishell, int code, bool command);
 bool	find_key_in_env(t_env *command, char **value, char *key);
-
-t_env   *sort_env_list(t_env *list);
-void    free_env_list(t_env *list);
-
+t_env	*sort_env_list(t_env *list);
+void	free_env_list(t_env *list);
 void	sort_token_list(t_tokn **list);
 
 #endif

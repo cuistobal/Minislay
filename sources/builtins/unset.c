@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 05:11:37 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/09 13:43:43 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:23:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static int	is_valid_key(const char *s)
 {
 	int	i;
 
-	if (!s || !*s || (s[0] != '_' && (s[0] < 'A' || s[0] > 'Z')
-		&& (s[0] < 'a' || s[0] > 'z')))
+	if (!s || !*s || (s[0] != '_' && (s[0] < 'A' || s[0] > 'Z') \
+				&& (s[0] < 'a' || s[0] > 'z')))
 		return (0);
 	i = 1;
 	while (s[i])
@@ -66,7 +66,7 @@ int	unset(t_shell *minishell, char **args)
 	while (args[i])
 	{
 		if (is_valid_key(args[i]))
-		 	remove_from_env(&minishell->envp, args[i]);
+			remove_from_env(&minishell->envp, args[i]);
 		i++;
 	}
 	return (SUCCESS);

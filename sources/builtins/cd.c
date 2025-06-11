@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:44 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:42:20 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:33:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ int	cd(t_shell *minishell, char **args)
 	{
 		target = get_env_value(minishell->envp, "OLDPWD");
 		if (target)
-		{
-			write(1, target, strlen(target));
-			write(1, "\n", 1);
-		}
+			printf("%s\n", target);
 	}
 	if (!target || chdir(target) != 0)
 		return (write(2, "minislay: cd: ", 14),

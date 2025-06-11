@@ -6,39 +6,43 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:41:49 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:38:20 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-/*leon*/
-int builtin_echo(char **argv)
+static int	print_new_line(bool newline)
 {
-	int	    i;
-	int	    j;
+	if (newline)
+		printf("\n");
+	return (SUCCESS);
+}
+
+int	builtin_echo(char **argv)
+{
+	int		i;
+	int		j;
 	bool	newline;
 
 	i = 1;
 	newline = true;
-	while (argv[i] && strncmp(argv[i], "-n", 2) == 0) 
-    {
+	while (argv[i] && strncmp(argv[i], "-n", 2) == 0)
+	{
 		j = 2;
-		while (argv[i][j] == 'n') 
-            j++;
+		while (argv[i][j] == 'n')
+			j++;
 		if (argv[i][j] != '\0')
-			break;
+			break ;
 		newline = false;
 		i++;
 	}
-	while (argv[i]) 
-    {
+	while (argv[i])
+	{
 		printf("%s", argv[i]);
 		if (argv[i + 1])
 			printf(" ");
 		i++;
 	}
-	if (newline)
-		printf("\n");
-	return (SUCCESS); // succès = 0
+	return (print_new_line(newline));
 }

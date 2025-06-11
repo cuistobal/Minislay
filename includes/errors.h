@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:20:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:20:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,18 @@
 # define EXIT_CODE 55
 
 /*
-0: Success. The command or script executed successfully.
-1: General errors. This is a generic code for when a command fails.
-2: Misuse of shell built-ins. This indicates incorrect usage of a shell command.
-126: Command invoked cannot execute. This could be due to permission issues or the command not being executable.
-127: Command not found. The specified command does not exist.
-128: Invalid exit argument. The exit code specified is out of the valid range (0-255).
-130: Script terminated by Control-C. The script was interrupted by the user.
-255: Exit status out of range. This indicates that the exit code is outside the valid range of 0-255.
+0:		Success. The command or script executed successfully.
+1:		General errors. This is a generic code for when a command fails.
+2:		Misuse of shell built-ins. This indicates incorrect usage of a shell 
+		command.
+126: 	Command invoked cannot execute. This could be due to permission issues 
+		or the command not being executable.
+127: 	Command not found. The specified command does not exist.
+128: 	Invalid exit argument. The exit code specified is out of the valid 
+		range (0-255).
+130: 	Script terminated by Control-C. The script was interrupted by the user.
+255: 	Exit status out of range. This indicates that the exit code is outside 
+		the valid range of 0-255.
 */
 
 #endif

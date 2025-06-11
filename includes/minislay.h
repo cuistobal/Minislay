@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:58:54 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 13:37:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "global_variables.h"
 # include "expansions.h"
 # include "structures.h"
-# include "containers.h"
 # include "errors.h"
 # include "utilities/utilities.h"
 # include "parsing.h"
@@ -37,6 +36,6 @@ t_env	*append_specials(void);
 t_env	*create_env_node(char *line);
 
 bool	build_env(t_shell **minishell, char **envp);
-bool    set_env(t_shell *minishell, char **envp);
+bool	set_env(t_shell *minishell, char **envp);
 
 #endif

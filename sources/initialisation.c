@@ -6,13 +6,14 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:27:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:40:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static const char *g_spec[DKCT] = {ISTR, IARO, IHAS, IEXT, IHYP, IPID, ICID, INME, ILST, IIFS};
+static const char	*g_spec[DKCT] = {ISTR, IARO, IHAS, IEXT, IHYP, IPID, ICID, \
+	INME, ILST, IIFS};
 
 //
 void	build_rl_prompt(char *rl_prompt, char *tname)
@@ -26,10 +27,10 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 		tname++;
 		index = -2;
 	}
-	if ((index + strlen(tname))>= BUFFER_SIZE)
+	if ((index + strlen(tname)) >= BUFFER_SIZE)
 		return ;
 	strcpy(rl_prompt, tname);
-	index =+ strlen(tname);
+	index = strlen(tname);
 	rl_prompt[index] = ' ';
 	rl_prompt[++index] = '>';
 	rl_prompt[++index] = ' ';
@@ -104,8 +105,6 @@ bool	build_env(t_shell **minishell, char **envp)
 	if (!*minishell)
 		return (false);
 	(*minishell)->envp = build_environement(envp);
-	//if (!(*minishell)->envp)
-	//	return (NULL);
 	(*minishell)->local = NULL;
 	(*minishell)->command = NULL;
 	(*minishell)->special = append_specials();
