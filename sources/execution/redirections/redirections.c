@@ -6,29 +6,28 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 11:37:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:00:21 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 16:23:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static void append_redirs_value(t_exec *node, int last_in, int last_out)
-{
-	if (node->redirs[INFILE] == -1)
-		node->redirs[INFILE] = last_in;
-	node->redirs[OUTFILE] = last_out;
-}
-
 //
 static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
 {
-	int	last_in;
-	int	last_out;
+	int		last_in;
+	int		last_out;
+	bool	valid_command;
 
 	last_in = -1;
 	last_out = -1;
+	valid_command = true;
     while (redirections)
     {
+		if (!check_validity_and_append_fd(redirections, &last_in, &last_out, \
+					valid_command))
+			valid_command = false;
+/*
 		if(is_state_active(redirections->type, IRED))
         {
 		    redirections->type = open_infile(redirections);
@@ -44,24 +43,10 @@ static void	open_standard_redirections(t_exec *node, t_tokn *redirections)
             redirections->type = open_outfile_append(redirections);
             last_out = redirections->type;
         }
+*/
         move_pointer(&redirections);
     }
     append_redirs_value(node, last_in, last_out);
-}
-
-//Used to unlink unneccessary heredocs.
-//For example, in:
-//
-//	<< eof << bad cat
-//
-//	<<eof would get unlink() because it's not the last in redirection of the 
-//	command bloc
-static void	close_and_unlink(t_tokn **heredoc, int *fd, int newfd)
-{
-	close((*heredoc)->type);
-	unlink((*heredoc)->value);
-	*heredoc = NULL;
-	*fd = newfd;
 }
 
 //
