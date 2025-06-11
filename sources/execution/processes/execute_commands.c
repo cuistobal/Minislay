@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 15:56:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:46:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,39 @@ int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 	int	code;
 
 	if (!node->command || !*node->command || !node->environ || !*node->environ)
-    {
-        child_cleanup(minishell, node, cmd);
-        exit(COMMAND_EXEC);
-    }
+	{
+		child_cleanup(minishell, node, cmd);
+		exit(COMMAND_EXEC);
+	}
 	if (execve(*node->command, node->command, node->environ) < 0)
 	{
-        child_cleanup(minishell, node, cmd);
+		child_cleanup(minishell, node, cmd);
 		exit(COMMAND_EXEC);
 	}
 	return (SUCCESS);
 }
 
 //Creates a child process to execute the command.
-//It sets up the necessary redirections and executes the command in the child process.
+//It sets up the necessary redirections and executes the command in the child 
+//process.
 //If the fork fails, it returns -1.
-//If the child process is created successfully, it sets up the signal handlers to default,
-//sets up the redirections in the child process, and executes the command using execve.
+//If the child process is created successfully, it sets up the signal handlers 
+//to default,
+//sets up the redirections in the child process, and executes the command using 
+//execve.
 //The function returns the child's PID on success, or -1 on failure.
 // It is used to create a new process for executing commands in the shell.
-// The child process will handle the command execution, while the parent process will manage
+// The child process will handle the command execution, while the parent process
+// will manage
 // the redirections and wait for the child to finish.
-// It is a crucial part of the shell's execution model, allowing for concurrent command execution.
+// It is a crucial part of the shell's execution model, allowing for concurrent 
+// command execution.
 // It is used to create a new process for executing commands in the shell.
 pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 		int pipefd[][2], int index)
 {
-    int     ret;
-	pid_t   child;
+	int		ret;
+	pid_t	child;
 
 	child = fork();
 	if (child < 0)
@@ -59,16 +64,17 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 					pipefd, index) == SUCCESS)
 		{
 			execute_command_in_child(minishell, node, index);
-        	exit(COMMAND_EXEC);
+			exit(COMMAND_EXEC);
 		}
 		child_cleanup(minishell, node, index);
 		exit(GENERAL_ERROR);
-    }
+	}
 	return (child);
 }
 
 //
-static pid_t    execute_binay(t_shell **minishell, t_exec *current, int pipefd[][2], int index)
+static pid_t	execute_binay(t_shell **minishell, t_exec *current, \
+		int pipefd[][2], int index)
 {
 	pid_t	pid;
 

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:48:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:08:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:48:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,22 @@ static void	setter(struct termios *term_original, char **tty_path, \
 		dup2(node->redirs[OUTFILE], STDOUT_FILENO);
 }
 
-//Cette fonction gère les redirections dans le processus enfant pour les builtins.
-//Si set == true, elle duplique les descripteurs de fichiers d'entrée et de sortie
+//Cette fonction gère les redirections dans le processus enfant pour les 
+//builtins.
+//Si set == true, elle duplique les descripteurs de fichiers d'entrée et de 
+//sortie
 //et les redirige vers les fichiers spécifiés dans node->redirs.
-//Si set == false, elle restaure les descripteurs de fichiers d'entrée et de sortie
+//Si set == false, elle restaure les descripteurs de fichiers d'entrée et de 
+//sortie
 //aux valeurs d'origine et ferme les descripteurs de fichiers redirigés.
-// Elle est utilisée pour les builtins qui nécessitent des redirections, comme 'cd' ou 'export'.
+// Elle est utilisée pour les builtins qui nécessitent des redirections, comme
+// 'cd' ou 'export'.
 void	setup_redirections_for_builtin(t_exec *node, int original[2], \
 		bool set)
 {
-    //int                     fd;
-    struct termios          term;
-    static char             *tty_path;
-    static struct termios   term_original;
+	struct termios			term;
+	static char				*tty_path;
+	static struct termios	term_original;
 
 	setter(&term_original, &tty_path, node, set);
 	resetter(&term, &term_original, tty_path, set);
