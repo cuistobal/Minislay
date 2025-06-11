@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 17:08:13 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 11:29:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ static bool handle_command(t_shell *minishell, char **copy, int index)
 	if (index == 0 && !is_builtin(*copy) && !is_absolute(*copy))
 	{
 		if (!is_executable(*copy) && !retrieve_path(minishell, copy))
-            return (error_message("Invalid command\n"));
+		{
+			error_message(BASH);
+			error_message(*copy);
+			return (error_message(CMD_NOT_FOUND));
+		}
     }
     return (true);
 }
@@ -51,7 +55,7 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 	{
 		copy = get_token_copy(list->value);
         if (!handle_command(minishell, &copy, index))
-            return (free(copy), free(commands), NULL);
+			return (free(copy), free(commands), NULL);
 		commands[index] = copy;
 		move_pointer(&list);
 		index++;

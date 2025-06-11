@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:08:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:20:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define RTRD "My brother in CHrist, you are r3t4rd3d.\n"
 # define FORK_FAILED "Fork failed\n."
 # define INV_COMMAND "Invalid command.\n"
+# define CMD_NOT_FOUND ": command not found\n"
 # define INV_ENV "Invalid env.\n"
 # define OPEN_ERROR "Failed to open: "
 # define PERMISSION_ERROR "Invalid permissions: "

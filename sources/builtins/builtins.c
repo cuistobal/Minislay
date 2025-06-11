@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/11 07:59:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:36:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*int_to_str(int n)
 //
 int	is_builtin(char *cmd)
 {
-	if (!cmd)
+	if (!cmd || !*cmd)
 		return (0);
 	if (!strncmp(cmd, "echo", 5))
 		return (1);
