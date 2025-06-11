@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:01:42 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 09:26:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int  handle_logical_operators(t_shell **minishell, t_tree *ast)
         ret = traverse_ast(minishell, ast->left);
         if (ret == 0)
             return (traverse_ast(minishell, ast->right));
-        free_tree(ast->right);
-        ast->right = NULL;
+        return (free_tokens(ast->right->tokens), free_tree(ast->right), \
+					ast->right = NULL, ret);
     }
     else if (is_state_active(ast->tokens->type, LORR))
     {
@@ -54,7 +54,8 @@ static int  handle_logical_operators(t_shell **minishell, t_tree *ast)
         ret = traverse_ast(minishell, ast->left);
         if (ret != 0)
             return (traverse_ast(minishell, ast->right));
-        free_tree(ast->right);
+        return (free_tokens(ast->right->tokens), free_tree(ast->right), \
+					ast->right = NULL, ret);
     }
     else
     {      

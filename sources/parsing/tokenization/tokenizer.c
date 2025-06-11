@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 08:40:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 09:15:13 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 		return (NULL);
 	else
 		token = handle_special_chars(input, pos, type);
-	prev = *token;
+	if (token)
+		prev = *token;
 	return (token);
 }
 
