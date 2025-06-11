@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 17:07:19 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 11:05:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,15 @@ static void child_cleanup(t_shell **minishell, int cmd)
     index = 0;
     free_execution_node((*minishell)->execution);
     free_tree((*minishell)->ast);
-    while (index < cmd + 1)
-    {
-        close((*minishell)->pipefd[index][READ_END]);
-        close((*minishell)->pipefd[index][WRITE_END]);
-        index++;
-    }
+	if (cmd != 0)
+	{
+    	while (index < cmd + 1)
+    	{
+    	    close((*minishell)->pipefd[index][READ_END]);
+			close((*minishell)->pipefd[index][WRITE_END]);
+			index++;
+    	}
+	}
     free((*minishell)->pipefd);
     free((*minishell)->pids);
     close((*minishell)->original_stds[0]);
@@ -64,7 +67,8 @@ int	execute_command_in_child(t_shell **minishell, char **command, char **envp, i
 // the redirections and wait for the child to finish.
 // It is a crucial part of the shell's execution model, allowing for concurrent command execution.
 // It is used to create a new process for executing commands in the shell.
-pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2], int index)
+pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
+		int pipefd[][2], int index)
 {
     int     ret;
 	pid_t   child;
@@ -76,9 +80,14 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, int pipefd[][2
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		setup_redirections_in_child(node, pipefd, index);
-		execute_command_in_child(minishell, (node)->command, (node)->environ, index);
-        exit(COMMAND_EXEC);
+		if (setup_redirections_in_child(node, pipefd, index) == SUCCESS)
+		{
+			execute_command_in_child(minishell, (node)->command, \
+					(node)->environ, index);
+        	exit(COMMAND_EXEC);
+		}
+		child_cleanup(minishell, index);
+		exit(GENERAL_ERROR);
     }
 	return (child);
 }
@@ -128,8 +137,10 @@ static void setup_redirections_for_builtin(t_exec *node, int original[2], bool s
     }
 }
 
+//
 static pid_t execute_simple_builtin(t_exec *current, int pipefd[][2], int index, t_shell **minishell)
 {
+    int		fd;
     int     ret;
     int     original[2];
     char    *tty_path;
@@ -144,13 +155,12 @@ static pid_t execute_simple_builtin(t_exec *current, int pipefd[][2], int index,
     ret = exec_builtin(current->command, current->environ, minishell);
     if (tty_path && (current->redirs[INFILE] != -1 || current->redirs[OUTFILE] != -1))
     {
-        int fd = open(tty_path, O_RDWR);
-        if (fd >= 0)
-        {
-            dup2(fd, STDIN_FILENO);
-            dup2(fd, STDOUT_FILENO);
-            close(fd);
-        }
+        fd = open(tty_path, O_RDWR);
+        if (fd < 0)
+			return (GENERAL_ERROR);
+		dup2(fd, STDIN_FILENO);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
     }
     return (ret);
 }
@@ -162,6 +172,7 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
     pid_t 	pid;
     int     original[2];
 
+	ret = GENERAL_ERROR;
     if (current->next || index > 0)
     {
         pid = fork();
@@ -171,8 +182,9 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
         {
             signal(SIGINT, SIG_DFL);
             signal(SIGQUIT, SIG_DFL);
-            setup_redirections_in_child(current, pipefd, index);
-            ret = exec_builtin(current->command, current->environ, minishell);
+            if (setup_redirections_in_child(current, pipefd, index) == SUCCESS)
+           		ret = exec_builtin(current->command, current->environ, \
+						minishell);	
             child_cleanup(minishell, index);
             exit(ret);
         }

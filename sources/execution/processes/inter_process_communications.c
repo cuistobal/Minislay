@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 15:03:20 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 11:02:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ static int stdin_management(t_exec *node, int pipefd[][2], int index)
     int infile;
 
     infile = node->redirs[INFILE];
-    if (infile != -1)
+	if (infile < -1)
+		return (GENERAL_ERROR);
+	else if (infile >= 0)
     {
         if (my_dup2(infile, STDIN_FILENO) != SUCCESS)
             return (GENERAL_ERROR);
@@ -104,7 +106,9 @@ static int stdout_management(t_exec *node, int pipefd[][2], int index)
     int outfile;
 
     outfile = node->redirs[OUTFILE];
-	if (outfile != -1)
+	if (outfile < -1)
+		return (GENERAL_ERROR);
+	if (outfile >= 0)
 	{
 		if (my_dup2(outfile, STDOUT_FILENO) != SUCCESS)
 			return (GENERAL_ERROR);

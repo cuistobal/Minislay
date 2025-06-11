@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 15:24:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 10:48:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define MISSING_FILE "Missing file: "
 
 //Error codes
+
+# define MISSING_ERROR -2
+# define AMBIGUOUS_ERROR -3
+# define PERM_ERROR -4
 
 # define SUCCESS 0
 # define GENERAL_ERROR 1

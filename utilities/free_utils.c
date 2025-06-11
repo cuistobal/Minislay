@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 07:55:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:00:02 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	free_execution_node(t_exec *execution)
 			free_array(execution->environ, 0);
 		while (current)
 		{
-			if (current->type != -1)
+			if (current->type >= 0)
 				close(current->type);
 			else if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
 				unlink(current->value);
