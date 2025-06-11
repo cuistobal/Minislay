@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:11:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:56:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int		open_outfile_append(t_tokn *redirections);
 void	add_key_to_local(t_shell **minishell, t_tokn *assignations);
 
 //inter_process_communications.c
+int		stdin_management(t_exec *node, int pipefd[][2], int index);
+int		stdout_management(t_exec *node, int pipefd[][2], int index);
 int		my_dup(int source);
 int		my_dup2(int oldfs, int newfd);
 void	get_or_restore_stds(int fds[2], bool set);
@@ -103,7 +105,23 @@ void	redirections_in_parent(t_exec *node, int pipe[][2], int index);
 int		setup_redirections_in_child(t_shell *minishell, t_exec *node, \
 		int pipefd[][2], int index);
 
-//modify_redirection_nodes.c
+//modify_redirections_nodes.c
 void	modify_redirections_nodes(t_tokn **source);
+
+//execution_cleanup.c
+void	close_command_redirs(t_exec *node);
+void	close_pipes(int (*pipefd)[2], int count);
+void	child_cleanup(t_shell **minishell, t_exec *node, int cmd);
+
+//setup_redirections_for_builtins.c
+void	setup_redirections_for_builtin(t_exec *node, int original[2], \
+		bool set);
+
+//execute_builtins.c
+pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
+		int index, t_shell **minishell);
+pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
+		t_shell **minishell);
+
 
 #endif
