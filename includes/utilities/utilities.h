@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:22:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:28:09 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,8 @@ bool	find_key_in_env(t_env *command, char **value, char *key);
 t_env	*sort_env_list(t_env *list);
 void	free_env_list(t_env *list);
 void	sort_token_list(t_tokn **list);
+
+//free
+void	free_array(char **array, int count);
 
 #endif

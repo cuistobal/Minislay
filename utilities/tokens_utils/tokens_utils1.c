@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:01:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:38:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:34:59 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_token_nodes(t_tokn *token)
 //This function frees the token list passed as parameter
 void	free_tokens(t_tokn *tokens)
 {
-	t_tokn *temp;
+	t_tokn	*temp;
 
 	temp = NULL;
 	if (!tokens)
@@ -44,6 +44,5 @@ void	free_tokens(t_tokn *tokens)
 		free(tokens);
 		tokens = temp;
 	}
-    tokens = NULL;
+	tokens = NULL;
 }
-

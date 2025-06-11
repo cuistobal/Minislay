@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lists_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 09:01:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:53:56 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
 t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 {
 	t_env	*environ;
 
-    environ = minishell->envp;
+	environ = minishell->envp;
 	while (environ)
 	{
 		if (strcmp(environ->var[KEY], key) == 0)

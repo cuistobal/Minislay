@@ -6,45 +6,15 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:00:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:30:02 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
-void	free_array(char **array, int count)
-{
-	int	index;
-
-	index = 0;
-	if (!*array)
-		return ;
-	if (count > 0)
-	{
-		while (count--)
-		{
-			free(array[count]);
-			array[count] = NULL;
-		}
-	}
-	else
-	{
-		while (array[index])
-		{
-			free(array[index]);
-			array[index] = NULL;
-			index++;
-		}
-	}
-	free(array);
-	array = NULL;
-}
-
-
 void	free_tree(t_tree *ast)
 {
-    t_tokn	*current;
+	t_tokn	*current;
 
 	current = NULL;
 	if (!ast)
@@ -53,59 +23,45 @@ void	free_tree(t_tree *ast)
 	ast->left = NULL;
 	free_tree(ast->right);
 	ast->right = NULL;
-/*
-	if (ast->tokens)
-		free_tokens((ast)->tokens);
-	(ast)->tokens = NULL;
-	current = ast->tokens;
-	while (current)
-	{
-		if (current->value)
-		{
-			free(current->value);
-			current->value = NULL;
-		}
-		move_pointer(&ast->tokens);
-		current = ast->tokens;
-	}
-*/
 	free(ast);
 	ast = NULL;
 }
 
-//
+static void	free_redirections(t_tokn *current)
+{
+	while (current)
+	{
+		if (current->type >= 0)
+			close(current->type);
+		else if (current->value && strncmp(current->value, HEREDOC_PREFIX,
+				strlen(HEREDOC_PREFIX)) == 0)
+			unlink(current->value);
+		free(current->value);
+		move_pointer(&current);
+		free(current);
+		current = NULL;
+	}
+}
+
 void	free_execution_node(t_exec *execution)
 {
 	t_exec	*next;
-	t_tokn	*current;
 
-	next = NULL;
 	while (execution)
 	{
-		current = execution->redirections;
 		next = execution->next;
 		if (execution->command)
 			free_array(execution->command, 0);
 		if (execution->environ)
 			free_array(execution->environ, 0);
-		while (current)
-		{
-			if (current->type >= 0)
-				close(current->type);
-			else if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
-				unlink(current->value);
-			free(current->value);
-			move_pointer(&execution->redirections);
-			free(current);
-			current = execution->redirections;
-		}
+		if (execution->redirections)
+			free_redirections(execution->redirections);
 		free_tokens(execution->assignations);
 		free(execution);
 		execution = next;
 	}
 }
 
-//
 void	free_env_list(t_env *list)
 {
 	t_env	*current;
