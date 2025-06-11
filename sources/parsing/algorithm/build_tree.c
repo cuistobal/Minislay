@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:07:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:00:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,15 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR] && is_amp_pipe(*(*parser)->tab[TTCURR]->value))
+		if ((*parser)->tab[TTCURR] && \
+				is_amp_pipe(*(*parser)->tab[TTCURR]->value))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
-			reset_parser(*parser, (*parser)->tab[TTHEAD], TTHEAD, &branch->left);
+			reset_parser(*parser, (*parser)->tab[TTHEAD], \
+					TTHEAD, &branch->left);
 			if (parse_script(parser))
-			{
-				reset_parser(*parser, save, TTHEAD, &branch->right);	
-				return (parse_script(parser));
-			}
+				return (reset_parser(*parser, save, TTHEAD, &branch->right), \
+						parse_script(parser));
 			return (false);
 		}
 		branch->tokens = (*parser)->tab[TTHEAD];

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 18:05:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:10:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	parse_simple_command(t_tokn **current, t_pars *parser)
 	{
 		assignations(current, parser);
 		return (argument_or_redirection(current, parser));
-    }
+	}
 	return (!*current);
 }
 
@@ -29,19 +29,17 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-		if ((*current)->type & PIPE)	
+		if ((*current)->type & PIPE)
 		{
 			set_state(&parser->state, PIPELIN);
 			consume_token(current, parser);
 			if (*current)
-				return (parse_command(current, parser)); 
-			return (error_message("Invalid syntax, expected token after PIPE token.\n"));	
+				return (parse_command(current, parser));
+			return (error_message(SYNTAX), error_message(UNEXPECTED));
 		}
-		return (*current);	
-       // return (true); //A retravailler
+		return (true);
 	}
 	return (!*current);
-
 }
 
 //We can return false -> It's the last sub funciton that aprse command goes

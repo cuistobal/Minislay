@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:09:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:59:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 //point of the programm ?
 t_tokn	*create_token_node(char *value, int type)
 {
-    t_tokn *node;
+	t_tokn	*node;
 
 	node = NULL;
 	if (value)
@@ -28,7 +28,7 @@ t_tokn	*create_token_node(char *value, int type)
 		node = (t_tokn *)malloc(sizeof(t_tokn));
 		if (node)
 		{
-    		node->type = type;
+			node->type = type;
 			node->value = value;
 			node->next = NULL;
 		}
@@ -44,12 +44,11 @@ void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new_node)
 	{
 		if (!(*head))
 			*head = *new_node;
-    	else if (*current)
+		else if (*current)
 			(*current)->next = *new_node;
-    	*current = *new_node;
+		*current = *new_node;
 	}
 }
-
 
 //We use this function to keep track of closed && unclosed parenthesis.
 bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
@@ -61,24 +60,21 @@ bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 		count = -1;
 		*mask = INIT;
 	}
-	if (current)
-	{
-		if ((current->type == OPAR))
-		{
-			count++;
-			*mask = OPAR;
-		}
-		else if (current->type == CPAR)
-		{
-			if (count < 0)
-				return (false);
-			count--;
-			if (count < 0)
-				*mask = INIT;
-		}
-	}
-	else
+	if (!current)
 		return (count < 0);
+	if ((current->type == OPAR))
+	{
+		count++;
+		*mask = OPAR;
+	}
+	else if (current->type == CPAR)
+	{
+		if (count < 0)
+			return (false);
+		count--;
+		if (count < 0)
+			*mask = INIT;
+	}
 	return (true);
 }
 
@@ -96,7 +92,7 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 		{
 			if (!(new_node->type & mask))
 				set_state(&(new_node)->type, mask);
-			insert_token(head, current, &new_node);		
+			insert_token(head, current, &new_node);
 			return (true);
 		}
 		printf("Syntax Error, invalid parenthense.\n");

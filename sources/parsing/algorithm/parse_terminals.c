@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:59:00 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 17:59:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:08:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 // Finalement → EQUL 
 bool	parse_assignment(t_tokn **current, t_pars *parser)
 {
-    if ((*current) && (*current)->type & EQUL)
+	if ((*current) && (*current)->type & EQUL)
 		return (consume_token(current, parser));
-    return (false);
+	return (false);
 }
 
 // Argument → WORD
 bool	parse_argument(t_tokn **current, t_pars *parser)
 {
-    if ((*current) && (*current)->type & WORD)
+	if ((*current) && (*current)->type & WORD)
 		return (consume_token(current, parser));
 	return (false);
 }
@@ -34,35 +34,22 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
-    	if (valid_lexeme(*current, HDOC, ARED | OPAR))
+		if (valid_lexeme(*current, HDOC, ARED | OPAR))
 		{
-
 			consume_token(current, parser);
-    	    
 			if ((*current))
 			{
-				
 				if ((*current)->type & WORD)
-				
 					return (consume_token(current, parser));
-				
-					
-				printf("syntax error: Unexpected %s token after %s token.\n", (*current)->value, (parser)->tab[TTPREV]->value);
-				
-				return (false);
-			
+				return (error_message(SYNTAX), error_message(UNEXPECTED), \
+						error_message((*current)->value));
 			}
-			
 			*current = (parser)->tab[TTPREV];
-			
-			printf("syntax error: Unexpected EOF token after %s token.\n", (*current)->value);
-    	
+			error_message(SYNTAX);
+			error_message(UNEXPECTED);
+			error_message((*current)->value);
 		}
-	
 	}
-    
-	//return (false);
-    
 	return (!*current);
 }
 
@@ -70,9 +57,7 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 // Expression → '$' WORD | WORD
 bool	parse_expression(t_tokn **current, t_pars *parser)
 {
-    if ((*current)->type & DOLL && (*current)->type < SQTE)
-		
+	if ((*current)->type & DOLL && (*current)->type < SQTE)
 		return (consume_token(current, parser));
-	
 	return (parse_argument(current, parser));
 }

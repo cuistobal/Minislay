@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:15:58 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 14:01:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 	if (*current)
 	{
 		if (!parse_command(current, parser))
-            return (false);
+			return (false);
 		if (*current)
 		{
 			while ((*current) && (*current)->type & CPAR)
@@ -52,11 +52,11 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 bool	parse_script(t_pars **parser)
 {
 	t_tokn	*current;
-	
+
 	current = (*parser)->tab[TTHEAD];
 	if (current)
 	{
-		append_token_tab((*parser)->tab, current, TTCURR);	
+		append_token_tab((*parser)->tab, current, TTCURR);
 		if (parse_command_list(&current, *parser))
 		{
 			if (current)
@@ -64,5 +64,5 @@ bool	parse_script(t_pars **parser)
 			return (build_ast(parser));
 		}
 	}
-	return (!(*parser)->tab[TTHEAD]);	
+	return (!(*parser)->tab[TTHEAD]);
 }

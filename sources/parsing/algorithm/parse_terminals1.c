@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 17:54:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:08:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,4 @@ bool	assignations(t_tokn **current, t_pars *parser)
 		return (false);
 	}
 	return (!*current);
-
 }

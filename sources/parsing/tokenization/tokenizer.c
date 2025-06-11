@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 09:15:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:50:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 {
 	if (*quote)
 	{
-        if (input == *quote)
+		if (input == *quote)
 			*quote = INIT;
 	}
 	else
 	{
 		if (is_quote(input))
-           	*quote = input;
+			*quote = input;
 		else if (isspace(input))
 			return (false);
 		else if (input == '=' && check)
@@ -34,20 +34,20 @@ static bool	norminette(const char input, int *type, char *quote, bool check)
 
 static void	expansion_flags(char input, bool *dollar, int *type, char quote)
 {
-    if (*type & WORD)
-    {
-	    if (!*dollar && quote != '\'' && input == '$')
-        {
-            set_state(type, DOLL);
-		    *dollar = true;
-        }
-        else if (!quote && input == '*')
-        {
-            if (*dollar)
-		        *dollar = false;
-            set_state(type, STAR);
-        }
-    }
+	if (*type & WORD)
+	{
+		if (!*dollar && quote != '\'' && input == '$')
+		{
+			set_state(type, DOLL);
+			*dollar = true;
+		}
+		else if (!quote && input == '*')
+		{
+			if (*dollar)
+				*dollar = false;
+			set_state(type, STAR);
+		}
+	}
 }
 
 //We use this fucntion to handle non special characters, hence building words.
@@ -71,17 +71,15 @@ static char	*handle_words(const char *input, int *pos, int *type)
 
 	quote = INIT;
 	start = *pos;
-    dollar = false;
+	dollar = false;
 	set_state(type, WORD);
 	while (input[*pos])
 	{
 		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
-			break;
-
-        expansion_flags(input[*pos], &dollar, type, quote);
-		
+			break ;
+		expansion_flags(input[*pos], &dollar, type, quote);
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
-			break;
+			break ;
 		(*pos)++;
 	}
 	if (quote)
@@ -112,18 +110,11 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 	return (token);
 }
 
-//Un static and move to utils
-static void	skip_whitespaces(const char *input, int *pos)
-{
-	while (isspace(input[*pos]))
-		(*pos)++;
-}
-
 //We use this function to build a token list based on the user's input. If this
 //list is valid, its send to the lexer module.
 bool	tokenize(t_tokn **head, const char *input, int len)
 {
-    int 	pos;
+	int		pos;
 	int		type;
 	bool	init;
 	char	*token;
@@ -133,15 +124,16 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 	token = NULL;
 	init = true;
 	current = NULL;
-    while (pos < len)
+	while (pos < len)
 	{
 		type = INIT;
-		skip_whitespaces(input, &pos);
-        if (input[pos] == '\0')
-			break;
+		while (isspace(input[pos]))
+			pos++;
+		if (input[pos] == '\0')
+			break ;
 		token = determinism(input, &pos, &type, &init);
 		if (!create_new_token(head, &current, token, type))
 			return (free(token), token = NULL, false);
-    }
+	}
 	return (true);
 }
