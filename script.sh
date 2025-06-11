@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <test_file>"
@@ -38,3 +37,5 @@ while IFS= read -r cmd || [ -n "$cmd" ]; do
 done < "$TEST_FILE"
 
 echo "Tests completed. Results saved in $LOG_FILE"
+
+grep -n "lost: [^0]" $LOG_FILE 
