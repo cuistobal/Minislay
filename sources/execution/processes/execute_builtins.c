@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 15:53:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:18:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,30 @@
 pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		int index, t_shell **minishell)
 {
-    int		fd;
-    int     ret;
-    int     original[2];
-    char    *tty_path;
+	int		fd;
+	int		ret;
+	int		original[2];
+	char	*tty_path;
 
-    tty_path = NULL;
-    if (isatty(STDIN_FILENO))
-        tty_path = ttyname(STDIN_FILENO);
-    if (current->redirs[INFILE] != -1)
-        dup2(current->redirs[INFILE], STDIN_FILENO);
-    if (current->redirs[OUTFILE] != -1)
-        dup2(current->redirs[OUTFILE], STDOUT_FILENO);
-    ret = exec_builtin(current->command, current->environ, minishell);
-    if (tty_path && (current->redirs[INFILE] != -1 || \
+	tty_path = NULL;
+	if (isatty(STDIN_FILENO))
+		tty_path = ttyname(STDIN_FILENO);
+	if (current->redirs[INFILE] != -1)
+		dup2(current->redirs[INFILE], STDIN_FILENO);
+	if (current->redirs[OUTFILE] != -1)
+		dup2(current->redirs[OUTFILE], STDOUT_FILENO);
+	ret = exec_builtin(current->command, current->environ, minishell);
+	if (tty_path && (current->redirs[INFILE] != -1 || \
 				current->redirs[OUTFILE] != -1))
-    {
-        fd = open(tty_path, O_RDWR);
-        if (fd < 0)
+	{
+		fd = open(tty_path, O_RDWR);
+		if (fd < 0)
 			return (GENERAL_ERROR);
 		dup2(fd, STDIN_FILENO);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
-    }
-    return (ret);
+	}
+	return (ret);
 }
 
 //
@@ -48,7 +48,7 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 {
 	int		ret;
 	pid_t	pid;
-	int     original[2];
+	int		original[2];
 
 	ret = GENERAL_ERROR;
 	if (current->next || index > 0)

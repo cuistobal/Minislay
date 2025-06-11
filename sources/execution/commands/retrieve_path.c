@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 16:40:59 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 18:12:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static bool	try_path(char **command, char *path)
 		}
 	}
 	free(copy);
-	//Error message -> No path
 	return (false);
 }
 

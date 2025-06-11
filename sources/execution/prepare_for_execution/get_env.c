@@ -6,18 +6,19 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 16:47:37 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 18:15:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static char *handle_value(char *value)
+//
+static char	*handle_value(char *value)
 {
-    if (!value)
-        return (strdup(""));
-    else
-    	return (strdup(value));
+	if (!value)
+		return (strdup(""));
+	else
+		return (strdup(value));
 }
 
 //
@@ -32,7 +33,7 @@ static bool	join_env(t_env *current, char **joined)
 	keydup = strdup(current->var[KEY]);
 	if (!keydup)
 		return (false);
-    vardup = handle_value(current->var[VALUE]);
+	vardup = handle_value(current->var[VALUE]);
 	temp = ft_strjoin(keydup, "=");
 	if (!temp)
 		return (free(keydup), free(vardup), false);
@@ -46,7 +47,7 @@ static bool	join_env(t_env *current, char **joined)
 //
 static bool	size_limit_helper(char ***env, int *size, int index)
 {
-	if (index < *size - 1);
+	if (index < *size - 1)
 		return (true);
 	*env = (char **)resize_array(env, sizeof(char *), size);
 	return (*env);

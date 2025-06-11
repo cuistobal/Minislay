@@ -6,16 +6,16 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:09:25 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/12 19:12:44 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:10:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static const char *g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
+static const char	*g_b[BCNT] = {BCDD, BPWD, BENV, BECO, BEXT, BUST, BEXP};
 
 //static bool	is_builtin(char *command)
-bool is_builtin_bool(char *command)
+bool	is_builtin_bool(char *command)
 {
 	int	index;
 
@@ -39,5 +39,5 @@ bool	is_absolute(char *command)
 
 bool	is_executable(char *command)
 {
-	return (command && *command && strncmp(command, "./", 2) == 0 );
+	return (command && *command && strncmp(command, "./", 2) == 0);
 }

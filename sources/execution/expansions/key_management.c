@@ -6,12 +6,11 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 18:58:06 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 18:37:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
 
 //We use this utility to extract the key within the current token string.
 static char	*extract_key(char *token, int *index, int start)
@@ -57,6 +56,7 @@ static void	quote_state(char current, char *quote, bool *sqte)
 		}
 	}
 }
+
 //We use this utility to discriminate keys and non keys within the current token
 //string.
 //This is where we should implement the SQTE DQTE discrimination. POssibly using
@@ -84,8 +84,7 @@ static char	*retrieve_expansions(char *token, int *index)
 			}
 			(*index)++;
 		}
-		return (strdup(token + start));		//Needs to be modified.
-//		return (token + start);		//Needs to be modified.
+		return (strdup(token + start));
 	}
 	return (NULL);
 }
@@ -135,26 +134,28 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
  */
 bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 {
-    char	*key;
-    bool	ret;
+	bool	ret;
+	char	*key;
 
-    key = NULL;
-    ret = false;
-    if (token && token[*index])
-    {
-        key = retrieve_expansions(token, index);
-        if (key)
-        {
-            if (!retrieve_keys_value(minishell, key, value))
-            {
-                *value = strdup("");
-                ret = true;
-            }
-            else
-                ret = true;
-            free(key);
-            key = NULL;
-        }
-    }
-    return (ret ? true : !token[*index]);
+	key = NULL;
+	ret = false;
+	if (token && token[*index])
+	{
+		key = retrieve_expansions(token, index);
+		if (key)
+		{
+			if (!retrieve_keys_value(minishell, key, value))
+			{
+				*value = strdup("");
+				ret = true;
+			}
+			else
+				ret = true;
+			free(key);
+			key = NULL;
+		}
+	}
+	if (ret)
+		return (true);
+	return (!token[*index]);
 }

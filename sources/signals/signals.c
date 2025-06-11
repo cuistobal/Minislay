@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 00:45:14 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/10 17:37:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:58:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	handle_sigint(int signo)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	//rl_redisplay();
 }
 
 void	handle_sigquit(int signo)

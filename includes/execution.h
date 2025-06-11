@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:23:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:31:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,10 @@ void	close_and_unlink(t_tokn **heredoc, int *fd, int newfd);
 void	append_redirs_value(t_exec *node, int last_in, int last_out);
 bool	check_validity_and_append_fd(t_tokn *redirections, int *last_in, \
 		int *last_out, bool valid_command);
+
+//quote_removal.c
+bool	quote_removal(t_tokn *list);
+void	quote_removal_helper(char *token, char *removed);
+
 
 #endif
