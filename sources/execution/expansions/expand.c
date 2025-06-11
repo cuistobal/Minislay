@@ -6,12 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 08:36:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 08:38:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//
 static void	quote_removal_helper(char *token, char *removed)
 {
 	int		save;
@@ -96,6 +97,7 @@ static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 	return (true);
 }
 
+//
 static bool	expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
 {
     char	*temp;
