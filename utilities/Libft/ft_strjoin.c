@@ -41,7 +41,7 @@ static char	*join_s2(const char *s2, char *joined)
 	}
 	return (joined);
 }
-
+/* 
 char    *ft_strjoin(const char *s1, const char *s2)
 {
     size_t  size;
@@ -55,6 +55,27 @@ char    *ft_strjoin(const char *s1, const char *s2)
         return (strdup(s1));
     if (!*s1 && !*s2)
         return (NULL);
+    size = strlen(s1) + strlen(s2);
+    joined = (char *)malloc(sizeof(char) * (size + 1));
+    if (!joined)
+        return (NULL);
+    join_s1(s1, joined);
+    join_s2(s2, joined + strlen(s1));
+    joined[size] = '\0';
+    return (joined);
+} */
+
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+    size_t	size;
+    char	*joined;
+
+    if (!s1 && !s2)
+        return (strdup(""));
+    if (!s1 || !*s1)
+        return (strdup(s2 ? s2 : ""));
+    if (!s2 || !*s2)
+        return (strdup(s1));
     size = strlen(s1) + strlen(s2);
     joined = (char *)malloc(sizeof(char) * (size + 1));
     if (!joined)

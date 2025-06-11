@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 16:59:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 08:10:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static bool	globing_loop(t_tokn **list, char *pattern, \
 	while (current)
 	{
 		i = 0;
-		if (match_pattern(pattern, current->d_name))
+		if (valid_star_expansion(pattern, current->d_name) && \
+				match_pattern(pattern, current->d_name))
 		{
 			if (!add_to_expanded_list(&expanded, current->d_name, \
 				(*list)->type, count))

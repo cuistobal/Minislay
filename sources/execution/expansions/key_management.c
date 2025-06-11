@@ -112,7 +112,7 @@ static bool	retrieve_keys_value(t_shell *minishell, char *key, char **value)
 	return (*key);
 }
 
-//
+/* //
 bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 {
 	char	*key;
@@ -131,4 +131,30 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		}
 	}
 	return (!token[*index]);
+}
+ */
+bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
+{
+    char	*key;
+    bool	ret;
+
+    key = NULL;
+    ret = false;
+    if (token && token[*index])
+    {
+        key = retrieve_expansions(token, index);
+        if (key)
+        {
+            if (!retrieve_keys_value(minishell, key, value))
+            {
+                *value = strdup("");
+                ret = true;
+            }
+            else
+                ret = true;
+            free(key);
+            key = NULL;
+        }
+    }
+    return (ret ? true : !token[*index]);
 }

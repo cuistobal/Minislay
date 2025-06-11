@@ -19,18 +19,18 @@ DEPS	= $(OBJ:.o=.d)
 # Create object directories
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -MMD -MP -I$(INC_DIR) -c $< -o $@
+	@$(CC) $(CFLAGS) -MMD -MP -I$(INC_DIR) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) -lreadline -o $(NAME)
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	@$(RM) -r $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re: fclean all
 

@@ -6,13 +6,13 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:25:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 18:47:06 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/11 08:35:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static bool words(t_tokn **current, char *delimiter)
+/* static bool words(t_tokn **current, char *delimiter)
 {
     t_tokn  *new;
     t_tokn  *save;
@@ -53,4 +53,47 @@ bool	word_splitting(t_shell *minishell, t_tokn **current)
 	if (*current && delimiter)
         return (words(current, delimiter));
     return (false);
+} */
+
+static bool words(t_tokn **current, char *delimiter)
+{
+    t_tokn  *new;
+    t_tokn  *save;
+    char    *word;
+    char    *expanded;
+
+    save = (*current)->next;
+    expanded = (*current)->value;
+    if (!expanded || !*expanded)
+        return (true); 
+    word = strtok_r(expanded, delimiter, &expanded);
+    if (!word)
+        return (true);
+    (*current)->value = word;
+    while (expanded && *expanded)
+    {
+        word = strtok_r(expanded, delimiter, &expanded);
+        if (!word)
+            break ; 
+        new = create_token_node(strdup(word), (*current)->type);
+        if (!new)
+            return (false); 
+        (*current)->next = new;
+        *current = new;
+    }
+    return ((*current)->next = save, true);
+}
+
+bool	word_splitting(t_shell *minishell, t_tokn **current)
+{
+    t_env	*difsi;
+    char	*delimiter;
+
+    if (!current || !*current || !(*current)->value || !(*current)->value[0])
+        return (true);
+    difsi = find_special_env_variable(minishell, DIFSI);
+    if (!difsi || !difsi->var[VALUE])
+        return (true); 
+    delimiter = difsi->var[VALUE];
+    return (words(current, delimiter));
 }

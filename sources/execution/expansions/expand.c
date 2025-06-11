@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/10 16:18:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 08:36:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static bool	quote_removal(t_tokn *list)
 
 	while (list)
 	{
-		if (list->value)
+		if (list->value && *list->value)
 		{
 			tlen = strlen(list->value) + 1;
 			removed = (char *)calloc(tlen, sizeof(char));
@@ -96,25 +96,22 @@ static bool	expand_in_quotes(t_shell *minishell, t_tokn **list)
 	return (true);
 }
 
-//
-static bool expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
+static bool	expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
 {
-	int     tlen;
-	char	*temp;
-    char    *value;
+    char	*temp;
+    char	*value;
 
     temp = NULL;
     value = NULL;
-    tlen = strlen((*l)->value);
-    if (!get_expanded(m, (*l)->value, &value, i) || !value)
-        return ((*i)++, true);
+    if (!get_expanded(m, (*l)->value, &value, i))
+		return ((*i)++, free(value), true);
     temp = *r;
     *r = get_merged(r, &temp, &value);
     if (!*r)
         return (false);
-    if (*i > tlen)
+    if (*i > strlen((*l)->value))
     {
-        value = strdup((*l)->value + (tlen - 1));
+        value = strdup((*l)->value + (strlen((*l)->value) - 1));
         if (!value)
             return (false);
         temp = *r;
