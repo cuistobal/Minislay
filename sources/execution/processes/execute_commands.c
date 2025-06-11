@@ -6,14 +6,23 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:44:10 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:04:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+//Doublon
+static void	close_command_redirs(t_exec *node)
+{
+	if (node && node->redirs[INFILE] >= 0)
+		close(node->redirs[INFILE]);
+	if (node && node->redirs[OUTFILE] >= 0)
+		close(node->redirs[OUTFILE]);
+}
+
 //
-static void child_cleanup(t_shell **minishell, int cmd)
+static void child_cleanup(t_shell **minishell, t_exec *node, int cmd)
 {
     int index;
 
@@ -29,6 +38,7 @@ static void child_cleanup(t_shell **minishell, int cmd)
 			index++;
     	}
 	}
+	close_command_redirs(node);
     free((*minishell)->pipefd);
     free((*minishell)->pids);
     close((*minishell)->original_stds[0]);
@@ -36,21 +46,20 @@ static void child_cleanup(t_shell **minishell, int cmd)
     free_minishell(*minishell);
 }
 
-
 // This function sets up the redirections in the child process.
 // It handles input and output redirections based on the node's redirs array.
-int	execute_command_in_child(t_shell **minishell, char **command, char **envp, int cmd)
+int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 {
 	int	code;
 
-	if (!command || !*command || !env || !*env)
+	if (!node->command || !*node->command || !node->environ || !*node->environ)
     {
-        child_cleanup(minishell, cmd);
+        child_cleanup(minishell, node, cmd);
         exit(COMMAND_EXEC);
     }
-	else if (execve(*command, command, envp) < 0)
+	if (execve(*node->command, node->command, node->environ) < 0)
 	{
-        child_cleanup(minishell, cmd);
+        child_cleanup(minishell, node, cmd);
 		exit(COMMAND_EXEC);
 	}
 	return (SUCCESS);
@@ -80,13 +89,13 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (setup_redirections_in_child(node, pipefd, index) == SUCCESS)
+		if (setup_redirections_in_child(*minishell, node, \
+					pipefd, index) == SUCCESS)
 		{
-			execute_command_in_child(minishell, (node)->command, \
-					(node)->environ, index);
+			execute_command_in_child(minishell, node, index);
         	exit(COMMAND_EXEC);
 		}
-		child_cleanup(minishell, index);
+		child_cleanup(minishell, node, index);
 		exit(GENERAL_ERROR);
     }
 	return (child);
@@ -166,7 +175,8 @@ static pid_t execute_simple_builtin(t_exec *current, int pipefd[][2], int index,
 }
 
 //
-static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shell **minishell)
+static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, \
+		t_shell **minishell)
 {
 	int 	ret;
     pid_t 	pid;
@@ -182,10 +192,11 @@ static pid_t execute_builtin(t_exec *current, int pipefd[][2], int index, t_shel
         {
             signal(SIGINT, SIG_DFL);
             signal(SIGQUIT, SIG_DFL);
-            if (setup_redirections_in_child(current, pipefd, index) == SUCCESS)
+            if (setup_redirections_in_child(*minishell, current, pipefd,\
+						index) == SUCCESS)
            		ret = exec_builtin(current->command, current->environ, \
 						minishell);	
-            child_cleanup(minishell, index);
+            child_cleanup(minishell, current, index);
             exit(ret);
         }
         return (redirections_in_parent(current, pipefd, index), pid);
@@ -241,6 +252,7 @@ int	execute_commands(t_shell **minishell, t_exec *node, int count)
             ret = execute_builtin(node, (*minishell)->pipefd, index, minishell);
         else 
             ret = execute_binay(minishell, node, (*minishell)->pipefd, index);
+		close_command_redirs(node);
         node = node->next;
         index++;
     }

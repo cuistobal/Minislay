@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 08:11:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:16:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_exec	*create_execution_node(t_shell **minishell, t_tree *ast);
 //int		create_child_process(t_shel *minishell, t_exec *execution);
 
 //create_process.c
-int		execute_command_in_child(t_shell **minishell, char **command, char **env, int index);
+int		execute_command_in_child(t_shell **minishell, t_exec *node, int index);
 int		create_child_process(t_shell *minishell, t_exec **execution);
 
 //wait_module.c
@@ -109,7 +109,8 @@ int		my_dup2();
 int		my_dup();
 void	get_or_restore_stds(int fds[2], bool set);
 void	redirections_in_parent(t_exec *node, int pipe[][2], int index);
-int		setup_redirections_in_child(t_exec *node, int pipefd[][2], int index);
+int		setup_redirections_in_child(t_shell *minishell, t_exec *node, \
+		int pipefd[][2], int index);
 
 //modify_redirection_nodes.c
 void	modify_redirections_nodes(t_tokn **source);

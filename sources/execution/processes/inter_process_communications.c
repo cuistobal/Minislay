@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:02:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:24:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,27 @@ static int close_unused_pipes(t_exec *node, int pipefd[][2], int index)
 }
 
 //
-int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
+static int close_unused_redirs(t_shell *minishell, int cmd)
+{
+	int		index;
+	t_exec	*nodes;
+
+	index = 0;
+	nodes = minishell->execution;
+	while (nodes)
+	{
+		if (index != cmd && nodes->redirs[INFILE] >= 0)
+			close(nodes->redirs[INFILE]);
+		if (index != cmd && nodes->redirs[OUTFILE] >= 0)
+			close(nodes->redirs[OUTFILE]);
+		nodes = nodes->next;
+		index++;
+	}
+}
+
+//
+int	setup_redirections_in_child(t_shell *minishell, t_exec *node, \
+		int pipefd[][2], int index)
 {
 
     int ret;
@@ -155,5 +175,6 @@ int	setup_redirections_in_child(t_exec *node, int pipefd[][2], int index)
 	ret = close_unused_pipes(node, pipefd, index);
 	if (ret != SUCCESS)
 		return (ret);
+	close_unused_redirs(minishell, index);
     return (SUCCESS);
 }
