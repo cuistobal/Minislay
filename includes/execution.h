@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:31:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:09:37 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ bool	retrieve_path(t_shell *minishell, char **command);
 
 //get_command_and_arguments.c
 char	**get_command_and_arguments(t_shell *minishell, t_tokn *list);
-
-//is_builtin.c
-//bool    is_builtin(char *command);
 
 //modify_token_types.c
 void	modify_token_types(t_tokn **expanded, t_tokn **redirections);
@@ -47,7 +44,6 @@ int		traverse_ast(t_shell **minishell, t_tree *ast);
 int		handle_subshell(t_shell *minishell, t_tree *ast);
 
 //word_splitting.c
-//bool	word_splitting(t_shel *minishell, t_tokn **current, char *expanded);
 bool	word_splitting(t_shell *minishell, t_tokn **current);
 
 //globing.c
@@ -85,13 +81,17 @@ bool	open_here_doc(t_shell *minishell, t_tokn **source);
 char	**get_env(t_shell *minishell);
 
 //redirections.c
-//void    open_all_redirections(t_shell *minishell, t_exec **node);
 void	open_all_redirections(t_shell *minishell, t_exec *node);
 
 //handle_standard_redirections.c
 int		open_infile(t_tokn *redirections);
 int		open_outfile(t_tokn *redirections);
 int		open_outfile_append(t_tokn *redirections);
+
+//handle_here_doc_helper.c
+bool	rewind_heredoc(t_tokn *redirections);
+char	*limiter_handler(char *limiter, bool *expansions);
+char	*init_heredoc(t_tokn *redirections, bool *expansions);
 
 void	add_key_to_local(t_shell **minishell, t_tokn *assignations);
 
