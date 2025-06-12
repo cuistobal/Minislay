@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 17:49:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:51:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,12 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 		{
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);	
+			if (setup_redirections_in_child(*minishell, current, pipefd, \
 						index) == SUCCESS)
 				ret = exec_builtin(current->command, current->environ, \
 						minishell);
 			child_cleanup(minishell, current, index);
-			exit(exit_builtin_in_child(minishell));
+			exit(exit_builtin_in_child(*minishell));
 		}
 		return (redirections_in_parent(current, pipefd, index), pid);
 	}
