@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 09:34:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:55:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,5 @@ int	wait_module(t_shell *minishell, pid_t *pids, int count, int ret)
 		append_exit_code(minishell, status, true);
 		count++;
 	}
-	if (ret == EXIT_CODE)
-		return (EXIT_CODE);
-	return (SUCCESS);
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:41:25 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:52:56 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ void	append_exit_code(t_shell *minishell, int code, bool command)
 	node = find_special_env_variable(minishell, index);
 	if (!node)
 		return ;
+	printf("code before -> %d\n", code);
+	if (is_state_active(code, EXIT_CODE))
+		unset_state(&code, EXIT_CODE);
+	printf("code after -> %d\n", code);
 	ecode = ft_itoa(code);
 	if (!ecode)
 		return ;
