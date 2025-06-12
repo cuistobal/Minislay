@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 16:10:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:27:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		is_valid_identifier(const char *s);
 void	print_export(t_env *list);
 
 //exit.c
-int		my_exit(char **args);
+int		my_exit(t_shell *minishell, char **args);
 
 //pwd.c
 int		pwd(t_shell *minishell);
@@ -43,7 +43,7 @@ int		unset(t_shell *minishell, char **args);
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier
-int		exec_builtin(char **argv, char **env, t_shell **minishell, bool *e);
+int		exec_builtin(char **argv, char **env, t_shell **minishell);
 int		builtin_echo(char **argv);
 
 #endif

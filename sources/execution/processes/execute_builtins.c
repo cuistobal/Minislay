@@ -6,11 +6,24 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 16:11:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:49:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+static int	exit_builtin_in_child(t_shell *minishell)
+{
+	int		ccode;
+	t_env	*code;
+
+	code = find_special_env_variable(minishell, LAST_CMD_ECODE);
+	if (!code || (!code->var[KEY] || !*code->var[KEY]))
+		ccode = GENERAL_ERROR;
+	else
+		ccode = atoi(code->var[KEY]);
+	return (ccode);
+}
 
 //
 pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
@@ -18,7 +31,6 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 {
 	int		fd;
 	int		ret;
-	bool	exiit;
 	int		original[2];
 	char	*tty_path;
 
@@ -29,7 +41,7 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		dup2(current->redirs[INFILE], STDIN_FILENO);
 	if (current->redirs[OUTFILE] != -1)
 		dup2(current->redirs[OUTFILE], STDOUT_FILENO);
-	ret = exec_builtin(current->command, current->environ, minishell, &exiit);
+	ret = exec_builtin(current->command, current->environ, minishell);
 	if (tty_path && (current->redirs[INFILE] != -1 || \
 				current->redirs[OUTFILE] != -1))
 	{
@@ -62,13 +74,12 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 		if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			if (setup_redirections_in_child(*minishell, current, pipefd, \
+			signal(SIGQUIT, SIG_DFL);	
 						index) == SUCCESS)
 				ret = exec_builtin(current->command, current->environ, \
-						minishell, &exiit);
+						minishell);
 			child_cleanup(minishell, current, index);
-			exit(ret);
+			exit(exit_builtin_in_child(minishell));
 		}
 		return (redirections_in_parent(current, pipefd, index), pid);
 	}

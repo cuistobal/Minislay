@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:19:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:46:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,8 @@
 # define READ_END 0
 # define WRITE_END 1
 # define EXPORT_PROMPT "export "
+
+# define LAST_CMD_ECODE 3
+# define LAST_BLOC_ECODE 6
 
 #endif
