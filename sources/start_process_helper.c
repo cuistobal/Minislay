@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:55:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:48:17 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 bool	process_input(t_shell **minishell, char *user_input, \
 		struct termios *term, int *retcode)
 {
+	int	code;
+
 	add_history(user_input);
 	*retcode = get_minishelled(minishell, user_input);
 	handle_terminal_settings(term);
