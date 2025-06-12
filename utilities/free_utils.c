@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 11:27:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:28:19 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	free_redirections(t_tokn **current)
 		prev = *current;
 	}
 }
-
 
 void	free_execution_node(t_exec *execution)
 {
