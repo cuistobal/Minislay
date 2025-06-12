@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 12:07:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 12:29:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	child_cleanup(t_shell **minishell, t_exec *node, int cmd)
 	close_command_redirs(node);
 	free_execution_node((*minishell)->execution);
 	free_tree((*minishell)->ast);
-	while (index < cmd + 1)
+	while (index < cmd)
 	{
 		close((*minishell)->pipefd[index][READ_END]);
 		close((*minishell)->pipefd[index][WRITE_END]);
