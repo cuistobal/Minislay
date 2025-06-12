@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   globing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:12:01 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 13:04:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	add_to_expanded_list(t_tokn **expanded, char *filename, int type, \
 	char	*value;
 
 	tail = NULL;
-	value = strdup(filename);
+	value = ft_strdup(filename);
 	if (!value)
 		return (false);
 	new = create_token_node(value, type);
@@ -45,7 +45,7 @@ static bool	insert_sorted_results(t_tokn **list, t_tokn **expanded, \
 	else if (is_state_active((*list)->type, IRED | ARED | ORED) && *count != 1)
 		return (*count = 0, false);
 	free((*list)->value);
-	(*list)->value = strdup((*expanded)->value);
+	(*list)->value = ft_strdup((*expanded)->value);
 	if (!(*list)->value)
 		return (false);
 	(*list)->next = (*expanded)->next;
@@ -107,7 +107,7 @@ bool	globing(t_tokn **list, const char *path, int *count)
 		return (false);
 	if (!open_directory(path, &dir_stream))
 		return (false);
-	pattern = strdup((*list)->value);
+	pattern = ft_strdup((*list)->value);
 	if (!pattern)
 		return (false);
 	if (globing_loop(list, pattern, dir_stream, count))

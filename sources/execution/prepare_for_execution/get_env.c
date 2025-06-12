@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:15:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:53:58 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 static char	*handle_value(char *value)
 {
 	if (!value)
-		return (strdup(""));
+		return (ft_strdup(""));
 	else
-		return (strdup(value));
+		return (ft_strdup(value));
 }
 
 //
@@ -30,7 +30,7 @@ static bool	join_env(t_env *current, char **joined)
 	char	*keydup;
 	char	*vardup;
 
-	keydup = strdup(current->var[KEY]);
+	keydup = ft_strdup(current->var[KEY]);
 	if (!keydup)
 		return (false);
 	vardup = handle_value(current->var[VALUE]);
@@ -55,6 +55,15 @@ static bool	size_limit_helper(char ***env, int *size, int index)
 
 // Had to declare a current pointer bc the original minishel pointer is moved
 // for some reason.
+static bool	handle_env_entry(char ***env, int *size, int *index, t_env *current)
+{
+	if (!size_limit_helper(env, size, *index))
+		return (false);
+	if (!join_env(current, &(*env)[(*index)++]))
+		return (free_array(*env, *size), false);
+	return (true);
+}
+
 char	**get_env(t_shell *minishell)
 {
 	int		size;
@@ -65,20 +74,21 @@ char	**get_env(t_shell *minishell)
 	index = 0;
 	size = TAB_SIZE;
 	current = minishell->envp;
-	env = (char **)malloc(sizeof(char *) * size);
+	env = malloc(sizeof(char *) * size);
 	if (!env)
 		return (NULL);
 	reset_array(env, 0, size);
 	while (current)
 	{
-		if (!size_limit_helper(&env, &size, index))
+		if (!handle_env_entry(&env, &size, &index, current))
 			return (NULL);
-		if (!join_env(current, &env[index++]))
-			return (free_array(env, size), NULL);
 		current = current->next;
 	}
 	if (!size_limit_helper(&env, &size, index))
 		return (NULL);
-	env[index++] = NULL;
-	return (realloc(env, sizeof(char *) * index + 1));
+	env = (char **)ft_realloc((void **)env, index, index + 1);
+	if (!env)
+		return (NULL);
+	env[index] = NULL;
+	return (env);
 }

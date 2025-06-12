@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:09:36 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/11 17:01:13 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_env	*merge_sort(t_env *left, t_env *right)
 		return (right);
 	if (!right)
 		return (left);
-	if (strcmp(left->var[KEY], right->var[KEY]) < 0)
+	if (ft_strcmp(left->var[KEY], right->var[KEY]) < 0)
 	{
 		sorted = left;
 		sorted->next = merge_sort(left->next, right);
@@ -83,9 +83,9 @@ t_env	*copy_env_list(t_env *list)
 		copy->var[VALUE] = NULL;
 		insert_env_node(&head, &tail, copy);
 		if (list->var[KEY])
-			copy->var[KEY] = strdup(list->var[KEY]);
+			copy->var[KEY] = ft_strdup(list->var[KEY]);
 		if (list->var[VALUE])
-			copy->var[VALUE] = strdup(list->var[VALUE]);
+			copy->var[VALUE] = ft_strdup(list->var[VALUE]);
 		copy->next = NULL;
 		list = list->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:41:25 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	append_exit_code(t_shell *minishell, int code, bool command)
 	ecode = ft_itoa(code);
 	if (!ecode)
 		return ;
-	if (strcmp(node->var[VALUE], ecode) == 0)
+	if (ft_strcmp(node->var[VALUE], ecode) == 0)
 	{
 		free(ecode);
 		return ;
@@ -62,7 +62,7 @@ bool	is_standard_key(t_shell *minishell, char **value, char *key)
 	current = minishell->special;
 	while (index < DKCT)
 	{
-		if (strcmp(current->var[KEY], key) == 0)
+		if (ft_strcmp(current->var[KEY], key) == 0)
 		{
 			*value = current->var[VALUE];
 			break ;

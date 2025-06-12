@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:27:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:22:58 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	update_existing(t_env *curr, char *new_value)
 	}
 	if (new_value)
 	{
-		copy = strdup(new_value);
+		copy = ft_strdup(new_value);
 		if (!copy)
 			return (ERROR);
 		curr->var[1] = copy;
@@ -38,12 +38,12 @@ int	update_key_value_fallback(t_shell *minishell, char *key, char *new_value)
 	curr = malloc(sizeof(t_env));
 	if (!curr)
 		return (ERROR);
-	curr->var[0] = strdup(key);
+	curr->var[0] = ft_strdup(key);
 	if (!curr->var[0])
 		return (free(curr), ERROR);
 	if (new_value)
 	{
-		curr->var[1] = strdup(new_value);
+		curr->var[1] = ft_strdup(new_value);
 		if (!curr->var[1])
 			return (free(curr->var[0]), free(curr), ERROR);
 	}
@@ -63,7 +63,7 @@ int	update_key_value(t_shell *minishell, char *key, char *new_value)
 	curr = minishell->envp;
 	while (curr)
 	{
-		if (curr->var[0] && strcmp(curr->var[0], key) == 0)
+		if (curr->var[0] && ft_strcmp(curr->var[0], key) == 0)
 			return (update_existing(curr, new_value));
 		curr = curr->next;
 	}

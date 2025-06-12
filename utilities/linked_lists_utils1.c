@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:30:31 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:51:56 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_tokn	*copy_token(t_tokn *source)
 	new = malloc(sizeof(t_tokn));
 	if (!new)
 		return (NULL);
-	new->value = strdup(source->value);
+	new->value = ft_strdup(source->value);
 	new->type = source->type;
 	new->next = source->next;
 	return (new);

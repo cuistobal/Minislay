@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:30:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static bool	expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
 	*r = get_merged(r, &temp, &value);
 	if (!*r)
 		return (false);
-	if (*i > strlen((*l)->value))
+	if (*i > ft_strlen((*l)->value))
 	{
-		value = strdup((*l)->value + (strlen((*l)->value) - 1));
+		value = ft_strdup((*l)->value + (ft_strlen((*l)->value) - 1));
 		if (!value)
 			return (false);
 		temp = *r;
@@ -82,7 +82,7 @@ static bool	expand_no_quotes(t_shell *minishell, t_tokn **list, int *count)
 	expanded = NULL;
 	if (is_state_active((*list)->type, DOLL))
 	{
-		tlen = strlen((*list)->value);
+		tlen = ft_strlen((*list)->value);
 		while ((*list)->value[index])
 		{
 			if (!expand_no_quotes_helper(minishell, list, &index, &expanded))

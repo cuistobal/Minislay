@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/11 13:22:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:21:59 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*int_to_str(int n)
 	char	*res;
 
 	snprintf(buffer, sizeof(buffer), "%d", n);
-	res = strdup(buffer);
+	res = ft_strdup(buffer);
 	return (res);
 }
 
@@ -28,19 +28,19 @@ int	is_builtin(char *cmd)
 {
 	if (!cmd || !*cmd)
 		return (0);
-	if (!strncmp(cmd, "echo", 5))
+	if (!ft_strncmp(cmd, "echo", 5))
 		return (1);
-	if (!strncmp(cmd, "cd", 3))
+	if (!ft_strncmp(cmd, "cd", 3))
 		return (1);
-	if (!strncmp(cmd, "env", 4))
+	if (!ft_strncmp(cmd, "env", 4))
 		return (1);
-	if (!strncmp(cmd, "pwd", 4))
+	if (!ft_strncmp(cmd, "pwd", 4))
 		return (1);
-	if (!strncmp(cmd, "exit", 5))
+	if (!ft_strncmp(cmd, "exit", 5))
 		return (1);
-	if (!strncmp(cmd, "unset", 6))
+	if (!ft_strncmp(cmd, "unset", 6))
 		return (1);
-	if (!strncmp(cmd, "export", 7))
+	if (!ft_strncmp(cmd, "export", 7))
 		return (1);
 	return (0);
 }
@@ -72,19 +72,19 @@ int	exec_builtin(char **argv, char **envp, t_shell **minishell)
 	if (!argv || !argv[0] || !*minishell)
 		return (1);
 	code = BUILTINS;
-	if (!strncmp(argv[0], "echo", 5))
+	if (!ft_strncmp(argv[0], "echo", 5))
 		code = builtin_echo(argv);
-	else if (!strncmp(argv[0], "cd", 3))
+	else if (!ft_strncmp(argv[0], "cd", 3))
 		code = cd(*minishell, argv + 1);
-	else if (!strncmp(argv[0], "env", 4))
+	else if (!ft_strncmp(argv[0], "env", 4))
 		code = env(*minishell, argv + 1);
-	else if (!strncmp(argv[0], "pwd", 4))
+	else if (!ft_strncmp(argv[0], "pwd", 4))
 		code = pwd(*minishell);
-	else if (!strncmp(argv[0], "exit", 5))
+	else if (!ft_strncmp(argv[0], "exit", 5))
 		code = my_exit(argv + 1);
-	else if (!strncmp(argv[0], "export", 7))
+	else if (!ft_strncmp(argv[0], "export", 7))
 		code = export(minishell, argv + 1);
-	else if (!strncmp(argv[0], "unset", 6))
+	else if (!ft_strncmp(argv[0], "unset", 6))
 		code = unset(*minishell, argv + 1);
 	return (code);
 }

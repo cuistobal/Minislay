@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:53:56 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ t_env	*get_env_node(t_shell *minishell, char *key, char *value)
 	environ = minishell->envp;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}	
 	environ = minishell->local;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}	
 	environ = minishell->command;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}

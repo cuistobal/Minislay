@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:38:20 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:21:59 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	newline = true;
-	while (argv[i] && strncmp(argv[i], "-n", 2) == 0)
+	while (argv[i] && ft_strncmp(argv[i], "-n", 2) == 0)
 	{
 		j = 2;
 		while (argv[i][j] == 'n')

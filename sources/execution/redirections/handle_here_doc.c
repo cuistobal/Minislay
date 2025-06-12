@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_here_doc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 19:15:01 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:21:59 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*expand_line(t_shell *minishell, char *line, bool expansions)
 	if (!line)
 		return (NULL);
 	if (!expansions)
-		return (strdup(line));
+		return (ft_strdup(line));
 	expanded = NULL;
 	value = NULL;
 	index = 0;
@@ -42,7 +42,7 @@ static bool	append_heredoc(char *expanded, int fd)
 {
 	if (expanded)
 	{
-		if (!write(fd, expanded, strlen(expanded)))
+		if (!write(fd, expanded, ft_strlen(expanded)))
 			return (false);
 	}
 	return (write(fd, "\n", 1));
@@ -80,11 +80,11 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 	limiter = init_heredoc(redirections, &expansions);
 	if (!limiter)
 		return (false);
-	len = strlen(limiter) - 1;
+	len = ft_strlen(limiter) - 1;
 	while (true)
 	{
 		line = get_user_input();
-		if (*line && !strncmp(line, limiter, len) && strlen(line) == len)
+		if (*line && !ft_strncmp(line, limiter, len) && ft_strlen(line) == len)
 			break ;
 		expanded = expand_line(minishell, line, expansions);
 		if (*line && !expanded && *line != '$')

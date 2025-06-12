@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_here_doc_helper.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 19:05:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 19:15:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*limiter_handler(char *limiter, bool *expansions)
 		if (!is_quote(*limiter))
 			return (ft_strjoin(limiter, "\n"));
 		*expansions = false;
-		merged = strdup(limiter + 1);
+		merged = ft_strdup(limiter + 1);
 		if (merged)
 		{
 			while (merged[index])

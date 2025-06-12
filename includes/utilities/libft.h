@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:17:49 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/14 13:17:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 21:31:24 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,19 @@
 # include <unistd.h>
 # include <stddef.h>
 
-char	*itoa(int num);
+char	*ft_itoa(int num);
+char	*ft_strndup(const char *s, size_t n);
+char	*ft_strdup(const char *s);
+char	*ft_strstr(const char *haystack, const char *needle);
+char	*ft_strpbrk(const char *s, const char *accept);
+char	*ft_strchr(const char *s, int c);
+size_t	ft_strlen(const char *str);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
+void	**ft_realloc(void **ptr, int old_size, int new_size);
+long	ft_atol(const char *str);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
+void	*ft_memset(void *s, int c, size_t n);
+int		ft_strcasecmp(const char *s1, const char *s2);
 
 #endif

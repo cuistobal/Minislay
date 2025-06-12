@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_removal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:30:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 10:28:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ bool	quote_removal(t_tokn *list)
 	{
 		if (list->value && *list->value)
 		{
-			tlen = strlen(list->value) + 1;
+			tlen = ft_strlen(list->value) + 1;
 			removed = (char *)calloc(tlen, sizeof(char));
 			if (!removed)
 				return (false);

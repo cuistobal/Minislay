@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 09:55:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:27:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_valid_identifier(const char *s)
 				&& (s[0] < 'a' || s[0] > 'z')))
 	{
 		write(2, "minislay: export: `", 20);
-		write(2, s, strlen(s));
+		write(2, s, ft_strlen(s));
 		write(2, "': not a valid identifier\n", 27);
 		return (0);
 	}
@@ -51,7 +51,7 @@ int	is_valid_identifier(const char *s)
 			&& (s[i] < 'a' || s[i] > 'z') && (s[i] < '0' || s[i] > '9'))
 		{
 			write(2, "minislay: export: `", 20);
-			write(2, s, strlen(s));
+			write(2, s, ft_strlen(s));
 			write(2, "': not a valid identifier\n", 27);
 			return (0);
 		}
@@ -78,15 +78,15 @@ bool	split_token(char *token, char **key, char **value)
 {
 	char	*equal;
 
-	equal = strchr(token, '=');
+	equal = ft_strchr(token, '=');
 	if (equal)
 	{
-		*key = strndup(token, equal - token);
-		*value = strdup(equal + 1);
+		*key = ft_strndup(token, equal - token);
+		*value = ft_strdup(equal + 1);
 	}
 	else
 	{
-		*key = strdup(token);
+		*key = ft_strdup(token);
 		*value = NULL;
 	}
 	return (*key && (*value || !equal));
