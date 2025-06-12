@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:59:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:33:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ t_tokn	*create_token_node(char *value, int type)
 	t_tokn	*node;
 
 	node = NULL;
-	if (value)
-	{
-		node = (t_tokn *)malloc(sizeof(t_tokn));
-		if (node)
-		{
-			node->type = type;
-			node->value = value;
-			node->next = NULL;
-		}
-	}
+	if (!value)
+		return (NULL);
+	node = (t_tokn *)malloc(sizeof(t_tokn));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	node->value = value;
+	node->next = NULL;
 	return (node);
 }
 
@@ -62,7 +60,7 @@ bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 	}
 	if (!current)
 		return (count < 0);
-	if ((current->type == OPAR))
+	if (current->type == OPAR)
 	{
 		count++;
 		*mask = OPAR;

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:46:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:35:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,5 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 		index++;
 	}
 	return (free((*m)->pids), close_pipes((*m)->pipefd, count), \
-			free((*m)->pipefd), wait_module((*m)->pids, index, ret));
+			free((*m)->pipefd), wait_module((*m), (*m)->pids, index, ret));
 }

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:30:02 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:44:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	free_redirections(t_tokn *current)
 				strlen(HEREDOC_PREFIX)) == 0)
 			unlink(current->value);
 		free(current->value);
+		current->value = NULL;
 		move_pointer(&current);
 		free(current);
 		current = NULL;

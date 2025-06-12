@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/08 15:17:05 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/12 09:34:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	return_exit_code(pid_t pid)
 }
 
 //
-int	wait_module(pid_t *pids, int count, int ret)
+int	wait_module(t_shell *minishell, pid_t *pids, int count, int ret)
 {
 	bool	error;
 	int		index;
@@ -36,7 +36,7 @@ int	wait_module(pid_t *pids, int count, int ret)
 		status = return_exit_code(pids[index]);
 		if (status != 0)
 			error = true;
-		append_exit_code(pids[index], status, true);
+		append_exit_code(minishell, status, true);
 		count++;
 	}
 	if (ret == EXIT_CODE)

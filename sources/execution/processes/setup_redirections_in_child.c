@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 15:10:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:37:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	close_unused_pipes(t_exec *node, int pipefd[][2], int index)
 }
 
 //
-static int	close_unused_redirs(t_shell *minishell, int cmd)
+static void	close_unused_redirs(t_shell *minishell, int cmd)
 {
 	int		index;
 	t_exec	*nodes;

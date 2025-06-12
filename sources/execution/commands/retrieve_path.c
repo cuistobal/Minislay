@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:12:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:36:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	test_path(char **command, char *path)
 	if (!merged)
 		return (false);
 	free(temp);
-	if (!access(merged, F_OK | X_OK) == 0)
+	if (access(merged, F_OK | X_OK) != 0)
 		return (free(merged), false);
 	return (free(*command), *command = merged, true);
 }

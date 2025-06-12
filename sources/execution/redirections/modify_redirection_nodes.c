@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 10:47:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:40:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:51:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	pointer_update_helper(t_tokn **copy, t_tokn **prev, \
 	if (!*prev)
 	{
 		free((*source)->value);
+		(*source)->value = NULL;
 		free(*source);
 		*source = next;
 		*copy = *source;
@@ -39,9 +40,10 @@ static void	pointer_update_helper(t_tokn **copy, t_tokn **prev, \
 	else
 	{
 		(*prev)->next = next;
-		free((*copy)->value);
+ 		free((*copy)->value);
+		(*copy)->value = NULL;
 		free(*copy);
-		*copy = next;
+ 		*copy = next;
 	}
 }
 

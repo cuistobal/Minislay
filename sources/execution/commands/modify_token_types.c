@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:54:03 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/05/23 12:43:55 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:36:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	redir_list(t_tokn **red, t_tokn *prev, t_tokn **rtail, t_tokn *cur)
 }
 
 //
-static bool	command_list(t_tokn **chead, t_tokn **ctail, t_tokn *current)
+static void	command_list(t_tokn **chead, t_tokn **ctail, t_tokn *current)
 {
 	if (*chead)
 		set_state(&current->type, ARGUMNT);

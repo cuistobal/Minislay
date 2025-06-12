@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:55:58 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/09 10:09:35 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/12 09:38:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,13 @@ bool	reset_parser(t_pars *parser, t_tokn *token, int i, t_tree **branch)
 
 	if (parser)
 	{
-		if ((parser)->tab)
+		index = 0;
+		while (index < TTSIZE)
 		{
-			index = 0;
-			while (index < TTSIZE)
-			{
-				(parser)->tab[index] = NULL;
-				if (index == i)
-					(parser)->tab[index] = token;
-				index++;
-			}
+			(parser)->tab[index] = NULL;
+			if (index == i)
+				(parser)->tab[index] = token;
+			index++;
 		}
 		if ((parser)->state & SUBSHEL)
 			(parser)->state = SUBSHEL;

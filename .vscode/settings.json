@@ -52,6 +52,7 @@
 		"system_error": "c",
 		"minislay.h": "c",
 		"standard_headers.h": "c",
-		"signal.h": "c"
+		"signal.h": "c",
+		"ranges": "c"
 	}
 }
