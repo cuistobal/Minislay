@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 09:35:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:28:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,5 @@ bool	check_validity_and_append_fd(t_tokn *redirections, int *last_in, \
 //quote_removal.c
 bool	quote_removal(t_tokn *list);
 void	quote_removal_helper(char *token, char *removed);
-
 
 #endif
