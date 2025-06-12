@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 16:13:28 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:41:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:32:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,22 @@ bool	check_validity_and_append_fd(t_tokn *redirections, int *last_in, \
 	else if (is_state_active(redirections->type, IRED))
 	{
 		redirections->type = open_infile(redirections);
+		if (*last_in > 0)
+			close(*last_in);
 		*last_in = redirections->type;
 	}
 	else if (is_state_active(redirections->type, ORED))
 	{
 		redirections->type = open_outfile(redirections);
+		if (*last_out > 0)
+			close(*last_out);
 		*last_out = redirections->type;
 	}
 	else if (is_state_active(redirections->type, ARED))
 	{
 		redirections->type = open_outfile_append(redirections);
+		if (*last_out > 0)
+			close(*last_out);
 		*last_out = redirections->type;
 	}
 	return ((*last_in >= -1) && *last_out >= -1);
