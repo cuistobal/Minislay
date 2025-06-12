@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:42:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:43:36 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,3 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 	waitpid(pid, &ret, 0);
 	return (WEXITSTATUS(ret));
 }
-
-/*
-//
-int handle_subshell(t_shell *minishell, t_tree *ast)
-{
-    int             ret;
-    char            *subshell_command;
-
-    subshell_command = NULL;
-    if (!prompt(&subshell_command, ast))
-        return (GENERAL_ERROR);
-    ret = get_minishelled(&minishell, subshell_command);
-    free(subshell_command);
-
-//        free_tree(ast);
-//        free_minishell(minishell);
-//        exit(ret);
-    return (ret);
-}
-*/

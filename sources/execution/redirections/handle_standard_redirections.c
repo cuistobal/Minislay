@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/11 16:31:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:57:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	open_infile(t_tokn *redir)
 	if (access(redir->value, R_OK) != 0)
 		return (error_message(PERMISSION_ERROR), \
 				error_message(redir->value), PERM_ERROR);
-	return (open_file(redir->value, O_RDONLY, 0));
+	return (open_file(redir->value, O_RDONLY | O_TRUNC, 0));
 }
 
 //
@@ -58,7 +58,7 @@ int	open_outfile(t_tokn *redirections)
 				error_message(AMBIGUOUS_REDIRECTION), AMBIGUOUS_ERROR);
 	else if (access(redirections->value, F_OK) != 0)
 		return (open_file(redirections->value, \
-					O_WRONLY | O_CREAT | O_TRUNC, 0644));
+					O_WRONLY | O_CREAT, 0644));
 	else if (access(redirections->value, W_OK) == 0)
 		return (open_file(redirections->value, O_WRONLY | O_TRUNC, 0));
 	error_message(PERMISSION_ERROR);
@@ -76,13 +76,8 @@ int	open_outfile_append(t_tokn *redirections)
 	else if (access(redirections->value, F_OK) != 0)
 		return (open_file(redirections->value, \
 					O_WRONLY | O_CREAT | O_APPEND, 0644));
-	else
-	{
-		if (access(redirections->value, W_OK) == 0)
-			return (open_file(redirections->value, O_WRONLY | O_APPEND, 0));
-		else
-			return (error_message(PERMISSION_ERROR), \
+	else if (access(redirections->value, W_OK) == 0)
+		return (open_file(redirections->value, O_WRONLY | O_APPEND, 0));
+	return (error_message(PERMISSION_ERROR), \
 				error_message(redirections->value), PERM_ERROR);
-	}
-	return (-1);
 }
