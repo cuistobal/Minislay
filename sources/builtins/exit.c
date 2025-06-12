@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 15:47:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:07:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	my_exit(char **args)
 		return (BUILTINS);
 	}
 	else if (args[1])
-		return (write(2, "minislay: exit: too many arguments\n", 35), 1);
+		return (write(2, "minislay: exit: too many arguments\n", 35), );
 	else
 		code = atol(args[0]);
 	code = (code % 256 + 256) % 256;
