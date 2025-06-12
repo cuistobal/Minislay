@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/11 13:22:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:08:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	free_env(char **env)
 }
 
 //Il faut passser en t_shell **minishell pour que les modfis soient permanentes
-int	exec_builtin(char **argv, char **envp, t_shell **minishell)
+int	exec_builtin(char **argv, char **envp, t_shell **minishell, bool *exiit)
 {
 	int		code;
 	char	*temp;
@@ -81,7 +81,7 @@ int	exec_builtin(char **argv, char **envp, t_shell **minishell)
 	else if (!strncmp(argv[0], "pwd", 4))
 		code = pwd(*minishell);
 	else if (!strncmp(argv[0], "exit", 5))
-		code = my_exit(argv + 1);
+		return (*code = true, my_exit(argv + 1));
 	else if (!strncmp(argv[0], "export", 7))
 		code = export(minishell, argv + 1);
 	else if (!strncmp(argv[0], "unset", 6))

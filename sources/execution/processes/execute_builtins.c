@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:18:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:11:22 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 {
 	int		fd;
 	int		ret;
+	bool	exiit;
 	int		original[2];
 	char	*tty_path;
 
@@ -28,7 +29,7 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		dup2(current->redirs[INFILE], STDIN_FILENO);
 	if (current->redirs[OUTFILE] != -1)
 		dup2(current->redirs[OUTFILE], STDOUT_FILENO);
-	ret = exec_builtin(current->command, current->environ, minishell);
+	ret = exec_builtin(current->command, current->environ, minishell, &exiit);
 	if (tty_path && (current->redirs[INFILE] != -1 || \
 				current->redirs[OUTFILE] != -1))
 	{
@@ -48,8 +49,10 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 {
 	int		ret;
 	pid_t	pid;
+	bool	exiit;
 	int		original[2];
 
+	exiit = false;
 	ret = GENERAL_ERROR;
 	if (current->next || index > 0)
 	{
@@ -63,7 +66,7 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 			if (setup_redirections_in_child(*minishell, current, pipefd, \
 						index) == SUCCESS)
 				ret = exec_builtin(current->command, current->environ, \
-						minishell);
+						minishell, &exiit);
 			child_cleanup(minishell, current, index);
 			exit(ret);
 		}

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:59:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:09:02 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:10:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		unset(t_shell *minishell, char **args);
 /* réimplementation des builtin*/
 int		is_builtin(char *cmd);
 //dispatcher unique qui route chaque commande vers sa fonction dedier
-int		exec_builtin(char **argv, char **env, t_shell **minishell);
+int		exec_builtin(char **argv, char **env, t_shell **minishell, bool *e);
 int		builtin_echo(char **argv);
 
 #endif

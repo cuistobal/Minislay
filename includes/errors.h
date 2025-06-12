@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:20:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:49:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define OPEN_ERROR "Failed to open: "
 # define PERMISSION_ERROR "Invalid permissions: "
 # define AMBIGUOUS_REDIRECTION ": ambiguous redirection\n"
+# define EXIT_ARGS "minislay: exit: numeric argument required\n"
 
 # define EXPORT1 "minislay: export: `"
 # define EXPORT2 "': not a valid identifier\n"
