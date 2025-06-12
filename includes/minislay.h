@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:57:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:00:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 		int retcode);
 bool	process_input(t_shell **minishell, char *user_input, \
 		struct termios *term, int *retcode);
-int		end_process(struct termios *old_term, int retcode);
+int		end_process(t_shell *minishell, struct termios *old_term, int retcode);
 
 #endif

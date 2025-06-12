@@ -6,13 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 13:38:38 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:23:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
+
 //
 static int	execute_branch(t_shell **minishell, t_tree *ast)
 {
@@ -30,7 +30,7 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 	(*minishell)->execution = node;
 	open_all_redirections(*minishell, node);
 	ret = execute_commands(minishell, node, count);
-	append_exit_code(*minishell, ret, true);
+	//append_exit_code(*minishell, ret, true);
 	free_execution_node(node);
 	return (ret);
 }

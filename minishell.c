@@ -6,23 +6,26 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 17:40:32 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:24:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static void	promote_command_exit_code(t_shell *minishell)
+static int	promote_command_exit_code(t_shell *minishell)
 {
 	int		cccode;
 	t_env	*ccode;
 
+	cccode = -7;
 	ccode = find_special_env_variable(minishell, 6);
 	if (!ccode)
 		printf("ALED\n");
 	else if (ccode->var[KEY])
 		cccode = atoi(ccode->var[KEY]);
+	printf("%d\n", cccode);
 	append_exit_code(minishell, cccode, false);
+	return (cccode);
 }
 
 //Needs rename -> it's currently the entrey to lexing && parsing

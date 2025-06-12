@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 17:51:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:16:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@ static int	exit_builtin_in_child(t_shell *minishell)
 	int		ccode;
 	t_env	*code;
 
+	code = find_special_env_variable(minishell, LAST_CMD_ECODE);
+	if (!code || (!code->var[KEY] || !*code->var[KEY]))
+		ccode = GENERAL_ERROR;
+	else
+		ccode = atoi(code->var[KEY]);
+	return (ccode);
+}
+
+static int	exit_builtin_in_parent(t_shell *minishell, int ret)
+{
+	int		ccode;
+	t_env	*code;
+
+	if (ret != EXIT_CODE)
+		return (ret);
 	code = find_special_env_variable(minishell, LAST_CMD_ECODE);
 	if (!code || (!code->var[KEY] || !*code->var[KEY]))
 		ccode = GENERAL_ERROR;

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:15:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:08:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ char	**get_env(t_shell *minishell)
 	if (!size_limit_helper(&env, &size, index))
 		return (NULL);
 	env[index++] = NULL;
-	return (realloc(env, sizeof(char *) * index + 1));
+	return (realloc(env, sizeof(char *) * (index + 1)));
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 08:39:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 14:58:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:59:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ int	start_process(t_shell **minishell, char *terminal_name)
 			redisplay(&signal);
 		rl_replace_line("", 0);
 	}
-	return (end_process(&old_term, retcode));
+	return (end_process(*minishell, &old_term, retcode));
 }
