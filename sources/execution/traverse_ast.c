@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 10:37:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:38:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,28 @@ static int	execute_branch(t_shell **minishell, t_tree *ast)
 //
 static int	handle_logical_operators(t_shell **minishell, t_tree *ast)
 {
-	int	ret;
+	int		ret;
 
 	if (is_state_active(ast->tokens->type, LAND))
 	{
-		free_tokens(ast->tokens);
+		free_tokens_adress(&ast->tokens);
 		ret = traverse_ast(minishell, ast->left);
 		if (ret == 0)
 			return (traverse_ast(minishell, ast->right));
-		return (free_tokens(ast->right->tokens), free_tree(ast->right), \
-					ast->right = NULL, ret);
+		return (free_tokens_adress(&ast->right->tokens), \
+				free_tree(ast->right), ast->right = NULL, ret);
 	}
 	else if (is_state_active(ast->tokens->type, LORR))
 	{
-		free_tokens(ast->tokens);
+		free_tokens_adress(&ast->tokens);
 		ret = traverse_ast(minishell, ast->left);
 		if (ret != 0)
 			return (traverse_ast(minishell, ast->right));
-		return (free_tokens(ast->right->tokens), free_tree(ast->right), \
-					ast->right = NULL, ret);
+		return (free_tokens_adress(&ast->right->tokens), \
+				free_tree(ast->right), ast->right = NULL, ret);
 	}
 	ret = handle_subshell(*minishell, ast);
-	return (free_tokens(ast->tokens), ret);
+	return (free_tokens_adress(&ast->tokens), ret);
 }
 
 //

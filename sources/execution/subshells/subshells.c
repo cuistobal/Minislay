@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 11:43:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:39:40 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,31 @@ static bool	prompt(char **prompt, t_tree *branch)
 	return (true);
 }
 
+static void	subshell_cleanup(t_tree **save)
+{
+	if (!*save)
+		return ;
+	if ((*save)->tokens)
+		free_tokens_adress(&(*save)->tokens);
+	subshell_cleanup(&(*save)->left);
+	(*save)->left = NULL;
+	subshell_cleanup(&(*save)->right);
+	(*save)->right = NULL;
+	free(*save);
+	*save = NULL;
+}
+
 //
 int	handle_subshell(t_shell *minishell, t_tree *ast)
 {
 	int		ret;
 	pid_t	pid;
+	t_tree	*save;
+	t_exec	*nodes;
 	char	*subshell_command;
 
+	save = minishell->ast;
+	nodes = minishell->execution;
 	subshell_command = NULL;
 	if (!prompt(&subshell_command, ast))
 		return (GENERAL_ERROR);
@@ -85,11 +103,9 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 		signal(SIGQUIT, SIG_DFL);
 		ret = get_minishelled(&minishell, subshell_command);
 		free(subshell_command);
-		free_tree(ast);
+		subshell_cleanup(&save);
 		free_minishell(minishell);
 		exit(ret);
 	}
-	free(subshell_command);
-	waitpid(pid, &ret, 0);
-	return (WEXITSTATUS(ret));
+	return (free(subshell_command), waitpid(pid, &ret, 0), WEXITSTATUS(ret));
 }

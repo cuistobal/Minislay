@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:28:09 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:05:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*my_strtok_r(char *str, const char *delim, char **saveptr);
 
 //tokens_utils1.c:
 void	free_tokens(t_tokn *tokens);
+void	free_tokens_adress(t_tokn **tokens);
 
 //parsing_utils.c:
 void	delete_links(t_pars *parser);
