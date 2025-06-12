@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:56:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:33:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 	(*minishell)->ast = ast;
 	ret = traverse_ast(minishell, ast);
 	return (append_exit_code(*minishell, ret, false), free_tree(ast), \
-			free(tokens), ret);
+			free_tokens(tokens), ret);
 }
 
 //
