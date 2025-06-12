@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 10:53:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:27:06 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,39 +67,7 @@ void	free_execution_node(t_exec *execution)
 	}
 }
 
-/*
-void	free_execution_node(t_exec *execution)
-{
-	t_exec	*next;
-	t_tokn	*current;
-
-	next = NULL;
-	while (execution)
-	{
-		current = execution->redirections;
-		next = execution->next;
-		if (execution->command)
-			free_array(execution->command, 0);
-		if (execution->environ)
-			free_array(execution->environ, 0);
-		while (current)
-		{
-			if (current->type != -1)
-				close(current->type);
-			else if (current->value && strncmp(current->value, HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
-				unlink(current->value);
-			free(current->value);
-			move_pointer(&execution->redirections);
-			free(current);
-			current = execution->redirections;
-		}
-		free_tokens(execution->assignations);
-		free(execution);
-		execution = next;
-	}
-}
-*/
-
+//
 void	free_env_list(t_env *list)
 {
 	t_env	*current;
