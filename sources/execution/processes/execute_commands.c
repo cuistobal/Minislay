@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 09:35:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:58:29 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 	pid_t	child;
 
 	child = fork();
+//	(*minishell)->pids[index] = fork();	
 	if (child < 0)
 		return (-1);
 	if (child == 0)
