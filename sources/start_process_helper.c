@@ -6,11 +6,27 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 18:28:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:31:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+static int	exit_builtin_in_parent(t_shell *minishell, int ret)
+{
+	int		ccode;
+	t_env	*code;
+
+	if (ret != EXIT_CODE)
+		return (ret);
+	code = find_special_env_variable(minishell, LAST_CMD_ECODE);
+	if (!code || (!code->var[KEY] || !*code->var[KEY]))
+		ccode = GENERAL_ERROR;
+	else
+		ccode = atoi(code->var[KEY]);
+	return (ccode);
+}
+
 
 /*
 ** Configures terminal settings for readline and heredoc
@@ -55,23 +71,9 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 	free(user_input);
 	if (retcode != EXIT_CODE)
 		append_exit_code(*minishell, retcode, false);
-}
-
-static int	exit_builtin_in_parent(t_shell *minishell, int ret)
-{
-	int		ccode;
-	t_env	*code;
-
-	if (ret != EXIT_CODE)
-		return (ret);
-	code = find_special_env_variable(minishell, LAST_CMD_ECODE);
-	if (!code || (!code->var[KEY] || !*code->var[KEY]))
-		ccode = GENERAL_ERROR;
 	else
-		ccode = atoi(code->var[KEY]);
-	return (ccode);
+		promote_command_exit_code(*minishell);
 }
-
 
 /*
 ** Processes valid user input:
@@ -96,6 +98,7 @@ bool	process_input(t_shell **minishell, char *user_input, \
 	}
 	handle_terminal_settings(term);
 	wait_processes_and_clean(minishell, user_input, *retcode);
+	printf("%d\n", *retcode);
 //	return (*retcode == EXIT_CODE);
 	return (stop);
 }

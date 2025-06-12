@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/12 17:27:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:56:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ int	exec_builtin(char **argv, char **envp, t_shell **minishell)
 	else if (!strncmp(argv[0], "pwd", 4))
 		code = pwd(*minishell);
 	else if (!strncmp(argv[0], "exit", 5))
-		code = my_exit(*minishell, argv + 1);
+		return (my_exit(*minishell, argv + 1));
 	else if (!strncmp(argv[0], "export", 7))
 		code = export(minishell, argv + 1);
 	else if (!strncmp(argv[0], "unset", 6))
 		code = unset(*minishell, argv + 1);
+	append_exit_code(*minishell, code, false);
 	return (code);
 }

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 18:16:05 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 20:02:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 {
 	int		ret;
 	pid_t	pid;
-	bool	exiit;
 	int		original[2];
 
-	exiit = false;
-	ret = GENERAL_ERROR;
 	if (current->next || index > 0)
 	{
 		pid = fork();

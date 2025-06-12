@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 18:00:00 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:32:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "signals.h"
 
 //minnishell.c
+int		promote_command_exit_code(t_shell *minishell);
 int		get_minishelled(t_shell **minishell, char *input);
 int		start_process(t_shell **minishell, char *terminal_name);
 int		main(int argc, char **argv, char **envp);
