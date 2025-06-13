@@ -6,19 +6,17 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:58:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:19:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-int	execute_simple_builtin(t_exec *current, int pipefd[][2], \
-		int index, t_shell **minishell)
+int	execute_simple_builtin(t_exec *current,	t_shell **minishell)
 {
 	int		fd;
 	int		ret;
-	int		original[2];
 	char	*tty_path;
 
 	tty_path = NULL;
@@ -28,7 +26,7 @@ int	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		dup2(current->redirs[INFILE], STDIN_FILENO);
 	if (current->redirs[OUTFILE] != -1)
 		dup2(current->redirs[OUTFILE], STDOUT_FILENO);
-	ret = exec_builtin(current->command, current->environ, minishell);
+	ret = exec_builtin(current->command, minishell);
 	if (tty_path && (current->redirs[INFILE] != -1 || \
 				current->redirs[OUTFILE] != -1))
 	{
@@ -48,25 +46,20 @@ pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 {
 	int		ret;
 	pid_t	pid;
-	int		original[2];
 
 	ret = GENERAL_ERROR;
-	if (current->next || index > 0)
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid == 0)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (-1);
-		if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			if (setup_redirections_in_child(*minishell, current, pipefd, \
-						index) == SUCCESS)
-				ret = exec_builtin(current->command, current->environ, \
-						minishell);
-			child_cleanup(minishell, current, index);
-			exit(ret);
-		}
-		return (redirections_in_parent(current, pipefd, index), pid);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (setup_redirections_in_child(*minishell, current, pipefd, \
+					index) == SUCCESS)
+			ret = exec_builtin(current->command, minishell);
+		child_cleanup(minishell, current, index);
+		exit(ret);
 	}
+	return (redirections_in_parent(current, pipefd, index), pid);
 }

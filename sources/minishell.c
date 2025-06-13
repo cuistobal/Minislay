@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 11:52:22 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:29:00 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	get_minishelled(t_shell **minishell, char *input)
 	t_tree			*ast;
 	t_pars			*parser;
 	t_tokn			*tokens;
-	struct termios	*initial_state;
 
 	ast = NULL;
 	tokens = NULL;
@@ -39,6 +38,8 @@ int	get_minishelled(t_shell **minishell, char *input)
 	free(parser);
 	(*minishell)->ast = ast;
 	ret = traverse_ast(minishell, ast);
+	if (ret != SUCCESS)
+		return (free_tree(ast), free_tokens(tokens), ret);
 	return (free_tree(ast), ret);
 }
 
@@ -47,7 +48,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	int		ret;
 	t_shell	*minishell;
-	char	*user_input;
 	char	rl_prompt[BUFFER_SIZE];
 
 	(void)argc;

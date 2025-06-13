@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/04 15:55:17 by cuistobal        ###   ########.fr       */
+/*   Updated: 2025/06/13 12:25:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static void	split_key_and_value(char *line, char **key, char **value)
 t_env	*create_env_node(char *line)
 {
 	t_env	*new;
-	char	*equal;
 	char	*key;
 	char	*value;
 

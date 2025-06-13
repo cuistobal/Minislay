@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:33:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:17:47 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,10 @@ void	close_pipes(int (*pipefd)[2], int count);
 void	child_cleanup(t_shell **minishell, t_exec *node, int cmd);
 
 //setup_redirections_for_builtins.c
-void	setup_redirections_for_builtin(t_exec *node, int original[2], \
-		bool set);
+void	setup_redirections_for_builtin(t_exec *node, bool set);
 
 //execute_builtins.c
-int		execute_simple_builtin(t_exec *current, int pipefd[][2], \
-		int index, t_shell **minishell);
+int		execute_simple_builtin(t_exec *current,	t_shell **minishell);
 pid_t	execute_builtin(t_exec *current, int pipefd[][2], int index, \
 		t_shell **minishell);
 

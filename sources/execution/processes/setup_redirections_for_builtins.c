@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:48:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 17:48:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:13:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static void	setter(struct termios *term_original, char **tty_path, \
 //aux valeurs d'origine et ferme les descripteurs de fichiers redirigés.
 // Elle est utilisée pour les builtins qui nécessitent des redirections, comme
 // 'cd' ou 'export'.
-void	setup_redirections_for_builtin(t_exec *node, int original[2], \
-		bool set)
+void	setup_redirections_for_builtin(t_exec *node, bool set)
 {
 	struct termios			term;
 	static char				*tty_path;

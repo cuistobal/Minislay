@@ -6,22 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 17:53:12 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/13 09:24:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:11:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-//
-static char	*int_to_str(int n)
-{
-	char	buffer[12];
-	char	*res;
-
-	snprintf(buffer, sizeof(buffer), "%d", n);
-	res = strdup(buffer);
-	return (res);
-}
 
 //
 int	is_builtin(char *cmd)
@@ -64,10 +53,9 @@ void	free_env(char **env)
 }
 
 //Il faut passser en t_shell **minishell pour que les modfis soient permanentes
-int	exec_builtin(char **argv, char **envp, t_shell **minishell)
+int	exec_builtin(char **argv, t_shell **minishell)
 {
 	int		code;
-	char	*temp;
 
 	if (!argv || !argv[0] || !*minishell)
 		return (1);

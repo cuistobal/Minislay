@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:58:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:18:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 // It handles input and output redirections based on the node's redirs array.
 int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 {
-	int	code;
-
 	if (!node->command || !*node->command || !node->environ || !*node->environ)
 	{
 		child_cleanup(minishell, node, cmd);
@@ -50,7 +48,6 @@ int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 		int pipefd[][2], int index)
 {
-	int		ret;
 	pid_t	child;
 
 	child = fork();
@@ -117,7 +114,7 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 			(*m)->pids[index] = execute_builtin(node, (*m)->pipefd, \
 						index, m);
 		else if (node->command && is_builtin(*node->command))
-			ret = execute_simple_builtin(node, (*m)->pipefd, index, m);
+			ret = execute_simple_builtin(node, m);
 		else
 			(*m)->pids[index] = execute_binay(m, node, (*m)->pipefd, index);
 		close_command_redirs(node);

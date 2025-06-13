@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:30:31 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:51:56 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:27:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ static void	append_pointers_values(
 	}
 }
 
-static void	modify_pointers(
-	t_tokn **list, t_tokn **p, t_tokn **n, t_tokn **cur)
+static void	modify_pointers(t_tokn **list, t_tokn **p, t_tokn **n)
 {
 	if (!*p)
 		*list = *n;
@@ -67,7 +66,7 @@ t_tokn	*create_token_sub_list(t_tokn **list, int ttype)
 		next = current->next;
 		if (is_state_active(current->type, ttype))
 		{
-			modify_pointers(list, &prev, &next, &current);
+			modify_pointers(list, &prev, &next);
 			append_token_list(&subhead, &subtail, current);
 			current->next = NULL;
 			current = prev;

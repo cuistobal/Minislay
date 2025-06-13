@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:39:12 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:17:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:20:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int	handle_logical_operators(t_shell **minishell, t_tree *ast)
 int	traverse_ast(t_shell **minishell, t_tree *ast)
 {
 	int	ret;
-	int	original_stds[2];
 
 	if (!ast)
 		return (SUCCESS);

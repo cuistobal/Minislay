@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:15:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:12:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static char	*handle_value(char *value)
 //
 static bool	join_env(t_env *current, char **joined)
 {
-	char	*c;
 	char	*temp;
 	char	*merged;
 	char	*keydup;

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:11:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:23:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ int	handle_eof(t_shell *minishell, struct termios *old_term)
 ** - Frees user input memory
 ** - Updates shell exit code if needed
 */
-void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
-		int retcode)
+void	wait_processes_and_clean(char *user_input)
 {
 	while (wait(NULL) > 0)
 		continue ;
@@ -65,14 +64,12 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 bool	process_input(t_shell **minishell, char *user_input, \
 		struct termios *term, int *retcode)
 {
-	bool	exit;
-
 	add_history(user_input);
 	if (input_is_space(user_input))
 		return (false);
 	*retcode = get_minishelled(minishell, user_input);
 	handle_terminal_settings(term);
-	wait_processes_and_clean(minishell, user_input, *retcode);
+	wait_processes_and_clean(user_input);
 	if (is_state_active(*retcode, EXIT_MASK))
 		return (unset_state(retcode, EXIT_MASK), true);
 	return (false);

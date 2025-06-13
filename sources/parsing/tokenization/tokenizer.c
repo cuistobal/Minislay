@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:22:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:20:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static char	*handle_words(const char *input, int *pos, int *type)
 {
 	int		start;
 	char	quote;
-	char	*word;	
 	bool	dollar;
 
 	quote = INIT;

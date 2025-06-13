@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:11:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:11:51 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static bool	handle_command(t_shell *minishell, char **copy, int index)
 //Utility to create the char **tab required for execution.
 char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 {
-	int		count;
 	int		index;
 	char	*copy;
 	char	**commands;

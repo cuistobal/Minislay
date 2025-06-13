@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 11:28:19 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:25:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	free_env_list(t_env *list)
 void	free_minishell(t_shell *minishell)
 {
 	int		index;
-	t_env	*current;
 
 	index = 0;
 	if (!minishell)

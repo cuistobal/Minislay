@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:06:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:30:50 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:12:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	expand_no_quotes_helper(t_shell *m, t_tokn **l, int *i, char **r)
 	*r = get_merged(r, &temp, &value);
 	if (!*r)
 		return (false);
-	if (*i > strlen((*l)->value))
+	if (*i > (int)strlen((*l)->value))
 	{
 		value = strdup((*l)->value + (strlen((*l)->value) - 1));
 		if (!value)

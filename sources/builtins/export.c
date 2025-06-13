@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:28:52 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:24:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	process_export_arg(t_shell **minishell, char *arg)
 		free(value);
 		return (BUILTINS);
 	}
-	node = get_env_node(*minishell, key, value);
+	node = get_env_node(*minishell, key);
 	if (!node)
 		export_new_variable(minishell, arg);
 	else

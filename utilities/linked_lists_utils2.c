@@ -6,13 +6,13 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:53:56 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:24:14 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-t_env	*get_env_node(t_shell *minishell, char *key, char *value)
+t_env	*get_env_node(t_shell *minishell, char *key)
 {
 	t_env	*environ;
 

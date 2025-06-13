@@ -6,16 +6,18 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 08:24:30 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:27:23 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+/*
 static const char	*g_keys[DKCT] = {
 	DSTR, DARO, DHAS, DEXT, DHYP,
 	DPID, DCID, DNME, DLST, DIFS
 };
+*/
 
 void	append_exit_code(t_shell *minishell, int code)
 {

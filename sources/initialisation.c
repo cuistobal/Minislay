@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:40:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 12:20:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ t_env	*build_environement(char **envp)
 bool	build_env(t_shell **minishell, char **envp)
 {
 	int		index;
-	t_env	*head;
 
 	index = 0;
 	if (!*minishell)
