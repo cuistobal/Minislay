@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 15:46:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:18:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 	{
 		if (count < 0)
 			return (false);
-			//	error_message(SYNTAX), error_message(UNMATCHED_PAR));
 		count--;
 		if (count < 0)
 			*mask = INIT;

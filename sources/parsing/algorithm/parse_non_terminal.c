@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 16:03:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:17:04 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 			consume_token(current, parser);
 			if (*current)
 				return (parse_command(current, parser));
-			return (error_message(SYNTAX), error_message(UNEXPECTED));
 		}
+		return (parsing_error((*current)->value));
 	}
 	return (!*current);
 }
@@ -50,8 +50,8 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 	if (is_state_active((*current)->type, OPAR))
 	{
 		if ((*current)->next && !is_state_active((*current)->next->type, CPAR))
-			return (error_message(BASH), error_message(UNEXPECTED), \
-					error_message((*current)->value), error_message("\n"));
+	//		return (parsing_error((*current)->value));
+			return (false);
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
 		if (parse_command_list(current, parser))

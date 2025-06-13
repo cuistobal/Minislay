@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:24:31 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:23:10 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	reset_array(char **array, int start, int end);
 
 //messages.c
 bool	error_message(char *message);
+bool	parsing_error(char *message);
+bool	parenthesis_error(void);
 
 //tests
 void	free_tree(t_tree *ast);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:08:35 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 15:51:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:23:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	get_minishelled(t_shell **minishell, char *input)
 		return (printf(TOKENIZATION), free_tokens(tokens), PARSING_ERROR);
 	if (!get_stacked(NULL, NULL, 0))
 		return (free_tokens(tokens), append_exit_code(*minishell, \
-					GENERAL_ERROR), GENERAL_ERROR);
+					GENERAL_ERROR), parenthesis_error(), GENERAL_ERROR);
 	parser = define_parser(&ast, tokens);
 	if (!parser || !parse_script(&parser))
 		return (free_tokens(tokens), free_tree(ast), free(parser), \
