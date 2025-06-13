@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 15:39:26 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 16:03:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 				return (parse_command(current, parser));
 			return (error_message(SYNTAX), error_message(UNEXPECTED));
 		}
-		return (true);
 	}
 	return (!*current);
 }
