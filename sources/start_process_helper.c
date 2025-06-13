@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 08:45:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:11:31 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ bool	process_input(t_shell **minishell, char *user_input, \
 	bool	exit;
 
 	add_history(user_input);
+	if (input_is_space(user_input))
+		return (false);
 	*retcode = get_minishelled(minishell, user_input);
 	handle_terminal_settings(term);
 	wait_processes_and_clean(minishell, user_input, *retcode);

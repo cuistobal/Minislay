@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 08:24:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:11:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,7 @@ void	sort_token_list(t_tokn **list);
 
 //free
 void	free_array(char **array, int count);
+
+bool	input_is_space(char *input);
 
 #endif
