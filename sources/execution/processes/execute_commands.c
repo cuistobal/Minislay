@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:50:06 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:58:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ static int	execute_commands_helper(t_shell **m, int *ret, int count)
 	if (!(*m)->pids || !(*m)->pipefd)
 		return (free((*m)->pids), free((*m)->pipefd), *ret = GENERAL_ERROR, \
 				GENERAL_ERROR);
-	return (SUCCESS);
+	*ret = -1;
+	return (*ret = -1, SUCCESS);
 }
 
 //
@@ -103,7 +104,6 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 	int		ret;
 	int		index;
 
-	ret = -1;
 	index = 0;
 	if (execute_commands_helper(m, &ret, count) == ret)
 		return (ret);
@@ -111,14 +111,13 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 	{
 		if (node->next && pipe((*m)->pipefd[index]) < 0)
 			return (free((*m)->pids), close_pipes((*m)->pipefd, index), \
-					free((*m)->pipefd), COMMAND_NOT_FOUND);	
-		if (node->command && is_builtin(*node->command))
-		{
-			if (node->next || index != 0)
-				(*m)->pids[index] = execute_builtin(node, (*m)->pipefd, index, m);
-			else
-				ret = execute_simple_builtin(node, (*m)->pipefd, index, m);
-		}
+					free((*m)->pipefd), COMMAND_NOT_FOUND);
+		if (node->command && is_builtin(*node->command) && (node->next || \
+					index != 0))
+			(*m)->pids[index] = execute_builtin(node, (*m)->pipefd, \
+						index, m);
+		else if (node->command && is_builtin(*node->command))
+			ret = execute_simple_builtin(node, (*m)->pipefd, index, m);
 		else
 			(*m)->pids[index] = execute_binay(m, node, (*m)->pipefd, index);
 		close_command_redirs(node);

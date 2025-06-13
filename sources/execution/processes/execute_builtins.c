@@ -6,14 +6,14 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:33:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:58:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-int execute_simple_builtin(t_exec *current, int pipefd[][2], \
+int	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		int index, t_shell **minishell)
 {
 	int		fd;
