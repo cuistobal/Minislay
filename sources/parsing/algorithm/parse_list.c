@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 17:12:35 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:22:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	parse_command_list(t_tokn **current, t_pars *parser)
 	return (!*current);
 }
 
-//This is the entry of our parsing module. It identifies the first non 
+//This is the entry of our parsing module. It identifies the first non
 //parethesed significant operator and builds the tree's root out of it
 bool	parse_script(t_pars **parser)
 {
