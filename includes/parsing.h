@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:17:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:26:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,8 @@ void	insert_token(t_tokn **head, t_tokn **current, t_tokn **new);
 bool	get_stacked(t_tokn **head, t_tokn *current, int *mask);
 bool	create_new_token(t_tokn **head, t_tokn **current, char *token, \
 		int type);
+
+//valid_token_list.c
+bool	valid_token_list(t_tokn *list);
 
 #endif

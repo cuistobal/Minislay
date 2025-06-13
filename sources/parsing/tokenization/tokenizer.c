@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 15:34:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 10:22:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,5 @@ bool	tokenize(t_tokn **head, const char *input, int len)
 		if (!create_new_token(head, &current, token, type))
 			return (free(token), token = NULL, false);
 	}
-	return (true);
+	return (valid_token_list(*head));
 }
