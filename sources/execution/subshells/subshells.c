@@ -6,23 +6,25 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:14:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:31:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static bool	append_prompt(char **prompt, t_tokn *current)
+static bool	append_prompt(char **prompt, t_tokn **current)
 {
 	char	*joined;
 
 	joined = NULL;
 	if (current)
 	{
-		joined = ft_strjoin(*prompt, current->value);
+		joined = ft_strjoin(*prompt, (*current)->value);
 		if (joined)
 		{
+			free((*current)->value);
+			(*current)->value = NULL;
 			free(*prompt);
 			*prompt = joined;
 			joined = ft_strjoin(*prompt, " ");
@@ -34,12 +36,12 @@ static bool	append_prompt(char **prompt, t_tokn *current)
 			}
 		}
 	}
-	return (false);
+	return (free(joined), free(*prompt), *prompt = NULL, false);
 }
 
 //We use this function to turn the subshell part of the list into a string.
 //Hence, we can eprform recursive call to minishell.
-static bool	prompt(char **prompt, t_tree *branch)
+static bool	build_prompt(char **prompt, t_tree *branch)
 {
 	bool	closing;
 	t_tokn	*current;
@@ -50,19 +52,30 @@ static bool	prompt(char **prompt, t_tree *branch)
 	current = branch->tokens;
 	while (current)
 	{
+		if (current->value)
+		{
+			free(current->value);
+			current->value = NULL;
+		}
+//		t_tokn *prev = current;
 		current = current->next;
 		if (!current)
 			break ;
 		if (current->type != CPAR)
 		{
-			if (!append_prompt(prompt, current))
+			if (!append_prompt(prompt, &current))
 				return (false);
 		}
 		else if (!closing)
 			closing = true;
-		else if (!append_prompt(prompt, current))
+		else if (!append_prompt(prompt, &current))
 			return (false);
+//		free(prev);
 	}
+	if (branch->left && !build_prompt(prompt, branch->left))
+		return (false);
+	if (branch->right && !build_prompt(prompt, branch->left))
+		return (false);
 	return (true);
 }
 
@@ -72,6 +85,7 @@ static void	subshell_cleanup(t_tree **save)
 		return ;
 	if ((*save)->tokens)
 		free_tokens_adress(&(*save)->tokens);
+	(*save)->tokens = NULL;
 	subshell_cleanup(&(*save)->left);
 	(*save)->left = NULL;
 	subshell_cleanup(&(*save)->right);
@@ -79,6 +93,7 @@ static void	subshell_cleanup(t_tree **save)
 	free(*save);
 	*save = NULL;
 }
+
 
 //
 int	handle_subshell(t_shell *minishell, t_tree *ast)
@@ -91,8 +106,9 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 
 	save = minishell->ast;
 	nodes = minishell->execution;
+	free_execution_node(nodes);
 	subshell_command = NULL;
-	if (!prompt(&subshell_command, ast))
+	if (!build_prompt(&subshell_command, ast))
 		return (GENERAL_ERROR);
 	pid = fork();
 	if (pid < 0)
@@ -102,8 +118,8 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		ret = get_minishelled(&minishell, subshell_command);
-		free(subshell_command);
 		subshell_cleanup(&save);
+		free(subshell_command);
 		free_minishell(minishell);
 		exit(ret);
 	}

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 13:17:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 13:30:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,14 @@ bool	build_ast(t_pars **parser)
 }
 */
 
+static bool	build_ast_helper(t_pars **parser, t_tokn *save, t_tree *branch)
+{
+	if (parse_script(parser))
+		return (reset_parser(*parser, save, TTHEAD, &branch->right), \
+				parse_script(parser));
+	return (false);
+}
+
 bool	build_ast(t_pars **parser)
 {
 	t_tokn	*save;
@@ -71,21 +79,16 @@ bool	build_ast(t_pars **parser)
 		branch = *((*parser)->ast);
 		delete_links(*parser);
 		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], PIPE, LORR))
+		if ((*parser)->tab[TTCURR] && valid_lexeme((*parser)->tab[TTCURR], \
+					PIPE, LORR))
 		{
 			branch->tokens = (*parser)->tab[TTCURR];
 			reset_parser(*parser, (*parser)->tab[TTHEAD], \
 					TTHEAD, &branch->left);
-			if (parse_script(parser))
-				return (reset_parser(*parser, save, TTHEAD, &branch->right), \
-						parse_script(parser));
-			return (false);
+			return (build_ast_helper(parser, save, branch));
 		}
 		else if (!(*parser)->tab[TTNEXT])
-		{
-			branch->tokens = (*parser)->tab[TTHEAD];
-			return (true);
-		}
+			return (branch->tokens = (*parser)->tab[TTHEAD], true);
 		return (false);
 	}
 	return (branch);

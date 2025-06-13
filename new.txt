@@ -1,0 +1,221 @@
+chrleroy@f4r11s12 ~/D/r/G/Minislay (fix/exit_code)> make re && valgrind --leak-check=full --show-leak-kinds=all --track-fds=all --trace-children=yes --suppressions=toolbox_and_notes/readline.supp ./minislay
+==1389778== Memcheck, a memory error detector
+==1389778== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1389778== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1389778== Command: ./minislay
+==1389778== 
+minislay > ((ls | wc) && echo $?) && echo $?
+==1389881== Memcheck, a memory error detector
+==1389881== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1389881== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1389881== Command: /usr/bin/ls
+==1389881== 
+==1389882== Memcheck, a memory error detector
+==1389882== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1389882== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==1389882== Command: /usr/bin/wc
+==1389882== 
+==1389881== 
+==1389881== FILE DESCRIPTORS: 1 open (1 std) at exit.
+==1389881== Open file descriptor 0: /dev/pts/2
+==1389881==    <inherited from parent>
+==1389881== 
+==1389881== 
+==1389881== HEAP SUMMARY:
+==1389881==     in use at exit: 20,662 bytes in 17 blocks
+==1389881==   total heap usage: 54 allocs, 37 frees, 63,289 bytes allocated
+==1389881== 
+==1389881== LEAK SUMMARY:
+==1389881==    definitely lost: 0 bytes in 0 blocks
+==1389881==    indirectly lost: 0 bytes in 0 blocks
+==1389881==      possibly lost: 0 bytes in 0 blocks
+==1389881==    still reachable: 0 bytes in 0 blocks
+==1389881==         suppressed: 20,662 bytes in 17 blocks
+==1389881== 
+==1389881== For lists of detected and suppressed errors, rerun with: -s
+==1389881== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+     12      12     134
+==1389882== 
+==1389882== FILE DESCRIPTORS: 0 open (0 std) at exit.
+==1389882== 
+==1389882== HEAP SUMMARY:
+==1389882==     in use at exit: 0 bytes in 0 blocks
+==1389882==   total heap usage: 59 allocs, 59 frees, 16,064 bytes allocated
+==1389882== 
+==1389882== All heap blocks were freed -- no leaks are possible
+==1389882== 
+==1389882== For lists of detected and suppressed errors, rerun with: -s
+==1389882== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1389880== 
+==1389880== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==1389880== Open file descriptor 2: /dev/pts/2
+==1389880==    <inherited from parent>
+==1389880== 
+==1389880== Open file descriptor 1: /dev/pts/2
+==1389880==    <inherited from parent>
+==1389880== 
+==1389880== Open file descriptor 0: /dev/pts/2
+==1389880==    <inherited from parent>
+==1389880== 
+==1389880== 
+==1389880== HEAP SUMMARY:
+==1389880==     in use at exit: 208,704 bytes in 254 blocks
+==1389880==   total heap usage: 1,215 allocs, 961 frees, 247,735 bytes allocated
+==1389880== 
+==1389880== 2 bytes in 1 blocks are still reachable in loss record 1 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x49705CE: strndup (strndup.c:43)
+==1389880==    by 0x4090DB: handle_single_identifier (handle_special_chars.c:71)
+==1389880==    by 0x408E14: handle_special_chars (handle_special_chars.c:100)
+==1389880==    by 0x40964A: determinism (tokenizer.c:106)
+==1389880==    by 0x409516: tokenize (tokenizer.c:133)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 3 bytes in 1 blocks are still reachable in loss record 2 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x49705CE: strndup (strndup.c:43)
+==1389880==    by 0x408ECE: handle_logical_operators (handle_special_chars.c:24)
+==1389880==    by 0x408DD4: handle_special_chars (handle_special_chars.c:95)
+==1389880==    by 0x40964A: determinism (tokenizer.c:106)
+==1389880==    by 0x409516: tokenize (tokenizer.c:133)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 4 bytes in 2 blocks are still reachable in loss record 3 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x49705CE: strndup (strndup.c:43)
+==1389880==    by 0x409129: handle_single_identifier (handle_special_chars.c:77)
+==1389880==    by 0x408E14: handle_special_chars (handle_special_chars.c:100)
+==1389880==    by 0x40964A: determinism (tokenizer.c:106)
+==1389880==    by 0x409516: tokenize (tokenizer.c:133)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 4 bytes in 2 blocks are still reachable in loss record 4 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x49705CE: strndup (strndup.c:43)
+==1389880==    by 0x409177: handle_single_identifier (handle_special_chars.c:83)
+==1389880==    by 0x408E14: handle_special_chars (handle_special_chars.c:100)
+==1389880==    by 0x40964A: determinism (tokenizer.c:106)
+==1389880==    by 0x409516: tokenize (tokenizer.c:133)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 22 bytes in 6 blocks are still reachable in loss record 16 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x49705CE: strndup (strndup.c:43)
+==1389880==    by 0x4097C8: handle_words (tokenizer.c:86)
+==1389880==    by 0x4095F4: determinism (tokenizer.c:102)
+==1389880==    by 0x409516: tokenize (tokenizer.c:133)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 24 bytes in 1 blocks are still reachable in loss record 19 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x408B75: create_tree_node (build_tree.c:20)
+==1389880==    by 0x408C01: build_ast (build_tree.c:76)
+==1389880==    by 0x4088AC: parse_script (parse_list.c:64)
+==1389880==    by 0x40A228: get_minishelled (minishell.c:35)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 24 bytes in 1 blocks are still reachable in loss record 20 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x408B75: create_tree_node (build_tree.c:20)
+==1389880==    by 0x408C01: build_ast (build_tree.c:76)
+==1389880==    by 0x4088AC: parse_script (parse_list.c:64)
+==1389880==    by 0x408D5C: build_ast_helper (build_tree.c:63)
+==1389880==    by 0x408CD1: build_ast (build_tree.c:88)
+==1389880==    by 0x4088AC: parse_script (parse_list.c:64)
+==1389880==    by 0x40A228: get_minishelled (minishell.c:35)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 24 bytes in 1 blocks are still reachable in loss record 21 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x408B75: create_tree_node (build_tree.c:20)
+==1389880==    by 0x408C01: build_ast (build_tree.c:76)
+==1389880==    by 0x4088AC: parse_script (parse_list.c:64)
+==1389880==    by 0x408D8C: build_ast_helper (build_tree.c:65)
+==1389880==    by 0x408CD1: build_ast (build_tree.c:88)
+==1389880==    by 0x4088AC: parse_script (parse_list.c:64)
+==1389880==    by 0x40A228: get_minishelled (minishell.c:35)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== 24 bytes in 1 blocks are still reachable in loss record 22 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x40A5E9: ft_strjoin (ft_strjoin.c:59)
+==1389880==    by 0x407FD2: append_prompt (subshells.c:28)
+==1389880==    by 0x407DE3: build_prompt (subshells.c:58)
+==1389880==    by 0x407CA5: handle_subshell (subshells.c:101)
+==1389880==    by 0x408216: handle_logical_operators (traverse_ast.c:60)
+==1389880==    by 0x40807A: traverse_ast (traverse_ast.c:73)
+==1389880==    by 0x408119: handle_logical_operators (traverse_ast.c:45)
+==1389880==    by 0x40807A: traverse_ast (traverse_ast.c:73)
+==1389880==    by 0x40A27C: get_minishelled (minishell.c:40)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880== 
+==1389880== 288 bytes in 12 blocks are still reachable in loss record 36 of 77
+==1389880==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1389880==    by 0x4091E8: create_token_node (create_tokens.c:28)
+==1389880==    by 0x4093D2: create_new_token (create_tokens.c:86)
+==1389880==    by 0x40952E: tokenize (tokenizer.c:134)
+==1389880==    by 0x40A18E: get_minishelled (minishell.c:29)
+==1389880==    by 0x40A09C: process_input (start_process_helper.c:70)
+==1389880==    by 0x409BB7: start_process (start_process.c:49)
+==1389880==    by 0x40A36B: main (minishell.c:65)
+==1389880== 
+==1389880== LEAK SUMMARY:
+==1389880==    definitely lost: 0 bytes in 0 blocks
+==1389880==    indirectly lost: 0 bytes in 0 blocks
+==1389880==      possibly lost: 0 bytes in 0 blocks
+==1389880==    still reachable: 419 bytes in 28 blocks
+==1389880==         suppressed: 208,285 bytes in 226 blocks
+==1389880== 
+==1389880== For lists of detected and suppressed errors, rerun with: -s
+==1389880== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+0
+==1389879== 
+==1389879== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==1389879== Open file descriptor 2: /dev/pts/2
+==1389879==    <inherited from parent>
+==1389879== 
+==1389879== Open file descriptor 1: /dev/pts/2
+==1389879==    <inherited from parent>
+==1389879== 
+==1389879== Open file descriptor 0: /dev/pts/2
+==1389879==    <inherited from parent>
+==1389879== 
+==1389879== 
+==1389879== HEAP SUMMARY:
+==1389879==     in use at exit: 208,285 bytes in 226 blocks
+==1389879==   total heap usage: 959 allocs, 733 frees, 244,441 bytes allocated
+==1389879== 
+==1389879== LEAK SUMMARY:
+==1389879==    definitely lost: 0 bytes in 0 blocks
+==1389879==    indirectly lost: 0 bytes in 0 blocks
+==1389879==      possibly lost: 0 bytes in 0 blocks
+==1389879==    still reachable: 0 bytes in 0 blocks
+==1389879==         suppressed: 208,285 bytes in 226 blocks
+==1389879== 
+==1389879== For lists of detected and suppressed errors, rerun with: -s
+==1389879== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+0
+minislay > 
+
