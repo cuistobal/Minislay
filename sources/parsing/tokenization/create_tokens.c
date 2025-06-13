@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 13:44:47 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 09:33:36 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:46:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ bool	get_stacked(t_tokn **head, t_tokn *current, int *mask)
 	{
 		if (count < 0)
 			return (false);
+			//	error_message(SYNTAX), error_message(UNMATCHED_PAR));
 		count--;
 		if (count < 0)
 			*mask = INIT;
@@ -90,10 +91,9 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, int type)
 		{
 			if (!(new_node->type & mask))
 				set_state(&(new_node)->type, mask);
-			insert_token(head, current, &new_node);
-			return (true);
-		}
-		printf("Syntax Error, invalid parenthense.\n");
+			return (insert_token(head, current, &new_node), true);
+		}	
+		return (error_message(SYNTAX), error_message(UNMATCHED_PAR));
 	}
 	return (false);
 }

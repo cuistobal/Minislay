@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:20:40 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:48:54 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define BASH "Bash: "
 # define TOKENIZATION "Tokenization error.\n"
 # define PARSING "Failed to parse.\n"
-# define SYNTAX "Syntax error"
+# define SYNTAX "Syntax error: "
 # define UNEXPECTED "unexpected token :"
 # define PIPE_FAILED "Pipe failed.\n"
 # define MEMALLOC "Malloc failed.\n"
@@ -29,7 +29,7 @@
 # define OPEN_ERROR "Failed to open: "
 # define PERMISSION_ERROR "Invalid permissions: "
 # define AMBIGUOUS_REDIRECTION ": ambiguous redirection\n"
-
+# define UNMATCHED_PAR "unmatched ')'\n"
 # define EXPORT1 "minislay: export: `"
 # define EXPORT2 "': not a valid identifier\n"
 

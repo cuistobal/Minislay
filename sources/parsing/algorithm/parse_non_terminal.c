@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 14:56:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:39:26 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 	if (is_state_active((*current)->type, OPAR))
 	{
 		if ((*current)->next && !is_state_active((*current)->next->type, CPAR))
-			return (false);
+			return (error_message(BASH), error_message(UNEXPECTED), \
+					error_message((*current)->value), error_message("\n"));
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
 		if (parse_command_list(current, parser))
