@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:18:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:13:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		close(fd);
 	}
 	return (-1);
-	//return (ret);
 }
 
 //
