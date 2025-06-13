@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:19:27 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:51:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	wait_module_helper(t_shell *minishell, int *last_code, int status)
 }
 
 //
-int wait_module(t_shell *minishell, pid_t *pids, int count)
+int wait_module(t_shell *minishell, pid_t *pids, int count, int ret)
 {
     bool    error;
     int     index;
@@ -47,6 +47,8 @@ int wait_module(t_shell *minishell, pid_t *pids, int count)
 
     index = 0;
 	last_code = 0;
+	if (ret > -1)
+		return (free(minishell->pids), minishell->pids = NULL, ret);
     while (index < count)
     {
 		if (waitpid(pids[index], &status, 0) == -1)
@@ -54,5 +56,5 @@ int wait_module(t_shell *minishell, pid_t *pids, int count)
 		wait_module_helper(minishell, &last_code, status);
         index++;
     }
-    return (last_code);
+	return (free(minishell->pids), minishell->pids = NULL, last_code);
 }

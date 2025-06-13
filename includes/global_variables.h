@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 08:45:37 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:22:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,6 @@
 # define WRITE_END 1
 # define EXPORT_PROMPT "export "
 
-# define EXIT_MASK 0b1000000000000
+# define EXIT_MASK 0b1000000000
 
 #endif
