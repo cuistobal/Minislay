@@ -131,4 +131,6 @@ bool	check_validity_and_append_fd(t_tokn *redirections, int *last_in, \
 bool	quote_removal(t_tokn *list);
 void	quote_removal_helper(char *token, char *removed);
 
+bool	parse_command_line(t_tokn **current, t_pars *parser);
+
 #endif

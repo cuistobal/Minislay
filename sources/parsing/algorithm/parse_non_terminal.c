@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 16:17:04 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:12:50 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ bool	parse_simple_command(t_tokn **current, t_pars *parser)
 {
 	if (*current)
 	{
+		if (valid_lexeme(*current, OPAR, LORR | OPAR))
+			return (false);
 		assignations(current, parser);
 		return (argument_or_redirection(current, parser));
 	}
 	return (!*current);
 }
+
 
 // Pipeline → Command ('|' Command)*
 bool	parse_pipeline(t_tokn **current, t_pars *parser)
@@ -36,21 +39,20 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 			if (*current)
 				return (parse_command(current, parser));
 		}
-		return (parsing_error((*current)->value));
+		return (true);
+	//	return (parsing_error((*current)->value));
 	}
 	return (!*current);
 }
+
 
 //We can return false -> It's the last sub funciton that aprse command goes
 //Actually (?)
 bool	parse_compound_command(t_tokn **current, t_pars *parser)
 {
-
-	//if ((*current)->type == OPAR)
 	if (is_state_active((*current)->type, OPAR))
 	{
-		if ((*current)->next && !is_state_active((*current)->next->type, CPAR))
-	//		return (parsing_error((*current)->value));
+		if ((*current)->next && is_state_active((*current)->next->type, CPAR))
 			return (false);
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
@@ -59,8 +61,10 @@ bool	parse_compound_command(t_tokn **current, t_pars *parser)
 			if ((*current) && (*current)->type & CPAR)
 				return (consume_token(current, parser));
 		}
+		if (!is_state_active(parser->state, SUBSHEL))
+			return (parsing_error((*current)->value));
 	}
-	return (false);
+	return (true);
 }
 
 //

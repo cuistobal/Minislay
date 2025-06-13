@@ -26,38 +26,7 @@ t_tree	*create_tree_node(t_tokn *tokens)
 	return (new_node);
 }
 
-/*
-//This function builds the AST
-bool	build_ast(t_pars **parser)
-{
-	t_tokn	*save;
-	t_tree	*branch;
-
-	branch = NULL;
-	if (!*((*parser)->ast))
-		*((*parser)->ast) = create_tree_node(NULL);
-	if (*((*parser)->ast))
-	{
-		branch = *((*parser)->ast);
-		delete_links(*parser);
-		save = (*parser)->tab[TTNEXT];
-		if ((*parser)->tab[TTCURR] && \
-				is_amp_pipe(*(*parser)->tab[TTCURR]->value))
-		{
-			branch->tokens = (*parser)->tab[TTCURR];
-			reset_parser(*parser, (*parser)->tab[TTHEAD], \
-					TTHEAD, &branch->left);
-			if (parse_script(parser))
-				return (reset_parser(*parser, save, TTHEAD, &branch->right), \
-						parse_script(parser));
-			return (false);
-		}
-		branch->tokens = (*parser)->tab[TTHEAD];
-	}
-	return (branch);
-}
-*/
-
+//
 static bool	build_ast_helper(t_pars **parser, t_tokn *save, t_tree *branch)
 {
 	if (parse_script(parser))
@@ -66,6 +35,7 @@ static bool	build_ast_helper(t_pars **parser, t_tokn *save, t_tree *branch)
 	return (false);
 }
 
+//
 bool	build_ast(t_pars **parser)
 {
 	t_tokn	*save;
