@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 09:37:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:59:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	close_unused_pipes(t_exec *node, int pipefd[][2], int index)
 	{
 		close(pipefd[index - 1][READ_END]);
 		close(pipefd[index - 1][WRITE_END]);
-	}
+	}	
 	if (node->next)
 	{
 		close(pipefd[index][READ_END]);

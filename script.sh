@@ -7,12 +7,17 @@ fi
 
 TEST_FILE="$1"
 LOG_FILE="valgrind_results.log"
+COMMAND_FILE="command_results.txt"
 DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
-# Clean previous log
+# Clean previous logs
 echo "=== Valgrind Test Results - $DATE ===" > "$LOG_FILE"
+echo "=== Commands with Memory Leaks - $DATE ===" > "$COMMAND_FILE"
 echo "Test file: $TEST_FILE" >> "$LOG_FILE"
 echo "----------------------------------------" >> "$LOG_FILE"
+
+# Counter for command number
+command_number=0
 
 # Rebuild project
 make re >> /dev/null 2>&1
@@ -20,37 +25,37 @@ make re >> /dev/null 2>&1
 # Process each line
 while IFS= read -r cmd || [ -n "$cmd" ]; do
     [ -z "$cmd" ] && continue
+    ((command_number++))
 
+    echo "[$command_number] Testing: $cmd" >> "$COMMAND_FILE"
     echo "Testing command: $cmd" >> "$LOG_FILE"
     echo "----------------------------------------" >> "$LOG_FILE"
 
-    # Capture initial FD state
-    echo "Initial FDs:" >> "$LOG_FILE"
-    echo "$cmd" | ./minislay & 
-    PID=$!
-    sleep 0.1
-    lsof -p $PID 2>/dev/null | grep -v "cwd\|txt\|mem\|rtd" >> "$LOG_FILE"
-
-    # Kill the process
-    kill $PID 2>/dev/null
-
-    # Run valgrind tests
+    # Run valgrind and store results
     echo "$cmd" | valgrind --leak-check=full \
                           --show-leak-kinds=all \
                           --track-fds=all \
-						  --trace-children=yes \
+                          --trace-children=yes \
                           --suppressions=toolbox_and_notes/readline.supp \
                           ./minislay 2>&1 | \
-    grep -E "^==.*==.*(definitely|indirectly|possibly|still reachable|ERROR SUMMARY|Invalid|uninitialised|Process terminating|FILE DESCRIPTORS|Open file descriptor|Segmentation fault      (core dumped))" >> "$LOG_FILE"
+    grep -E "==.*==.*((definitely|indirectly|possibly) lost: [1-9][0-9]* bytes)" >> "$LOG_FILE"
 
     echo "----------------------------------------" >> "$LOG_FILE"
     echo "" >> "$LOG_FILE"
 done < "$TEST_FILE"
 
-echo "Tests completed. Results saved in $LOG_FILE"
+echo "=== Commands with Memory Leaks ==="
 
-# Enhanced grep for both memory leaks and FD leaks
-echo "=== Memory Leaks ===" 
-grep -n "lost: [^0]" "$LOG_FILE"
-echo "=== FD Leaks ===" 
-grep -n "Open file descriptor [^012]" "$LOG_FILE"
+# Extract line numbers with leaks
+leak_lines=$(grep -n "lost:" "$LOG_FILE" | cut -d: -f1)
+
+# For each leak line, calculate the corresponding command and display it
+for line in $leak_lines; do
+    # Find the last "Testing command:" line before the leak
+    cmd_line=$(head -n "$line" "$LOG_FILE" | grep -B1 "Testing command:" | head -n1)
+    if [ ! -z "$cmd_line" ]; then
+        echo "Leak in command: $cmd_line"
+    fi
+done | sort -u
+
+echo "Detailed results saved in $LOG_FILE"
