@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 14:31:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:48:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,7 @@ static bool	append_prompt(char **prompt, t_tokn **current)
 			*prompt = joined;
 			joined = ft_strjoin(*prompt, " ");
 			if (joined)
-			{
-				free(*prompt);
-				*prompt = joined;
-				return (true);
-			}
+				return (free(*prompt), *prompt = joined, true);
 		}
 	}
 	return (free(joined), free(*prompt), *prompt = NULL, false);
@@ -122,6 +118,6 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 		free(subshell_command);
 		free_minishell(minishell);
 		exit(ret);
-	}
+	}		
 	return (free(subshell_command), waitpid(pid, &ret, 0), WEXITSTATUS(ret));
 }

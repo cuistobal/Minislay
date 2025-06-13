@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:54:26 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:27:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:56:34 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ bool	parse_pipeline(t_tokn **current, t_pars *parser)
 //Actually (?)
 bool	parse_compound_command(t_tokn **current, t_pars *parser)
 {
-	if ((*current)->type == OPAR)
+
+	//if ((*current)->type == OPAR)
+	if (is_state_active((*current)->type, OPAR))
 	{
+		if ((*current)->next && !is_state_active((*current)->next->type, CPAR))
+			return (false);
 		set_state(&(parser)->state, SUBSHEL);
 		consume_token(current, parser);
 		if (parse_command_list(current, parser))
