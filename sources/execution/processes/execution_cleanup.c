@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:37:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:15:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 13:20:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	close_command_redirs(t_exec *node)
 		close(node->redirs[OUTFILE]);
 }
 
+/*
 static void	cleanup_tree_in_child(t_tree **tree)
 {
 	if (!*tree)
@@ -43,6 +44,7 @@ static void	cleanup_tree_in_child(t_tree **tree)
 	free_tokens_adress(&(*tree)->tokens);
 	*tree = NULL;
 }
+*/
 
 //
 void	child_cleanup(t_shell **minishell, t_exec *node, int cmd)
@@ -61,7 +63,7 @@ void	child_cleanup(t_shell **minishell, t_exec *node, int cmd)
 	}
 	free((*minishell)->pipefd);
 	free((*minishell)->pids);
-	cleanup_tree_in_child(&(*minishell)->ast);
+	//cleanup_tree_in_child(&(*minishell)->ast);
 	close((*minishell)->original_stds[0]);
 	close((*minishell)->original_stds[1]);
 	free_minishell(*minishell);
