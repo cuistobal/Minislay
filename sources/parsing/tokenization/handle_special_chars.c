@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:56:33 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 19:36:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static char	*handle_logical_operators(const char *input, int *pos, int *type)
 	char	*token;
 
 	token = NULL;
-	if ((input[*pos] == '&' || input[*pos] == '|') && \
-			input[*pos + 1] == input[*pos])
+	if ((input[*pos] == '&' || input[*pos] == '|') && input[*pos + 1] \
+			== input[*pos] && !is_amp_pipe(input[*pos + 2]))
 	{
 		token = strndup(input + *pos, 2);
 		if (input[*pos] == '&')
