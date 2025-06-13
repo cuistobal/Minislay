@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 20:52:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:24:30 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,33 @@ static const char	*g_keys[DKCT] = {
 	DPID, DCID, DNME, DLST, DIFS
 };
 
-void	append_exit_code(t_shell *minishell, int code, bool command)
+void	append_exit_code(t_shell *minishell, int code)
 {
-	int		index;
 	t_env	*node;
 	char	*ecode;
 
-	index = 3;
-	if (command)
-		index = 6;
-	node = find_special_env_variable(minishell, index);
+	node = find_special_env_variable(minishell, EXT_INDEX);
 	if (!node)
 		return ;
-	printf("code before -> %d\n", code);
-	if (is_state_active(code, EXIT_CODE))
-		unset_state(&code, EXIT_CODE);
-	printf("code after -> %d\n", code);
+	if (is_state_active(code, EXIT_MASK))
+		unset_state(&code, EXIT_MASK);
 	ecode = ft_itoa(code);
 	if (!ecode)
 		return ;
-	if (strcmp(node->var[VALUE], ecode) == 0)
+	if (!node->var[VALUE])
+		node->var[VALUE] = ecode;
+	else if (!*node->var[VALUE])
 	{
+		free(node->var[VALUE]);
+		node->var[VALUE] = ecode;
+	}	
+	else if (strcmp(node->var[VALUE], ecode) == 0)
 		free(ecode);
-		return ;
+	else
+	{
+		free(node->var[VALUE]);
+		node->var[VALUE] = ecode;
 	}
-	free(node->var[VALUE]);
-	node->var[VALUE] = ecode;
 }
 
 t_env	*find_special_env_variable(t_shell *minishell, int index)

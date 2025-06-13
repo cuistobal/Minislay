@@ -6,38 +6,36 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 21:00:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:40:28 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
 //
-static int	return_exit_code(pid_t pid)
+int wait_module(t_shell *minishell, pid_t *pids, int count)
 {
-	int	status;
+    bool    error;
+    int     index;
+    int     status;
+	int		last_code;
 
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (GENERAL_ERROR);
-}
-
-//
-int	wait_module(t_shell *minishell, pid_t *pids, int count, int ret)
-{
-	bool	error;
-	int		index;
-	int		status;
-
-	index = 0;
-	while (count < index)
-	{
-		status = return_exit_code(pids[index]);
-		if (status != 0)
-			error = true;
-		append_exit_code(minishell, status, true);
-		count++;
-	}
-	return (status);
+    index = 0;
+	last_code = 0;
+    while (index < count)
+    {
+		waitpid(pids[index], &status, WEXITED);
+		if (WIFEXITED(status))
+		{
+			last_code = WEXITSTATUS(status);
+			append_exit_code(minishell, last_code);
+		}
+		else if (WIFSIGNALED(status))
+		{
+			last_code = 128 + WTERMSIG(status);
+			append_exit_code(minishell, last_code);
+		}
+        index++;
+    }
+    return (last_code);
 }

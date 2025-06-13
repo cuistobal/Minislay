@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 13:05:09 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:24:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	free_token_nodes(t_tokn *tokens);
 bool	find_key_in_command(t_env *command, char **value, char *key);
 bool	find_key_in_local(t_env *local, char **value, char *key);
 bool	find_key(t_shell *minishell, char **value, char *key);
-void	append_exit_code(t_shell *minishell, int code, bool command);
+void	append_exit_code(t_shell *minishell, int code);
 bool	find_key_in_env(t_env *command, char **value, char *key);
 t_env	*sort_env_list(t_env *list);
 void	free_env_list(t_env *list);

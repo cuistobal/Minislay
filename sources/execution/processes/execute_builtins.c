@@ -39,7 +39,8 @@ pid_t	execute_simple_builtin(t_exec *current, int pipefd[][2], \
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
-	return (ret);
+	return (-1);
+	//return (ret);
 }
 
 //

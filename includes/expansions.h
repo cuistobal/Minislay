@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:00:55 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 13:17:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:23:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef enum special_keys
 # define INME "$0="
 # define ILST "$_="
 # define IIFS "$IFS= 	\n"
+
+# define EXT_INDEX 3
 
 # define DNUL ""
 

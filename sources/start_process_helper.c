@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 14:48:17 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:45:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 	while (wait(NULL) > 0)
 		continue ;
 	free(user_input);
-	if (retcode != EXIT_CODE)
-		append_exit_code(*minishell, retcode, false);
 }
 
 /*
@@ -67,13 +65,15 @@ void	wait_processes_and_clean(t_shell **minishell, char *user_input, \
 bool	process_input(t_shell **minishell, char *user_input, \
 		struct termios *term, int *retcode)
 {
-	int	code;
+	bool	exit;
 
 	add_history(user_input);
 	*retcode = get_minishelled(minishell, user_input);
 	handle_terminal_settings(term);
 	wait_processes_and_clean(minishell, user_input, *retcode);
-	return (*retcode == EXIT_CODE);
+	if (is_state_active(*retcode, EXIT_MASK))
+		return (unset_state(retcode, EXIT_MASK), true);
+	return (false);
 }
 
 int	end_process(struct termios *old_term, int retcode)

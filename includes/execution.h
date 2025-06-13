@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 11:28:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 07:42:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		execute_command_in_child(t_shell **minishell, t_exec *node, int index);
 int		create_child_process(t_shell *minishell, t_exec **execution);
 
 //wait_module.c
-int		wait_module(t_shell *minishell, pid_t *pids, int count, int ret);
+int		wait_module(t_shell *minishell, pid_t *pids, int count);
 
 //handle_pipeline.c
 t_exec	*build_command_node(t_shell **minishell, t_tokn *tokens, int *count);

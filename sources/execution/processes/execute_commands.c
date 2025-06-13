@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 20:58:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/13 07:55:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ pid_t	create_and_execute_child(t_shell **minishell, t_exec *node, \
 	pid_t	child;
 
 	child = fork();
-//	(*minishell)->pids[index] = fork();	
 	if (child < 0)
 		return (-1);
 	if (child == 0)
@@ -105,13 +104,14 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 			return (free((*m)->pids), close_pipes((*m)->pipefd, index), \
 					free((*m)->pipefd), COMMAND_NOT_FOUND);
 		if (node->command && is_builtin(*node->command))
-			ret = execute_builtin(node, (*m)->pipefd, index, m);
+			(*m)->pids[index] = execute_builtin(node, (*m)->pipefd, index, m);
 		else
-			ret = execute_binay(m, node, (*m)->pipefd, index);
+			(*m)->pids[index] = execute_binay(m, node, (*m)->pipefd, index);
 		close_command_redirs(node);
 		node = node->next;
 		index++;
 	}
-	return (free((*m)->pids), close_pipes((*m)->pipefd, count), \
-			free((*m)->pipefd), wait_module((*m), (*m)->pids, index, ret));
+	ret = wait_module((*m), (*m)->pids, index);
+	return (close_pipes((*m)->pipefd, count), \
+			free((*m)->pipefd), free((*m)->pids), ret);
 }
