@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_lists_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:43:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 13:30:28 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_tokn	*duplicate_token_list(t_tokn *source)
 		if (!dup)
 			return (free_tokens(dup), NULL);
 		dup->type = source->type;
-		dup->value = strdup(source->value);
+		dup->value = ft_strdup(source->value);
 		dup->next = NULL;
 		append_token_list(&head, &tail, dup);
 		source = source->next;

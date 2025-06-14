@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:32:55 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/14 11:47:32 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +49,11 @@ static bool	try_path(char **command, char *path)
 	try_path = NULL;
 	if (!path)
 		return (false);
-	copy = strdup(path);
+	copy = ft_strdup(path);
 	try_path = copy;
 	while (*try_path)
 	{	
-		if (test_path(command, strtok_r(try_path, ":", &try_path)))
+		if (test_path(command, ft_strtok_r(try_path, ":", &try_path)))
 		{
 			free(copy);
 			return (true);

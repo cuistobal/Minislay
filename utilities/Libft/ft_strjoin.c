@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 09:44:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:30:58 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,21 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	char	*joined;
 
 	if (!s1 && !s2)
-		return (strdup(""));
+		return (ft_strdup(""));
 	if (!s1 || !*s1)
 	{
 		if (s2)
-			return (strdup(s2));
-		return (strdup(""));
+			return (ft_strdup(s2));
+		return (ft_strdup(""));
 	}
 	if (!s2 || !*s2)
-		return (strdup(s1));
-	size = strlen(s1) + strlen(s2);
+		return (ft_strdup(s1));
+	size = ft_strlen(s1) + ft_strlen(s2);
 	joined = (char *)malloc(sizeof(char) * (size + 1));
 	if (!joined)
 		return (NULL);
 	join_s1(s1, joined);
-	join_s2(s2, joined + strlen(s1));
+	join_s2(s2, joined + ft_strlen(s1));
 	joined[size] = '\0';
 	return (joined);
 }

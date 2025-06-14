@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/14 11:50:24 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +20,9 @@
 static char	*get_token_copy(char *source)
 {
 	if (!source)
-		return (strdup(""));
+		return (ft_strdup(""));
 	else
-		return (strdup(source));
+		return (ft_strdup(source));
 }
 
 //

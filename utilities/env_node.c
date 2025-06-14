@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 09:37:06 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/13 12:25:09 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +38,17 @@ static void	split_key_and_value(char *line, char **key, char **value)
 {
 	char	*equal;
 
-	equal = strchr(line, '=');
+	equal = ft_strchr(line, '=');
 	if (equal)
 	{
 		*equal = '\0';
-		*key = strdup(line);
-		*value = strdup(equal + 1);
+		*key = ft_strdup(line);
+		*value = ft_strdup(equal + 1);
 		*equal = '=';
 	}
 	else
 	{
-		*key = strdup(line);
+		*key = ft_strdup(line);
 		*value = NULL;
 	}
 }

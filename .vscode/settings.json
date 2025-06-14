@@ -53,6 +53,8 @@
 		"minislay.h": "c",
 		"standard_headers.h": "c",
 		"signal.h": "c",
-		"ranges": "c"
+		"ranges": "c",
+		"utilities.h": "c",
+		"execution.h": "c"
 	}
 }

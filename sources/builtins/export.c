@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:37:15 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:24:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 */
 static void	update_env_node(t_env *node, char *value)
 {
-	if (value && node->var[VALUE] && strcmp(node->var[VALUE], value) != 0)
+	if (value && node->var[VALUE] && ft_strcmp(node->var[VALUE], value) != 0)
 	{
 		free(node->var[VALUE]);
-		node->var[VALUE] = strdup(value);
+		node->var[VALUE] = ft_strdup(value);
 	}
 	else if (!value && node->var[VALUE])
 	{
@@ -30,7 +30,7 @@ static void	update_env_node(t_env *node, char *value)
 		node->var[VALUE] = NULL;
 	}
 	else if (value && !node->var[VALUE])
-		node->var[VALUE] = strdup(value);
+		node->var[VALUE] = ft_strdup(value);
 }
 
 /*

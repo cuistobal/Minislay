@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:09:36 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/11 17:05:00 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:29:27 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_tokn	*merge_sort(t_tokn *left, t_tokn *right)
 		return (right);
 	if (!right)
 		return (left);
-	if (strcasecmp(left->value, right->value) < 0)
+	if (ft_strcasecmp(left->value, right->value) < 0)
 	{
 		sorted = left;
 		sorted->next = merge_sort(left->next, right);

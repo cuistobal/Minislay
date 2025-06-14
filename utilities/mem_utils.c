@@ -3,37 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   mem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:38:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/01 09:47:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 21:26:31 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-//
-void	*resize_array(void *array, int array_type, int *size)
+void	*resize_array(void *array, int elem_size, int *size)
 {
-	int		len;
 	void	*new;
+	int		old_size;
+	int		new_size;
 
-	len = *size;
+	old_size = *size;
 	if (!array)
-	{	
-		new = realloc(array, array_type * *size);
-		if (!new)
-			return (NULL);
-		memset(new, 0, array_type * len);
-	}
-	else
 	{
-		*size = *size << 1;
-		new = realloc(array, array_type * *size);
+		new = malloc(elem_size * old_size);
 		if (!new)
 			return (NULL);
-		memset(new + (array_type * len), 0, (array_type * len));
+		ft_memset(new, 0, elem_size * old_size);
+		return (new);
 	}
+	*size = old_size << 1;
+	new_size = *size;
+	new = malloc(elem_size * new_size);
+	if (!new)
+		return (NULL);
+	ft_memcpy(new, array, elem_size * old_size);
+	ft_memset((char *)new + (elem_size * old_size), 0, elem_size * old_size);
+	free(array);
 	return (new);
 }
 

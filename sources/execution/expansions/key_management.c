@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_management.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:40:30 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:37:34 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ static char	*extract_key(char *token, int *index, int start)
 		{
 			if (tlen == 0)
 			{
-				if (strchr(SPE_EXP_CHAR, token[*index]))
+				if (ft_strchr(SPE_EXP_CHAR, token[*index]))
 				{
 					tlen++;
 					(*index)++;
 				}
-				return (strndup(token + start, tlen + 1));
+				return (ft_strndup(token + start, tlen + 1));
 			}
 			break ;
 		}
 		tlen++;
 	}
-	return (strndup(token + start, tlen + 1));
+	return (ft_strndup(token + start, tlen + 1));
 }
 
 //
@@ -80,11 +80,11 @@ static char	*retrieve_expansions(char *token, int *index)
 			{
 				if (*index == start)
 					return (extract_key(token, index, start));
-				return (strndup(token + start, *index - start));
+				return (ft_strndup(token + start, *index - start));
 			}
 			(*index)++;
 		}
-		return (strdup(token + start));
+		return (ft_strdup(token + start));
 	}
 	return (NULL);
 }
@@ -96,7 +96,7 @@ static bool	retrieve_keys_value(t_shell *minishell, char *key, char **value)
 	if (key)
 	{
 		if (*key != '$')
-			*value = strdup(key);
+			*value = ft_strdup(key);
 		else
 		{
 			if (!is_standard_key(minishell, value, key))
@@ -104,7 +104,7 @@ static bool	retrieve_keys_value(t_shell *minishell, char *key, char **value)
 				if (!find_key(minishell, value, key + 1))
 					return (false);
 			}
-			*value = strdup(*value);
+			*value = ft_strdup(*value);
 		}
 		return (*value);
 	}
@@ -123,7 +123,7 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		if (key)
 		{
 			if (!retrieve_keys_value(minishell, key, value)) 
-				*value = strdup("");
+				*value = ft_strdup("");
 			free(key);
 			key = NULL;
 			return (true);
@@ -146,7 +146,7 @@ bool	get_expanded(t_shell *minishell, char *token, char **value, int *index)
 		{
 			if (!retrieve_keys_value(minishell, key, value))
 			{
-				*value = strdup("");
+				*value = ft_strdup("");
 				ret = true;
 			}
 			else

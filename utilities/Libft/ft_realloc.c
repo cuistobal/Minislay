@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 21:26:15 by ynyamets         ###   ########.fr       */
+/*   Created: 2025/06/12 17:43:01 by ynyamets          #+#    #+#             */
+/*   Updated: 2025/06/12 20:57:13 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-int	pwd(t_shell *minishell)
+void	**ft_realloc(void **ptr, int old_size, int new_size)
 {
-	char	temp[BUFFER_SIZE];
-	int		len;
+	void	**new_ptr;
+	int		i;
 
-	(void)minishell;
-	ft_memset(temp, 0, BUFFER_SIZE);
-	if (!getcwd(temp, BUFFER_SIZE))
-		return (write(2, "minislay: pwd: error\n", 22), BUILTINS);
-	len = ft_strlen(temp);
-	write(1, temp, len);
-	write(1, "\n", 1);
-	return (SUCCESS);
+	new_ptr = malloc(sizeof(void *) * new_size);
+	if (!new_ptr)
+		return (NULL);
+	i = 0;
+	while (i < old_size)
+	{
+		new_ptr[i] = ptr[i];
+		i++;
+	}
+	while (i < new_size)
+	{
+		new_ptr[i] = NULL;
+		i++;
+	}
+	free(ptr);
+	return (new_ptr);
 }

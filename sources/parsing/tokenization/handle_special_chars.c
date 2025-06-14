@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_special_chars.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:48:04 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 19:36:45 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:15:30 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*handle_logical_operators(const char *input, int *pos, int *type)
 	if ((input[*pos] == '&' || input[*pos] == '|') && input[*pos + 1] \
 			== input[*pos] && !is_amp_pipe(input[*pos + 2]))
 	{
-		token = strndup(input + *pos, 2);
+		token = ft_strndup(input + *pos, 2);
 		if (input[*pos] == '&')
 			*type = LAND;
 		else
@@ -40,7 +40,7 @@ static char	*handle_redirection_tokens(const char *input, int *pos, int *type)
 	if ((input[*pos] == '>' || input[*pos] == '<') && \
 			input[*pos + 1] == input[*pos])
 	{
-		token = strndup(input + *pos, 2);
+		token = ft_strndup(input + *pos, 2);
 		if (input[*pos] == '>')
 			*type = ARED;
 		else
@@ -49,7 +49,7 @@ static char	*handle_redirection_tokens(const char *input, int *pos, int *type)
 	}
 	else if (input[*pos] == '>' || input[*pos] == '<')
 	{
-		token = strndup(input + *pos, 1);
+		token = ft_strndup(input + *pos, 1);
 		if (input[*pos] == '>')
 			*type = ORED;
 		else
@@ -68,19 +68,19 @@ static char	*handle_single_identifier(const char *input, int *pos, int *type)
 	token = NULL;
 	if (input[*pos] == '|')
 	{
-		token = strndup(input + *pos, 1);
+		token = ft_strndup(input + *pos, 1);
 		*type = PIPE;
 		(*pos)++;
 	}
 	else if (input[*pos] == '(')
 	{
-		token = strndup(input + *pos, 1);
+		token = ft_strndup(input + *pos, 1);
 		*type = OPAR;
 		(*pos)++;
 	}
 	else if (input[*pos] == ')')
 	{
-		token = strndup(input + *pos, 1);
+		token = ft_strndup(input + *pos, 1);
 		*type = CPAR;
 		(*pos)++;
 	}

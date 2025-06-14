@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:20:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:22:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:55:16 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "execution.h"
 # include "builtins.h"
 # include "signals.h"
+# include "utilities/libft.h"
 
 //minnishell.c
 int		get_minishelled(t_shell **minishell, char *input);

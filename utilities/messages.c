@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   messages.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 09:47:42 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/13 16:22:29 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +18,7 @@
 
 bool	error_message(char *message)
 {
-	return (write(2, message, strlen(message)), false);
+	return (write(2, message, ft_strlen(message)), false);
 }
 
 bool	parsing_error(char *token)

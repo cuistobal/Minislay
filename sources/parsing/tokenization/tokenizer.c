@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:23:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:15:30 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	set_state(type, WORD);
 	while (input[*pos])
 	{
-		if (strchr(SPECIAL, input[*pos]) && quote == INIT)
+		if (ft_strchr(SPECIAL, input[*pos]) && quote == INIT)
 			break ;
 		expansion_flags(input[*pos], &dollar, type, quote);
 		if (!norminette(input[*pos], type, &quote, !(dollar && *pos != start)))
@@ -88,7 +88,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 		error[1] = 0;
 		return (syntax_error(error), NULL);
 	}
-	return (strndup(input + start, *pos - start));
+	return (ft_strndup(input + start, *pos - start));
 }
 
 /*
@@ -103,7 +103,7 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 		*init = false;
 		prev = INIT;
 	}
-	if (!strchr(SPECIAL, input[*pos]))
+	if (!ft_strchr(SPECIAL, input[*pos]))
 		token = handle_words(input, pos, type);
 	else if (!tokenizer_helper(&prev, input[*pos]))
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 05:11:37 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/11 13:23:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	remove_from_env(t_env **env, const char *key)
 	prev = NULL;
 	while (curr)
 	{
-		if (curr->var[0] && strcmp(curr->var[0], key) == 0)
+		if (curr->var[0] && ft_strcmp(curr->var[0], key) == 0)
 		{
 			if (prev)
 				prev->next = curr->next;

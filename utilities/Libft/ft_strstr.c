@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 21:26:15 by ynyamets         ###   ########.fr       */
+/*   Created: 2025/06/12 17:00:11 by ynyamets          #+#    #+#             */
+/*   Updated: 2025/06/12 17:00:12 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-int	pwd(t_shell *minishell)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	char	temp[BUFFER_SIZE];
-	int		len;
+	int	i;
+	int	j;
 
-	(void)minishell;
-	ft_memset(temp, 0, BUFFER_SIZE);
-	if (!getcwd(temp, BUFFER_SIZE))
-		return (write(2, "minislay: pwd: error\n", 22), BUILTINS);
-	len = ft_strlen(temp);
-	write(1, temp, len);
-	write(1, "\n", 1);
-	return (SUCCESS);
+	if (!haystack || !needle)
+		return (NULL);
+	if (*needle == '\0')
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i])
+	{
+		j = 0;
+		while (needle[j] && haystack[i + j] && haystack[i + j] == needle[j])
+			j++;
+		if (needle[j] == '\0')
+			return ((char *)(haystack + i));
+		i++;
+	}
+	return (NULL);
 }

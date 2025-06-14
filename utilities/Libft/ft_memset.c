@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_strtok_r.c                                      :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 08:20:06 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 16:57:58 by ynyamets         ###   ########.fr       */
+/*   Created: 2025/06/12 21:28:54 by ynyamets          #+#    #+#             */
+/*   Updated: 2025/06/12 21:29:08 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-// Réimplémentation de strtok_r
-char	*my_strtok_r(char *str, const char *delim, char **saveptr)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	char	*token_start;
+	size_t			i;
+	unsigned char	*p;
 
-	if (str == NULL)
-		str = *saveptr;
-	while (*str && strchr(delim, *str))
-		str++;
-	if (*str == '\0')
-		return (NULL);
-	token_start = str;
-	while (*str && !strchr(delim, *str))
-		str++;
-	if (*str)
+	p = (unsigned char *)s;
+	i = 0;
+	while (i < n)
 	{
-		*str = '\0';
-		str++;
+		p[i] = (unsigned char)c;
+		i++;
 	}
-	*saveptr = str;
-	return (token_start);
+	return (s);
 }

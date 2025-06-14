@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_splitting.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:25:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:34:14 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:16:37 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@
     expanded = (*current)->value;
     if (expanded)
     {
-        word = strtok_r(expanded, delimiter, &expanded);
+        word = ft_strtok_r(expanded, delimiter, &expanded);
 	    (*current)->value = word;
-        word = strtok_r(expanded, delimiter, &expanded);
+        word = ft_strtok_r(expanded, delimiter, &expanded);
         while (word && expanded)
         {
-            new = create_token_node(strdup(word), (*current)->type);
+            new = create_token_node(ft_strdup(word), (*current)->type);
 		    if (!new)
                 break ;
 		    (*current)->next = new;
 		    *current = new;
-            word = strtok_r(expanded, delimiter, &expanded);
+            word = ft_strtok_r(expanded, delimiter, &expanded);
         }
         (*current)->next = save;
     }
@@ -66,16 +66,16 @@ static bool	words(t_tokn **current, char *delimiter)
 	expanded = (*current)->value;
 	if (!expanded || !*expanded)
 		return (true);
-	word = strtok_r(expanded, delimiter, &expanded);
+	word = ft_strtok_r(expanded, delimiter, &expanded);
 	if (!word)
 		return (true);
 	(*current)->value = word;
 	while (expanded && *expanded)
 	{
-		word = strtok_r(expanded, delimiter, &expanded);
+		word = ft_strtok_r(expanded, delimiter, &expanded);
 		if (!word)
 			break ;
-		new = create_token_node(strdup(word), (*current)->type);
+		new = create_token_node(ft_strdup(word), (*current)->type);
 		if (!new)
 			return (false);
 		(*current)->next = new;

@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 15:47:20 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/13 12:25:23 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:21:59 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +40,8 @@ static void	free_redirections(t_tokn **current)
 		prev = *current;
 		if ((*current)->type >= 0)
 			close((*current)->type);
-		else if ((*current)->value && strncmp((*current)->value, \
-					HEREDOC_PREFIX, strlen(HEREDOC_PREFIX)) == 0)
+		else if ((*current)->value && ft_strncmp((*current)->value, \
+					HEREDOC_PREFIX, ft_strlen(HEREDOC_PREFIX)) == 0)
 			unlink((*current)->value);
 		move_pointer(current);
 		free(prev->value);

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:09:25 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 18:10:29 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	is_builtin_bool(char *command)
 		return (false);
 	while (index < BCNT)
 	{
-		if (strcmp(command, g_b[index]) == 0)
+		if (ft_strcmp(command, g_b[index]) == 0)
 			break ;
 		index++;
 	}
@@ -39,5 +39,5 @@ bool	is_absolute(char *command)
 
 bool	is_executable(char *command)
 {
-	return (command && *command && strncmp(command, "./", 2) == 0);
+	return (command && *command && ft_strncmp(command, "./", 2) == 0);
 }

@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/25 11:27:56 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 21:26:15 by ynyamets         ###   ########.fr       */
+/*   Created: 2025/06/12 21:29:29 by ynyamets          #+#    #+#             */
+/*   Updated: 2025/06/12 21:29:41 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-int	pwd(t_shell *minishell)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	char	temp[BUFFER_SIZE];
-	int		len;
+	size_t				i;
+	unsigned char		*d;
+	const unsigned char	*s;
 
-	(void)minishell;
-	ft_memset(temp, 0, BUFFER_SIZE);
-	if (!getcwd(temp, BUFFER_SIZE))
-		return (write(2, "minislay: pwd: error\n", 22), BUILTINS);
-	len = ft_strlen(temp);
-	write(1, temp, len);
-	write(1, "\n", 1);
-	return (SUCCESS);
+	if (!dest || !src)
+		return (NULL);
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
 }

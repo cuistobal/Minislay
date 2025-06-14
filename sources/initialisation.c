@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:12:24 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:20:39 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:18:42 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	build_rl_prompt(char *rl_prompt, char *tname)
 		tname++;
 		index = -2;
 	}
-	if ((index + strlen(tname)) >= BUFFER_SIZE)
+	if ((index + ft_strlen(tname)) >= BUFFER_SIZE)
 		return ;
 	strcpy(rl_prompt, tname);
-	index = strlen(tname);
+	index = ft_strlen(tname);
 	rl_prompt[index] = ' ';
 	rl_prompt[++index] = '>';
 	rl_prompt[++index] = ' ';
@@ -50,7 +50,7 @@ t_env	*append_specials(void)
 	tail = NULL;
 	while (index < DKCT)
 	{
-		temp = strdup(g_spec[index]);
+		temp = ft_strdup(g_spec[index]);
 		if (!head)
 		{
 			head = create_env_node(temp);

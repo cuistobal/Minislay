@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 08:23:36 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 08:22:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:31:47 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ bool	set_state(int *state, int flag);
 bool	unset_state(int *state, int flag);
 bool	is_state_active(int state, int flag);
 
-//my_strtok_r.c:
-char	*my_strtok_r(char *str, const char *delim, char **saveptr);
+//ft_strtok_r.c:
+char	*ft_strtok_r(char *str, const char *delim, char **saveptr);
 
 //tokens_utils1.c:
 void	free_tokens(t_tokn *tokens);

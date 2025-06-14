@@ -1,5 +1,8 @@
 # Prerequisites
 *.d
+minislay
+.gitignore
+*.json
 
 # Object files
 *.o

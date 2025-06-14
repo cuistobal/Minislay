@@ -6,7 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 12:17:36 by chrleroy          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/13 12:24:14 by chrleroy         ###   ########.fr       */
+=======
+/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
+>>>>>>> feat/add_libft
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +23,21 @@ t_env	*get_env_node(t_shell *minishell, char *key)
 	environ = minishell->envp;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}	
 	environ = minishell->local;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}	
 	environ = minishell->command;
 	while (environ)
 	{
-		if (strcmp(environ->var[KEY], key) == 0)
+		if (ft_strcmp(environ->var[KEY], key) == 0)
 			return (environ);
 		move_env_pointer(&environ);
 	}

@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 11:21:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 07:38:42 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:34:56 by ynyamets         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	my_exit(char **args)
 		return (set_state((int *)&code, BUILTINS | EXIT_MASK), code);
 	}
 	else
-		code = atol(args[0]);
+		code = ft_atol(args[0]);
 	code = (code % 256 + 256) % 256;
 	set_state((int *)&code, EXIT_MASK);
 	return (code);
