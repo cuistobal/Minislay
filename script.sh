@@ -12,7 +12,7 @@ DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
 # Clean previous logs
 echo "=== Valgrind Test Results - $DATE ===" > "$LOG_FILE"
-echo "=== Commands with Memory Leaks - $DATE ===" > "$COMMAND_FILE"
+echo "=== Commands with Memory Issues - $DATE ===" > "$COMMAND_FILE"
 echo "Test file: $TEST_FILE" >> "$LOG_FILE"
 echo "----------------------------------------" >> "$LOG_FILE"
 
@@ -38,24 +38,31 @@ while IFS= read -r cmd || [ -n "$cmd" ]; do
                           --trace-children=yes \
                           --suppressions=toolbox_and_notes/readline.supp \
                           ./minislay 2>&1 | \
-    grep -E "==.*==.*((definitely|indirectly|possibly) lost: [1-9][0-9]* bytes)" >> "$LOG_FILE"
+    grep -E "==.*==.*((definitely|indirectly|possibly) lost: [1-9][0-9]* bytes|Invalid (read|write|free)|reachable: [1-9][0-9]*)" >> "$LOG_FILE"
 
     echo "----------------------------------------" >> "$LOG_FILE"
     echo "" >> "$LOG_FILE"
 done < "$TEST_FILE"
 
-echo "=== Commands with Memory Leaks ==="
+echo "=== Memory Issues Summary ==="
 
-# Extract line numbers with leaks
-leak_lines=$(grep -n "lost:" "$LOG_FILE" | cut -d: -f1)
-
-# For each leak line, calculate the corresponding command and display it
-for line in $leak_lines; do
-    # Find the last "Testing command:" line before the leak
-    cmd_line=$(head -n "$line" "$LOG_FILE" | grep -B1 "Testing command:" | head -n1)
-    if [ ! -z "$cmd_line" ]; then
-        echo "Leak in command: $cmd_line"
+# Extract and categorize errors
+echo -e "\nInvalid memory operations:"
+grep -n "Invalid" "$LOG_FILE" | while read -r line; do
+    line_num=${line%%:*}
+    cmd=$(head -n "$line_num" "$LOG_FILE" | grep "Testing command:" | tail -n1)
+    if [ ! -z "$cmd" ]; then
+        echo "  $cmd"
     fi
 done | sort -u
 
-echo "Detailed results saved in $LOG_FILE"
+echo -e "\nMemory leaks:"
+grep -n "lost:" "$LOG_FILE" | while read -r line; do
+    line_num=${line%%:*}
+    cmd=$(head -n "$line_num" "$LOG_FILE" | grep "Testing command:" | tail -n1)
+    if [ ! -z "$cmd" ]; then
+        echo "  $cmd"
+    fi
+done | sort -u
+
+echo -e "\nDetailed results saved in $LOG_FILE"

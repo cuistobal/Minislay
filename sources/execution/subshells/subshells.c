@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 20:03:25 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 09:24:08 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 	return (true);
 }
 
+/*
 static void	subshell_cleanup(t_tree **save)
 {
 	if (!*save)
@@ -89,7 +90,7 @@ static void	subshell_cleanup(t_tree **save)
 	free(*save);
 	*save = NULL;
 }
-
+*/
 
 //
 int	handle_subshell(t_shell *minishell, t_tree *ast)
@@ -101,8 +102,6 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 	char	*subshell_command;
 
 	save = minishell->ast;
-	nodes = minishell->execution;
-	free_execution_node(nodes);
 	subshell_command = NULL;
 	if (!build_prompt(&subshell_command, ast))
 		return (GENERAL_ERROR);
@@ -111,10 +110,10 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 		return (free(subshell_command), GENERAL_ERROR);
 	if (pid == 0)
 	{
+		purge_tree(&save);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		ret = get_minishelled(&minishell, subshell_command);
-		subshell_cleanup(&save);
 		free(subshell_command);
 		free_minishell(minishell);
 		exit(ret);
