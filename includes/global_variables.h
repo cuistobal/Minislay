@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 10:39:59 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 09:22:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:43:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@
 # define FILENAM 0b00000100
 # define ASSIGNS 0b00001000 
 # define BUFFER_SIZE 1024
-# define TAB_SIZE 64
+# define TAB_SIZE 128 
 //Shifting operator from token type to exec type
 # define CONVERT 3
 

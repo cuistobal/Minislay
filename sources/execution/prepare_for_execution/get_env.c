@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:56:37 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 20:53:58 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:40:09 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,15 @@ char	**get_env(t_shell *minishell)
 	if (!env)
 		return (NULL);
 	reset_array(env, 0, size);
-	while (current)
+	while (index < size -1)
 	{
-		if (!handle_env_entry(&env, &size, &index, current))
-			return (NULL);
-		current = current->next;
+		while (current)
+		{
+			if (!handle_env_entry(&env, &size, &index, current))
+				return (NULL);
+			current = current->next;
+		}
+		env[index++] = NULL;
 	}
-	if (!size_limit_helper(&env, &size, index))
-		return (NULL);
-	env = (char **)ft_realloc((void **)env, index, index + 1);
-	if (!env)
-		return (NULL);
-	env[index] = NULL;
 	return (env);
 }
