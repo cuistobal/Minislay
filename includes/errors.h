@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 13:20:48 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:52:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 # define UNMATCHED_PAR "unmatched '('\n"
 # define EXPORT1 "minislay: export: `"
 # define EXPORT2 "': not a valid identifier\n"
-
+# define SIG_HERE_DOC "bash: warning: here-document delimited by end-of-file \
+	(wanted '"
 # define MISSING_FILE "Missing file: "
 
 //Error codes
