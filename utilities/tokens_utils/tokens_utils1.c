@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:01:41 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 14:41:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 09:56:16 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	free_tokens_adress(t_tokn **tokens)
 	while (*tokens)
 	{
 		temp = (*tokens)->next;
-		if ((*tokens)->value)
+		if ((*tokens)->value != NULL)
 		{
 			free((*tokens)->value);
 			(*tokens)->value = NULL;
