@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 13:51:15 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:05:18 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	append_prompt(char **prompt, t_tokn **current)
 	char	*joined;
 
 	joined = NULL;
-	if (current)
+	if (*current)
 	{
 		joined = ft_strjoin(*prompt, (*current)->value);
 		if (joined)
@@ -35,6 +35,30 @@ static bool	append_prompt(char **prompt, t_tokn **current)
 	return (free(joined), free(*prompt), *prompt = NULL, false);
 }
 
+static bool	handle_pointer(t_tokn **current)
+{
+	if (*current && (*current)->value)
+	{
+		free((*current)->value);
+		(*current)->value = NULL;
+	}
+	move_pointer(current);
+	return (*current);
+}
+
+static bool	handle_loop(t_tokn **current, char **prompt, bool *closing)
+{
+	if ((*current)->type != CPAR)
+	{
+		if (!append_prompt(prompt, current))
+			return (false);
+	}
+	else if (!*closing)
+		*closing = true;
+	else if (!append_prompt(prompt, current))
+		return (false);
+}
+
 //We use this function to turn the subshell part of the list into a string.
 //Hence, we can eprform recursive call to minishell.
 static bool	build_prompt(char **prompt, t_tree *branch)
@@ -48,13 +72,7 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 	current = branch->tokens;
 	while (current)
 	{
-		if (current->value)
-		{
-			free(current->value);
-			current->value = NULL;
-		}
-		current = current->next;
-		if (!current)
+		if (!handle_pointer(&current))
 			break ;
 		if (current->type != CPAR)
 		{
@@ -68,7 +86,7 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 	}
 	if (branch->left && !build_prompt(prompt, branch->left))
 		return (false);
-	if (branch->right && !build_prompt(prompt, branch->left))
+	if (branch->right && !build_prompt(prompt, branch->right))
 		return (false);
 	return (true);
 }

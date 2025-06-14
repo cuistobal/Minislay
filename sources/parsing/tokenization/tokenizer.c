@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 13:41:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:09:46 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	return (strndup(input + start, *pos - start));
 }
 
-//
+/*
 static char	*determinism(const char *input, int *pos, int *type, bool *init)
 {
 	static char	prev;
@@ -104,9 +104,34 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 		return (NULL);
 	else
 		token = handle_special_chars(input, pos, type);
-	if (strchr(SPECIAL, *token) && *token != ')' && !input[*pos])
+	if (token && strchr(SPECIAL, *token) && *token != ')' && !input[*pos])
 		return (prev = INIT, syntax_error(token), free(token), NULL);
-	prev = *token;
+	if (token)
+		prev = *token;
+	return (token);
+}
+*/
+
+//
+static char	*determinism(const char *input, int *pos, int *type, bool *init)
+{
+	static char	prev;
+	char		*token;
+
+	token = NULL;
+	if (*init)
+	{
+		*init = false;
+		prev = INIT;
+	}
+	if (!strchr(SPECIAL, input[*pos]))
+		token = handle_words(input, pos, type);
+	else if (is_iredir(prev) || is_oredir(prev))
+		return (NULL);
+	else
+		token = handle_special_chars(input, pos, type);
+	if (token)
+		prev = *token;
 	return (token);
 }
 
