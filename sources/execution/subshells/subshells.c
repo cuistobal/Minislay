@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 14:05:18 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:48:43 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,12 @@ static bool	handle_loop(t_tokn **current, char **prompt, bool *closing)
 		*closing = true;
 	else if (!append_prompt(prompt, current))
 		return (false);
+	return (true);
 }
 
 //We use this function to turn the subshell part of the list into a string.
 //Hence, we can eprform recursive call to minishell.
-static bool	build_prompt(char **prompt, t_tree *branch)
+bool	build_prompt(char **prompt, t_tree *branch)
 {
 	bool	closing;
 	t_tokn	*current;
@@ -84,11 +85,7 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 		else if (!append_prompt(prompt, &current))
 			return (false);
 	}
-	if (branch->left && !build_prompt(prompt, branch->left))
-		return (false);
-	if (branch->right && !build_prompt(prompt, branch->right))
-		return (false);
-	return (true);
+	return (build_prompt_helper(prompt, branch));
 }
 
 //

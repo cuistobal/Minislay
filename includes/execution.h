@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:17:47 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:00:21 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,11 @@ int		open_outfile(t_tokn *redirections);
 int		open_outfile_append(t_tokn *redirections);
 
 //handle_here_doc_helper.c
+void	setup_heredoc_signals(void);
 bool	rewind_heredoc(t_tokn *redirections);
 char	*limiter_handler(char *limiter, bool *expansions);
-char	*init_heredoc(t_tokn *redirections, bool *expansions);
+bool	init_heredoc(t_tokn *redirections, bool *expansions, char **limiter, \
+		int *len);
 
 void	add_key_to_local(t_shell **minishell, t_tokn *assignations);
 
@@ -132,5 +134,7 @@ bool	quote_removal(t_tokn *list);
 void	quote_removal_helper(char *token, char *removed);
 
 bool	parse_command_line(t_tokn **current, t_pars *parser);
+bool	build_prompt(char **prompt, t_tree *branch);
+bool	build_prompt_helper(char **prompt, t_tree *branch);
 
 #endif

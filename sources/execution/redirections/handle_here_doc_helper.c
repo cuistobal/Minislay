@@ -6,11 +6,26 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 19:05:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/11 19:15:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:06:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
+
+void	setup_heredoc_signals(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = SIG_IGN;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sigaction(SIGINT, &sa_int, NULL);
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	sigaction(SIGQUIT, &sa_quit, NULL);
+}
 
 //
 bool	rewind_heredoc(t_tokn *redirections)
@@ -51,26 +66,26 @@ char	*limiter_handler(char *limiter, bool *expansions)
 }
 
 //
-char	*init_heredoc(t_tokn *redirections, bool *expansions)
+bool	init_heredoc(t_tokn *redirections, bool *expansions, char **limiter, \
+		int *len)
 {
 	int		fd;
-	char	*limiter;
 	char	*heredocname;
 
-	limiter = NULL;
 	if (!redirections)
 		return (NULL);
-	limiter = limiter_handler(redirections->value, expansions);
-	if (!limiter)
-		return (NULL);
+	*limiter = limiter_handler(redirections->value, expansions);
+	if (!*limiter)
+		return (false);
+	*len = strlen(*limiter);
 	heredocname = ft_strjoin(HEREDOC_PREFIX, redirections->value);
 	if (!heredocname)
-		return (free(limiter), NULL);
+		return (free(*limiter), *limiter = NULL, false);
 	free(redirections->value);
 	redirections->value = heredocname;
 	fd = open(heredocname, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	if (fd < 0)
-		return (free(limiter), NULL);
+		return (free(*limiter), *limiter = NULL, false);
 	redirections->type = fd;
-	return (limiter);
+	return (true);
 }

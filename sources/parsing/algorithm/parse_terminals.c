@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 17:59:00 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 18:52:56 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:39:53 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ bool	parse_redirection(t_tokn **current, t_pars *parser)
 				return (error_message(SYNTAX), error_message(UNEXPECTED), \
 						error_message((*current)->value));
 			}
-			//*current = (parser)->tab[TTPREV];
 			error_message(SYNTAX);
 			error_message(UNEXPECTED);
 			return (error_message((*current)->value));

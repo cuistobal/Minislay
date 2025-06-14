@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:09:34 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 09:47:07 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:39:27 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	build_ast_helper(t_pars **parser, t_tokn *save, t_tree *branch)
 	return (false);
 }
 
-
+//
 bool	build_ast(t_pars **parser)
 {
 	t_tokn	*save;
@@ -63,4 +63,3 @@ bool	build_ast(t_pars **parser)
 	}
 	return (branch);
 }
-

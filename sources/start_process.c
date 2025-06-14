@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 08:39:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 15:19:54 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:08:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static void	handle_signal_in_process_loop(char **user_input, bool *signal)
 	*signal = true;
 }
 
+static void	start_process_helper(struct termios *old_term, bool *signal)
+{
+	*signal = false;
+	tcgetattr(STDIN_FILENO, old_term);
+}
+
 //
 int	start_process(t_shell **minishell, char *terminal_name)
 {
@@ -36,8 +42,7 @@ int	start_process(t_shell **minishell, char *terminal_name)
 	struct termios	old_term;
 
 	init_signals();
-	signal = false;
-	tcgetattr(STDIN_FILENO, &old_term);
+	start_process_helper(&old_term, &signal);
 	while (1)
 	{
 		handle_terminal_settings(&term);
