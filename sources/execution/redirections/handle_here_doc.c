@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 17:21:59 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:06:01 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ static void	free_user_input(char **line, char **expanded)
 
 bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 {
+	char	*l;
 	int		len;
 	char	*lim;
-	char	*line;
 	char	*expanded;
 	bool	expansions;
 
@@ -87,19 +87,19 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 		return (false);
 	while (true)
 	{
-		line = get_user_input(minishell, lim);
-		if (!line)
+		l = get_user_input(minishell, lim);
+		if (!l)
 			return (close(redirections->type), redirections->type = -2, \
 					free(lim), false);
-		if (*line && ft_strlen(line) == (len - 1) && !ft_strncmp(line, lim, len - 1))
+		if (*l && ft_strlen(l) == (len - 1) && !ft_strncmp(l, lim, len - 1))
 			break ;
-		expanded = expand_line(minishell, line, expansions);
-		if (*line && !expanded && *line != '$')
-			return (free(line), free(lim), \
+		expanded = expand_line(minishell, l, expansions);
+		if (*l && !expanded && *l != '$')
+			return (free(l), free(lim), \
 					close(redirections->type), false);
 		append_heredoc(expanded, redirections->type);
-		free_user_input(&line, &expanded);
+		free_user_input(&l, &expanded);
 	}
-	return (free(line), free(lim), init_signals(), \
+	return (free(l), free(lim), init_signals(), \
 			rewind_heredoc(redirections));
 }

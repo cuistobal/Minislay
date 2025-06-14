@@ -1,7 +1,7 @@
 NAME	= minislay
 
 CC		= cc
-CFLAGS	= -g3
+CFLAGS	= -Wall -Werror -Wextra -g3
 RM		= rm -f
 
 SRC_DIR	= sources

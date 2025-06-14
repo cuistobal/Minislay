@@ -6,15 +6,15 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:20:15 by ynyamets          #+#    #+#             */
-/*   Updated: 2025/06/12 17:20:17 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:06:15 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	size_t	len;
+	int	len;
 
 	len = 0;
 	if (!str)

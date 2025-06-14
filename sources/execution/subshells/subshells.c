@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 15:48:43 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:02:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	handle_pointer(t_tokn **current)
 	move_pointer(current);
 	return (*current);
 }
-
+/*
 static bool	handle_loop(t_tokn **current, char **prompt, bool *closing)
 {
 	if ((*current)->type != CPAR)
@@ -59,6 +59,7 @@ static bool	handle_loop(t_tokn **current, char **prompt, bool *closing)
 		return (false);
 	return (true);
 }
+*/
 
 //We use this function to turn the subshell part of the list into a string.
 //Hence, we can eprform recursive call to minishell.
@@ -94,7 +95,6 @@ int	handle_subshell(t_shell *minishell, t_tree *ast)
 	int		ret;
 	pid_t	pid;
 	t_tree	*save;
-	t_exec	*nodes;
 	char	*subshell_command;
 
 	save = minishell->ast;

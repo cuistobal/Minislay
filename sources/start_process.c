@@ -6,17 +6,11 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 08:39:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:38:49 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:02:44 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-static void	redisplay(bool *signal)
-{
-	*signal = false;
-	rl_on_new_line();
-}
 
 static void	handle_signal_in_process_loop(char **user_input, bool *signal)
 {

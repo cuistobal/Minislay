@@ -6,22 +6,11 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:41:14 by chrleroy          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/13 12:27:23 by chrleroy         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/12 17:25:45 by ynyamets         ###   ########.fr       */
->>>>>>> feat/add_libft
+/*   Updated: 2025/06/14 18:58:59 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
-
-/*
-static const char	*g_keys[DKCT] = {
-	DSTR, DARO, DHAS, DEXT, DHYP,
-	DPID, DCID, DNME, DLST, DIFS
-};
-*/
 
 void	append_exit_code(t_shell *minishell, int code)
 {
@@ -36,24 +25,15 @@ void	append_exit_code(t_shell *minishell, int code)
 	ecode = ft_itoa(code);
 	if (!ecode)
 		return ;
-<<<<<<< HEAD
 	if (!node->var[VALUE])
 		node->var[VALUE] = ecode;
-	else if (!*node->var[VALUE])
-=======
-	if (ft_strcmp(node->var[VALUE], ecode) == 0)
->>>>>>> feat/add_libft
-	{
-		free(node->var[VALUE]);
-		node->var[VALUE] = ecode;
-	}	
-	else if (strcmp(node->var[VALUE], ecode) == 0)
-		free(ecode);
-	else
+	else if (ft_strcmp(node->var[VALUE], ecode) != 0)
 	{
 		free(node->var[VALUE]);
 		node->var[VALUE] = ecode;
 	}
+	else
+		free(ecode);
 }
 
 t_env	*find_special_env_variable(t_shell *minishell, int index)

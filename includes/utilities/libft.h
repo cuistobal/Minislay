@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:17:49 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/12 21:31:24 by ynyamets         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:06:38 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strdup(const char *s);
 char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_strpbrk(const char *s, const char *accept);
 char	*ft_strchr(const char *s, int c);
-size_t	ft_strlen(const char *str);
+int		ft_strlen(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 void	**ft_realloc(void **ptr, int old_size, int new_size);
