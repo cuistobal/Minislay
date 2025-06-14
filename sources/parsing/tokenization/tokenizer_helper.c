@@ -6,24 +6,35 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:31:39 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 17:37:16 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:39:45 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
+bool	syntax_error(char buffer[])
+{
+	error_message(BASH);
+	error_message(UNEXPECTED);
+	error_message(buffer);
+	return (error_message("\n"));
+}
+
 bool	tokenizer_helper(char *prev, char current)
 {
-	if ((is_iredir(*prev) || is_oredir(*prev)))
-	{
-		*prev = INIT;
-		return (false);
-	}
-	if (is_paren(*prev) && is_paren(current) && current != *prev)
-	{
-		*prev = INIT;
-		return (false);
-	}
+	char	imasavage[2];
+
+	if (current)
+		imasavage[0] = current;
+	else
+		imasavage[0] = *prev;
+	imasavage[1] = 0;
+	if (current && is_redir(*prev))
+		return (*prev = INIT, syntax_error(imasavage));
+	else if (is_paren(*prev) && is_paren(current) && current != *prev)
+		return (*prev = INIT, syntax_error(imasavage));
+	else if (!current && (prev && *prev != ')'))
+		return (*prev = INIT, syntax_error(imasavage));
 	return (true);
 }
 

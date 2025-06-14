@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 11:56:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:57:05 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,6 @@ static bool	append_heredoc(char *expanded, int fd)
 	return (write(fd, "\n", 1));
 }
 
-/* static char	*get_user_input(void)
-{
-	char	*line;
-
-	line = readline(HERE);
-	rl_on_new_line();
-	return (line);
-} */
-
 static void setup_heredoc_signals(void)
 {
     struct sigaction sa_int;
@@ -75,7 +66,7 @@ static void setup_heredoc_signals(void)
 
 static void restore_shell_signals(void)
 {
-    init_signals(); // Réutilise la fonction existante
+    init_signals();
 }
 
 static char	*get_user_input(t_shell *minishell)

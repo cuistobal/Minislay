@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:59:08 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 17:36:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:40:42 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ bool	create_new_token(t_tokn **head, t_tokn **current, char *token, \
 		int type);
 
 //valid_token_list.c
+bool	syntax_error(char *buffer);
 bool	valid_token_list(t_tokn *list);
 bool	tokenizer_helper(char *prev, char current);
 

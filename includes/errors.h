@@ -6,14 +6,14 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:45:50 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 16:24:58 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:20:48 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ERRORS_H
 # define ERRORS_H
 
-# define BASH "Bash: "
+# define BASH "bash: "
 # define TOKENIZATION "Tokenization error.\n"
 # define PARSING "Failed to parse.\n"
 # define SYNTAX "Syntax error: "
