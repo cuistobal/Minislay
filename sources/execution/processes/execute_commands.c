@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 19:18:13 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:48:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,21 @@
 // It handles input and output redirections based on the node's redirs array.
 int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 {
+	if (node->redirs[INFILE] < -1 || node->redirs[OUTFILE] < -1)
+	{
+		child_cleanup(minishell, node, cmd);
+		exit(GENERAL_ERROR);
+	}
 	if (!node->command || !*node->command)
 	{
+/*
+		error_message(BASH);
+		if (node->command)
+			error_message(*node->command);
+		else
+			error_message(" ");
+		error_message(CMD_NOT_FOUND);
+*/
 		child_cleanup(minishell, node, cmd);
 		exit(COMMAND_NOT_FOUND);
 	}
@@ -108,7 +121,7 @@ int	execute_commands(t_shell **m, t_exec *node, int count)
 	{
 		if (node->next && pipe((*m)->pipefd[index]) < 0)
 			return (free((*m)->pids), close_pipes((*m)->pipefd, index), \
-					free((*m)->pipefd), COMMAND_NOT_FOUND);
+					free((*m)->pipefd), GENERAL_ERROR);
 		if (node->command && is_builtin(*node->command) && (node->next || \
 					index != 0))
 			(*m)->pids[index] = execute_builtin(node, (*m)->pipefd, \

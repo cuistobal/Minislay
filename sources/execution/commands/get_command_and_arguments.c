@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 12:08:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:11:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:50:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ char	**get_command_and_arguments(t_shell *minishell, t_tokn *list)
 	while (list)
 	{
 		copy = get_token_copy(list->value);
-		if (!handle_command(minishell, &copy, index))
+		if (!handle_command(minishell, &copy, index) && copy)
+			return (commands[index] = copy, commands);
+		else if (!handle_command(minishell, &copy, index) && copy)
 			return (free(copy), free(commands), NULL);
 		commands[index] = copy;
 		move_pointer(&list);

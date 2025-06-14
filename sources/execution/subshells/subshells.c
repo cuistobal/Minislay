@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:25:02 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 09:24:08 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:30:33 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 			free(current->value);
 			current->value = NULL;
 		}
-//		t_tokn *prev = current;
 		current = current->next;
 		if (!current)
 			break ;
@@ -66,7 +65,6 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 			closing = true;
 		else if (!append_prompt(prompt, &current))
 			return (false);
-//		free(prev);
 	}
 	if (branch->left && !build_prompt(prompt, branch->left))
 		return (false);
@@ -74,23 +72,6 @@ static bool	build_prompt(char **prompt, t_tree *branch)
 		return (false);
 	return (true);
 }
-
-/*
-static void	subshell_cleanup(t_tree **save)
-{
-	if (!*save)
-		return ;
-	if ((*save)->tokens)
-		free_tokens_adress(&(*save)->tokens);
-	(*save)->tokens = NULL;
-	subshell_cleanup(&(*save)->left);
-	(*save)->left = NULL;
-	subshell_cleanup(&(*save)->right);
-	(*save)->right = NULL;
-	free(*save);
-	*save = NULL;
-}
-*/
 
 //
 int	handle_subshell(t_shell *minishell, t_tree *ast)

@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 10:41:14 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:19:51 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:56:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
         {
             close(redirections->type);
             free(limiter);
+			limiter = NULL;
             if (g_signal_status == SIGINT)
                 return (false);
             break;
