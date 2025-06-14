@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 19:05:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:06:59 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:15:11 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ bool	init_heredoc(t_tokn *redirections, bool *expansions, char **limiter, \
 	int		fd;
 	char	*heredocname;
 
+	*expansions = true;
 	if (!redirections)
 		return (NULL);
 	*limiter = limiter_handler(redirections->value, expansions);
