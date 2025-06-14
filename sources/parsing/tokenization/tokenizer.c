@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 14:38:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:28:32 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	*handle_words(const char *input, int *pos, int *type)
 	int		start;
 	char	quote;
 	bool	dollar;
+	char	error[2];
 
 	quote = INIT;
 	start = *pos;
@@ -82,7 +83,11 @@ static char	*handle_words(const char *input, int *pos, int *type)
 		(*pos)++;
 	}
 	if (quote)
-		return (NULL);
+	{
+		error[0] = quote;
+		error[1] = 0;
+		return (syntax_error(error), NULL);
+	}
 	return (strndup(input + start, *pos - start));
 }
 
@@ -129,9 +134,10 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 		return (NULL);
 	else
 		token = handle_special_chars(input, pos, type);
-	if (strchr(SPECIAL, *token) && *token != ')' && !input[*pos])
+	if (token && strchr(SPECIAL, *token) && *token != ')' && !input[*pos])
 		return (prev = INIT, syntax_error(token), free(token), NULL);
-	prev = *token;
+	if (token)
+		prev = *token;
 	return (token);
 }
 
