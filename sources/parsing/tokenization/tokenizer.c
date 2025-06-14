@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 19:08:53 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 10:18:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 		return (NULL);
 	else
 		token = handle_special_chars(input, pos, type);
-	if (input[*pos] == '\0' && is_redir(prev))
+	if (token && input[*pos] == '\0' && (is_redir(prev) && is_redir(*token)))
 		return (prev = INIT, free(token), NULL);
 	if (token)
 		prev = *token;

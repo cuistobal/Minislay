@@ -48,11 +48,61 @@ static bool	append_heredoc(char *expanded, int fd)
 	return (write(fd, "\n", 1));
 }
 
-static char	*get_user_input(void)
+/* static char	*get_user_input(void)
 {
 	char	*line;
 
 	line = readline(HERE);
+	rl_on_new_line();
+	return (line);
+} */
+
+static void setup_heredoc_signals(void)
+{
+    struct sigaction sa_int;
+    struct sigaction sa_quit;
+
+    sa_int.sa_handler = SIG_DFL;
+    sigemptyset(&sa_int.sa_mask);
+    sa_int.sa_flags = 0;
+    sigaction(SIGINT, &sa_int, NULL);
+
+    sa_quit.sa_handler = SIG_IGN;
+    sigemptyset(&sa_quit.sa_mask);
+    sa_quit.sa_flags = 0;
+    sigaction(SIGQUIT, &sa_quit, NULL);
+}
+
+static void restore_shell_signals(void)
+{
+    init_signals(); // Réutilise la fonction existante
+}
+
+static char	*get_user_input(t_shell *minishell)
+{
+	char			*line;
+	struct termios	term;
+	struct termios	original;
+
+	tcgetattr(STDIN_FILENO, &original);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	setup_heredoc_signals();
+	line = readline(HERE);
+	tcsetattr(STDIN_FILENO, TCSANOW, &original);
+	restore_shell_signals();
+	if (g_signal_status == SIGINT)
+	{
+		if (line)
+		{
+			free(line);
+			line = NULL;
+		}
+		append_exit_code(minishell, 130);
+		g_signal_status = 0;
+		return (NULL);
+	}
 	rl_on_new_line();
 	return (line);
 }
@@ -83,7 +133,15 @@ bool	handle_here_doc(t_shell *minishell, t_tokn *redirections)
 	len = strlen(limiter) - 1;
 	while (true)
 	{
-		line = get_user_input();
+		line = get_user_input(minishell);
+        if (!line)
+        {
+            close(redirections->type);
+            free(limiter);
+            if (g_signal_status == SIGINT)
+                return (false);
+            break;
+        }
 		if (*line && !strncmp(line, limiter, len) && (int)strlen(line) == len)
 			break ;
 		expanded = expand_line(minishell, line, expansions);

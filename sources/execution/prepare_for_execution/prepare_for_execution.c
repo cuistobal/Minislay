@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:04:54 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 09:57:11 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 10:37:41 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ t_exec	*prepare_for_exec(t_shell **m, t_tokn *tokens)
 	node->command = get_command_and_arguments(*m, tokens);
 	node->environ = get_env(*m);
 	node->next = NULL;
-	//free_tokens_adress(&tokens);
+	free_tokens_adress(&tokens);
 	return (node);
 }
