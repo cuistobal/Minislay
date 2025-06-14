@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 11:02:22 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 14:09:46 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:38:12 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 }
 */
 
-//
 static char	*determinism(const char *input, int *pos, int *type, bool *init)
 {
 	static char	prev;
@@ -126,12 +125,13 @@ static char	*determinism(const char *input, int *pos, int *type, bool *init)
 	}
 	if (!strchr(SPECIAL, input[*pos]))
 		token = handle_words(input, pos, type);
-	else if (is_iredir(prev) || is_oredir(prev))
+	else if (!tokenizer_helper(&prev, input[*pos]))
 		return (NULL);
 	else
 		token = handle_special_chars(input, pos, type);
-	if (token)
-		prev = *token;
+	if (strchr(SPECIAL, *token) && *token != ')' && !input[*pos])
+		return (prev = INIT, syntax_error(token), free(token), NULL);
+	prev = *token;
 	return (token);
 }
 
