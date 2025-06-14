@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 08:39:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:08:44 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:38:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	start_process(t_shell **minishell, char *terminal_name)
 			break ;
 		if (g_signal_status == SIGQUIT)
 			handle_signal_in_process_loop(&user_input, &signal);
-		rl_on_new_line();
 		rl_replace_line("", 0);
 	}
 	return (end_process(&old_term, retcode));

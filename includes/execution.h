@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:00:21 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:55:57 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,8 @@ void	quote_removal_helper(char *token, char *removed);
 bool	parse_command_line(t_tokn **current, t_pars *parser);
 bool	build_prompt(char **prompt, t_tree *branch);
 bool	build_prompt_helper(char **prompt, t_tree *branch);
+
+void	handle_sigint_in_here_doc(t_shell *minishell);
+void	handle_sigquit_in_here_doc(t_shell *minishell, char *limiter);
 
 #endif
