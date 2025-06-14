@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 19:11:29 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 13:44:24 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:01:24 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	execute_command_in_child(t_shell **minishell, t_exec *node, int cmd)
 	if (execve(*node->command, node->command, node->environ) < 0)
 	{
 		child_cleanup(minishell, node, cmd);
-		exit(COMMAND_EXEC);
+		exit(COMMAND_NOT_FOUND);
 	}
 	return (SUCCESS);
 }

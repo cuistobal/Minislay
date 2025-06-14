@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 18:44:16 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:23:12 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:28:39 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,14 @@ void	handle_terminal_settings(struct termios *term)
 */
 int	handle_eof(t_shell *minishell, struct termios *old_term)
 {
+	int	code;
+
+	code = get_last_exit_code(minishell);
 	write(STDOUT_FILENO, "exit\n", 5);
 	tcsetattr(STDIN_FILENO, TCSANOW, old_term);
 	free_minishell(minishell);
-	exit(0);
-	return (EXIT_CODE);
+	exit(code);
+	return (code);
 }
 
 /*

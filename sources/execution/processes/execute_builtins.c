@@ -6,7 +6,7 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:50:21 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 12:19:03 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:18:25 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	execute_simple_builtin(t_exec *current,	t_shell **minishell)
 	int		ret;
 	char	*tty_path;
 
+	if (current->redirs[INFILE] < -1 || current->redirs[OUTFILE] < -1)
+		return (GENERAL_ERROR);
 	tty_path = NULL;
 	if (isatty(STDIN_FILENO))
 		tty_path = ttyname(STDIN_FILENO);

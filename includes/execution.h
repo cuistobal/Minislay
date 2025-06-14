@@ -6,7 +6,7 @@
 /*   By: ynyamets <ynyamets@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 09:24:33 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/14 16:55:57 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:27:07 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,7 @@ bool	build_prompt_helper(char **prompt, t_tree *branch);
 
 void	handle_sigint_in_here_doc(t_shell *minishell);
 void	handle_sigquit_in_here_doc(t_shell *minishell, char *limiter);
+
+int		get_last_exit_code(t_shell *minishell);
 
 #endif

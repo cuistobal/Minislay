@@ -6,7 +6,7 @@
 /*   By: cuistobal <marvin@42.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 09:41:28 by cuistobal         #+#    #+#             */
-/*   Updated: 2025/06/12 11:57:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:17:03 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	open_infile(t_tokn *redir)
 				error_message(AMBIGUOUS_REDIRECTION), AMBIGUOUS_ERROR);
 	if (access(redir->value, R_OK) != 0)
 		return (error_message(PERMISSION_ERROR), \
-				error_message(redir->value), PERM_ERROR);
+				error_message(redir->value), error_message("\n"), PERM_ERROR);
 	return (open_file(redir->value, O_RDONLY | O_TRUNC, 0));
 }
 
@@ -63,6 +63,7 @@ int	open_outfile(t_tokn *redirections)
 		return (open_file(redirections->value, O_WRONLY | O_TRUNC, 0));
 	error_message(PERMISSION_ERROR);
 	error_message(redirections->value);
+	error_message("\n");
 	return (PERM_ERROR);
 }
 
@@ -78,6 +79,8 @@ int	open_outfile_append(t_tokn *redirections)
 					O_WRONLY | O_CREAT | O_APPEND, 0644));
 	else if (access(redirections->value, W_OK) == 0)
 		return (open_file(redirections->value, O_WRONLY | O_APPEND, 0));
-	return (error_message(PERMISSION_ERROR), \
-				error_message(redirections->value), PERM_ERROR);
+	error_message(PERMISSION_ERROR);
+	error_message(redirections->value),
+	error_message("\n");
+	return (PERM_ERROR);
 }

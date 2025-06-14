@@ -6,20 +6,20 @@
 /*   By: chrleroy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:26:53 by chrleroy          #+#    #+#             */
-/*   Updated: 2025/06/13 10:00:41 by chrleroy         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:25:49 by chrleroy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minislay.h"
 
-static int	get_last_exit_code(t_shell *minishell)
+int	get_last_exit_code(t_shell *minishell)
 {
 	t_env	*code;
 
 	code = find_special_env_variable(minishell, 3);
 	if (!code || !code->var[VALUE] || !*code->var[VALUE])
 		return (GENERAL_ERROR);
-	return (atoi(code->var[VALUE]));
+	return ((int)ft_atol(code->var[VALUE]));
 }
 
 static void	wait_module_helper(t_shell *minishell, int *last_code, int status)
